@@ -1,0 +1,20 @@
+CATEGORY	COMMON NAME	OBSERVATION COUNT	STATE	COUNTY	OBSERVATION DATE
+species	Starling	12	Massachusetts	Middlesex	2007-01-20
+species	Starling	4	Massachusetts	Anchorage	2007-01-02
+species	Starling	4	Massachusetts	Middlesex	2007-01-03
+species	Starling	X	Massachusetts	Middlesex	2007-01-04
+species	Starling	8	Massachusetts	Middlesex	2007-01-05
+species	House Sparrow	X	Massachusetts	Middlesex	2007-02-01
+species	House Sparrow	20	Massachusetts	Middlesex	2007-02-02
+species	House Sparrow	2	Massachusetts	Middlesex	2007-02-03
+species	House Sparrow	15	Massachusetts	Middlesex	2007-02-04
+species	Wilson's Warbler	1	Massachusetts	Middlesex	2007-03-01
+species	Wilson's Warbler	2	Massachusetts	Middlesex	2007-03-02
+species	Wilson's Warbler	1	Massachusetts	Anchorage	2007-03-03
+species	Wilson's Warbler	X	Massachusetts	Middlesex	2007-03-04
+species	Wilson's Warbler	1	Massachusetts	Monterey	2007-03-05
+species	Wilson's Warbler	1	Massachusetts	Middlesex	2007-03-06
+species	Wilson's Warbler	1	Massachusetts	Middlesex	2007-03-07
+species	GBH	X	Massachusetts	Middlesex	2007-04-01
+species	GBH	6	Massachusetts	Middlesex	2007-04-02
+species	GBH	1	Massachusetts	Middlesex	2007-04-03
