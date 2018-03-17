@@ -4,9 +4,9 @@ library(auk)
 library(tidyverse)
 library(data.table)
 #Main file, "/WIWA_filtered.txt" (WIWA = alpha banding code for Wilson's Warbler)"
-#wi <- fread("/Volumes/64_mac/EBPP/WIWA_filtered.txt")
+wi <- fread("...WIWA_filtered.txt")
 ##test file
-wi <- fread("/Volumes/64_mac/subset_test_madeup_starz.txt")
+#wi <- fread("....subset_test_madeup_stuff.txt")
 #Define when and where using mm-dd and County
 date_wiwa <- "1997-05-18"
 county_name <- "Middlesex"
@@ -44,7 +44,7 @@ meandate <- function(p) {
       } ,
       print("working..."))
       }
-    mean_obs <- obs_individuals_total / iii
+    mean_obs <- obs_individuals_total / numdates
     mean_x <- cbind(obs_individuals_total, mean_obs, p)
     break 
   }
