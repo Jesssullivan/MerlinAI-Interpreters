@@ -6,19 +6,20 @@ library(data.table)
 library(gdata)
 options(stringsAsFactors = FALSE)
 #Main file, "/WIWA_filtered.txt" (WIWA = alpha banding code for Wilson's Warbler)"
-wi <- fread("...EBPP/WIWA_filtered.txt")
+wi <- fread(".../WIWA_filtered.txt")
 ##test file
-#wi <- fread("...subset_test_madeup.txt")
+#wi <- fread(".../subset_test_madeup_starz.txt")
 #Define when and where using mm-dd and County
 date_of_interest <- "05-18"
+county_name <- "Middlesex"
 #date range start
 date_wiwa <- "1997-05-18"
-county_name <- "Middlesex"
 #core vectors: remove "year" in date, calculate some sums and do basic filtering/data cleaning
 wiwa <- wi %>% filter(`COMMON NAME` == "Wilson's Warbler")
 wiwa_county <- wiwa %>% filter(COUNTY == county_name)
 wiwa_county_pert_2 <- wiwa_county %>% select("OBSERVATION DATE", "OBSERVATION COUNT")
 dates <- seq(as.Date(date_wiwa), as.Date("2018-01-01"), "years")
+datesdays <- seq(as.Date(date_wiwa), as.Date("2018-01-01"), "days")
 numdates <- length(dates)
 numdays <- length(datesdays)
 rangedays = 1:numdays
@@ -60,11 +61,13 @@ xy <- data.frame(x[!(x == "<NA>")])
 #write the files somewhere:
 #write.csv(x, "...tada.csv")
 #write.csv(xy, "...all_averages.csv")
-max_sp_mean <- max(as.numeric(xy[2,]))
+max_sp_mean <- max(as.numeric(xy[2,]), na.rm = TRUE)
 DOI <- xy[date_of_interest,]
 DOI <- as.numeric(xy[2,])
 #end birb score out of 1000, "possible points" 
 #(makes it easier I think to interpret as a human), normalized:
-mean_DOI <- mean(DOI)
+mean_DOI <- mean(DOI, na.rm = TRUE)
 birbscore <- mean_DOI / max_sp_mean * 1000
 print(birbscore)
+mean_DOI
+max_sp_mean
