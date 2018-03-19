@@ -3,10 +3,11 @@
 library(auk)
 library(tidyverse)
 library(data.table)
-library(gdata)
+# library(gdata)
 options(stringsAsFactors = FALSE)
 #Main file, ".../WIWA_filtered.txt" (WIWA = alpha banding code for Wilson's Warbler)"
-wi <- fread(".../WIWA_filtered.txt")
+# wi <- fread(".../WIWA_filtered.txt")
+wi <- fread("subset_test_madeup_starz.txt")
 ##test file : see github repo and README/cloud storage link for test sets, "bad data" files, etc 
 #wi <- fread(".../subset_test_madeup_starz.txt")
 ##Define when and where using mm-dd and County
@@ -41,22 +42,13 @@ obs_individuals_total = 0
 mean_obs = 0
 mean_x = 0
 mean_tab = 0
-numdates = as.numeric(numdates)
 rangenum = 1:numdates
 #function meandate calulates the mean observation count for 1 date in the seq. "date366"
 meandate <- function(p) {
-  repeat {
-    {
-      ifelse(as.character(i[1:numdates,1]) == p, {
-        obs_individuals_total <- as.numeric(i[1:numdates,2]) + obs_individuals_total
-      } ,
-      print("working..."))
-      }
+    observations_for_p <- filter(i, `OBSERVATION DATE` == p)
+    obs_individuals_total <- sum(as.numeric(observations_for_p[,2]))
     mean_obs <- obs_individuals_total / numdates
-    mean_x <- rbind(obs_individuals_total, mean_obs, p)
-    break 
-  }
-  return(mean_x)
+    return(mean_obs)
 }
 #Generated sum, mean, and date col. for each day 
 #Preform a similar function for only the day_of_interest:
