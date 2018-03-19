@@ -6,12 +6,12 @@ library(data.table)
 # library(gdata)
 options(stringsAsFactors = FALSE)
 #Main file, ".../WIWA_filtered.txt" (WIWA = alpha banding code for Wilson's Warbler)"
-# wi <- fread(".../WIWA_filtered.txt")
+#wi <- fread("/WIWA_filtered.txt")
 ##test file : see github repo and README/cloud storage link for test sets, "bad data" files, etc 
-wi <- fread(".../subset_test_madeup_2.txt")
+wi <- fread("/subset_test_madeup_2.txt")
 ##Define when and where using mm-dd and County
-bird_of_interest <- "Starling"
-date_of_interest <- "01-03"
+bird_of_interest <- "Wilson's Warbler"
+date_of_interest <- "05-18"
 county_name <- "Middlesex"
 #date range start of calculations
 date_wiwa <- "1997-05-18"
@@ -29,7 +29,7 @@ date366 <- seq(
   as.Date("0000-01-01", format = "%Y-%m-%d"),
   as.Date("0000-12-31", format = "%Y-%m-%d"), "days") 
 date366 <- format(date366, format = "%m-%d")
-i <- wiwa_county_pert_2[!(wiwa_county_pert_2[2] == 0) & !(wiwa_county_pert_2[2] == "X") ,] 
+i <- wiwa_county_pert_2[!(wiwa_county_pert_2[,2] == 0) & !(wiwa_county_pert_2[,2] == "X") ,] 
 iii <- as.numeric(count(i[2]))
 list_dates <- as.Date(i[,1])
 idates <- format(list_dates, "%m-%d")
@@ -44,10 +44,10 @@ mean_tab = 0
 rangenum = 1:numdates
 #function meandate calulates the mean observation count for 1 date in the seq. "date366"
 meandate <- function(p) {
-    obs_individuals_total <- filter(i, `OBSERVATION DATE` == p)
-    test <- sum(as.numeric(obs_individuals_total[,2]))
-    mean_obs <- test / numdates
-    return(mean_obs)
+  obs_individuals_total <- filter(i, `OBSERVATION DATE` == p)
+  test <- sum(as.numeric(obs_individuals_total[,2]))
+  mean_obs <- test / numdates
+  return(mean_obs)
 }
 #Generated sum, mean, and date col. for each day 
 #apply meandate to each day of the year:
