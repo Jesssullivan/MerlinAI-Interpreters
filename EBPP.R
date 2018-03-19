@@ -8,7 +8,7 @@ options(stringsAsFactors = FALSE)
 #Main file, ".../WIWA_filtered.txt" (WIWA = alpha banding code for Wilson's Warbler)"
 #wi <- fread("/WIWA_filtered.txt")
 ##test file : see github repo and README/cloud storage link for test sets, "bad data" files, etc 
-wi <- fread("/subset_test_madeup_2.txt")
+#wi <- fread("/subset_test_madeup_2.txt")
 ##Define when and where using mm-dd and County
 bird_of_interest <- "Wilson's Warbler"
 date_of_interest <- "05-18"
@@ -49,25 +49,21 @@ meandate <- function(p) {
   mean_obs <- test / numdates
   return(mean_obs)
 }
-#Generated sum, mean, and date col. for each day 
-#apply meandate to each day of the year:
 mean_x_temp <- sapply(date366, meandate)
 mean_tab <- data.frame(mean_x_temp[!(mean_x_temp == "<NA>")])
-#apply daydate to our date_of_interest:
-DofI_mean_obs <- sapply(date_of_interest, meandate)
 ###write the files somewhere:
-#write.csv(mean_tab, "...all_averages.csv")
-#write.csv(DofI_mean_obs, "...day_average.csv")
+#write.csv(mean_tab, "all_averages_wiwa.csv")
+#birbscore is out of 10- the following two lines 
+##can be done on a "mean_tab" almost any size
+###the other alternative will be to bundle birbscores into the mean_tab,
+####as opposed to calculating them on the fly
+mean_DOI <- mean_tab[date_of_interest,]
 max_sp_mean <- max(as.numeric(mean_tab[,1]), na.rm = TRUE)
-mean_DOI <- mean(DofI_mean_obs, na.rm = TRUE)
-#end birb score out of 1000, "possible points" 
-#(makes it easier I think to interpret as a human), normalized:
-birbscore <- mean_DOI / max_sp_mean * 1000
+birbscore <- mean_DOI / max_sp_mean * 10
+#print output
 print("For...")
 print(bird_of_interest)
-print("The likelihood (out of 1000 possible points) of seeing this bird in...")
 print(county_name)
-print("on...")
 print(date_of_interest)
-print("is:")
+print("The likelihood score out of 10 is:")
 print(birbscore)
