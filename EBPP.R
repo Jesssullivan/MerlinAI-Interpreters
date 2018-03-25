@@ -8,10 +8,10 @@ options(stringsAsFactors = FALSE)
 #Main file, ".../WIWA_filtered.txt" (WIWA = alpha banding code for Wilson's Warbler)"
 #wi <- fread("/WIWA_filtered.txt")
 ##test file : see github repo and README/cloud storage link for test sets, "bad data" files, etc 
-#wi <- fread("/subset_test_madeup_2.txt")
+wi <- fread("subset_test_madeup_2.txt")
 ##Define when and where using mm-dd and County
-bird_of_interest <- "Wilson's Warbler"
-date_of_interest <- "05-18"
+bird_of_interest <- "Starling"
+date_of_interest <- "01-01"
 county_name <- "Middlesex"
 #date range start of calculations
 date_wiwa <- "1997-05-18"
@@ -67,3 +67,4 @@ print(county_name)
 print(date_of_interest)
 print("The likelihood score out of 10 is:")
 print(birbscore)
+
