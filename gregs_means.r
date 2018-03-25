@@ -13,7 +13,15 @@ mean_count_county_species_day <- function(county, species, day) {
         filter(as.integer(strftime(`OBSERVATION DATE`, "%j")) == day)
     mean(as.integer(filtered$`OBSERVATION COUNT`))
 }
-                       
-
 
 # mean_count_county_species_day("Middlesex", "Wilson's Warbler", 66)
+
+for (county in counties) {
+    for (species in common_names) {
+        for (day in 1:366) {
+            cat(county, species, day, "\n")
+        }
+    }
+}
+
+
