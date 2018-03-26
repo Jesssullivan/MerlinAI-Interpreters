@@ -1,6 +1,7 @@
 library(data.table)
 library(tidyverse)
 library(RMySQL)
+options(stringsAsFactors = FALSE)
 data <- fread("subset_test_madeup_2.txt")
 # List processing
 Birds_list <- c(unique(data$`COMMON NAME`))
@@ -48,23 +49,22 @@ Mean_Func <- function(q,w) {
         return(result)
   }
 }
-Mean_data <- matrix(mapply(Mean_Func, Birds_list, county_list))
-# save file locally
-mean_tab <- as.table(Mean_data)
-# write_"Ext, csr or RDS generic (mean_tab, "...../mean_tab_test2....extension")
-options(stringsAsFactors = FALSE)
-# the following line gets rid of the vague table order I had- lists do not encode
-## to the MySQL server "no method 
-Mean_data_exp <- data.frame(unlist(mean_tab))
+Mean_data <- data.frame(mapply(Mean_Func, Birds_list, county_list), stringsAsFactors = FALSE)
+Mean_data <- matrix(Mean_data)
+##save file locally 
+write.table(Mean_data, "/Volumes/128 Cache/Epic Birding Prediction Project/EBPP_3/mean_tab_test4.1.csv", sep = ",")
 # Server uses AWS RDS MySQL instance, and is only on for testing
 ## Using MySQL Workbench for Server GUI 
-connected <- dbConnect(MySQL(), user="******", password="******", 
-     host="Some Test AWS Endpoint", port = 3306, dbname = "DBtest")
+dataout <- read.csv(file = ".../mean_tab_test.csv", header = FALSE)
+
+connected <- dbConnect(MySQL(), user="*****", password="*****", 
+     host="AWS SQL SERVER SOMEWHERE", port = 3306, dbname = "DBtest")
 # List then read in current table options to write / append:
 dbListTables(connected)
 tests <- dbReadTable(connected, "table1")
 # write data back to DB:
-dbWriteTable(connected,"table1", data.frame(Mean_data_exp), row.names = FALSE, overwrite = TRUE)
-#end connection with : dbDisconnect(connected)
+dbWriteTable(connected,"table1", data.frame(dataout), row.names = FALSE, overwrite = TRUE)
+#end connection with : 
+dbDisconnect(connected)
 
 
