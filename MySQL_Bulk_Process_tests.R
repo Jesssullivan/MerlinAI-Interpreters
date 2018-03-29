@@ -1,8 +1,7 @@
 library(data.table)
 library(tidyverse)
-library(RMySQL)
 options(stringsAsFactors = FALSE)
-data <- fread("subset_test_madeup_2.txt")
+data <- fread("subset_test_madeup_3.txt")
 # List processing
 Birds_list <- c(unique(data$`COMMON NAME`))
 lengthbirds <- as.numeric(length(Birds_list))
@@ -33,7 +32,7 @@ i = 1
 z = 0
 # grid combo creation for sizing and keeping the output sparkly fresh
 wxyz <- expand.grid(Birds_list, county_list, date366, stringsAsFactors = TRUE)
-# generates content for "mean_tab" 
+# generates content for "Mean_data" / MySQL
 Mean_Func <- function(q,w) {
   for (e in wxyz$Var3) {
     r <- 0
@@ -42,29 +41,29 @@ Mean_Func <- function(q,w) {
     r <- r %>% filter(`OBSERVATION DATE` == e)
     t <- as.numeric(r[,3])
     y <- sum(t / lengthdates)
-    result[[i]] <- c(y,r,q,w)
+    result[[i]] <- cbind(y, as.list(r))
     i = i + 1
     print(e)
-    if (e == "12-29")
+    if (e == "02-29")
         return(result)
   }
 }
-Mean_data <- data.frame(mapply(Mean_Func, Birds_list, county_list), stringsAsFactors = FALSE)
-Mean_data <- matrix(Mean_data)
-##save file locally 
-write.table(Mean_data, "/Volumes/128 Cache/Epic Birding Prediction Project/EBPP_3/mean_tab_test4.1.csv", sep = ",")
-# Server uses AWS RDS MySQL instance, and is only on for testing
+#apply function
+Mean_data <- mapply(Mean_Func, Birds_list, county_list)
+#Clean Mean_data output
+Mean_data2 <- data.frame(do.call(rbind, lapply(Mean_data, unlist)))
+#Server uses AWS RDS MySQL instance, and is only on for testing
 ## Using MySQL Workbench for Server GUI 
-dataout <- read.csv(file = ".../mean_tab_test.csv", header = FALSE)
-
-connected <- dbConnect(MySQL(), user="*****", password="*****", 
-     host="AWS SQL SERVER SOMEWHERE", port = 3306, dbname = "DBtest")
-# List then read in current table options to write / append:
+library(RMySQL)
+connected <- dbConnect(MySQL(), user="******", password="******", 
+     host="************", port = 3306, dbname = "******")
 dbListTables(connected)
-tests <- dbReadTable(connected, "table1")
-# write data back to DB:
-dbWriteTable(connected,"table1", data.frame(dataout), row.names = FALSE, overwrite = TRUE)
-#end connection with : 
-dbDisconnect(connected)
-
-
+dbWriteTable(connected,"table1", data.frame(Mean_data2), row.names = FALSE, overwrite = TRUE)
+#List then read in current table options to write / append:
+tests2 <- dbReadTable(connected, "table1")
+####end connection with : dbDisconnect(connected)
+#birbscore will be calculated via the following inputs, 
+##but via front end (or at least, R is not the likely choice for that task)
+bird_of_interest <- "Starling"
+date_of_interest <- "01-01"
+county_name <- "Middlesex"
