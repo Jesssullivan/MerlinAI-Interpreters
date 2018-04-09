@@ -4,14 +4,14 @@ var app= express();
 var mysql= require('mysql');
 //MySQL section
 var con= mysql.createConnection({
-host: "testdb.cinxlnfuujhq.us-east-1.rds.amazonaws.com",
-user: "Jess",
-password: "Jess.7699",
-database: "DBtest"
+host: "RDS Server",
+user: "******",
+password: "******",
+database: "******"
 });
 
 app.use(bodyParser.urlencoded({ extended: true })); 
-app.post('/myaction', function(req, res) {
+app.post('RDS Server/myaction', function(req, res) {
 var Species= req.body.Species;
   con.connect();
   con.query("SELECT * FROM table1 WHERE X8= '" + Species + "'", function(err, rows, fields) {
