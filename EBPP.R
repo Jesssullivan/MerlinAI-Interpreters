@@ -1,17 +1,13 @@
-#Generate sum, mean, and date col. for each day from a table of eBird data
-#Packages: not all used, but each are very handy 
-library(auk)
 library(tidyverse)
 library(data.table)
-# library(gdata)
-options(stringsAsFactors = FALSE)
+options(stringsAsFactors = TRUE)
 #Main file, ".../WIWA_filtered.txt" (WIWA = alpha banding code for Wilson's Warbler)"
 #wi <- fread("/WIWA_filtered.txt")
 ##test file : see github repo and README/cloud storage link for test sets, "bad data" files, etc 
 wi <- fread("subset_test_madeup_2.txt")
 ##Define when and where using mm-dd and County
 bird_of_interest <- "Starling"
-date_of_interest <- "01-01"
+date_of_interest <- "03-03"
 county_name <- "Middlesex"
 #date range start of calculations
 date_wiwa <- "1997-05-18"
@@ -51,20 +47,49 @@ meandate <- function(p) {
 }
 mean_x_temp <- sapply(date366, meandate)
 mean_tab <- data.frame(mean_x_temp[!(mean_x_temp == "<NA>")])
-###write the files somewhere:
-#write.csv(mean_tab, "all_averages_wiwa.csv")
-#birbscore is out of 10- the following two lines 
-##can be done on a "mean_tab" almost any size
-###the other alternative will be to bundle birbscores into the mean_tab,
-####as opposed to calculating them on the fly
 mean_DOI <- mean_tab[date_of_interest,]
 max_sp_mean <- max(as.numeric(mean_tab[,1]), na.rm = TRUE)
 birbscore <- mean_DOI / max_sp_mean * 10
-#print output
-print("For...")
-print(bird_of_interest)
-print(county_name)
-print(date_of_interest)
-print("The likelihood score out of 10 is:")
-print(birbscore)
+#print output, minor cat update 8.24.18
+cat(print("For..."), print(bird_of_interest), print("and"), print(county_name),
+   print("and date"), print(date_of_interest),
+    print("The likelihood score out of 10 is:"), print(birbscore))
+#
+#New as of 8/24/18
+wi$`OBSERVATION DATE` <- format(as.Date(wi$`OBSERVATION DATE`), "%m-%d")
+date366 <- seq(
+  as.Date("01-01", format = "%m-%d"),
+  as.Date("12-31", format = "%m-%d"), "days") 
+date366 <- format(date366, format = "%m-%d")
 
+i <- 1
+nameList <- as.character(unique(wi$`COMMON NAME`))
+# End mean_DOI function section
+# Begin max species per day of the year
+max_sp_mean_func <- function(e){
+  df <- filter(wi, wi$`OBSERVATION DATE` == e,
+               wi$`COMMON NAME` == nameList[1],
+               wi$COUNTY == county_name)
+  max <- max(as.numeric(df$`OBSERVATION COUNT`))
+  i <- i+1 
+  return(max)
+}
+e <- 1
+max <- data.frame(lapply(date366, max_sp_mean_func))
+# append birb scores to 366 table
+#
+q_num <- 1:365
+score_add <- function(e){
+  avg_df <- filter(wi, wi$`OBSERVATION DATE` == date366[e],
+               wi$`COMMON NAME` == nameList[1],
+               wi$COUNTY == county_name)
+  average <- mean(as.numeric(avg_df$`OBSERVATION COUNT`))
+  #
+  birbscore <- as.numeric(average / max) * 10
+  df <- data.frame(filter(wi, wi$`OBSERVATION DATE` == date366[e], wi$`COMMON NAME` == bird_of_interest,
+                     wi$COUNTY == county_name))
+  df <- c(df, birbscore)
+  return(df)
+}
+# Creates a table with birb score appended - progress
+birb_data <- data.frame(sapply(q_num, score_add))
