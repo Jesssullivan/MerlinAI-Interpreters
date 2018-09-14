@@ -3,8 +3,8 @@ Epic Birding Predicting Project: Predicting good birding near you
 
 This project is currently under development.  In addition to generating "scores" in R, the backend is under construction in MySQL via RDS, and the front end with Node.JS and HTML.  
 
-#EBPP Goals:
-#There are a few main functions for the EBPP.   
+# EBPP Goals:
+# There are a few main functions for the EBPP.   
 
 Search / Reference:
 Give date and county, it gives a descending list of species with the highest birb scores AND a descending list of birds with the most change in the last 7 days
