@@ -3,8 +3,14 @@ Epic Birding Predicting Project: Predicting good birding near you
 
 
 This project is currently under development.  
-# Edit: Current scoring methods are being developed in Python.  
-    In addition to generating "scores" in R, the backend is under construction in MySQL via RDS, and the front end with Node.JS and HTML.  
+# Edit: Current scoring methods are being developed in Python. 
+    In addition to generating "scores" in R, the backend is 
+    under construction in MySQL via RDS, 
+    and the front end with Node.JS and HTML.  
+
+# Status:
+    Running average is working in Python Script (10.13.18)
+    but fills RAM prior to completion. 
 
 # EBPP Goals:
 # There are a few main functions for the EBPP.   
