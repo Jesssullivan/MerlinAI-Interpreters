@@ -8,8 +8,6 @@ and lists while calculating and saving "birbscores" on the fly.
 """
 from datetime import datetime
 import sys
-import psutil
-import sys
 temp_mac = "temp.txt"
 temp = "E:/EBPP_Shared/files/temp.txt"
 file = "E:/EBPP_Shared/files/ebd_relMay-2018.txt"
@@ -67,9 +65,7 @@ with open(temp_mac, encoding="utf8") as f:
         running_num = WD[Ccode][spname][Mdate]["CT"] / WD[Ccode][spname][Mdate]["sum"]
         val = ("John", "Highway 21")
         linenum += 1
-        print(WD_MB, mem, linenum, Ccode, spname, running_num)
-        if linenum >= 7:
-            break
+        print(linenum, Ccode, spname, running_num)
 
 # if the above has finished, on to MySQL:
 
