@@ -81,8 +81,7 @@ for Ccode_l in WD:
     for spname_l in WD[Ccode_l]:
         for Mdata_l in WD[Ccode_l][spname_l]:
             running_num = WD[Ccode_l][spname_l][Mdata_l]["CT"] / WD[Ccode_l][spname_l][Mdata_l]["sum"]
-            sqlintro = "INSERT INTO Test_2 VALUES("+ Ccode_l+"," \
-                       + spname_l+","  + Mdata_l+","  + running_num + ")"
+            sqlintro = "INSERT INTO Test_2 VALUES("+ Ccode_l+","+spname_l+","  + Mdata_l+","  + running_num + ")"
             cursor.execute(sqlintro)
             conn.commit()
 if (conn.is_connected()):
