@@ -8,7 +8,6 @@ and lists while calculating and saving "birbscores" on the fly.
 """
 from datetime import datetime
 import sys
-import psutil
 temp_mac = "temp.txt"
 temp = "E:/EBPP_Shared/files/temp.txt"
 file = "E:/EBPP_Shared/files/ebd_relMay-2018.txt"
@@ -17,7 +16,8 @@ WD = {}
 import mysql.connector
 from mysql.connector import Error
 from mysql.connector import errorcode
-#cursor.execute("CREATE TABLE Table_test_1 (name VARCHAR(255), address VARCHAR(255))")
+
+# cursor.execute("CREATE TABLE Table_test_1 (name VARCHAR(255), address VARCHAR(255))")
 linenum = 0  # startingnum to see break point
 with open(temp_mac, encoding="utf8") as f:
     for line in f:
@@ -57,47 +57,36 @@ with open(temp_mac, encoding="utf8") as f:
             WD[Ccode][spname][Mdate]["CT"]
         except:
             WD[Ccode][spname][Mdate]["CT"] = 0
-    # Below calculate running average
+        # Below calculate running average
         WD[Ccode][spname][Mdate]["sum"] = WD[Ccode][spname][Mdate]["sum"] + obs_ct
         WD[Ccode][spname][Mdate]["CT"] = WD[Ccode][spname][Mdate]["CT"] + 1
         # this can be done at any time once the above sum and CT are calculated, not appending
         # running_num at this time due to space issues
         running_num = WD[Ccode][spname][Mdate]["CT"] / WD[Ccode][spname][Mdate]["sum"]
         val = ("John", "Highway 21")
-        # this only saves the most current data in list form, to be exported / processed in MySQL etc
-        # !! commented out below due to extra RAM usage, already maxing out 16gb before finish w/ memory error
-        WD_MB = sys.getsizeof(WD) / 1000000
-        mem = psutil.virtual_memory().percent
         linenum += 1
-        print(WD_MB, mem, linenum, Ccode, spname, running_num)
-        if linenum >= 7:
-            break
+        print(linenum, Ccode, spname, running_num)
 
 # if the above has finished, on to MySQL:
 
 try:
-   conn = mysql.connector.connect(host='ebpp-1.******.amazonaws.com',
-                             database='******',
-                             user='******',
-                             password='************')
+    conn = mysql.connector.connect(host='ebpp-1.cinxlnfuujhq.us-east-1.rds.amazonaws.com',
+                                   database='jessdev',
+                                   user='jessdev',
+                                   password='Jess.7699')
 except mysql.connector.Error as error:
     print("Failed to update record to database: {}".format(error))
 cursor = conn.cursor(buffered=True)
-
-# SQL Logic
-
-# cursor.execute("CREATE TABLE Test_2 (Ccode VARCHAR(255), spname VARCHAR(255), Mdata VARCHAR(255), running_num VARCHAR(255))")
-
 for Ccode_l in WD:
     for spname_l in WD[Ccode_l]:
         for Mdata_l in WD[Ccode_l][spname_l]:
             running_num = WD[Ccode_l][spname_l][Mdata_l]["CT"] / WD[Ccode_l][spname_l][Mdata_l]["sum"]
-            sql = "INSERT INTO Test_2 VALUES('Ccode_l', 'spname_l', 'Mdata_l', 'running_num')"
-            cursor.execute(sql)
+            sqlintro = "INSERT INTO Test_2 VALUES("+ Ccode_l+"," \
+                       + spname_l+","  + Mdata_l+","  + running_num + ")"
+            cursor.execute(sqlintro)
             conn.commit()
-
-if(conn.is_connected()):
+if (conn.is_connected()):
     conn.close()
     print("connection is closed")
-
+    sys.exit()
 
