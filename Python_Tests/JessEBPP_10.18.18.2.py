@@ -66,10 +66,6 @@ with open(temp_mac, encoding="utf8") as f:
         # running_num at this time due to space issues
         running_num = WD[Ccode][spname][Mdate]["CT"] / WD[Ccode][spname][Mdate]["sum"]
         val = ("John", "Highway 21")
-        # this only saves the most current data in list form, to be exported / processed in MySQL etc
-        # !! commented out below due to extra RAM usage, already maxing out 16gb before finish w/ memory error
-        WD_MB = sys.getsizeof(WD) / 1000000
-        mem = psutil.virtual_memory().percent
         linenum += 1
         print(WD_MB, mem, linenum, Ccode, spname, running_num)
         if linenum >= 7:
