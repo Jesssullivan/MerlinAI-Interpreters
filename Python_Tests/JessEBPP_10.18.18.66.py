@@ -71,6 +71,8 @@ try:
                                    database='jessdev',
                                    user='jessdev',
                                    password='Jess.7699')
+except mysql.connector.Error as error:
+    print("Failed to update record to database: {}".format(error))
 cursor = conn.cursor(buffered=True)
 for Ccode_l in WD:
     for spname_l in WD[Ccode_l]:
@@ -79,5 +81,3 @@ for Ccode_l in WD:
             sqlintro = "INSERT INTO Test_2 VALUES("+ str(Ccode_l)+"",""+str(spname_l)+"","" +str(Mdata_l)+"","" + str(running_num) + ")"
             cursor.execute(sqlintro)
             conn.commit()
-except mysql.connector.Error as error:
-    print("Failed to update record to database: {}".format(error))
