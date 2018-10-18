@@ -9,11 +9,17 @@ and lists while calculating and saving "birbscores" on the fly.
 from datetime import datetime
 import sys
 import psutil
+temp_mac = "temp.txt"
 temp = "E:/EBPP_Shared/files/temp.txt"
 file = "E:/EBPP_Shared/files/ebd_relMay-2018.txt"
 WD = {}
+# https://pynative.com/python-mysql-update-data/
+import mysql.connector
+from mysql.connector import Error
+from mysql.connector import errorcode
+#cursor.execute("CREATE TABLE Table_test_1 (name VARCHAR(255), address VARCHAR(255))")
 linenum = 0  # startingnum to see break point
-with open(file, encoding="utf8") as f:
+with open(temp_mac, encoding="utf8") as f:
     for line in f:
         RL = line.rstrip().split('\t')
         Ccode = RL[17]  # County Code
@@ -26,9 +32,11 @@ with open(file, encoding="utf8") as f:
             obs_ct = 1  # if str or 'X', I know there was at least one sighting xD
         try:  # evaluating dates for %m-%d
             Ydate = datetime.strptime(obs_dt, '%Y-%m-%d')  # datetime obj with year
-        except ValueError:  # if not a date, make something up
+        except KeyError:  # if not a date, make something up
+            Ydate = datetime.strptime(obs_dt, '%Y-%m-%d')
+        except ValueError:
             Ydate = datetime.strptime("1100-01-01", '%Y-%m-%d')
-            Mdate = str(Ydate)[5:10]  # does not contain year, just %m-%d
+        Mdate = str(Ydate)[5:10]  # does not contain year, just %m-%d
         try:  # establish a dict for each Ccode
             WD[Ccode]
         except KeyError:
@@ -55,10 +63,41 @@ with open(file, encoding="utf8") as f:
         # this can be done at any time once the above sum and CT are calculated, not appending
         # running_num at this time due to space issues
         running_num = WD[Ccode][spname][Mdate]["CT"] / WD[Ccode][spname][Mdate]["sum"]
+        val = ("John", "Highway 21")
         # this only saves the most current data in list form, to be exported / processed in MySQL etc
         # !! commented out below due to extra RAM usage, already maxing out 16gb before finish w/ memory error
-        # WD[Ccode][spname][Mdate]["Score"] = [spname,running_num,Mdate,Ccode]
         WD_MB = sys.getsizeof(WD) / 1000000
         mem = psutil.virtual_memory().percent
         linenum += 1
-        print(WD_MB, mem, linenum, running_num)
+        print(WD_MB, mem, linenum, Ccode, spname, running_num)
+        if linenum >= 7:
+            break
+
+# if the above has finished, on to MySQL:
+
+try:
+   conn = mysql.connector.connect(host='ebpp-1.******.amazonaws.com',
+                             database='******',
+                             user='******',
+                             password='************')
+except mysql.connector.Error as error:
+    print("Failed to update record to database: {}".format(error))
+cursor = conn.cursor(buffered=True)
+
+# SQL Logic
+
+# cursor.execute("CREATE TABLE Test_2 (Ccode VARCHAR(255), spname VARCHAR(255), Mdata VARCHAR(255), running_num VARCHAR(255))")
+
+for Ccode_l in WD:
+    for spname_l in WD[Ccode_l]:
+        for Mdata_l in WD[Ccode_l][spname_l]:
+            running_num = WD[Ccode_l][spname_l][Mdata_l]["CT"] / WD[Ccode_l][spname_l][Mdata_l]["sum"]
+            sql = "INSERT INTO Test_2 VALUES('Ccode_l', 'spname_l', 'Mdata_l', 'running_num')"
+            cursor.execute(sql)
+            conn.commit()
+
+if(conn.is_connected()):
+    conn.close()
+    print("connection is closed")
+
+
