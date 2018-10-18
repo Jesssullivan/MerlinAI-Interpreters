@@ -81,16 +81,6 @@ try:
 except mysql.connector.Error as error:
     print("Failed to update record to database: {}".format(error))
 cursor = conn.cursor(buffered=True)
-"""""
-# SQL Logic
-p = 5
-tabl = "Test_" + str(p)
-try:
-    cursor.execute(
-        "CREATE TABLE 'tabl' (Ccode VARCHAR(255), spname VARCHAR(255), Mdata VARCHAR(255), running_num VARCHAR(255))")
-except:
-    print("m")
-"""""
 for Ccode_l in WD:
     for spname_l in WD[Ccode_l]:
         for Mdata_l in WD[Ccode_l][spname_l]:
@@ -99,7 +89,6 @@ for Ccode_l in WD:
                        + spname_l+","  + Mdata_l+","  + running_num + ")"
             cursor.execute(sqlintro)
             conn.commit()
-sqlintro = str("INSERT INTO Test_5 VALUES("+Ccode_l+","+spname_l+","+Mdata_l+","+running_num+")")
 if (conn.is_connected()):
     conn.close()
     print("connection is closed")
