@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 from datetime import datetime
 import sys
-temp_mac = "temp.txt"
+temp_unix = "temp.txt"
 temp = "E:/EBPP_Shared/files/temp.txt"
 file = "E:/EBPP_Shared/files/ebd_relMay-2018.txt"
 WD = {}
@@ -11,7 +11,7 @@ from mysql.connector import Error
 from mysql.connector import errorcode
 
 linenum = 0  # startingnum to see break point
-with open(temp_mac, encoding="utf8") as f:
+with open(temp_unix, encoding="utf8") as f:
     for line in f:
         RL = line.rstrip().split('\t')
         Ccode = RL[17]  # County Code
@@ -55,10 +55,10 @@ with open(temp_mac, encoding="utf8") as f:
         linenum += 1
         print(linenum, Ccode, spname, running_num)
 try:
-    conn = mysql.connector.connect(host='ebpp-1.cinxlnfuujhq.us-east-1.rds.amazonaws.com',
-                                   database='jessdev',
-                                   user='jessdev',
-                                   password='Jess.7699')
+    conn = mysql.connector.connect(host='ebpp-1.******.rds.amazonaws.com',
+                                   database='******',
+                                   user='******',
+                                   password='******')
 except mysql.connector.Error as error:
     print("Failed to update record to database: {}".format(error))
 
