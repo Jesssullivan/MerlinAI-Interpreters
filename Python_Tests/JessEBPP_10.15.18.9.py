@@ -1,17 +1,21 @@
 #!/usr/bin/env python3
 from datetime import datetime
 import sys
+
+# files
 temp_unix = "temp.txt"
+file_unix = "ebd_relMay-2018.txt"
 temp = "E:/EBPP_Shared/files/temp.txt"
 file = "E:/EBPP_Shared/files/ebd_relMay-2018.txt"
-WD = {}
-# https://pynative.com/python-mysql-update-data/
+
+WD = {}  # single origin dictionary WD
+
 import mysql.connector
 from mysql.connector import Error
 from mysql.connector import errorcode
 
-linenum = 0  # startingnum to see break point
-with open(temp_unix, encoding="utf8") as f:
+# linenum = 0  # starting num, handy- not used for calculating anything
+with open(file_unix, encoding="utf8") as f:
     for line in f:
         RL = line.rstrip().split('\t')
         Ccode = RL[17]  # County Code
@@ -41,35 +45,54 @@ with open(temp_unix, encoding="utf8") as f:
             WD[Ccode][spname][Mdate]
         except KeyError:
             WD[Ccode][spname][Mdate] = {}
+        # sum is used to calculate average "running_num" later
         try:
             WD[Ccode][spname][Mdate]["sum"]
         except:
             WD[Ccode][spname][Mdate]["sum"] = 0
+        # CT is used to calculate average "running_num" later, CT/sum
         try:
             WD[Ccode][spname][Mdate]["CT"]
         except:
             WD[Ccode][spname][Mdate]["CT"] = 0
+        # once the above is established:
         WD[Ccode][spname][Mdate]["sum"] = WD[Ccode][spname][Mdate]["sum"] + obs_ct
         WD[Ccode][spname][Mdate]["CT"] = WD[Ccode][spname][Mdate]["CT"] + 1
-        running_num = WD[Ccode][spname][Mdate]["CT"] / WD[Ccode][spname][Mdate]["sum"]
-        linenum += 1
-        print(linenum, Ccode, spname, running_num)
+#        linenum += 1
+
+# MySQL section.
+
+# will connect to default table EBPP_1
+
 try:
     conn = mysql.connector.connect(host='ebpp-1.******.rds.amazonaws.com',
                                    database='******',
                                    user='******',
                                    password='******')
+
 except mysql.connector.Error as error:
     print("Failed to update record to database: {}".format(error))
 
 cursor = conn.cursor(buffered=True)
 
+cursor.execute(
+    "CREATE TABLE EBPP_1 (Ccode_l VARCHAR(255), spname_l VARCHAR(255), Mdata_l VARCHAR(255), running_num VARCHAR(255))")
+
+# update EBPP_1
+
 for Ccode_l in WD:
     for spname_l in WD[Ccode_l]:
         for Mdata_l in WD[Ccode_l][spname_l]:
             running_num = WD[Ccode_l][spname_l][Mdata_l]["CT"] / WD[Ccode_l][spname_l][Mdata_l]["sum"]
-            sql = "INSERT INTO Test_X (Ccode_l,spname_l,Mdata_l,running_num) VALUES (%s, %s, %s, %s)"
-            #val = ("1", "2", "3", "4")
+            sql = "INSERT INTO EBPP_1 (Ccode_l,spname_l,Mdata_l,running_num) VALUES (%s, %s, %s, %s)"
             val = (Ccode_l, spname, Mdata_l, running_num)
+            print("inserted" + str(val) + "into" + "EBPP_1")
             cursor.execute(sql, val)
             conn.commit()
+
+# finally:
+
+if conn.is_connected():
+    conn.close()
+    print("connection is closed, EBPP calculation complete")
+    sys.exit()
