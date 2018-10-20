@@ -14,7 +14,7 @@ import mysql.connector
 from mysql.connector import Error
 from mysql.connector import errorcode
 
-# linenum = 0  # starting num, handy- not used for calculating anything
+linenum = 0  # starting num, handy- not used for calculating anything
 with open(file_unix, encoding="utf8") as f:
     for line in f:
         RL = line.rstrip().split('\t')
@@ -58,7 +58,9 @@ with open(file_unix, encoding="utf8") as f:
         # once the above is established:
         WD[Ccode][spname][Mdate]["sum"] = WD[Ccode][spname][Mdate]["sum"] + obs_ct
         WD[Ccode][spname][Mdate]["CT"] = WD[Ccode][spname][Mdate]["CT"] + 1
-#        linenum += 1
+        linenum += 1
+        
+        print(linenum)
 
 # MySQL section.
 
