@@ -81,8 +81,8 @@ except mysql.connector.Error as error:
 
 cursor = conn.cursor(buffered=True)
 
-# cursor.execute(
- #   "CREATE TABLE test_b (Ccode_l VARCHAR(255), spname_l VARCHAR(255), Mdata_l VARCHAR(255), running_num VARCHAR(255))")
+cursor.execute(
+    "CREATE TABLE EBPP_2 s(Ccode_l VARCHAR(255), spname_l VARCHAR(255), Mdata_l VARCHAR(255), running_num VARCHAR(255))")
 
 for Ccode_l in WD:
     for spname_l in WD[Ccode_l]:
@@ -94,7 +94,7 @@ for Ccode_l in WD:
             M = Mdata_l
             R = running_num
             val = (C, S, M, R)
-            sql = "INSERT INTO test_b (Ccode_l, spname_l, Mdata_l, running_num) VALUES (%s, %s, %s, %s)"
+            sql = "INSERT INTO EBPP_2 (Ccode_l, spname_l, Mdata_l, running_num) VALUES (%s, %s, %s, %s)"
             print("inserted" + str(val) + "into" + "EBPP_1")
             print(Ccode_l, spname_l, Mdata_l, running_num)
             cursor.execute(sql, val)
