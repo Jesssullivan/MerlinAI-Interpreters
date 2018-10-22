@@ -4,7 +4,7 @@ import sys
 
 # files
 temp_unix = "temp.txt"
-file_unix = "/Volumes/Glyph_1TB/EBD/ebd_relMay-2018.txt"
+file_unix = "ebd_relMay-2018.txt"
 temp = "E:/EBPP_Shared/files/temp.txt"
 file = "E:/EBPP_Shared/files/ebd_relMay-2018.txt"
 
