@@ -1,0 +1,22 @@
+{
+  "name": "nodeprac",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "auto-updater": "^1.0.2",
+    "express": "^4.16.4",
+    "fs": "0.0.1-security",
+    "http": "0.0.0",
+    "mysql": "^2.16.0",
+    "string": "^3.3.3"
+  },
+  "devDependencies": {
+    "@types/express": "^4.16.0"
+  }
+}
