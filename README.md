@@ -1,7 +1,6 @@
 # EBPP
-Epic Birding Predicting Project: Predicting good birding near you
 
-[![](http://img.youtube.com/watch?v=Zxd7xmfIJ4M&feature=youtu.be/0.jpg)](https://www.youtube.com/watch?v=Zxd7xmfIJ4M&feature=youtu.be)
+Epic Birding Predicting Project: Predicting good birding near you
 
 This project is currently under development.  
 # Edit: Current scoring methods are being developed in Python. 
