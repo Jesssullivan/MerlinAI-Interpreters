@@ -3,28 +3,35 @@
 Epic Birding Predicting Project: Predicting good birding near you
 
 This project is currently under development.  
-# Edit: Current scoring methods are being developed in Python. 
-    In addition to generating "scores" in R, the backend is 
-    under construction in MySQL via RDS, 
-    and the front end with Node.JS and HTML.  
 
 # Status:
-    Running average is working in Python Script (10.13.18)
-    but fills RAM prior to completion. 
+    Scores are calculated and held in AWS/RDS MySQL.  Front end develoment is underway, with local a local subset / server (entirely made up of Mallard Ducks, FWIW)
+    See video Reference; 
+    
+# Updates:
+    In addition the generation of backend "scores" in Python/R, the front end is being sketched out with Node.JS / Express, MySQL, and a Jade HTML rending setup. 
+    
+ReactJS and React Native JS are strong contenders for a serverless, squlite system (an app!) in the long run. 
 
-# EBPP Goals:
-# There are a few main functions for the EBPP.   
+# There are a few main functions for the EBPP.  
 
-Search / Reference:
-Give date and county, it gives a descending list of species with the highest birb scores AND a descending list of birds with the most change in the last 7 days
--- Graph:  
-    Give species and county, it gives a graph of birb scores over a year AND shows the range of dates with the most deviation
+It all revolves around a static database of "birbscores" or location, time, and species specific values implying likelyhood of detection by a birder.  
 
-# goal GUI methods:
+# 10.30.18 Goal GUI Methods:
 
-Development of a mobile app is being evaluated.  
---Serve:
-    Give your email and county, it sends a daily form covering highest birb scores and species with the most change that day with graphs.  
+#  Where?
+    “Please select a county location from the drop down menu.”
+
+
+#  What?
+
+Returns a descending list of 20 different species with the highest birb scores at location and date +- 2 days (allowing for a “work week” buffer for no data)
+
+
+# When?
+
+Returns “The best day to see this species in county is date”
+Returns a graph of birb scores through 365 days (important feature)
 
 # calculate birbscore- resulting fields:
   date "%m-%d" | state | county | species | "birbscore"
@@ -34,7 +41,6 @@ Development of a mobile app is being evaluated.
   max (out of 365 dates) mean for date, state, county, species  
     -divided by -
   mean for date, state, county, species
-
 
 
 Larger data and test files are stored below:
