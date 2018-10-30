@@ -5,17 +5,22 @@ Epic Birding Predicting Project: Predicting good birding near you
 This project is currently under development.  
 
 # Status:
-    Scores are calculated and held in AWS/RDS MySQL.  Front end develoment is underway, with local a local subset / server (entirely made up of Mallard Ducks, FWIW)
+    Scores are calculated and held in AWS/RDS MySQL.  
+    Front end develoment is underway, with local a local subset / server 
+    (entirely made up of Mallard Ducks, FWIW)
+    
     See video Reference; 
     
 # Updates:
-    In addition the generation of backend "scores" in Python/R, the front end is being sketched out with Node.JS / Express, MySQL, and a Jade HTML rending setup. 
+    In addition the generation of backend "scores" in Python/R:
+    The front end is being sketched out with 
+    Node.JS / Express, MySQL, and a Jade HTML rending setup. 
     
 ReactJS and React Native JS are strong contenders for a serverless, squlite system (an app!) in the long run. 
 
 # There are a few main functions for the EBPP.  
 
-It all revolves around a static database of "birbscores" or location, time, and species specific values implying likelyhood of detection by a birder.  
+It all revolves around a static database of "birbscores", or location, time, and species specific values implying likelyhood of detection by a birder.  
 
 # 10.30.18 Goal GUI Methods:
 
