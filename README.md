@@ -21,7 +21,7 @@ ReactJS and React Native JS are strong contenders for a serverless, squlite syst
 
 It all revolves around a static database of "birbscores", or location, time, and species specific values implying likelyhood of detection by a birder.  
 
-# 10.30.18 Goal GUI Methods:
+# 11.27.18 Goal GUI Methods:
 
 #  What?
 
