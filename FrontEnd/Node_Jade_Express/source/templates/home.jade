@@ -1,0 +1,23 @@
+doctype html
+html
+  head
+    link(rel='stylesheet', href='/css/index.css')
+    title EBPP
+  body
+    .header
+      h1.page-title The EBPP
+
+    ul.nav
+      li: a(href='/') EBPP Tool
+        li: a(href='http://www.jesssullivan.co/') Go To Jesssullivan.co?
+          li: a(href='https://kml-tools.herokuapp.com/') Visit my KML Toolset!
+.main-content
+    h1 Fill in the blanks by clicking the EBPP Tool above.
+    include ebpp_form.html
+    -if(returnr)
+    h1 The species  most likely to occur in #{loc} on #{D} are: #{returnr}
+    -if(mdater)
+    h1 The best time to see #{SP} in #{loc} are: #{mdater}
+    .footer
+.footer
+    p  - Jess Sullivan -

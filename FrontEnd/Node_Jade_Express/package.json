@@ -2,21 +2,25 @@
   "name": "t2",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "Node_Jade_Express/server.js",
   "scripts": {
     "build-css": "stylus source/stylesheets/index.styl -o static/css",
     "watch-css": "stylus source/stylesheets/index.styl -o static/css -w",
     "clean": "rm -rf static/css && mkdir -p static/css",
     "build": "npm run clean && npm run build-css",
     "watch": "npm run clean && npm run watch-css & nodemon server -e js,jade",
-    "start": "node server"
+    "start": "node Node_Jade_Express/server"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "body-parser": "^1.18.3",
     "mysql": "^2.16.0",
     "nodemon": "^1.9.2",
     "path": "^0.12.7",
-    "stylus": "^0.54.5"
+    "stylus": "^0.54.5",
+    "express": "^4.16.4",
+    "morgan": "^1.9.1",
+    "jade": "^1.11.0"
   }
 }

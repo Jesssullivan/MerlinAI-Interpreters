@@ -74,19 +74,31 @@
 
 <body>
 
-<p>Start typing:</p>
+<form autocomplete="off" action="What" method="get">
 
-<form autocomplete="off" action="request" method="get">
-  <div class="autocomplete" style="width:300px;">
-    <input id="Species" type="text" name="Species" placeholder="- Bird Species - ">
-  </div>
     <div class="autocomplete" style="width:300px;">
         <input id="Date" type="text" name="Date" placeholder="- Dates - ">
     </div>
+    <button type="What" >What Will I see on...?</button>
+
     <div class="autocomplete" style="width:300px;">
-        <input id="locations" type="text" name="locations" placeholder="- locations - ">
+        <input id="location" type="text" name="location" placeholder="- locations - ">
     </div>
-    <button type="submit" >Submit</button>
+
+
+</form>
+<form autocomplete="off" action="When" method="get">
+    <div class="autocomplete" style="width:300px;">
+        <input id="Species" type="text" name="Species" placeholder="- Bird Species - ">
+    </div>
+
+    <button type="When" >When can I see...?</button>
+
+    <div class="autocomplete" style="width:300px;">
+        <input id="location_2" type="text" name="location_2" placeholder="- locations - ">
+    </div>
+
+
 </form>
 
 <script>
@@ -20038,7 +20050,9 @@
     /*initiate the autocomplete function on the "myInput" element, and pass along the countries array as possible autocomplete values:*/
     autocomplete(document.getElementById("Species"), birds);
     autocomplete(document.getElementById("Date"), dates);
-    autocomplete(document.getElementById("locations"), locations);
+    autocomplete(document.getElementById("location"), locations);
+    autocomplete(document.getElementById("location_2"), locations);
+
 </script>
 </body>
 </html>
