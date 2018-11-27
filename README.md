@@ -1,20 +1,19 @@
-# EBPP
+
+# EBPP update 11.27.18
 
 Epic Birding Predicting Project: Predicting good birding near you
 
 This project is currently under development.  
 
 # Status:
-    Scores are calculated and held in AWS/RDS MySQL.  
-    Front end develoment is underway, with local a local subset / server 
-    (entirely made up of Mallard Ducks, FWIW)
-    
-    See video Reference; 
+   
+    Front end develoment is underway, locally (servers are off for now)
+   
     
 # Updates:
     In addition the generation of backend "scores" in Python/R:
     The front end is being sketched out with 
-    Node.JS / Express, MySQL, and a Jade HTML rending setup. 
+    Node.JS / Express, MySQL, and a Jade setup. 
     
 ReactJS and React Native JS are strong contenders for a serverless, squlite system (an app!) in the long run. 
 
@@ -24,19 +23,14 @@ It all revolves around a static database of "birbscores", or location, time, and
 
 # 10.30.18 Goal GUI Methods:
 
-#  Where?
-    “Please select a county location from the drop down menu.”
-
-
 #  What?
 
-Returns a descending list of 20 different species with the highest birb scores at location and date +- 2 days (allowing for a “work week” buffer for no data)
+   Given date and location, returns the birds that are most likely to be observed
 
 
 # When?
 
-Returns “The best day to see this species in county is date”
-Returns a graph of birb scores through 365 days (important feature)
+    Given species and location, returns the best day to see this species
 
 # calculate birbscore- resulting fields:
   date "%m-%d" | state | county | species | "birbscore"
