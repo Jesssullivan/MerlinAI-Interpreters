@@ -25,7 +25,7 @@ It all revolves around a static database of "birbscores", or location, time, and
 
 #  What?
 
-   Given date and location, returns the birds that are most likely to be observed
+    Given date and location, returns the birds that are most likely to be observed
 
 
 # When?
