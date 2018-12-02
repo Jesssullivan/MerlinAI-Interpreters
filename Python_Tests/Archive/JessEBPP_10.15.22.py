@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 from datetime import datetime
+import sys
 
 # files
 temp_unix = "temp.txt"
