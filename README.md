@@ -1,5 +1,5 @@
 
-# EBPP update 11.27.18
+# EBPP update 12.2.18
 
 Epic Birding Predicting Project: Predicting good birding near you
 
@@ -7,16 +7,12 @@ This project is currently under development.
 
 # Status:
    
-    Front end develoment is underway, locally (servers are off for now)
+    React Native:
+    Front end develoment is underway with React Native + SQLite,
+    departing from Node.JS / server-client MySQL.  
    
-    
-# Updates:
-    In addition the generation of backend "scores" in Python/R:
-    The front end is being sketched out with 
-    Node.JS / Express, MySQL, and a Jade setup. 
-    
-ReactJS and React Native JS are strong contenders for a serverless, squlite system (an app!) in the long run. 
 
+    
 # There are a few main functions for the EBPP.  
 
 It all revolves around a static database of "birbscores", or location, time, and species specific values implying likelyhood of detection by a birder.  
