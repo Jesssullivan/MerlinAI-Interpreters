@@ -1,16 +1,20 @@
 
-# EBPP update 12.2.18
+# EBPP update 1.18.19
 
-Epic Birding Predicting Project: Predicting good birding near you
+Epic Birding Predicting Project.
 
 This project is currently under development.  
 
 # Status:
    
+    1.18.19:
+    Node.JS / server-client MySQL is
+    the current priority.
+    
+# Other bits:
     React Native:
-    Front end develoment is underway with React Native + SQLite,
-    departing from Node.JS / server-client MySQL.  
-   
+    Front end develoment with React Native + SQLite 
+    is still under investigation.
 
     
 # There are a few main functions for the EBPP.  
