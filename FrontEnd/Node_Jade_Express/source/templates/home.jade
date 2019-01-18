@@ -14,10 +14,10 @@ html
 .main-content
     h1 Fill in the blanks by clicking the EBPP Tool above.
     include ebpp_form.html
-    -if(returnr)
-    h1 The species  most likely to occur in #{loc} on #{D} are: #{returnr}
-    -if(mdater)
-    h1 The best time to see #{SP} in #{loc} are: #{mdater}
+    - if(returnr)
+    h1 The species most likely to occur in #{loc} between dates #{MinDateRange} and #{MaxDateRange} are: #{return_val_What}
+    - if(mdater)
+    h1 The best time to see #{SP} in #{loc} is: #{return_val_When}
     .footer
 .footer
     p  - Jess Sullivan -

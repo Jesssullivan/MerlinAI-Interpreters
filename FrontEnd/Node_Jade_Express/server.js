@@ -1,97 +1,95 @@
 /*
-11.27.18 - Jess Sullivan - EBPP app server.
+1.17.19 - Jess Sullivan - EBPP app server.
 */
 
+// local functionality requires a
 const port = process.env.PORT || 8080;
 const mysql = require("mysql");
+const bodyParser = require('body-parser');
 const express = require('express')
-    , logger = require('morgan')
     , app = express()
     , template = require('jade').compileFile(__dirname + '/source/templates/home.jade');
 
+/*  Define MySQL location
+local functionality requires a MySQL server running locally.
+You will refer to a table in the database specified below.  Once  a MySQL db is setup,
+ it should remain functional on the local machine.  MySQL Workbench is a nice solution
+ for managing local databases.  See https://www.mysql.com/products/workbench/
+*/
 
-const bodyParser = require('body-parser');
-
-/* Optional/not needed */
-const path = require("path");
-
-/* Define MySQL locationss */
-
-var conloc = mysql.createConnection({
+ conloc = mysql.createConnection({
     host: "127.0.0.1",
     user: "root",
-    password: "******",
-    database: "******"
+    password: "****",
+    database: "****"
 });
+
+ // log initial test results to verify functionality
 
 conloc.query("SELECT * FROM EBPP_28 WHERE spname_l = 'Common Loon'", function (err, results) {
     if (err) throw err;
     console.log(results)
 });
 
+/* Global app.use bits, parsing etc */
 
-var conrds = mysql.createConnection({
-    host: "***.rds.amazonaws.com",
-    user: "***",
-    password: "***",
-    database: "***"
-});
-
-/* Global app.use bits */
-
-app.use(logger('dev'));
 app.use(express.static(__dirname + '/static'));
 app.use(bodyParser.json({ type: 'application/*+json' }));
-let day = new Date();
 
 /* MySQL Queries */
 
 app.get('/What', function(req, resu) {
     try {
-        let loc = req.query.location.split(':')[0];
-        /*TODO: create date range + - 1 day*/
-        let D = req.query.Date;
         console.log('got a What request');
-
-// make query
-
-        let What = 'SELECT * FROM EBPP_28 WHERE Mdata_l = '
-            + mysql.escape (D) +' AND Ccode_l = '
+        // take the first part of req.query.location before the ":"
+        let loc = req.query.location.split(':')[0];
+        // get county name
+        let locname = req.query.location.split(':')[1];
+        let currentWeek = new Date(req.query.Date);
+        let lastWeek = new Date();
+        // format date with "MM-DD" as min and max dates
+        lastWeek.setDate(currentWeek.getDate() - 7);
+        let MinDateRange = currentWeek.getMonth() + '-' + lastWeek.getDate();
+        let MaxDateRange = currentWeek.getMonth() + '-' + currentWeek.getDate();
+        // construct SQL "What" Query with this date range
+        let What = 'SELECT * FROM EBPP_28 WHERE Mdata_l BETWEEN '
+            + mysql.escape (MinDateRange) +' AND ' + mysql.escape (MaxDateRange) + ' AND Ccode_l = '
             + mysql.escape(loc) + 'ORDER BY running_num limit 0,20';
 
+        // preform a the above query on db "conloc"
         conloc.query(What, function (err, res) {
             if (err) throw err;
-            let datar = ("");
+            let DataReturn = '';
+            //TODO: Data Being Returned to Browser - WHAT:
+            // change semicolon return in favor of something prettier for browser
+            /*
+            Currently, we loop through values of .spname_l to collect a semicolon-separated data to return to browser
+             */
             try {
                 for (let i = 0; i <= 10; i++) {
-                    sp_ret = res[i].spname_l;
-                    datar = (datar + " " +sp_ret +"\r\n")
+                    SpeciesReturn = res[i].spname_l;
+                    DataReturn = (DataReturn +' '+ SpeciesReturn +"\r\n")
                 }
             } catch (e) {
-                try {
-                    datar = (res[0].spname_l + " " +sp_ret +"\r\n")
-                } catch (e) {
-                    res.send("no data available for these parameters")
-                }
+                console.log('ran for species, finished')
             }
-                console.log(datar);
-                let html = template({returnr: datar, D : D, loc: loc});
-                resu.send(html)
+                let html = template({
+                    return_val_What: DataReturn,
+                    MinDateRange : MinDateRange,
+                    MaxDateRange : MaxDateRange,
+                    loc: locname});
+                resu.send(html)  // Note this is the extent of data return thus far
         })
     } catch (e) {
         resu.send("no data available for these parameters")
     }
 });
 
-
-
 app.get('/When', function(req, resu) {
-
     try {
-
-        let loc = req.query.location_2.split(':')[0];
-        let locname = req.query.location_2.split(':')[1];
-        let D = req.query.Date;
+        let loc = req.query.location.split(':')[0];
+        let locname = req.query.location.split(':')[1];
+        let D = ''; // filler at this time.  No Data.
         let SP = req.query.Species;
         console.log('got a When request');
 
@@ -103,17 +101,25 @@ app.get('/When', function(req, resu) {
 
         conloc.query(When, function (err, res) {
             if (err) throw err;
-            let datar = res[0].Mdata_l;
-            html = template({mdater : datar ,SP : SP, D : D, loc: locname});
+            let DataReturn = '';
+            // loop in a "try" to get all best dates
+            try {
+                for (let i = 0; i <= 10; i++) {
+                    Mdatareturn = res[i].Mdata_l;
+                    DataReturn = (DataReturn +' '+ Mdatareturn +"\r\n")
+                }
+            } catch (e) {
+                console.log('ran for dates, finished')
+            }
+            html = template({return_val_When : DataReturn ,SP : SP, D : D, loc: locname});
             resu.send(html);
-
         });
     } catch (e) {
         resu.send("no data available for these parameters")
     }
 });
 
-/* Site directory */
+/* Site directory, one pager* */
 
 app.get('/', function (req, res, next) {
     try {
