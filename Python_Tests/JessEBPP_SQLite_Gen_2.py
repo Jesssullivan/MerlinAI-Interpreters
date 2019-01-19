@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 from datetime import datetime
 import sys
+import pymysql  # using this package instead of "mysql"
+from pymysql import Error
 
 # files
 temp_unix = "temp.txt"
@@ -13,6 +15,7 @@ import pymysql
 from pymysql import Error
 
 linenum = 0  # starting num, handy- not used for calculating anything
+
 with open(temp_unix, encoding="utf8") as f:
     for line in f:
         RL = line.rstrip().split('\t')
@@ -62,32 +65,31 @@ with open(temp_unix, encoding="utf8") as f:
         if linenum >= 10000:
             break
 
-# Sqlite section
 # MySQL section.
-
-# will connect to default table EBPP_1
 
 try:
     conn = pymysql.connect(host='127.0.0.1',
                                    database='Mallard',
                                    user='root',
                                    password='Jess.7699')
+
 except pymysql.Error as error:
     print("Failed to update record to database: {}".format(error))
     sys.exit()
 
+cursor = conn.cursor()  # no "buffered-True" for this package
 
-cursor = conn.cursor()
-
-cursor.execute(
+cursor.execute(  # make a new table in db
     "CREATE TABLE Py_Test_1 (Ccode_l VARCHAR(255), spname_l VARCHAR(255), Mdata_l VARCHAR(255), CT VARCHAR(255), SUM VARCHAR(255))")
+
+# Fill table.  Not calculating running_num as speed savings do not appear to be worthwhile,
+# and need CT and SUM for abundance charting
 
 for Ccode_l in WD:
     for spname_l in WD[Ccode_l]:
         for Mdata_l in WD[Ccode_l][spname_l]:
-            running_num = WD[Ccode_l][spname_l][Mdata_l]["CT"] / WD[Ccode_l][spname_l][Mdata_l]["sum"]
-            # Unclear ATM why this works better
-            C = Ccode_l
+          # running_num = WD[Ccode_l][spname_l][Mdata_l]["CT"] / WD[Ccode_l][spname_l][Mdata_l]["sum"]
+            C = Ccode_l  # Unclear ATM why this renaming is working better
             S = spname_l
             M = Mdata_l   # date
             CT = WD[Ccode_l][spname_l][Mdata_l]["CT"]
