@@ -56,7 +56,7 @@ app.get('/What', function(req, resu) {
             + mysql.escape (MinDateRange) +' AND ' + mysql.escape (MaxDateRange) + ' AND Ccode_l = '
             + mysql.escape(loc) + 'ORDER BY running_num limit 0,20';
 
-        // preform a the above query on db "conloc"
+        // preform the above query on db "conloc"
         conloc.query(What, function (err, res) {
             if (err) throw err;
             let DataReturn = '';
