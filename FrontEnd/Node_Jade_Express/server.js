@@ -19,9 +19,9 @@ You will refer to a table in the database specified below.  Once  a MySQL db is 
 
  conloc = mysql.createConnection({
     host: "127.0.0.1",
-    user: "root",
-    password: "Jess.7699",
-    database: "Mallard"
+    user: "me",
+    password: "pwd",
+    database: "db"
 });
 
  // log initial test results to verify functionality
