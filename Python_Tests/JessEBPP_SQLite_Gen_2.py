@@ -5,10 +5,10 @@ import pymysql  # using this package instead of "mysql"
 from pymysql import Error
 
 # files
-temp_unix = "temp.txt"
-file_unix = "Python_Tests/ebd_relMay-2018.txt"
-temp = "E:/EBPP_Shared/files/temp.txt"
-file = "E:/EBPP_Shared/files/ebd_relMay-2018.txt"
+temp_unix = ""
+file_unix = ""
+temp = ""
+file = ""
 
 WD = {}  # single origin dictionary WD
 import pymysql
@@ -69,9 +69,9 @@ with open(temp_unix, encoding="utf8") as f:
 
 try:
     conn = pymysql.connect(host='127.0.0.1',
-                                   database='Mallard',
-                                   user='root',
-                                   password='Jess.7699')
+                                   database='',
+                                   user='',
+                                   password='')
 
 except pymysql.Error as error:
     print("Failed to update record to database: {}".format(error))
