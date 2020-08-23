@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="375" height="812" viewBox="0 0 375 812">
+  <defs>
+    <filter id="Rectangle_11" x="-9" y="352" width="393" height="473" filterUnits="userSpaceOnUse">
+      <feOffset dy="3" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feFlood flood-opacity="0.161"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="Rectangle_9" x="-9" y="198" width="393" height="627" filterUnits="userSpaceOnUse">
+      <feOffset dy="3" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="3" result="blur-2"/>
+      <feFlood flood-opacity="0.161"/>
+      <feComposite operator="in" in2="blur-2"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="Rectangle_1" x="-9" y="-48" width="393" height="883" filterUnits="userSpaceOnUse">
+      <feOffset dy="3" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="3" result="blur-3"/>
+      <feFlood flood-opacity="0.161"/>
+      <feComposite operator="in" in2="blur-3"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="Tap_to_record_new_annotation" x="120" y="24" width="140" height="94" filterUnits="userSpaceOnUse">
+      <feOffset dx="2" dy="2" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="11" result="blur-4"/>
+      <feFlood flood-opacity="0.161"/>
+      <feComposite operator="in" in2="blur-4"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <clipPath id="clip-First_View_A_">
+      <rect width="375" height="812"/>
+    </clipPath>
+  </defs>
+  <g id="First_View_A_" data-name="First View A " clip-path="url(#clip-First_View_A_)">
+    <rect width="375" height="812" fill="#fff"/>
+    <g id="Backdrop" transform="translate(0 33.847)" opacity="0.55">
+      <g transform="matrix(1, 0, 0, 1, 0, -33.85)" filter="url(#Rectangle_11)">
+        <g id="Rectangle_11-2" data-name="Rectangle 11" transform="translate(0 358)" fill="#e2fede" stroke="#707070" stroke-linejoin="bevel" stroke-width="2">
+          <rect width="375" height="455" rx="14" stroke="none"/>
+          <rect x="1" y="1" width="373" height="453" rx="13" fill="none"/>
+        </g>
+      </g>
+      <g transform="matrix(1, 0, 0, 1, 0, -33.85)" filter="url(#Rectangle_9)">
+        <g id="Rectangle_9-2" data-name="Rectangle 9" transform="translate(0 204)" fill="#cfe7f9" stroke="#707070" stroke-linejoin="bevel" stroke-width="2">
+          <rect width="375" height="609" rx="14" stroke="none"/>
+          <rect x="1" y="1" width="373" height="607" rx="13" fill="none"/>
+        </g>
+      </g>
+      <g transform="matrix(1, 0, 0, 1, 0, -33.85)" filter="url(#Rectangle_1)">
+        <g id="Rectangle_1-2" data-name="Rectangle 1" transform="translate(0 -42)" fill="#e2fede" stroke="#707070" stroke-linejoin="bevel" stroke-width="2">
+          <rect width="375" height="865" rx="14" stroke="none"/>
+          <rect x="1" y="1" width="373" height="863" rx="13" fill="none"/>
+        </g>
+      </g>
+    </g>
+    <text id="Merlin_Song_ID_Testing:_Record_--_Annotate_--_Analyze_--_Export_Demo." data-name="Merlin Song ID Testing:
+Record --&gt; Annotate --&gt; Analyze --&gt; Export Demo." transform="translate(188.5 17.5)" fill="#707070" stroke="#707070" stroke-width="1" font-size="14" font-family="SegoeUI-Italic, Segoe UI" font-style="italic"><tspan x="-69.928" y="0">Merlin Song ID Testing:</tspan><tspan x="-155.531" y="19">Record --&gt; Annotate --&gt; Analyze --&gt; Export Demo.</tspan></text>
+    <g id="I_Hear" transform="translate(123 55)">
+      <text id="I_Hear..." data-name="I Hear..." transform="translate(2 192)" font-size="32" font-family="SitkaText-BoldItalic, Sitka Text" font-weight="700" font-style="italic" letter-spacing="0.001em" opacity="0.48"><tspan x="0" y="0">I Hear...</tspan></text>
+      <path id="Path_1" data-name="Path 1" d="M0,0H130.5V138.456H0Z" transform="translate(0 19)" fill="none"/>
+      <path id="Path_2" data-name="Path 2" d="M50.09,77.713A18.928,18.928,0,0,0,69.35,59.035l.064-37.357C69.414,11.343,60.783,3,50.09,3S30.766,11.343,30.766,21.678V59.035C30.766,69.37,39.4,77.713,50.09,77.713ZM84.23,59.035c0,18.678-16.361,31.753-34.14,31.753S15.95,77.713,15.95,59.035H5c0,21.293,17.521,38.789,38.649,41.84V121.3H56.531V100.875C77.659,97.886,95.18,80.328,95.18,59.035Z" transform="translate(15.16 28.096)"/>
+      <g transform="matrix(1, 0, 0, 1, -123, -55)" filter="url(#Tap_to_record_new_annotation)">
+        <text id="Tap_to_record_new_annotation-2" data-name="Tap to record 
+new annotation" transform="translate(188 66)" fill="#707070" font-size="10" font-family="SegoeUI-BoldItalic, Segoe UI" font-weight="700" font-style="italic" opacity="0.46"><tspan x="-32.485" y="0">Tap to record </tspan><tspan x="-36.929" y="14">new annotation</tspan></text>
+      </g>
+    </g>
+  </g>
+</svg>
