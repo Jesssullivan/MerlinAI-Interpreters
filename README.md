@@ -5,3 +5,7 @@ Serves components via Heroku for convenience.
   - [FirstView](https://tmp-merlinai.herokuapp.com/FirstView)
   - [HomeView](https://tmp-merlinai.herokuapp.com/HomeView)
   - [Guessview](https://tmp-merlinai.herokuapp.com/Guesses)
+
+- *Also as gif:*
+
+![](unnamed.gif)
