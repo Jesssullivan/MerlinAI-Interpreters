@@ -1,5 +1,5 @@
 Renders temporary UI svg sketches via React components for prototyping.  
-Serves components via Heroku for convenience.
+Serves components via Heroku for convenience.  
 
 *View static svg renders over here:*
   - [FirstView](https://tmp-merlinai.herokuapp.com/FirstView)
