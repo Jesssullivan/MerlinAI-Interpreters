@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Load Audio</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" href="./nouislider.css">
+
+    <!-- Stuff for bootstrap -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+
+    <!-- Tensorflow -->
+    <!--<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@2.0.1/dist/tf.min.js"></script>-->
+
+    <!-- Core library, since we're going to use a player -->
+    <!-- <script src="core.js" charset="UTF-8"></script> -->
+    <!-- <script src="greys.js"></script> -->
+    <!-- <script src="nouislider.js"></script> -->
+
+</head>
+<body>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-3">
+                <input id="audioInput" type="file" accept="audio/*">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4">
+                <p id='timeDisplay'>Current context time: No context exists.</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div id="specHolder"></div>
+                <p id="test-result"></p>
+            </div>
+        </div>
+    </div>
+    <script src="load_audio_bundle.js"></script>
+    <script>
+
+        // async function resampleWebAudio(audioBuffer, targetSr=44100) {
+        //     const sourceSr = audioBuffer.sampleRate;
+        //     const lengthRes = audioBuffer.length * targetSr / sourceSr;
+
+        //     let  OfflineAudioContext = window.OfflineAudioContext || window.webkitOfflineAudioContext;
+        //     const offlineCtx = new OfflineAudioContext(1, lengthRes, targetSr);
+
+        //     return new Promise((resolve, reject) => {
+        //         const bufferSource = offlineCtx.createBufferSource();
+        //         bufferSource.buffer = audioBuffer;
+        //         offlineCtx.oncomplete = (event) => {
+        //             resolve(event.renderedBuffer);
+        //         };
+        //         bufferSource.connect(offlineCtx.destination);
+        //         bufferSource.start();
+        //         offlineCtx.startRendering();
+        //     });
+        // }
+
+        // async function parseAudioData(arrayBuffer){
+
+        //     var AudioContext = window.AudioContext || window.webkitAudioContext;
+        //     var audioContext = new AudioContext({
+        //         sampleRate: 44100
+        //     });
+
+        //     if (audioContext.decodeAudioData.length === 2) { // Safari
+        //         return new Promise(resolve => {
+        //             audioContext.decodeAudioData(arrayBuffer, (buffer) => {
+        //                 resolve(buffer);
+        //             });
+        //         });
+        //     }
+        //     else {
+        //         return audioContext.decodeAudioData(arrayBuffer);
+        //     }
+        // }
+
+
+        // let audioInputEl = document.getElementById("audioInput");
+        // audioInputEl.onchange = (e) => {
+
+        //     let reader = new FileReader();
+        //     reader.onload = function(e) {
+        //         parseAudioData(this.result)
+        //         .then((audioBuffer) => {
+
+        //             if(audioBuffer.sampleRate != 44100){
+
+        //                 return resampleWebAudio(audioBuffer)
+
+        //             }
+
+        //             else{
+        //                 return audioBuffer;
+        //             }
+
+        //         })
+        //         .then((audioBuffer) => {console.log(audioBuffer)});
+        //     };
+        //     reader.readAsArrayBuffer(e.target.files[0]);
+
+
+        // };
+
+    </script>
+</body>
+</html>
+
