@@ -10,19 +10,19 @@ function index() {
             </li>
             <br/>
             <li>
-                <Link href="/FirstView">
+                <Link href="/StaticFirstView">
                     <a>Static: First View</a>
                 </Link>
             </li>
             <br/>
             <li>
-                <Link href="/HomeView">
+                <Link href="/StaticHomeView">
                     <a>Static: Home View</a>
                 </Link>
             </li>
             <br/>
             <li>
-                <Link href="/Guesses">
+                <Link href="/StaticGuesses">
                     <a>Static: Guess View</a>
                 </Link>
             </li>

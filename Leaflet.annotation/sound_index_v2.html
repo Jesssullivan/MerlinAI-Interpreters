@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>Leaflet.annotation Example</title>
+
+        <!-- Bootstrap core CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+        <!-- Leaflet core CSS -->
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ==" crossorigin=""/>
+
+        <!-- Leaflet Draw CSS -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.3/leaflet.draw.css"/>
+
+        <script src="https://kit.fontawesome.com/73cd972fdf.js" crossorigin="anonymous"></script>
+
+    </head>
+    <body>
+        <div class="container-fluid">
+
+            <div id="assetFormWrapper">
+                <div class="row">
+                    <div class="col-md-4">
+                        <form id="assetIDForm">
+                            <div class="form-group">
+                            <label for="exampleInputEmail1">Asset ID</label>
+                            <input type="number" class="form-control" id="assetID">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div id="annotationWrapper">
+
+                <div id="annotationHolder"></div>
+
+                <div class="row justify-content-center">
+                    <div class="col-md-3">
+                        <button id="printAnnos" type="button" class="btn btn-primary">Print Annotations</button>
+                        <!--save annotations-->
+                        <button id="saveAnnos" type="submit" method="POST" class="btn btn-primary" action="/audio">Save Annotations</button>
+                
+                    </div>
+                </div>
+
+
+                <div class="row mt-5">
+                    <div class="col-md-4">
+                        <h6>Audio & Spectrogram Controls</h6>
+                        <ul class="list-group-flush">
+                            <li class="list-group-item">Space Bar: play and pause</li>
+                            <li class="list-group-item">Left Arrow: backwards</li>
+                            <li class="list-group-item">Right Arrow: forwards</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+        <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+        <!-- Load React. -->
+        <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+        <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
+
+        <!-- Our App javascript file -->
+        <script src="dist/leaflet.annotation.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+
+        <script type="text/javascript">
+
+            $(function() {
+
+
+                $("#annotationWrapper").hide();
+
+                $("#assetIDForm").submit(function(event){
+
+                    event.preventDefault();
+
+                    let asset_id = parseInt($("#assetID").val());
+
+                    $("#assetFormWrapper").hide();
+                    $("#annotationWrapper").show();
+
+                    // Example data from the server
+                    let server_data = {
+                        // The image to annotate
+                        image : {
+                            id : asset_id,
+                            audio : "https://test.cdn.download.ams.birds.cornell.edu/api/v1/asset/" + asset_id,
+                            url: "https://test.cdn.download.ams.birds.cornell.edu/api/v1/asset/" + asset_id + "/spectrogram_small",
+                            attribution : "N/A"
+                        },
+                        // The existing annotations for this image
+                        annotations : [],
+                        // When a creating a new "individual," these are the category labels the user can choose from
+                        categories : [{
+                            id : 1,
+                            name : "Red-winged Blackbird",
+                            supercategory : "Bird"
+                        },
+                        {
+                            id : 2,
+                            name : "Common Grackle",
+                            supercategory : "Bird"
+                        },
+                        {
+                            id : 3,
+                            name : "American Crow",
+                            supercategory : "Bird"
+                        },
+                        {
+                            id : 4,
+                            name : "American Robin",
+                            supercategory : "Bird"
+                        },
+                        {
+                            id : 5,
+                            name : "Warbling Vireo",
+                            supercategory : "Bird"
+                        },
+                        {
+                            id : 6,
+                            name : "Balitmore Oriole",
+                            supercategory : "Bird"
+                        },
+                        {
+                            id : 7,
+                            name : "Gray Catbird",
+                            supercategory : "Bird"
+                        },
+                        {
+                            id : 8,
+                            name : "Yellow Warbler",
+                            supercategory : "Bird"
+                        }
+                    ]
+                    };
+
+                    //console.log(server_data);
+
+                    // Create an image element and load in the pixels
+                    let imageEl = new Image();
+                    // We need to have access to the pixels before initializing Leaflet
+                    imageEl.onload = function(){
+
+
+                        function addAudioFunctions(annotatorRendered){
+
+                            // Setup the view for the audio
+                            annotatorRendered.fillMap();
+                            annotatorRendered.turnOffZoom();
+                            annotatorRendered.turnOffDrag();
+                            //annotatorRendered.addVerticalLine(2); // We want a "static" vertical line
+
+                            let spectrogram_height = imageEl.height;
+                            let spectrogram_width = imageEl.width;
+
+                            // Audio Controls
+                            // space bar is play and pause
+                            var pixels_per_second = null;
+                            var pixels_per_ms = null;
+                            let pan_interval_ms = 20;
+
+                            var audioElement = new Audio();
+                            var playing_audio = false;
+                            var playing_audio_timing_id = null;
+                            var current_offset = 0;
+
+                            // NOTE: there is probably some offset for which we want to account
+                            // Perhaps half the window size?
+                            //var const_spectrogram_offset = 60;
+                            //annotatorRendered.panBy(const_spectrogram_offset);
+
+                            function panSpectrogram() {
+
+                                // Where is the audio in milliseconds
+                                let audio_time_ms = audioElement.currentTime * 1000;
+
+                                // Convert milliseconds to pixel translation
+                                let offset = pixels_per_ms * audio_time_ms;
+
+                                // What is the difference between the audio pixel offset and the spectrogram?
+                                let diff = offset - current_offset;
+                                if (diff > 0){
+                                    annotatorRendered.panBy(diff);
+                                }
+                                current_offset = offset;
+
+                            }
+
+                            function audioEnded(){
+                                clearInterval(playing_audio_timing_id);
+                                playing_audio = false;
+                            }
+
+                            function startPlaying(){
+
+                                let offset_in_seconds = current_offset / pixels_per_second;
+                                audioElement.currentTime = offset_in_seconds;
+
+                                console.log(current_offset);
+                                console.log(offset_in_seconds);
+
+                                audioElement.onended = audioEnded;
+                                audioElement.play();
+                                playing_audio_timing_id = setInterval(panSpectrogram, pan_interval_ms);
+                                playing_audio = true;
+                            }
+
+                            function stopPlaying(){
+                                audioElement.pause();
+                                clearInterval(playing_audio_timing_id);
+                                playing_audio = false;
+                            }
+
+                            function goForward(){
+
+                                if (playing_audio){
+                                    stopPlaying();
+                                }
+
+                                annotatorRendered.panBy(100);
+                                current_offset = current_offset + 100;
+
+                            }
+
+                            function goBackward(){
+
+                                if(current_offset == 0){
+                                    return;
+                                }
+
+                                if (playing_audio){
+                                    stopPlaying();
+                                }
+
+                                annotatorRendered.panBy(-100);
+                                current_offset = Math.max(0, current_offset - 100);
+
+                            }
+
+                            function handleKeyDown(e){
+
+                                let SPACE_KEY = 32; // Pause Play
+                                let RIGHT_ARROW_KEY = 39; // Forward
+                                let LEFT_ARROW_KEY = 37; // Backward
+
+                                switch(e.keyCode){
+                                    case SPACE_KEY:
+                                        if(playing_audio){
+                                            stopPlaying();
+                                        }
+                                        else{
+                                            startPlaying();
+                                        }
+                                        e.preventDefault(); // prevent the space button from scrolling
+                                        break;
+                                    case RIGHT_ARROW_KEY:
+                                        goForward()
+                                        break;
+                                    case LEFT_ARROW_KEY:
+                                        goBackward()
+                                        break;
+                                }
+
+
+
+                            }
+
+                            function enableAudioKeys(){
+                                // Register keypresses
+                                document.addEventListener("keydown", handleKeyDown);
+                            }
+
+                            function disableAudioKeys(){
+                                // Unregister keypresses
+                                document.removeEventListener("keydown", handleKeyDown);
+                            }
+
+        
+
+                            
+
+                            // Load in the audio for the spectrogram
+                            audioElement.addEventListener('canplaythrough', () => {
+                                let duration = audioElement.duration;
+                                // The duration variable now holds the duration (in seconds) of the audio clip
+
+                                pixels_per_second = spectrogram_width / duration;
+
+                                pixels_per_ms = pixels_per_second / 1000.0;
+
+                                console.log("Spectrogram Height: " +  spectrogram_height);
+                                console.log("Spectrogram Width: " +  spectrogram_width);
+                                console.log("Duration " + duration);
+                                console.log("Pixels / second : " + pixels_per_second);
+                                console.log("Pixels / milisecond : " + pixels_per_ms);
+                                console.log("Current Time " + audioElement.currentTime);
+
+                                enableAudioKeys();
+
+                            });
+                            audioElement.src = server_data.image.audio;
+                            audioElement.load();
+
+                        }
+
+                        function delayAudioPrepTillRender(annotatorRendered){
+
+                            // Annoying, but we need leaflet to render the image before we start
+                            // doing transformations
+                            setTimeout(()=>addAudioFunctions(annotatorRendered), 100);
+                        }
+
+                        // Create the Leaflet.annotation element
+                        let annotator = React.createElement(document.LeafletAnnotation, {
+                            imageElement : imageEl,
+                            image : server_data.image,
+                            annotations : server_data.annotations,
+                            categories : server_data.categories,
+                            options : {
+                                enableEditingImmediately : true,
+
+                                map : {
+                                    attributionControl : false,
+                                    zoomControl : false
+                                },
+
+                                newInstance: {
+                                    annotateCategory: true,
+                                    annotateSupercategory: false,
+                                    annotationType: 'box'
+                                },
+
+                                showCategory : true,
+                                showSupercategory: true,
+                                showIsCrowdCheckbox: true,
+
+                                renderBoxes : true,
+
+                                didMountLeafletCallback : delayAudioPrepTillRender
+                            }
+                        }, null);
+
+                        // Render the annotator
+                        let annotatorRendered = ReactDOM.render(annotator, document.getElementById('annotationHolder'));
+
+
+
+                        $("#printAnnos").click(function(){
+                            let annos = annotatorRendered.getAnnotations();
+                            console.log(annos);
+                        });
+
+                        $(document).ready(function(){
+                            const Url="http://localhost:3000/_annotation/audio";
+                            
+                            
+                            $("#saveAnnos").click(function(){
+                                const annos = annotatorRendered.getAnnotations();
+
+                                $.ajax({
+                                    url: Url,
+                                    dataType: "json",
+                                    type: "POST",
+                                    contentType: "application/json",
+                                    data: JSON.stringify(annos),
+                                    success: function(data) {
+                                        console.log(data)
+                                        console.log('successful!')
+                                    },
+                                    error: function(error){
+                                        console.log(`Error ${error}`)
+                                    } 
+                                })
+                            })
+
+                        });
+
+                        
+
+
+
+                    }
+                    imageEl.src = server_data.image.url;
+
+                });
+            });
+        </script>
+
+    </body>
+</html>

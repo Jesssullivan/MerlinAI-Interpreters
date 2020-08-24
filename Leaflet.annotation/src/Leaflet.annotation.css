@@ -1,0 +1,72 @@
+
+.leaflet-annotation-container{
+    padding: 10px 10px 0;
+    margin: 10px;
+    border-radius: 10px 10px 10px 10px;
+    -moz-border-radius: 10px 10px 10px 10px;
+    -webkit-border-radius: 10px 10px 10px 10px;
+    border: 5px solid rgba(0, 0, 0, .1);
+}
+
+/* The size of the Leaflet Map */
+.leaflet-image-holder{
+    height: 600px;
+    width: 800px;
+}
+
+/* Bounding Box Crosshairs */
+.full-crosshair{
+    position:relative;
+    background-color:rgba(51,51,51,0.5);
+    box-shadow:0 0 5px rgb(150,150,150);
+    pointer-events:none;
+    z-index:600;
+}
+.full-crosshair-horizontal{
+    width:100%;
+    height:2px;
+    margin-top:-1px;
+}
+.full-crosshair-vertical{
+    height:100%;
+    width:2px;
+    margin-left:-2px;
+}
+
+/* Category Selection */
+.category-selection-filter-results{
+    overflow: scroll;
+    height: 450px; /* Assumes the leaflet-container height is 600px */
+}
+
+/* Square Color Badge for an Annotation Instance */
+.square-badge {
+    height: 20px;
+    width: 15px;
+}
+
+/* Chevron icon for collapse "open" and "closed" */
+.annotation-collapse-arrow:after {
+    font-family: 'FontAwesome';
+    content: "\f107";
+    padding-left: 5px;
+}
+.annotation-collapse-arrow.collapsed:after {
+    /* symbol for "collapsed" panels */
+    content: "\f105";
+}
+
+/* Add some space between the sidbar top button bar and the list of annotation instances */
+.annotation-sidebar-top{
+    padding-bottom: 5px;
+}
+
+.annotation-sidebar-annotation-instances{
+    overflow: scroll;
+    height: 550px; /* Assumes the leaflet-container height is 600px */
+}
+
+/* Indent the collapsable card for an annotation instance (so that it doesn't line up with it's parent but instead looks like a child*/
+.annotation-instance-collapse-content{
+    padding-left: 20px;
+}

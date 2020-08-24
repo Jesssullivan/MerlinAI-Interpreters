@@ -4,8 +4,8 @@ import {IconButton} from '@material-ui/core';
 
 class AssetButton extends Component {
 
-    ASSET;  //  passed as prop, such as an svg icon drawing
-    ACTION;  // pass a function, etc
+    asset;  //  passed as prop, such as an svg icon drawing
+    action;  // pass a function, etc
     hintTrueString;  // add a helpful hint, appends on toggle
     hintFalseString;  // add an alternate hint
 
@@ -24,7 +24,7 @@ class AssetButton extends Component {
     payload() {
             return (
                 <IconButton onClick={this.handleClick}>
-                    <img src={this.props.ASSET} alt={""}/>
+                    <img src={this.props.asset} alt={""}/>
                     {this.state.isToggleOn ? this.props.hintTrueString : this.props.hintFalseString}
                 </IconButton>
             );
