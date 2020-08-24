@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="123.027" height="41" viewBox="0 0 123.027 41">
+  <g id="CropSong" transform="translate(-229)">
+    <g id="Rectangle_5" data-name="Rectangle 5" transform="translate(229)" fill="#fff" stroke="#707070" stroke-width="2">
+      <rect width="123.027" height="41" rx="20.5" stroke="none"/>
+      <rect x="1" y="1" width="121.027" height="39" rx="19.5" fill="none"/>
+    </g>
+    <text id="Crop_Song" data-name="Crop Song" transform="translate(248.5 27.5)" fill="#707070" stroke="#707070" stroke-width="1" font-size="18" font-family="SegoeUI-Italic, Segoe UI" font-style="italic"><tspan x="0" y="0">Crop Song</tspan></text>
+  </g>
+</svg>
