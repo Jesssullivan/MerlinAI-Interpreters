@@ -8,7 +8,7 @@
 
 -  *Testing the layout:* 
 
-![](unnamed.gif)
+![](proto.gif)
 
 
 ```console
