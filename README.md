@@ -1,19 +1,19 @@
-### [*Renders:*](https://tmp-merlinai.herokuapp.com/) 
+#### [*Renders:*](https://tmp-merlinai.herokuapp.com/)
 *https://tmp-merlinai.herokuapp.com/*
 
+- Encapsulates temporary UI sketches for prototyping in an effort to keep reusable, generic actions independent of how / where they get implemented
+- Serves components from `tmp-merlinai` on [Heroku](https://tmp-merlinai.herokuapp.com/) for convenience
 
-- - -     
-    
-- Encapsulates temporary UI sketches as React components for prototyping.
+*...mostly poking stuff & breaking things to figure the existing bits out* 
 
-- Serves components from `tmp-merlinai` on [Heroku](https://tmp-merlinai.herokuapp.com/) for convenience (see [deployments page over here](https://github.com/Jesssullivan/tmpUI-merlinAI/deployments))
-
--  *Testing the layout:* 
+-  *Testing a layout:*
 
 ![](proto.gif)
 
-
 ```console
 # for development, use:
-npm install && npm run-script run
+npm install
+npm run-script build 
+npm run-script run     
 ```  
+

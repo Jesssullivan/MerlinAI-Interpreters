@@ -1,11 +1,20 @@
 import Link from 'next/link'
+import React from 'react';
+import ReactDOM from 'react-dom';
 
 function index() {
     return (
         <ul>
+            <br/>
             <li>
-                <Link href="/ButtonTesting">
-                    <a>Button Testing</a>
+                <Link href="/CropBoxTesting">
+                    <a>Crop Box Testing</a>
+                </Link>
+            </li>
+            <br/>
+            <li>
+                <Link href="/CropButtonTesting">
+                    <a>Crop Button Testing</a>
                 </Link>
             </li>
             <br/>

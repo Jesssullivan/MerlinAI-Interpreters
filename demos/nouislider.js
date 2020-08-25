@@ -692,7 +692,7 @@
     function testStart(parsed, entry) {
         entry = asArray(entry);
 
-        // Validate input. Values aren't tested, as the wpublic .val method
+        // Validate input. Values aren't tested, as the public .val method
         // will always provide a valid location.
         if (!Array.isArray(entry) || !entry.length) {
             throw new Error("noUiSlider (" + VERSION + "): 'start' option is incorrect.");
@@ -2111,7 +2111,7 @@
                 if (eventName === eventType) {
                     scope_Events[targetEvent].forEach(function(callback) {
                         callback.call(
-                            // Use the slider wpublic API as the scope ('this')
+                            // Use the slider public API as the scope ('this')
                             scope_Self,
                             // Return values as array, so arg_1[arg_2] is always valid.
                             scope_Values.map(options.format.to),
@@ -2123,7 +2123,7 @@
                             tap || false,
                             // Left offset of the handle, in relation to the slider
                             scope_Locations.slice(),
-                            // add the slider wpublic API to an accessible parameter when this is unavailable
+                            // add the slider public API to an accessible parameter when this is unavailable
                             scope_Self
                         );
                     });
@@ -2588,7 +2588,7 @@
             // Attach user events.
             bindSliderEvents(options.events);
 
-            // Use the wpublic value method to set the start values.
+            // Use the public value method to set the start values.
             valueSet(options.start);
 
             if (options.pips) {

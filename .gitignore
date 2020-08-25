@@ -11,6 +11,8 @@
 /build
 
 # misc
+demos/void/*
+archive
 .idea
 **/tmp.*
 .DS_Store
