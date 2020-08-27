@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "react-scripts start",
-    "start-flask": "cd apipy && flask run --no-debugger",
+    "start-flask": "flask run --no-debugger",
     "start-dev": "react-scripts start && npm run-script start-flask",
     "start-next": "next start -p $PORT",
     "clean-bundles": "find demos/ -name \"*_bundle.js\" -print -delete",
