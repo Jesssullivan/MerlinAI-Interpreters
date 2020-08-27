@@ -9,6 +9,10 @@ def home():
     return app.send_static_file('index.html')
 
 
+@app.route('/home')
+def home():
+    return app.send_static_file('index.html')
+
 @app.route('/load_audio')
 def load_audio():
     return app.send_static_file('load_audio.html')
