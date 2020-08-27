@@ -2,6 +2,7 @@
 /node_modules
 /.pnp
 .pnp.js
+**/.idea
 
 # next.js
 /.next/
@@ -11,7 +12,10 @@
 /build
 
 # misc
-demos/void/*
+**/void
+void
+**/reference
+
 archive
 .idea
 **/tmp.*
