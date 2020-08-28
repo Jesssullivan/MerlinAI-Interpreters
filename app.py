@@ -1,7 +1,20 @@
 from flask import Flask
+import os
 
+""" Paths: """
+
+# production @ heroku:
+hostname = '0.0.0.0'
+hostport = 80
+
+# if you are using a proxy via npm, use port 5000:
+# hostname = '127.0.0.1'
+# hostport = 5000
 
 app = Flask(__name__, static_folder='./demos/')
+
+
+""" Routing: """
 
 
 @app.route('/')
@@ -9,40 +22,5 @@ def index():
     return app.send_static_file('index.html')
 
 
-@app.route('/home')
-def home():
-    return app.send_static_file('index.html')
-
-@app.route('/load_audio')
-def load_audio():
-    return app.send_static_file('load_audio.html')
-
-
-@app.route('/spec_display')
-def spec_display():
-    return app.send_static_file('spec_display.html')
-
-
-@app.route('/spec_record')
-def spec_record():
-    return app.send_static_file('spec_record.html')
-
-
-@app.route('/spec_record_v2')
-def spec_record_v2():
-    return app.send_static_file('spec_record_v2.html')
-
-
-
-@app.route('/spec_record_crop')
-def spec_record_crop():
-    return app.send_static_file('spec_record_crop.html')
-
-
-@app.route('/spec_record_crop_v2')
-def spec_record_crop_v2():
-    return app.send_static_file('spec_record_crop_v2.html')
-
-
 if __name__ == '__main__':
-    flask_app.run(host='0.0.0.0', debug=False, port=os.environ.get('PORT', 80))
+    app.run(host=hostname, debug=False, port=os.environ.get('PORT', hostport))

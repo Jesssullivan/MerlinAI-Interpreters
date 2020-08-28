@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "noImplicitAny": true,
-    "removeComments": true,
+    "removeComments": false,
     "preserveConstEnums": true,
     "declaration": true,
     "allowJs": false,
@@ -22,6 +22,7 @@
     "target": "esnext",
     "moduleResolution": "node"
   },
+  "mode": "development",
   "include": [ "src/" ],
   "exclude": ["node_modules", "etc", "leaflet_tools"]
 }

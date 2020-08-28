@@ -1,16 +1,15 @@
-//@ts-ignore
-import * as noUiSlider from './nouislider';
 import {audio_loader, audio_model, audio_utils, AudioRecorder, spectrogram_utils} from '../src/index';
+//@ts-ignore
+import * as noUiSlider from './element/nouislider';
 
 window.MediaRecorder = AudioRecorder;
 
 const recordBtn = document.getElementById("recordButton") as HTMLButtonElement;
-const pauseBtn = document.getElementById("pauseButton") as HTMLButtonElement;
-const resumeBtn = document.getElementById("resumeButton") as HTMLButtonElement;
 const stopBtn = document.getElementById("stopButton") as HTMLButtonElement;
 const canvas = document.querySelector('.visualizer') as HTMLCanvasElement;
 const mainSection = document.querySelector('.container-fluid') as HTMLDivElement;
 
+let recordedBlobs : Blob;
 let mediaRecorder : MediaRecorder;
 let audioCtx : AudioContext;
 let analyserNode : AnalyserNode;
@@ -19,6 +18,7 @@ const canvasCtx = canvas.getContext("2d");
 let chunks : Blob[] = [];
 let slider : any = null;
 let currentWaveform : Float32Array;
+let dlButton : HTMLButtonElement;
 
 // Spectrogram Visualization Parameters
 const targetSampleRate = 22050;
@@ -41,11 +41,6 @@ async function averageClassifyWaveform(waveform : Float32Array){
     const scores = result[1] as Float32Array;
 
     console.log("Most Confident: " + labels[0] + " @ " + scores[0]);
-    ///console.log(averageScores);
-
-    // for(let i=0; i < averageScores.length; i++){
-    //     console.log(averageScores[i]);
-    // }
 
     return [labels, scores];
 
@@ -69,10 +64,40 @@ function generateSpectrogram(waveform : Float32Array) : Float32Array[]{
 
 }
 
+function getSample(): Float32Array {
+
+    const timeScale = 1.0;
+    const handlePositions = slider.noUiSlider.get();
+
+    //console.log(handlePositions);
+    let pos1 = Math.round(parseFloat(handlePositions[0]));
+    let pos2 = Math.round(parseFloat(handlePositions[1]));
+
+    // Take into account the offset of the image (by scrolling)
+    const specImageHolderEl = document.getElementById('specImageHolder');
+    const scrollOffset = specImageHolderEl.scrollLeft;
+
+    pos1 += scrollOffset;
+    pos2 += scrollOffset;
+
+    //console.log("Analyze Spectrogram from column " + pos1 + " to column " + pos2);
+    // Need to go from spectrogram position to waveform sample index
+    const hopLengthSamples = Math.round(targetSampleRate * stftHopSeconds);
+    const samplePos1 = pos1 * hopLengthSamples / timeScale;
+    const samplePos2 = pos2 * hopLengthSamples / timeScale;
+
+    // console.log("Extracting waveform from sample " + samplePos1 + " to sample " + samplePos2);
+    // const sampleDuration = (samplePos2 - samplePos1) / targetSampleRate;
+    // console.log("Total waveform sample duration " + sampleDuration);
+
+    // return a Waveform blob snippet:
+    return currentWaveform.slice(samplePos1, samplePos2);
+
+}
+
 function renderSpectrogram(imageURI : string, spectrogramLength: number){
 
     // render the (scaled) spectrogram
-
     const image_height = 300;
     const timeScale = 1.0;
     const image_width = Math.round(spectrogramLength * timeScale);
@@ -126,10 +151,12 @@ function renderSpectrogram(imageURI : string, spectrogramLength: number){
     }
 
     const analyzeBtn = document.createElement('button');
-    analyzeBtn.classList.add("btn");
-    analyzeBtn.classList.add("btn-primary");
+    analyzeBtn.classList.add("mui-btn");
+    analyzeBtn.classList.add("mui-btn--raised");
     analyzeBtn.textContent = 'Classify';
     specAnalyzeButtonHolderEl.appendChild(analyzeBtn);
+
+    const waveformSample = getSample();
 
     // add a div to hold the Visualization of the sample
     const sampleHolderEl = document.getElementById('specCropHolder');
@@ -138,32 +165,6 @@ function renderSpectrogram(imageURI : string, spectrogramLength: number){
     }
 
     analyzeBtn.onclick = () => {
-        const handlePositions = slider.noUiSlider.get();
-        //console.log(handlePositions);
-        let pos1 = Math.round(parseFloat(handlePositions[0]));
-        let pos2 = Math.round(parseFloat(handlePositions[1]));
-
-        // Take into account the offset of the image (by scrolling)
-        const specImageHolderEl = document.getElementById('specImageHolder');
-        const scrollOffset = specImageHolderEl.scrollLeft;
-
-        pos1 += scrollOffset;
-        pos2 += scrollOffset;
-
-        console.log("Analyze Spectrogram from column " + pos1 + " to column " + pos2);
-
-        // Need to go from spectrogram position to waveform sample index
-        const hopLengthSamples = Math.round(targetSampleRate * stftHopSeconds);
-
-        const samplePos1 = pos1 * hopLengthSamples / timeScale;
-        const samplePos2 = pos2 * hopLengthSamples / timeScale;
-
-        console.log("Extracting waveform from sample " + samplePos1 + " to sample " + samplePos2);
-
-        const sampleDuration = (samplePos2 - samplePos1) / targetSampleRate;
-        console.log("Total waveform sample duration " + sampleDuration);
-
-        const waveformSample = currentWaveform.slice(samplePos1, samplePos2);
 
         // visualize the sample
         const dbSpec = generateSpectrogram(waveformSample); //audio_utils.dBSpectrogram(audioData.waveform, spec_params);
@@ -276,8 +277,9 @@ recordBtn.onclick = () => {
 
     const onSuccess = (stream : MediaStream) => {
 
-        //const mimeType = 'audio/webm';
-        mediaRecorder = new window.MediaRecorder(stream);//, <MediaRecorderOptions>{type : mimeType});
+        // you could also do mime type as:
+        //  mimeType = 'audio/webm';
+        mediaRecorder = new window.MediaRecorder(stream,{mimeType: 'audio/wav'});
 
         mediaRecorder.start();
         console.log(mediaRecorder.state);
@@ -286,21 +288,52 @@ recordBtn.onclick = () => {
         visualize(stream);
 
         stopBtn.removeAttribute('disabled');
-        pauseBtn.removeAttribute('disabled');
-        resumeBtn.setAttribute('disabled',  'disabled');
         recordBtn.setAttribute('disabled',  'disabled');
 
-        // mediaRecorder.onstop = function() {
+        // Create the Download button
+        const DownloadButtonHolderEl = document.getElementById("downloadButtonHolder");
+        while (DownloadButtonHolderEl.firstChild) {
+            DownloadButtonHolderEl.removeChild(DownloadButtonHolderEl.firstChild);
+        }
+
         mediaRecorder.addEventListener('stop', e => {
-            console.log("data available after MediaRecorder.stop() called.");
+            // console.log("data available after MediaRecorder.stop() called.");
 
-            const blob = new Blob(chunks, { 'type' : 'audio/ogg; codecs=opus' }); // 'audio/ogg; codecs=opus'
+            // we make us a `new Blob` before anything else happens, e.g. `Analyze` or `Download`:
+            recordedBlobs = new Blob(chunks, { 'type' : 'audio/ogg; codecs=opus' }); // 'audio/ogg; codecs=opus'
             chunks = [];
-            const audioURL = window.URL.createObjectURL(blob);
-            console.log(audioURL);
-            console.log("recorder stopped");
+            const audioURL = window.URL.createObjectURL(recordedBlobs);
 
-            audio_loader.loadAudioFromURL( audioURL)
+            // console.log(audioURL);
+            // console.log("recorder stopped");
+
+            // only let user have `Download` button if `stop` has been called:
+            dlButton = document.createElement("button");
+            dlButton.classList.add("mui-btn");
+            dlButton.classList.add("mui-btn--raised");
+            dlButton.textContent = 'Download';
+            DownloadButtonHolderEl.appendChild(dlButton);
+
+            // wait for user to click Download-
+            //  I think this needs to explicitly be a child of `stop` listener until tomorrow,
+            //  can't think of a better way to do this atm
+            dlButton.addEventListener('click', () => {
+              const url = window.URL.createObjectURL(recordedBlobs);
+              const a = document.createElement('a');
+              a.style.display = 'none';
+              a.href = url;
+
+              // all this will need to include user annotation input, date, location etc
+              a.download = 'SongRecording.wav';
+              document.body.appendChild(a);
+              a.click();
+              setTimeout(() => {
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
+              }, 100);
+            });
+
+            audio_loader.loadAudioFromURL(audioURL)
                 .then((audioBuffer) => audio_loader.resampleAndMakeMono(audioBuffer, targetSampleRate))
                 .then((audioWaveform) => {
 
@@ -337,34 +370,8 @@ recordBtn.onclick = () => {
 
 };
 
-pauseBtn.onclick = () => {
-
-    if (mediaRecorder.state === 'recording'){
-        mediaRecorder.pause();
-        stop_visualize();
-
-        stopBtn.removeAttribute('disabled');
-        pauseBtn.setAttribute('disabled',  'disabled');
-        resumeBtn.removeAttribute('disabled');
-        recordBtn.setAttribute('disabled',  'disabled');
-    }
-
-};
-
-resumeBtn.onclick = () => {
-    if (mediaRecorder.state === 'paused'){
-        mediaRecorder.resume();
-        visualize(mediaRecorder.stream);
-
-        stopBtn.removeAttribute('disabled');
-        pauseBtn.removeAttribute('disabled');
-        resumeBtn.setAttribute('disabled',  'disabled');
-        recordBtn.setAttribute('disabled',  'disabled');
-
-    }
-};
-
 stopBtn.onclick = () => {
+
     mediaRecorder.stop();
     console.log(mediaRecorder.state);
     console.log("recorder stopped");
@@ -372,16 +379,12 @@ stopBtn.onclick = () => {
     stop_visualize();
 
     stopBtn.setAttribute('disabled',  'disabled');
-    pauseBtn.setAttribute('disabled',  'disabled');
-    resumeBtn.setAttribute('disabled',  'disabled');
     recordBtn.removeAttribute('disabled');
-
     mediaRecorder.stream.getTracks().forEach((track) => {
         if (track.readyState === 'live' && track.kind === 'audio') {
             track.stop();
         }
     });
-
 };
 
 // Make the canvas the full width
