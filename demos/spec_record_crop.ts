@@ -1,6 +1,6 @@
 import {audio_loader, audio_model, audio_utils, AudioRecorder, spectrogram_utils} from '../src/index';
 //@ts-ignore
-import * as noUiSlider from './element/nouislider';
+import * as noUiSlider from './nouislider';
 
 window.MediaRecorder = AudioRecorder;
 
