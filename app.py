@@ -3,6 +3,9 @@ app = Flask(__name__, static_folder='./demos/')
 @app.route('/')
 def home():
     return app.send_static_file('spec_record_crop.html')
+@app.route('/crop')
+def home():
+    return app.send_static_file('spec_record_crop_v1.html')
 @app.route('/display')
 def disp():
     return app.send_static_file('spec_display.html')
