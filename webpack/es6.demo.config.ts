@@ -1,4 +1,5 @@
 import * as fs from 'fs';
+// @ts-ignore
 import * as minimist from 'minimist';
 import * as path from 'path';
 
@@ -6,7 +7,9 @@ import * as path from 'path';
 
 // Allow for specific demos to built with a --demos=<someName>,<someOtherName>
 // CLI format.
-const args = minimist(process.argv.slice(2));
+
+// @ts-ignore
+const args =   (process.argv.slice(2));
 const specified: string[] = args.demos ? args.demos.split(',') : [];
 
 const getDemos = (source: fs.PathLike) => {

@@ -21,7 +21,7 @@
     "allowUnreachableCode": false,
     "experimentalDecorators": true,
     "skipLibCheck": true,
-    "module": "esnext",
+    "module": "commonjs",
     "target": "esnext",
     "moduleResolution": "node",
     "esModuleInterop": true,
@@ -38,7 +38,5 @@
   ],
   "exclude": [
     "node_modules",
-    "etc",
-    "leaflet_tools"
-  ]
+    "etc"]
 }

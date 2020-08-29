@@ -18,7 +18,7 @@
     "allowUnreachableCode": false,
     "experimentalDecorators": true,
     "skipLibCheck": true,
-    "module": "esnext",
+    "module": "commonjs",
     "target": "esnext",
     "moduleResolution": "node"
   },

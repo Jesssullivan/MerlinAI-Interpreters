@@ -30,6 +30,7 @@
     "new-parens": true,
     "no-angle-bracket-type-assertion": true,
     "no-any": false,
+    "no-non-null-assertion": false,
     "no-construct": true,
     "no-consecutive-blank-lines": true,
     "no-debugger": true,

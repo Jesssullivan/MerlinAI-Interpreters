@@ -1,29 +1,4 @@
-import * as fs from 'fs';
-// @ts-ignore
-import * as minimist from 'minimist';
 import * as path from 'path';
-
-//import {baseConfig} from './es6.base.config';
-
-// Allow for specific demos to built with a --demos=<someName>,<someOtherName>
-// CLI format.
-
-// @ts-ignore
-const args =   (process.argv.slice(2));
-const specified: string[] = args.demos ? args.demos.split(',') : [];
-
-const getDemos = (source: fs.PathLike) => {
-  return fs.readdirSync(source)
-      .filter(name => path.extname(name) === '.html' && name !== 'index.html')
-      .map(name => path.basename(name, '.html'))
-      .filter(demo => specified.length ? specified.includes(demo) : true);
-};
-
-const entries = getDemos('./demos').reduce((obj, name) => {
-  // @ts-ignore
-  obj[name] = `./demos/${name}.ts`;
-  return obj;
-}, {});
 
 module.exports = {
   node: {fs: 'empty'},
@@ -32,12 +7,9 @@ module.exports = {
   },
   devtool: 'inline-source-map',
   mode: 'development',
-  entry: {
-    ...entries,
-  },
+  entry: './demos/spec_record_crop.ts',
   output: {
-    filename: '[name]_bundle.js',
-    path: path.resolve(__dirname, '../demos'),
+  filename: '../demos/spec_record_crop_bundle.js',
   },
   module: {
     rules: [{

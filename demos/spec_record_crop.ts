@@ -75,6 +75,7 @@ function getSample(): Float32Array {
 
     // Take into account the offset of the image (by scrolling)
     const specImageHolderEl = document.getElementById('specImageHolder');
+    // @ts-ignore
     const scrollOffset = specImageHolderEl.scrollLeft;
 
     pos1 += scrollOffset;
@@ -110,21 +111,28 @@ function renderSpectrogram(imageURI : string, spectrogramLength: number){
 
     // Clear out previous images
     const specImageHolderEl = document.getElementById('specImageHolder');
+    // @ts-ignore
     while (specImageHolderEl.firstChild) {
+        // @ts-ignore
         specImageHolderEl.removeChild(specImageHolderEl.firstChild);
     }
 
     // Add the spectrogram
+    // @ts-ignore
     specImageHolderEl.appendChild(img);
 
     // Add the slider
     const specSliderHolderEl = document.getElementById('specSliderHolder');
+    // @ts-ignore
     while (specSliderHolderEl.firstChild) {
+        // @ts-ignore
         specSliderHolderEl.removeChild(specSliderHolderEl.firstChild);
     }
 
     slider = document.createElement('div');
+    // @ts-ignore
     slider.style.width = "" + specImageHolderEl.offsetWidth + "px";
+    // @ts-ignore
     specSliderHolderEl.appendChild(slider);
 
     const hop_length_samples = Math.round(targetSampleRate * stftHopSeconds);
@@ -140,13 +148,16 @@ function renderSpectrogram(imageURI : string, spectrogramLength: number){
         margin,
         range: {
             'min': 0,
+            // @ts-ignore
             'max': specImageHolderEl.offsetWidth
         }
     });
 
     // Create the Analyze button
     const specAnalyzeButtonHolderEl = document.getElementById("specAnalyzeButtonHolder");
+    // @ts-ignore
     while (specAnalyzeButtonHolderEl.firstChild) {
+        // @ts-ignore
         specAnalyzeButtonHolderEl.removeChild(specAnalyzeButtonHolderEl.firstChild);
     }
 
@@ -154,13 +165,16 @@ function renderSpectrogram(imageURI : string, spectrogramLength: number){
     analyzeBtn.classList.add("mui-btn");
     analyzeBtn.classList.add("mui-btn--raised");
     analyzeBtn.textContent = 'Classify';
+    // @ts-ignore
     specAnalyzeButtonHolderEl.appendChild(analyzeBtn);
 
     const waveformSample = getSample();
 
     // add a div to hold the Visualization of the sample
     const sampleHolderEl = document.getElementById('specCropHolder');
+    // @ts-ignore
     while (sampleHolderEl.firstChild) {
+        // @ts-ignore
         sampleHolderEl.removeChild(sampleHolderEl.firstChild);
     }
 
@@ -179,9 +193,12 @@ function renderSpectrogram(imageURI : string, spectrogramLength: number){
         console.log("Extracted Sample Image Dims: [ " + image_height + ", " + image_width + "]");
 
         // Clear out previous images (in case they do multiple analses from the same waveform)
+        // @ts-ignore
         while (sampleHolderEl.firstChild) {
+            // @ts-ignore
             sampleHolderEl.removeChild(sampleHolderEl.firstChild);
         }
+        // @ts-ignore
         sampleHolderEl.appendChild(img);
 
         // Process with the model
@@ -194,6 +211,7 @@ function renderSpectrogram(imageURI : string, spectrogramLength: number){
                 resultEl.appendChild(scoreEl);
             }
 
+            // @ts-ignore
             sampleHolderEl.prepend(resultEl);
 
         });
@@ -203,6 +221,7 @@ function renderSpectrogram(imageURI : string, spectrogramLength: number){
 }
 
 function visualize(stream : MediaStream) {
+
     if(!audioCtx) {
         //@ts-ignore
         const AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -231,12 +250,17 @@ function visualize(stream : MediaStream) {
 
         analyserNode.getByteTimeDomainData(dataArray);
 
+        // @ts-ignore
         canvasCtx.fillStyle = 'rgb(58,119,52)';
+        // @ts-ignore
         canvasCtx.fillRect(0, 0, WIDTH, HEIGHT);
 
+        // @ts-ignore
         canvasCtx.lineWidth = 2;
+        // @ts-ignore
         canvasCtx.strokeStyle = 'rgb(0, 0, 0)';
 
+        // @ts-ignore
         canvasCtx.beginPath();
 
         const sliceWidth = WIDTH / bufferLength;
@@ -248,15 +272,19 @@ function visualize(stream : MediaStream) {
             const y = v * HEIGHT/2;
 
             if(i === 0) {
+                // @ts-ignore
                 canvasCtx.moveTo(x, y);
             } else {
+                // @ts-ignore
                 canvasCtx.lineTo(x, y);
             }
 
             x += sliceWidth;
         }
 
+        // @ts-ignore
         canvasCtx.lineTo(canvas.width, canvas.height/2);
+        // @ts-ignore
         canvasCtx.stroke();
 
     }
@@ -269,7 +297,9 @@ function stop_visualize(){
 }
 
 function clearCanvas(){
+    // @ts-ignore
     canvasCtx.fillStyle = 'rgb(58,119,52)';
+    // @ts-ignore
     canvasCtx.fillRect(0, 0, canvas.width, canvas.height);
 }
 
@@ -292,7 +322,9 @@ recordBtn.onclick = () => {
 
         // Create the Download button
         const DownloadButtonHolderEl = document.getElementById("downloadButtonHolder");
+        // @ts-ignore
         while (DownloadButtonHolderEl.firstChild) {
+            // @ts-ignore
             DownloadButtonHolderEl.removeChild(DownloadButtonHolderEl.firstChild);
         }
 
@@ -312,6 +344,7 @@ recordBtn.onclick = () => {
             dlButton.classList.add("mui-btn");
             dlButton.classList.add("mui-btn--raised");
             dlButton.textContent = 'Download';
+            // @ts-ignore
             DownloadButtonHolderEl.appendChild(dlButton);
 
             // wait for user to click Download-
