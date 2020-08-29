@@ -4,7 +4,7 @@ app = Flask(__name__, static_folder='./demos/')
 def home():
     return app.send_static_file('spec_record_crop.html')
 @app.route('/crop')
-def home():
+def crop():
     return app.send_static_file('spec_record_crop_v1.html')
 @app.route('/display')
 def disp():
