@@ -11,4 +11,4 @@ else
     DOMAIN=$1
 fi
 
-openssl req -newkey rsa:2048 -nodes -keyout keys/$DOMAIN.key -x509 -days 365 -out keys/$DOMAIN.crt
+openssl req -newkey rsa:2048 -nodes -keyout ../$DOMAIN.key -x509 -days 365 -out ../$DOMAIN.crt

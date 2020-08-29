@@ -1,22 +1,134 @@
 from flask import Flask
-app = Flask(__name__, static_folder='./demos/')
-@app.route('/')
+import threading
+import os
+import time
+
+
+""" global """
+
+# set to `devel = False` for deployment
+devel = False
+
+# port `80` is enforced if devel = False
+devport = 5000
+
+# host `0.0.0.0` is enforced if devel = False
+devhost = '127.0.0.1'
+
+# rendered html extension:
+_ext = '_render.html'
+static = './demos/'
+
+# default html chunks:
+header = './demos/header.html'
+footer = './demos/footer.html'
+
+html_list = [
+    './demos/load_audio.html',
+    './demos/spec_display.html',
+    './demos/spec_record.html',
+    './demos/spec_record_crop.html',
+    './demos/spec_record_crop_v1.html',
+    './demos/spec_record_v2.html'
+    ]
+
+# define our Flask api uniquely (not `app` lol) to avoid gunicorn collisions when deployed
+pyapi = Flask(__name__, static_folder=static)
+
+
+""" 
+rendering:
+ if we were using a templating engine like jade,
+ we'd make some additional modifications to the api like so:
+    ```
+    pyapi.jinja_env.add_extension('pyjade.ext.jinja.PyJadeExtension')
+    pyapi.secret_key = 'super secret key'
+    pyapi.config['SESSION_TYPE'] = 'filesystem'
+    ```
+"""
+
+
+# ...for now, lets just write our own plebeian renderer-
+def render(src_list, f):
+    """
+    :param src_list: ordered list of HTML file chunks to render
+    :return: void
+    """
+    renderf = f + _ext
+
+    if os.path.isfile(renderf):
+        os.remove(renderf)
+        time.sleep(.05) # just to provide server a minor fs buffer
+
+    with open(renderf, "w+") as rendering:
+        for item in src_list:
+            with open(item) as i:
+                for line in i:
+                    rendering.write(line)
+            i.close()
+    rendering.close()
+
+
+# on launch, check & build renders:
+def prerender_thread():
+    def _iter():
+        for each in html_list:
+            render([header, each, footer], each)
+    return threading.Thread(target=_iter())
+
+
+@pyapi.route('/')
 def home():
-    return app.send_static_file('spec_record_crop.html')
-@app.route('/crop')
+    return pyapi.send_static_file('spec_record_crop.html' + _ext)
+
+
+@pyapi.route('/crop')
 def crop():
-    return app.send_static_file('spec_record_crop_v1.html')
-@app.route('/display')
+    return pyapi.send_static_file('spec_record_crop_v1.html' + _ext)
+
+
+@pyapi.route('/display')
 def disp():
-    return app.send_static_file('spec_display.html')
-@app.route('/load')
+    return pyapi.send_static_file('spec_display.html' + _ext)
+
+
+@pyapi.route('/load')
 def load():
-    return app.send_static_file('load_audio.html')
-@app.route('/record')
+    return pyapi.send_static_file('load_audio.html' + _ext)
+
+
+@pyapi.route('/record')
 def rec1():
-    return app.send_static_file('spec_record.html')
-@app.route('/record_v2')
+    return pyapi.send_static_file('spec_record.html' + _ext)
+
+
+@pyapi.route('/record_v2')
 def rec2():
-    return app.send_static_file('spec_record_v2.html')
-if __name__ == '__main__':
-    flask_app.run(host='0.0.0.0', debug=False, port=os.environ.get('PORT', 80))
+    return pyapi.send_static_file('spec_record_v2.html' + _ext)
+
+
+
+if not devel:
+    type = 'development'
+    hostport = 80
+    hosturl = '0.0.0.0'
+else:
+    type = 'production'
+    hostport = devport
+    hosturl = devport
+
+print('please wait while prerendering html...')
+prerender = prerender_thread()
+prerender.start()
+
+# block until renders are done:
+prerender.join()
+print('...prerendering complete!  \n:)')
+
+print('starting ', type, ' pyapi Flask server!\n ',
+      'URL: ', hosturl, '\n',
+      'PORT: ', str(hosturl))
+
+
+if __name__ == "__main__":
+    pyapi.run(host=hosturl, port=os.environ.get('PORT', hostport))

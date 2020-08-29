@@ -1,25 +1,18 @@
 {
-  "name": "tmpui-template",
-  "version": "0.3.1",
-  "private": true,
-  "mode": "development",
+  "name": "tmpui-merlinai",
   "scripts": {
     "start-react": "react-scripts start",
-    "start-flask": "flask run --no-debugger",
-    "sslgen-demos": "chmod +x sslgen.sh && ./sslgen.sh",
+    "start-flask": "flask run",
+    "build-react": "react-scripts build",
     "build-demos": "webpack --config webpack/es6.demo.config.ts",
     "build-minimal": "webpack --config webpack/minimal.demo.config.ts",
-    "build": "react-scripts build",
-    "clean": "rm -rf ./es6",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "clean-bundles": "find demos/ -name \"*_bundle.js\" -print -delete",
-    "start": "react-scripts start",
-    "heroku-postbuild": "npm run build"
+    "clean-bundles": "rm -rf ./es6 && find demos/ -name \"*_bundle.js\" -print -delete",
+    "clean-renders": "rm -rf ./es6 && find demos/ -name \"*_render.html\" -print -delete",
+    "sslgen-demos": "chmod +x src/sslgen.sh && ./src/sslgen.sh"
   },
   "dependencies": {
     "@material-ui/core": "latest",
-    "@tensorflow/tfjs": "^2.0.1",
+    "@tensorflow/tfjs": "latest",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
@@ -61,7 +54,6 @@
       "@babel/plugin-proposal-class-properties"
     ]
   },
-  "proxy": "http://localhost:5000",
   "devDependencies": {
     "@types/minimist": "latest",
     "@types/dom-mediacapture-record": "^1.0.7",
@@ -75,5 +67,20 @@
     "typescript": "^3.6.3",
     "webpack": "latest",
     "webpack-cli": "latest"
-  }
+  },
+  "version": "0.3.1",
+  "contributors": [
+    {
+      "name": "Jess Sullivan",
+      "url": "https://github.com/jesssullivan"
+    },
+    {
+      "name": "Grant Van Horn",
+      "url": "https://github.com/gvanhorn38"
+    }
+  ],
+  "license": "MIT",
+  "mode": "development",
+  "proxy": "http://localhost:5000",
+  "private": true
 }

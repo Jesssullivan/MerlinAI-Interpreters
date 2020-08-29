@@ -1,3 +1,5 @@
+/*
+*
 import * as fs from 'fs';
 // @ts-ignore
 import * as minimist from 'minimist';
@@ -20,35 +22,36 @@ const getDemos = (source: fs.PathLike) => {
       .filter(demo => specified.length ? specified.includes(demo) : true);
 };
 
-const entries = getDemos('./demos').reduce((obj, name) => {
+const entries = getDemos('./bundles').reduce((obj, name) => {
   // @ts-ignore
-  obj[name] = `./demos/${name}.ts`;
+  obj[name] = `./bundles/${name}.ts`;
   return obj;
 }, {});
 
 module.exports = {
   node: {fs: 'empty'},
   resolve: {
-    extensions: ['.ts', '.js'],
+    extensions: ['.ts'],
   },
   devtool: 'inline-source-map',
-  mode: 'development',
   entry: {
     ...entries,
   },
   output: {
     filename: '[name]_bundle.js',
-    path: path.resolve(__dirname, '../demos'),
+    path: path.resolve(__dirname, '../bundles'),
   },
   module: {
     rules: [{
       test: /\.ts$/,
       exclude: /node_modules/,
-      use: {loader: 'ts-loader', options: {configFile: 'tsconfig.es6.json'}}
+      use: {loader: 'ts-loader', options: {configFile: 'tsconfig.production.json'}}
     }],
   },
   devServer: {
-    contentBase: path.join(__dirname, '../demos'),
+    contentBase: path.join(__dirname, '../bundles'),
     port: 8080,
   },
+  "mode": "development"
 };
+* */
