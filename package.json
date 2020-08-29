@@ -1,22 +1,21 @@
 {
   "name": "tmpui-template",
-  "version": "0.1.0",
+  "version": "0.3.1",
   "private": true,
   "mode": "development",
   "scripts": {
-    "start": "react-scripts start",
     "start-react": "react-scripts start",
     "start-flask": "flask run --no-debugger",
-    "start-next": "next start -p $PORT",
-    "start-dev": "react-scripts start && npm run-script start-flask",
-    "clean-bundles": "find demos/ -name \"*_bundle.js\" -print -delete",
-    "sslgen-demos": "chmod +x keys/sslgen.sh && ./keys/sslgen.sh",
-    "build-demos": "webpack --config webpack/minimal.demo.config.ts",
-    "heroku-postbuild": "npm run build",
+    "sslgen-demos": "chmod +x sslgen.sh && ./sslgen.sh",
+    "build-demos": "webpack --config webpack/es6.demo.config.ts",
+    "build-minimal": "webpack --config webpack/minimal.demo.config.ts",
     "build": "react-scripts build",
+    "clean": "rm -rf ./es6",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "clean": "rm -rf ./es6"
+    "clean-bundles": "find demos/ -name \"*_bundle.js\" -print -delete",
+    "start": "react-scripts start",
+    "heroku-postbuild": "npm run build"
   },
   "dependencies": {
     "@material-ui/core": "latest",

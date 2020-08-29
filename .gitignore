@@ -1,5 +1,6 @@
 # dependencies
 /node_modules
+void
 /.pnp
 .pnp.js
 **/.idea
@@ -10,10 +11,11 @@
 
 # production
 /build
+/dist
+/es6
 
 # misc
 **/void
-void
 **/reference
 
 archive
