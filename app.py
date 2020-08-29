@@ -32,8 +32,8 @@ html_list = [
     './demos/spec_record_v2.html'
     ]
 
-# define our Flask api uniquely (not `app` lol) to avoid gunicorn collisions when deployed
-pyapi = Flask(__name__, static_folder=static)
+
+app = Flask(__name__, static_folder=static)
 
 
 """ 
@@ -41,9 +41,9 @@ rendering:
  if we were using a templating engine like jade,
  we'd make some additional modifications to the api like so:
     ```
-    pyapi.jinja_env.add_extension('pyjade.ext.jinja.PyJadeExtension')
-    pyapi.secret_key = 'super secret key'
-    pyapi.config['SESSION_TYPE'] = 'filesystem'
+    app.jinja_env.add_extension('pyjade.ext.jinja.PyJadeExtension')
+    app.secret_key = 'super secret key'
+    app.config['SESSION_TYPE'] = 'filesystem'
     ```
 """
 
@@ -77,34 +77,34 @@ def prerender_thread():
     return threading.Thread(target=_iter())
 
 
-@pyapi.route('/')
+@app.route('/')
 def home():
-    return pyapi.send_static_file('spec_record_crop.html' + _ext)
+    return app.send_static_file('spec_record_crop.html' + _ext)
 
 
-@pyapi.route('/crop')
+@app.route('/crop')
 def crop():
-    return pyapi.send_static_file('spec_record_crop_v1.html' + _ext)
+    return app.send_static_file('spec_record_crop_v1.html' + _ext)
 
 
-@pyapi.route('/display')
+@app.route('/display')
 def disp():
-    return pyapi.send_static_file('spec_display.html' + _ext)
+    return app.send_static_file('spec_display.html' + _ext)
 
 
-@pyapi.route('/load')
+@app.route('/load')
 def load():
-    return pyapi.send_static_file('load_audio.html' + _ext)
+    return app.send_static_file('load_audio.html' + _ext)
 
 
-@pyapi.route('/record')
+@app.route('/record')
 def rec1():
-    return pyapi.send_static_file('spec_record.html' + _ext)
+    return app.send_static_file('spec_record.html' + _ext)
 
 
-@pyapi.route('/record_v2')
+@app.route('/record_v2')
 def rec2():
-    return pyapi.send_static_file('spec_record_v2.html' + _ext)
+    return app.send_static_file('spec_record_v2.html' + _ext)
 
 
 
@@ -125,10 +125,10 @@ prerender.start()
 prerender.join()
 print('...prerendering complete!  \n:)')
 
-print('starting ', type, ' pyapi Flask server!\n ',
+print('starting ', type, ' Flask server!\n ',
       'URL: ', hosturl, '\n',
       'PORT: ', str(hosturl))
 
 
 if __name__ == "__main__":
-    pyapi.run(host=hosturl, port=os.environ.get('PORT', hostport))
+    app.run(host=hosturl, port=os.environ.get('PORT', hostport))
