@@ -18,6 +18,7 @@ void
 **/void
 **/reference
 
+__pycache__
 archive
 .idea
 **/tmp.*
