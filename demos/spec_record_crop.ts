@@ -13,11 +13,11 @@ let mediaRecorder : MediaRecorder;
 let audioCtx : AudioContext;
 let analyserNode : AnalyserNode;
 let shouldDrawVisualization = false;
+let dlButton : HTMLButtonElement;
 const canvasCtx = canvas.getContext("2d");
 let chunks : Blob[] = [];
 let slider : any = null;
 let currentWaveform : Float32Array;
-let dlButton : HTMLButtonElement;
 
 // Spectrogram Visualization Parameters
 const targetSampleRate = 22050;
@@ -63,39 +63,7 @@ function generateSpectrogram(waveform : Float32Array) : Float32Array[]{
 
 }
 
-function getSample(): Float32Array {
-
-    const timeScale = 1.0;
-    const handlePositions = slider.noUiSlider.get();
-
-    //console.log(handlePositions);
-    let pos1 = Math.round(parseFloat(handlePositions[0]));
-    let pos2 = Math.round(parseFloat(handlePositions[1]));
-
-    // Take into account the offset of the image (by scrolling)
-    const specImageHolderEl = document.getElementById('specImageHolder');
-    // @ts-ignore
-    const scrollOffset = specImageHolderEl.scrollLeft;
-
-    pos1 += scrollOffset;
-    pos2 += scrollOffset;
-
-    //console.log("Analyze Spectrogram from column " + pos1 + " to column " + pos2);
-    // Need to go from spectrogram position to waveform sample index
-    const hopLengthSamples = Math.round(targetSampleRate * stftHopSeconds);
-    const samplePos1 = pos1 * hopLengthSamples / timeScale;
-    const samplePos2 = pos2 * hopLengthSamples / timeScale;
-
-    // console.log("Extracting waveform from sample " + samplePos1 + " to sample " + samplePos2);
-    // const sampleDuration = (samplePos2 - samplePos1) / targetSampleRate;
-    // console.log("Total waveform sample duration " + sampleDuration);
-
-    // return a Waveform blob snippet:
-    return currentWaveform.slice(samplePos1, samplePos2);
-
-}
-
-function renderSpectrogram(imageURI : string, spectrogramLength: number){
+function renderSpectrogram(imageURI : string, spectrogramLength: number) {
 
     // render the (scaled) spectrogram
     const image_height = 300;
@@ -105,11 +73,14 @@ function renderSpectrogram(imageURI : string, spectrogramLength: number){
     const img = document.createElement('img');
     img.src = imageURI;
     img.height = image_height;
-    img.width =  image_width;
-    console.log("Image Dims: [ " + image_height + ", " + image_width + "]");
+    img.width = image_width;
 
     // Clear out previous images
+    // Take into account the offset of the image (by scrolling)
     const specImageHolderEl = document.getElementById('specImageHolder');
+    // @ts-ignore
+    const scrollOffset = specImageHolderEl.scrollLeft;
+
     // @ts-ignore
     while (specImageHolderEl.firstChild) {
         // @ts-ignore
@@ -152,6 +123,75 @@ function renderSpectrogram(imageURI : string, spectrogramLength: number){
         }
     });
 
+    // make a Download button:
+    dlButton = document.createElement("button");
+    dlButton.classList.add("mui-btn");
+    dlButton.classList.add("mui-btn--raised");
+    dlButton.textContent = 'Download';
+
+    const DownloadButtonHolderEl = document.getElementById("downloadButtonHolder");
+    // @ts-ignore
+    while (DownloadButtonHolderEl.firstChild) {
+        // @ts-ignore
+        DownloadButtonHolderEl.removeChild(DownloadButtonHolderEl.firstChild);
+    }
+    // @ts-ignore
+    DownloadButtonHolderEl.appendChild(dlButton);
+
+    dlButton.onclick = () => {
+        const handlePositions = slider.noUiSlider.get();
+        //console.log(handlePositions);
+        let pos1 = Math.round(parseFloat(handlePositions[0]));
+        let pos2 = Math.round(parseFloat(handlePositions[1]));
+
+        // Take into account the offset of the image (by scrolling)
+        const specImageHolderEl = document.getElementById('specImageHolder');
+        // @ts-ignore
+        const scrollOffset = specImageHolderEl.scrollLeft;
+
+        pos1 += scrollOffset;
+        pos2 += scrollOffset;
+
+        // Need to go from spectrogram position to waveform sample index
+        const hopLengthSamples = Math.round(targetSampleRate * stftHopSeconds);
+        const samplePos1 = pos1 * hopLengthSamples / timeScale;
+        const samplePos2 = pos2 * hopLengthSamples / timeScale;
+        const waveformSample = currentWaveform.slice(samplePos1, samplePos2);
+
+        // visualize the sample
+        const dbSpec = generateSpectrogram(waveformSample); //audio_utils.dBSpectrogram(audioData.waveform, spec_params);
+        const imageURI = spectrogram_utils.dBSpectrogramToImage(dbSpec, topDB);
+        const image_height = 300;
+        const image_width = Math.round(dbSpec.length);
+
+        const img = document.createElement('img');
+        img.src = imageURI;
+        img.height = image_height;
+        img.width = image_width;
+
+       // @ts-ignore
+        while (sampleHolderEl.firstChild) {
+            // @ts-ignore
+            sampleHolderEl.removeChild(sampleHolderEl.firstChild);
+        }
+        // @ts-ignore
+        sampleHolderEl.appendChild(img);
+        const url = window.URL.createObjectURL(recordedBlobs);
+        const a = document.createElement('a');
+        a.style.display = 'none';
+        a.href = url;
+
+        // all this will need to include user annotation input, date, location etc
+        a.download = 'FullSongRecording.wav';
+        document.body.appendChild(a);
+        a.click();
+
+        setTimeout(() => {
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+        }, 100);
+    };
+
     // Create the Analyze button
     const specAnalyzeButtonHolderEl = document.getElementById("specAnalyzeButtonHolder");
     // @ts-ignore
@@ -164,10 +204,9 @@ function renderSpectrogram(imageURI : string, spectrogramLength: number){
     analyzeBtn.classList.add("mui-btn");
     analyzeBtn.classList.add("mui-btn--raised");
     analyzeBtn.textContent = 'Classify';
+
     // @ts-ignore
     specAnalyzeButtonHolderEl.appendChild(analyzeBtn);
-
-    const waveformSample = getSample();
 
     // add a div to hold the Visualization of the sample
     const sampleHolderEl = document.getElementById('specCropHolder');
@@ -178,6 +217,26 @@ function renderSpectrogram(imageURI : string, spectrogramLength: number){
     }
 
     analyzeBtn.onclick = () => {
+        const handlePositions = slider.noUiSlider.get();
+        //console.log(handlePositions);
+        let pos1 = Math.round(parseFloat(handlePositions[0]));
+        let pos2 = Math.round(parseFloat(handlePositions[1]));
+
+        // Take into account the offset of the image (by scrolling)
+        const specImageHolderEl = document.getElementById('specImageHolder');
+        // @ts-ignore
+        const scrollOffset = specImageHolderEl.scrollLeft;
+
+        pos1 += scrollOffset;
+        pos2 += scrollOffset;
+
+        console.log("Analyze Spectrogram from column " + pos1 + " to column " + pos2);
+
+        // Need to go from spectrogram position to waveform sample index
+        const hopLengthSamples = Math.round(targetSampleRate * stftHopSeconds);
+        const samplePos1 = pos1 * hopLengthSamples / timeScale;
+        const samplePos2 = pos2 * hopLengthSamples / timeScale;
+        const waveformSample = currentWaveform.slice(samplePos1, samplePos2);
 
         // visualize the sample
         const dbSpec = generateSpectrogram(waveformSample); //audio_utils.dBSpectrogram(audioData.waveform, spec_params);
@@ -188,7 +247,7 @@ function renderSpectrogram(imageURI : string, spectrogramLength: number){
         const img = document.createElement('img');
         img.src = imageURI;
         img.height = image_height;
-        img.width =  image_width;
+        img.width = image_width;
         console.log("Extracted Sample Image Dims: [ " + image_height + ", " + image_width + "]");
 
         // Clear out previous images (in case they do multiple analses from the same waveform)
@@ -204,7 +263,7 @@ function renderSpectrogram(imageURI : string, spectrogramLength: number){
         averageClassifyWaveform(waveformSample).then(([labels, scores]) => {
 
             const resultEl = document.createElement('ul');
-            for(let i=0; i < 10; i++){
+            for (let i = 0; i < 10; i++) {
                 const scoreEl = document.createElement('li');
                 scoreEl.textContent = labels[i] + " " + scores[i];
                 resultEl.appendChild(scoreEl);
@@ -216,7 +275,6 @@ function renderSpectrogram(imageURI : string, spectrogramLength: number){
         });
 
     };
-
 }
 
 function visualize(stream : MediaStream) {
@@ -319,14 +377,6 @@ recordBtn.onclick = () => {
         stopBtn.removeAttribute('disabled');
         recordBtn.setAttribute('disabled',  'disabled');
 
-        // Create the Download button
-        const DownloadButtonHolderEl = document.getElementById("downloadButtonHolder");
-        // @ts-ignore
-        while (DownloadButtonHolderEl.firstChild) {
-            // @ts-ignore
-            DownloadButtonHolderEl.removeChild(DownloadButtonHolderEl.firstChild);
-        }
-
         mediaRecorder.addEventListener('stop', e => {
             // console.log("data available after MediaRecorder.stop() called.");
 
@@ -337,34 +387,6 @@ recordBtn.onclick = () => {
 
             // console.log(audioURL);
             // console.log("recorder stopped");
-
-            // only let user have `Download` button if `stop` has been called:
-            dlButton = document.createElement("button");
-            dlButton.classList.add("mui-btn");
-            dlButton.classList.add("mui-btn--raised");
-            dlButton.textContent = 'Download';
-            // @ts-ignore
-            DownloadButtonHolderEl.appendChild(dlButton);
-
-            // wait for user to click Download-
-            //  I think this needs to explicitly be a child of `stop` listener until tomorrow,
-            //  can't think of a better way to do this atm
-            dlButton.addEventListener('click', () => {
-              const url = window.URL.createObjectURL(recordedBlobs);
-              const a = document.createElement('a');
-              a.style.display = 'none';
-              a.href = url;
-
-              // all this will need to include user annotation input, date, location etc
-              a.download = 'SongRecording.wav';
-              document.body.appendChild(a);
-              a.click();
-              setTimeout(() => {
-                document.body.removeChild(a);
-                window.URL.revokeObjectURL(url);
-              }, 100);
-            });
-
             audio_loader.loadAudioFromURL(audioURL)
                 .then((audioBuffer) => audio_loader.resampleAndMakeMono(audioBuffer, targetSampleRate))
                 .then((audioWaveform) => {
