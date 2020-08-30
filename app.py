@@ -7,6 +7,7 @@ import time
 
 # set to `devel = False` for deployment
 devel = True
+prerender = True
 
 # port `80` is enforced if devel = False
 devport = 5000
@@ -16,7 +17,7 @@ devhost = '127.0.0.1'
 
 # rendered html extension:
 _ext = '_render.html'
-static = './demos/'
+static = "./demos/" if devel else "./production/"
 
 # default html chunks:
 header = static + 'templates/header.html'
@@ -114,14 +115,16 @@ else:
     hostport = 80
     hosturl = '0.0.0.0'
 
+if prerender:
 
-print('please wait while prerendering html...')
-prerender = prerender_thread()
-prerender.start()
+    print('please wait while prerendering html...')
+    prerender = prerender_thread()
+    prerender.start()
 
-# block until renders are done:
-prerender.join()
-print('...prerendering complete!  \n:)')
+    # block until renders are done:
+    prerender.join()
+    print('...prerendering complete!  \n:)')
+
 
 print('starting ', type, ' Flask server!\n ',
       'URL: ', hosturl, '\n',
