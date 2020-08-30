@@ -10,7 +10,7 @@
       "es2015",
       "dom"
     ],
-    "outDir": "./es6",
+    "outDir": "./built",
     "noUnusedLocals": true,
     "noImplicitReturns": true,
     "noImplicitThis": true,
@@ -37,6 +37,6 @@
     "src/"
   ],
   "exclude": [
-    "node_modules",
-    "etc"]
+    "node_modules/"
+  ]
 }

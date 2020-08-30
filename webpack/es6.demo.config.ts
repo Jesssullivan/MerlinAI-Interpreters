@@ -15,8 +15,8 @@ const specified: string[] = args.demos ? args.demos.split(',') : [];
 
 const getDemos = (source: fs.PathLike) => {
   return fs.readdirSync(source)
-      .filter(name => path.extname(name) === '.html' && name !== 'index.html')
-      .map(name => path.basename(name, '.html'))
+      .filter(name => path.extname(name) === '.ts')
+      .map(name => path.basename(name, '.ts'))
       .filter(demo => specified.length ? specified.includes(demo) : true);
 };
 

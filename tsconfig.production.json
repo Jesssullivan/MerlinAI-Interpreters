@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "noImplicitAny": true,
+    "removeComments": false,
+    "preserveConstEnums": true,
+    "declaration": true,
+    "allowJs": false,
+    "sourceMap": true,
+    "lib": ["es2015", "dom"],
+    "noUnusedLocals": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "alwaysStrict": true,
+    "noUnusedParameters": false,
+    "pretty": true,
+    "noFallthroughCasesInSwitch": true,
+    "allowUnreachableCode": false,
+    "experimentalDecorators": true,
+    "skipLibCheck": true,
+    "module": "commonjs",
+    "target": "esnext",
+    "moduleResolution": "node"
+  },
+  "mode": "development",
+  "include": [ "src/" ],
+  "exclude": ["node_modules"]
+}

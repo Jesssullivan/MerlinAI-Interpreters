@@ -3,11 +3,10 @@ import threading
 import os
 import time
 
-
 """ global """
 
 # set to `devel = False` for deployment
-devel = False
+devel = True
 
 # port `80` is enforced if devel = False
 devport = 5000
@@ -20,21 +19,19 @@ _ext = '_render.html'
 static = './demos/'
 
 # default html chunks:
-header = './demos/header.html'
-footer = './demos/footer.html'
+header = static + 'templates/header.html'
+footer = static + 'templates/footer.html'
 
 html_list = [
-    './demos/load_audio.html',
-    './demos/spec_display.html',
-    './demos/spec_record.html',
-    './demos/spec_record_crop.html',
-    './demos/spec_record_crop_v1.html',
-    './demos/spec_record_v2.html'
-    ]
-
+    static + 'load_audio.html',
+    static + 'spec_display.html',
+    static + 'spec_record.html',
+    static + 'spec_record_crop.html',
+    static + 'spec_record_crop_v1.html',
+    static + 'spec_record_v2.html'
+]
 
 app = Flask(__name__, static_folder=static)
-
 
 """ 
 rendering:
@@ -58,7 +55,7 @@ def render(src_list, f):
 
     if os.path.isfile(renderf):
         os.remove(renderf)
-        time.sleep(.05) # just to provide server a minor fs buffer
+        time.sleep(.05)  # just to provide server a minor fs buffer
 
     with open(renderf, "w+") as rendering:
         for item in src_list:
@@ -74,6 +71,7 @@ def prerender_thread():
     def _iter():
         for each in html_list:
             render([header, each, footer], each)
+
     return threading.Thread(target=_iter())
 
 
@@ -107,15 +105,15 @@ def rec2():
     return app.send_static_file('spec_record_v2.html' + _ext)
 
 
-
-if not devel:
+if devel:
     type = 'development'
-    hostport = 80
-    hosturl = '0.0.0.0'
+    hostport = devport
+    hosturl = devhost
 else:
     type = 'production'
-    hostport = devport
-    hosturl = devport
+    hostport = 80
+    hosturl = '0.0.0.0'
+
 
 print('please wait while prerendering html...')
 prerender = prerender_thread()
@@ -127,7 +125,7 @@ print('...prerendering complete!  \n:)')
 
 print('starting ', type, ' Flask server!\n ',
       'URL: ', hosturl, '\n',
-      'PORT: ', str(hosturl))
+      'PORT: ', str(hostport))
 
 
 if __name__ == "__main__":
