@@ -1,5 +1,5 @@
 
-## *Spectrogram Annotation Tools w/ the Merlin Sound ID Project*
+## *Spectrogram Demos w/ the Merlin Sound ID Project*
 #### [Visit the demos & renders here](https://tmpui.herokuapp.com/)
 
 ***Hack upon these demos:***
