@@ -35,7 +35,7 @@
     "no-consecutive-blank-lines": true,
     "no-debugger": true,
     "no-default-export": true,
-    "no-inferrable-types": true,
+    "no-inferrable-types": false,
     "no-namespace": [true, "allow-declarations"],
     "no-reference": true,
     "no-require-imports": false,

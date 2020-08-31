@@ -8,39 +8,96 @@ const stopBtn = document.getElementById("stopButton") as HTMLButtonElement;
 const canvas = document.querySelector('.visualizer') as HTMLCanvasElement;
 const mainSection = document.querySelector('.container-fluid') as HTMLDivElement;
 
+let imgCrop = document.createElement('img');
+let imgSpec = document.createElement('img');
 let recordedBlobs : Blob;
 let mediaRecorder : MediaRecorder;
 let audioCtx : AudioContext;
 let analyserNode : AnalyserNode;
 let shouldDrawVisualization = false;
-let dlButton : HTMLButtonElement;
 const canvasCtx = canvas.getContext("2d");
 let chunks : Blob[] = [];
-let slider : any = null;
 let currentWaveform : Float32Array;
 
 // Spectrogram Visualization Parameters
+const image_height = 300;
+const timeScale = 1.0;
 const targetSampleRate = 22050;
 const stftWindowSeconds = 0.015;
 const stftHopSeconds = 0.005;
 const topDB = 80;
+let slider : any = null;
 
 const MODEL_URL = 'models/audio/model.json';
 const LABELS_URL = 'models/audio/labels.json';
-//const scoreThreshold = 0.9;
 const patchWindowSeconds = 1.0; // We'd like to process a minimum of 1 second of audio
 
 const merlinAudio = new audio_model.MerlinAudioModel(LABELS_URL, MODEL_URL);
 
-async function averageClassifyWaveform(waveform : Float32Array){
+function MuiButton(titleName: string, holderName: string) {
+
+    const MuiHolder = document.getElementById(holderName);
+    const MuiBtn = document.createElement("button");
+
+    MuiBtn.classList.add("mui-btn");
+    MuiBtn.classList.add("mui-btn--raised");
+    MuiBtn.textContent = titleName;
+
+    while (MuiHolder!.firstChild) {
+            MuiHolder!.removeChild(MuiHolder!.firstChild);
+        }
+
+    MuiHolder!.appendChild(MuiBtn);
+    return(MuiBtn);
+}
+
+function updateVis() {
+
+    const handlePositions = slider.noUiSlider.get();
+    let pos1 = Math.round(parseFloat(handlePositions[0]));
+    let pos2 = Math.round(parseFloat(handlePositions[1]));
+
+    // Take into account the offset of the image (by scrolling)
+    const specImageHolderEl = document.getElementById('specImageHolder');
+    const scrollOffset = specImageHolderEl!.scrollLeft;
+    pos1 += scrollOffset;
+    pos2 += scrollOffset;
+
+    // Need to go from spectrogram position to waveform sample index
+    const hopLengthSamples = Math.round(targetSampleRate * stftHopSeconds);
+    const samplePos1 = pos1 * hopLengthSamples / timeScale;
+    const samplePos2 = pos2 * hopLengthSamples / timeScale;
+
+    const waveformSample = currentWaveform.slice(samplePos1, samplePos2);
+
+    // visualize the cropped sample
+    const dbSpec = generateSpectrogram(waveformSample); //audio_utils.dBSpectrogram(audioData.waveform, spec_params);
+    const cropped_imageURI = spectrogram_utils.dBSpectrogramToImage(dbSpec, topDB);
+
+    // create / update cropped visualization
+    const cropped_height = 300;
+    const cropped_width = Math.round(dbSpec.length);
+
+    imgCrop.src = cropped_imageURI;
+    imgCrop.height = cropped_height;
+    imgCrop.width =  cropped_width;
+
+    const specCropImage = document.getElementById('specCropHolder');
+    while (specCropImage!.firstChild) {
+        specCropImage!.removeChild(specCropImage!.firstChild);
+    }
+
+    specCropImage!.appendChild(imgCrop);
+
+    return waveformSample;
+
+}
+
+async function averageClassifyWaveform(waveform : Float32Array) {
 
     const result = await merlinAudio.averagePredictV3(waveform, targetSampleRate);
-
     const labels = result[0] as string[];
     const scores = result[1] as Float32Array;
-
-    console.log("Most Confident: " + labels[0] + " @ " + scores[0]);
-
     return [labels, scores];
 
 }
@@ -65,45 +122,30 @@ function generateSpectrogram(waveform : Float32Array) : Float32Array[]{
 
 function renderSpectrogram(imageURI : string, spectrogramLength: number) {
 
-    // render the (scaled) spectrogram
-    const image_height = 300;
-    const timeScale = 1.0;
     const image_width = Math.round(spectrogramLength * timeScale);
-
-    const img = document.createElement('img');
-    img.src = imageURI;
-    img.height = image_height;
-    img.width = image_width;
+    imgSpec = document.createElement('img');
+    imgSpec.src = imageURI;
+    imgSpec.height = image_height;
+    imgSpec.width = image_width;
 
     // Clear out previous images
-    // Take into account the offset of the image (by scrolling)
     const specImageHolderEl = document.getElementById('specImageHolder');
-    // @ts-ignore
-    const scrollOffset = specImageHolderEl.scrollLeft;
-
-    // @ts-ignore
-    while (specImageHolderEl.firstChild) {
-        // @ts-ignore
-        specImageHolderEl.removeChild(specImageHolderEl.firstChild);
+    while (specImageHolderEl!.firstChild) {
+        specImageHolderEl!.removeChild(specImageHolderEl!.firstChild);
     }
 
     // Add the spectrogram
-    // @ts-ignore
-    specImageHolderEl.appendChild(img);
+    specImageHolderEl!.appendChild(imgSpec);
 
     // Add the slider
     const specSliderHolderEl = document.getElementById('specSliderHolder');
-    // @ts-ignore
-    while (specSliderHolderEl.firstChild) {
-        // @ts-ignore
-        specSliderHolderEl.removeChild(specSliderHolderEl.firstChild);
+    while (specSliderHolderEl!.firstChild) {
+        specSliderHolderEl!.removeChild(specSliderHolderEl!.firstChild);
     }
 
     slider = document.createElement('div');
-    // @ts-ignore
-    slider.style.width = "" + specImageHolderEl.offsetWidth + "px";
-    // @ts-ignore
-    specSliderHolderEl.appendChild(slider);
+    slider.style.width = "" + specImageHolderEl!.offsetWidth + "px";
+    specSliderHolderEl!.appendChild(slider);
 
     const hop_length_samples = Math.round(targetSampleRate * stftHopSeconds);
     const spectrogram_sr = targetSampleRate / hop_length_samples;
@@ -118,162 +160,61 @@ function renderSpectrogram(imageURI : string, spectrogramLength: number) {
         margin,
         range: {
             'min': 0,
-            // @ts-ignore
-            'max': specImageHolderEl.offsetWidth
+            'max': specImageHolderEl!.offsetWidth
         }
     });
 
-    // make a Download button:
-    dlButton = document.createElement("button");
-    dlButton.classList.add("mui-btn");
-    dlButton.classList.add("mui-btn--raised");
-    dlButton.textContent = 'Download';
+    // create a Download button:
+    const dlHolder = 'downloadButtonHolder';
+    const dlButton = MuiButton('Download', dlHolder);
 
-    const DownloadButtonHolderEl = document.getElementById("downloadButtonHolder");
-    // @ts-ignore
-    while (DownloadButtonHolderEl.firstChild) {
-        // @ts-ignore
-        DownloadButtonHolderEl.removeChild(DownloadButtonHolderEl.firstChild);
-    }
-    // @ts-ignore
-    DownloadButtonHolderEl.appendChild(dlButton);
-
+    // wait for a click before downloading anything:
     dlButton.onclick = () => {
-        const handlePositions = slider.noUiSlider.get();
-        //console.log(handlePositions);
-        let pos1 = Math.round(parseFloat(handlePositions[0]));
-        let pos2 = Math.round(parseFloat(handlePositions[1]));
 
-        // Take into account the offset of the image (by scrolling)
-        const specImageHolderEl = document.getElementById('specImageHolder');
-        // @ts-ignore
-        const scrollOffset = specImageHolderEl.scrollLeft;
+        // no need to capture the returned waveform, just downloading the full song thus far
+        updateVis();
 
-        pos1 += scrollOffset;
-        pos2 += scrollOffset;
-
-        // Need to go from spectrogram position to waveform sample index
-        const hopLengthSamples = Math.round(targetSampleRate * stftHopSeconds);
-        const samplePos1 = pos1 * hopLengthSamples / timeScale;
-        const samplePos2 = pos2 * hopLengthSamples / timeScale;
-        const waveformSample = currentWaveform.slice(samplePos1, samplePos2);
-
-        // visualize the sample
-        const dbSpec = generateSpectrogram(waveformSample); //audio_utils.dBSpectrogram(audioData.waveform, spec_params);
-        const imageURI = spectrogram_utils.dBSpectrogramToImage(dbSpec, topDB);
-        const image_height = 300;
-        const image_width = Math.round(dbSpec.length);
-
-        const img = document.createElement('img');
-        img.src = imageURI;
-        img.height = image_height;
-        img.width = image_width;
-
-       // @ts-ignore
-        while (sampleHolderEl.firstChild) {
-            // @ts-ignore
-            sampleHolderEl.removeChild(sampleHolderEl.firstChild);
-        }
-        // @ts-ignore
-        sampleHolderEl.appendChild(img);
+        // shwoop the full song recording into a downloadable element:
         const url = window.URL.createObjectURL(recordedBlobs);
         const a = document.createElement('a');
         a.style.display = 'none';
         a.href = url;
 
-        // all this will need to include user annotation input, date, location etc
+        // all this will need to include user annotation input, date, location etc...
         a.download = 'FullSongRecording.wav';
         document.body.appendChild(a);
         a.click();
-
         setTimeout(() => {
             document.body.removeChild(a);
             window.URL.revokeObjectURL(url);
         }, 100);
     };
 
-    // Create the Analyze button
-    const specAnalyzeButtonHolderEl = document.getElementById("specAnalyzeButtonHolder");
-    // @ts-ignore
-    while (specAnalyzeButtonHolderEl.firstChild) {
-        // @ts-ignore
-        specAnalyzeButtonHolderEl.removeChild(specAnalyzeButtonHolderEl.firstChild);
-    }
+    // create a Classify button:
+    const analyzeHolder = 'specAnalyzeButtonHolder';
+    const analyzeBtn = MuiButton('Classify', analyzeHolder);
 
-    const analyzeBtn = document.createElement('button');
-    analyzeBtn.classList.add("mui-btn");
-    analyzeBtn.classList.add("mui-btn--raised");
-    analyzeBtn.textContent = 'Classify';
-
-    // @ts-ignore
-    specAnalyzeButtonHolderEl.appendChild(analyzeBtn);
-
-    // add a div to hold the Visualization of the sample
-    const sampleHolderEl = document.getElementById('specCropHolder');
-    // @ts-ignore
-    while (sampleHolderEl.firstChild) {
-        // @ts-ignore
-        sampleHolderEl.removeChild(sampleHolderEl.firstChild);
-    }
-
+    // wait for a click:
     analyzeBtn.onclick = () => {
-        const handlePositions = slider.noUiSlider.get();
-        //console.log(handlePositions);
-        let pos1 = Math.round(parseFloat(handlePositions[0]));
-        let pos2 = Math.round(parseFloat(handlePositions[1]));
 
-        // Take into account the offset of the image (by scrolling)
-        const specImageHolderEl = document.getElementById('specImageHolder');
-        // @ts-ignore
-        const scrollOffset = specImageHolderEl.scrollLeft;
-
-        pos1 += scrollOffset;
-        pos2 += scrollOffset;
-
-        console.log("Analyze Spectrogram from column " + pos1 + " to column " + pos2);
-
-        // Need to go from spectrogram position to waveform sample index
-        const hopLengthSamples = Math.round(targetSampleRate * stftHopSeconds);
-        const samplePos1 = pos1 * hopLengthSamples / timeScale;
-        const samplePos2 = pos2 * hopLengthSamples / timeScale;
-        const waveformSample = currentWaveform.slice(samplePos1, samplePos2);
-
-        // visualize the sample
-        const dbSpec = generateSpectrogram(waveformSample); //audio_utils.dBSpectrogram(audioData.waveform, spec_params);
-        const imageURI = spectrogram_utils.dBSpectrogramToImage(dbSpec, topDB);
-        const image_height = 300;
-        const image_width = Math.round(dbSpec.length);
-
-        const img = document.createElement('img');
-        img.src = imageURI;
-        img.height = image_height;
-        img.width = image_width;
-        console.log("Extracted Sample Image Dims: [ " + image_height + ", " + image_width + "]");
-
-        // Clear out previous images (in case they do multiple analses from the same waveform)
-        // @ts-ignore
-        while (sampleHolderEl.firstChild) {
-            // @ts-ignore
-            sampleHolderEl.removeChild(sampleHolderEl.firstChild);
+         // add a div to hold the Visualization of the sample
+        const sampleHolderEl = document.getElementById('specSampleHolder');
+        while (sampleHolderEl!.firstChild) {
+            sampleHolderEl!.removeChild(sampleHolderEl!.firstChild);
         }
-        // @ts-ignore
-        sampleHolderEl.appendChild(img);
 
-        // Process with the model
+        const waveformSample = updateVis();
+
+        // YMMV, but YOLO:
         averageClassifyWaveform(waveformSample).then(([labels, scores]) => {
-
             const resultEl = document.createElement('ul');
             for (let i = 0; i < 10; i++) {
                 const scoreEl = document.createElement('li');
                 scoreEl.textContent = labels[i] + " " + scores[i];
                 resultEl.appendChild(scoreEl);
+                sampleHolderEl!.prepend(resultEl);
             }
-
-            // @ts-ignore
-            sampleHolderEl.prepend(resultEl);
-
         });
-
     };
 }
 
@@ -307,18 +248,11 @@ function visualize(stream : MediaStream) {
 
         analyserNode.getByteTimeDomainData(dataArray);
 
-        // @ts-ignore
-        canvasCtx.fillStyle = 'rgb(58,119,52)';
-        // @ts-ignore
-        canvasCtx.fillRect(0, 0, WIDTH, HEIGHT);
-
-        // @ts-ignore
-        canvasCtx.lineWidth = 2;
-        // @ts-ignore
-        canvasCtx.strokeStyle = 'rgb(0, 0, 0)';
-
-        // @ts-ignore
-        canvasCtx.beginPath();
+        canvasCtx!.fillStyle = 'rgb(58,119,52)';
+        canvasCtx!.fillRect(0, 0, WIDTH, HEIGHT);
+        canvasCtx!.lineWidth = 2;
+        canvasCtx!.strokeStyle = 'rgb(0, 0, 0)';
+        canvasCtx!.beginPath();
 
         const sliceWidth = WIDTH / bufferLength;
         let x = 0;
@@ -329,20 +263,16 @@ function visualize(stream : MediaStream) {
             const y = v * HEIGHT/2;
 
             if(i === 0) {
-                // @ts-ignore
-                canvasCtx.moveTo(x, y);
+                canvasCtx!.moveTo(x, y);
             } else {
-                // @ts-ignore
-                canvasCtx.lineTo(x, y);
+                canvasCtx!.lineTo(x, y);
             }
 
             x += sliceWidth;
         }
 
-        // @ts-ignore
-        canvasCtx.lineTo(canvas.width, canvas.height/2);
-        // @ts-ignore
-        canvasCtx.stroke();
+        canvasCtx!.lineTo(canvas.width, canvas.height/2);
+        canvasCtx!.stroke();
 
     }
 }
@@ -354,10 +284,8 @@ function stop_visualize(){
 }
 
 function clearCanvas(){
-    // @ts-ignore
-    canvasCtx.fillStyle = 'rgb(58,119,52)';
-    // @ts-ignore
-    canvasCtx.fillRect(0, 0, canvas.width, canvas.height);
+    canvasCtx!.fillStyle = 'rgb(58,119,52)';
+    canvasCtx!.fillRect(0, 0, canvas.width, canvas.height);
 }
 
 recordBtn.onclick = () => {
@@ -390,16 +318,11 @@ recordBtn.onclick = () => {
             audio_loader.loadAudioFromURL(audioURL)
                 .then((audioBuffer) => audio_loader.resampleAndMakeMono(audioBuffer, targetSampleRate))
                 .then((audioWaveform) => {
-
-                    console.log("Number of samples: " + audioWaveform.length);
                     currentWaveform = audioWaveform;
-
                     const dbSpec = generateSpectrogram(audioWaveform);
                     const imageURI = spectrogram_utils.dBSpectrogramToImage(dbSpec, topDB);
                     renderSpectrogram(imageURI, dbSpec.length);
-
                 });
-
         });
 
         // mediaRecorder.ondataavailable = function(e) {
@@ -412,8 +335,7 @@ recordBtn.onclick = () => {
     };
 
     const onError = (err : Error) => {
-        console.log('The following error occured: ' + err);
-
+        // console.log('The following error occured: ' + err);
         stopBtn.setAttribute('disabled',  'disabled');
         recordBtn.removeAttribute('disabled');
 
@@ -427,9 +349,8 @@ recordBtn.onclick = () => {
 stopBtn.onclick = () => {
 
     mediaRecorder.stop();
-    console.log(mediaRecorder.state);
-    console.log("recorder stopped");
-
+    // console.log(mediaRecorder.state);
+    // console.log("recorder stopped");
     stop_visualize();
 
     stopBtn.setAttribute('disabled',  'disabled');
