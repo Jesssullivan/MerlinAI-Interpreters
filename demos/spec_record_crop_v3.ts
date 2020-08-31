@@ -12,6 +12,8 @@ const mainSection = document.querySelector('.container-fluid') as HTMLDivElement
 /* tslint:disable:prefer-const */
 let imgCrop = document.createElement('img');
 let imgSpec = document.createElement('img');
+
+/* tslint:enable:prefer-const */
 let recordedBlobs : Blob;
 let mediaRecorder : MediaRecorder;
 let audioCtx : AudioContext;
@@ -51,6 +53,7 @@ function MuiButton(titleName: string, holderName: string) {
 
     MuiHolder!.appendChild(MuiBtn);
     return(MuiBtn);
+
 }
 
 function updateVis() {

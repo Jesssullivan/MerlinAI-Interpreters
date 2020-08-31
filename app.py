@@ -26,14 +26,12 @@ footer = static + 'templates/footer.html'
 html_list = [
     static + 'load_audio.html',
     static + 'spec_display.html',
-    static + 'spec_record.html',
-    static + 'spec_record_crop_v1.html',
-    static + 'spec_record_crop_v2.html',
     static + 'spec_record_crop_v3.html',
     static + 'spec_record_v2.html'
 ]
 
 app = Flask(__name__, static_folder=static)
+
 
 """ 
 rendering:
@@ -82,16 +80,6 @@ def crop_3():
     return app.send_static_file('spec_record_crop_v3.html' + _ext)
 
 
-@app.route('/crop_v1')
-def crop_1():
-    return app.send_static_file('spec_record_crop_v1.html' + _ext)
-
-
-@app.route('/crop_v2')
-def crop_2():
-    return app.send_static_file('spec_record_crop_v2.html' + _ext)
-
-
 @app.route('/display')
 def disp():
     return app.send_static_file('spec_display.html' + _ext)
@@ -102,14 +90,14 @@ def load():
     return app.send_static_file('load_audio.html' + _ext)
 
 
-@app.route('/record')
-def rec1():
-    return app.send_static_file('spec_record.html' + _ext)
-
-
 @app.route('/record_v2')
 def rec2():
     return app.send_static_file('spec_record_v2.html' + _ext)
+
+
+@app.route('/leaflet')
+def leaflet():
+    return app.send_static_file('annotator.html')
 
 
 if devel:
