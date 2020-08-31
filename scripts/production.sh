@@ -14,5 +14,8 @@ find demos/ -name \*.png  -print -exec cp {} production/ \;
 echo -e "production: copying remaining objects @ .static/...\n..."
 cp -rf demos/.static/* production/
 
+echo -e "production: copying tf model...\n..."
+cp -rf demos/models production/models
+
 echo "production: copying rendered html..."
 find demos/ -name \*_render.html  -print -exec cp {} production/ \;
