@@ -15,4 +15,4 @@ echo -e "production: copying remaining objects @ .static/...\n..."
 cp -rf demos/.static/* production/
 
 echo "production: copying rendered html..."
-find demos/ -name \*._render  -print -exec cp {} production/ \;
+find demos/ -name \*_render.html  -print -exec cp {} production/ \;
