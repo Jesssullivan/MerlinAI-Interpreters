@@ -6,8 +6,8 @@ import time
 """ global """
 
 # set to `devel = False` for deployment
-devel = True
-prerender = True
+devel = False
+prerender = False
 
 # port `80` is enforced if devel = False
 devport = 5000

@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>tmpUI-MerlinAI</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="//cdn.muicss.com/mui-latest/css/mui.min.css" rel="stylesheet" type="text/css" />
+    <link href="style.css" rel="stylesheet" type="text/css" />
+    <script src="//cdn.muicss.com/mui-latest/js/mui.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" href="nouislider.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.2.3/gh-fork-ribbon.min.css" />
+    <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png">
+    <link rel="manifest" href="site.webmanifest">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+</head>
+<header class="mui-appbar mui--z1"  style="background-color: rgb(58,119,52)">
+    <a class="github-fork-ribbon" href="https://github.com/Jesssullivan/tmpui-merlinai" data-ribbon="Contribute @ GitHub" title="Contribute @ GitHub...">Contribute</a>
+    <div class="mui-container ">
+        <td class="mui--text-title ">
+            <canvas class="visualizer"  width="" height="60px"> visualizer </canvas>
+        </td>
+        <ul class="mui-list--inline mui--text-center">
+            <li><a href="/display"> [Display] </a><li>
+            <li><a href="/load"> [Load] </a><li>
+            <li><a href="/record_v2"> [Record V2] </a><li>
+            <li><a href="/leaflet"> [Leaflet Annotator] </a><li>
+        </ul>
+          <ul class="mui-list--inline mui--text-center">
+            <li><a href="/"> [tmpUI Home: Crop V3] </a><li>
+            <li><a href="https://www.allaboutbirds.org/guide/"> Bird Guide </a></li>
+            <li><a href="https://ebird.org/hotspots"> Find Hotspots </a></li>
+        </ul>
+    </div>
+</header>
+
+<br/>
+<br/>
+<br/><br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<body>
+    <div class="container-fluid">
+        <form>
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="inputAssetID">ML Audio Asset ID</label>
+                        <input type="text" class="form-control form-control-sm" id="inputAssetID" placeholder="38385631">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="inputTargetSampleRate">Target Sample Rate</label>
+                        <input type="text" class="form-control form-control-sm" id="inputTargetSampleRate" placeholder="22050">
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="inputSTFTWindowSeconds">STFT Window Seconds</label>
+                        <input type="text" class="form-control form-control-sm" id="inputSTFTWindowSeconds" placeholder="0.015">
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="inputSTFTHopSeconds">STFT Hop Seconds</label>
+                        <input type="text" class="form-control form-control-sm" id="inputSTFTHopSeconds" placeholder="0.005">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-1">
+                    <div class="form-group">
+                        <div class="form-check form-check-inline">
+                            <label class="form-check-label" for="inputDoMELScaling">MEL Scaling</label>
+                            <input class="form-check-input" type="checkbox" value="" id="inputDoMELScaling">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <div class="form-check">
+                            <label for="inputMELBands">MEL Bands</label>
+                            <input type="text" class="form-control form-control-sm" id="inputMELBands" placeholder="96">
+                          </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <div class="form-check">
+                            <label for="inputMELMinHZ">MEL Minimum HZ</label>
+                            <input type="text" class="form-control form-control-sm" id="inputMELMinHZ" placeholder="50">
+                          </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <div class="form-check">
+                            <label for="inputMELMaxHZ">MEL Maximum HZ</label>
+                            <input type="text" class="form-control form-control-sm" id="inputMELMaxHZ" placeholder="11025">
+                          </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label for="inputTopDB">Top dB</label>
+                        <input type="text" class="form-control form-control-sm" id="inputTopDB" placeholder="80">
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label for="inputTimeScale">Time Scale</label>
+                        <input type="text" class="form-control form-control-sm" id="inputTimeScale" placeholder="3">
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label for="inputSpecHeightPixels">Spectrogram Height (pixels)</label>
+                        <input type="text" class="form-control form-control-sm" id="inputSpecHeightPixels" placeholder="400">
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="row">
+            <div class="col">
+                <button type="button" class="btn btn-success" id="createSpectrogram" >Generate</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div id="specHolder"></div>
+            </div>
+        </div>
+    </div>
+    <script src="spec_display_bundle.js"></script>
+</body>
+<br/>
+<br/>
+<br/>
+<footer>
+    <div class="mui-container mui--text-center"> A WIP with ♥ </div>
+    <div class="mui-container mui--text-center"> <a href="https://transscendsurvival.org">@Jess</a>
+    </div>
+</footer>
+</html>

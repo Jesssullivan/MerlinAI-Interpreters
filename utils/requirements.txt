@@ -1,0 +1,12 @@
+# pip install -r utils/requirements.txt
+
+Flask==1.1.1
+gunicorn
+librosa
+imageio
+numpy
+pandas
+resampy
+scipy==1.4.1
+tensorflow
+matplotlib
