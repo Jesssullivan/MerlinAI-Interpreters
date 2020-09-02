@@ -40,7 +40,6 @@ const offlineCtx = isSafari ?
         1, WEBKIT_SAMPLE_RATE, WEBKIT_SAMPLE_RATE) :
     new appeaseTsLintWindow.OfflineAudioContext(1, SAMPLE_RATE, SAMPLE_RATE);
 
-
 // Patchup Safari
 //@ts-ignore
 if (!window.AudioContext && window.webkitAudioContext) {

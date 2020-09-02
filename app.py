@@ -2,6 +2,7 @@ from flask import Flask
 import threading
 import os
 import time
+from sys import argv
 
 """ global """
 
@@ -76,6 +77,9 @@ def prerender_thread():
     return threading.Thread(target=_iter())
 
 
+""" routing """
+
+
 @app.route('/')
 def crop_3():
     return app.send_static_file('spec_record_crop_v3.html' + _ext)
@@ -116,7 +120,6 @@ else:
     hosturl = '0.0.0.0'
 
 if prerender:
-
     print('please wait while prerendering html...')
     prerender = prerender_thread()
     prerender.start()
@@ -125,10 +128,9 @@ if prerender:
     prerender.join()
     print('...prerendering complete!  \n:)')
 
-
-print('starting ', type, ' Flask server!\n ',
-      'URL: ', hosturl, '\n',
-      'PORT: ', str(hostport))
+    print('starting ', type, ' Flask server!\n ',
+          'URL: ', hosturl, '\n',
+          'PORT: ', str(hostport))
 
 
 if __name__ == "__main__":

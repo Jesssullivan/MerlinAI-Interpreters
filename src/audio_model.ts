@@ -1,10 +1,11 @@
 
-import * as tf from '@tensorflow/tfjs';
+require('@tensorflow/tfjs-backend-wasm');
+import * as  tf from '@tensorflow/tfjs';
 
 export class MerlinAudioModel {
 
-    model : tf.GraphModel;
-    labels : string[];
+    model : tf.GraphModel | undefined;
+    labels! : string[];
 
     private sampleRate : number = 22050;
     //private minDurationSec : number = 1.0;
@@ -50,8 +51,6 @@ export class MerlinAudioModel {
         /* Return the highest score for each frame. */
 
         await this.ensureModelLoaded();
-
-
 
         const patchWindowLengthSamples = this.patchWindowSeconds * this.sampleRate;
         const patchHopLengthSamples = this.patchHopSeconds * this.sampleRate;

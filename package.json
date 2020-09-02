@@ -11,6 +11,7 @@
     "clean-all": "chmod u+x scripts/clean.sh && ./scripts/clean.sh"
   },
   "dependencies": {
+    "@tensorflow/tfjs-backend-wasm": "2.0.1",
     "@material-ui/core": "latest",
     "@tensorflow/tfjs": "latest",
     "@testing-library/jest-dom": "^4.2.4",
