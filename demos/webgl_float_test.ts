@@ -1,5 +1,5 @@
 // webgl_float_test.ts
-import {audio_model, audio_utils, spectrogram_utils} from '../src/index';
+import {audio_model, audio_utils, spectrogram_utils, tf} from '../src/index';
 
 // a default, hardcoded waveform snippet to try from different devices:
 const testWaveform = require('./test_waveform.json');
@@ -86,28 +86,19 @@ function generateSpectrogram(waveform : Float32Array) : Float32Array[]{
 
 webglButton.onclick = () => {
 
-    // benefit of the doubt here, ideally client is on a `proper` browser:
-    const gl = canvas.getContext('webgl');
-
     // we'll return our findings to a placeholder element:
     const glSupportHolderEl = document.getElementById('glSupportHolder');
     while (glSupportHolderEl!.firstChild) {
         glSupportHolderEl!.removeChild(glSupportHolderEl!.firstChild);
     }
 
-    const prec = gl!.getShaderPrecisionFormat(gl!.VERTEX_SHADER, gl!.HIGH_FLOAT)!.precision;
+    const capable = tf.ENV.getBool('WEBGL_RENDER_FLOAT32_CAPABLE');
 
-    if (prec >= 23) {
-        glSupportHolderEl!.prepend("this device's shader precision is " +
-            prec.toString() +
-            ", and should be able to handle float32 webgl values.");
-
+    if (capable) {
+        glSupportHolderEl!.prepend("Terrific! This device's is capable of float32. Yay!  ");
     } else {
-        glSupportHolderEl!.prepend("this device' shader precision is " + prec.toString() +
-            ", and should may not represent float32 values :(");
-
+        glSupportHolderEl!.prepend("Nooo!  Looks like this device needs to stick with float16. :)");
     }
-
 };
 
 testButton.onclick = () => {
