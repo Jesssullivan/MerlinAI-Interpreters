@@ -27,6 +27,7 @@ html_list = [
     static + 'load_audio.html',
     static + 'spec_display.html',
     static + 'spec_record_crop_v3.html',
+    static + 'webgl_float_test.html',
     static + 'spec_record_v2.html'
 ]
 
@@ -93,6 +94,11 @@ def load():
 @app.route('/record_v2')
 def rec2():
     return app.send_static_file('spec_record_v2.html' + _ext)
+
+
+@app.route('/webgl')
+def webgl():
+    return app.send_static_file('webgl_float_test.html' + _ext)
 
 
 @app.route('/leaflet')
