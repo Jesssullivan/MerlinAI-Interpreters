@@ -1,7 +1,7 @@
-import os
 from flask import Flask
 from threading import Thread
 import glob
+import os
 
 
 # set to `devel = False` for deployment
@@ -121,11 +121,6 @@ if prerender:
     # block until renders are done:
     prerender.join()
     print('...prerendering complete!  \n:)')
-
-
-#print('starting ', server['type'], ' Flask server!\n ',
-#      'URL: ', server['hosturl'], '\n',
-#      'PORT: ', server['hostport'])
 
 
 if devel:
