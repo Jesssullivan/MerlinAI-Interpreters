@@ -139,4 +139,4 @@ if prerender:
 
 
 #if __name__ == "__main__":
-app.run(host=hosturl, port=os.environ.get('PORT', hostport))
+#app.run(host=hosturl, port=os.environ.get('PORT', hostport))
