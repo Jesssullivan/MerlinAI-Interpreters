@@ -19,7 +19,6 @@ void
 **/reference
 
 __pycache__
-archive
 .idea
 **/tmp.*
 .DS_Store
