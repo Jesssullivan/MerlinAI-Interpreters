@@ -2,10 +2,6 @@ import os
 from flask import Flask
 from threading import Thread
 import glob
-from subprocess import Popen
-
-
-""" globals """
 
 
 # set to `devel = False` for deployment
@@ -22,9 +18,6 @@ devhost = '127.0.0.1'
 ext = '_render.html'
 static = "./demos/" if devel else "./production/"
 
-# model locations:
-graph_model = static + 'models/graph/model.json'
-lite_model = static + 'models/lite/model.tflite'
 
 # default html chunks:
 header = static + 'templates/header.html'
