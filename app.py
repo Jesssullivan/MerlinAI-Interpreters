@@ -31,17 +31,14 @@ header = static + 'templates/header.html'
 footer = static + 'templates/footer.html'
 
 
-def configure():
-    if devel:
-        type = 'development'
-        hostport = devport
-        hosturl = devhost
-    else:
-        type = 'production'
-        hostport = 80
-        hosturl = '0.0.0.0'
-
-    return {'type': type, 'hostport': hostport, 'hosturl': hosturl}
+if devel:
+    type = 'development'
+    hostport = devport
+    hosturl = devhost
+else:
+    type = 'production'
+    hostport = 80
+    hosturl = '0.0.0.0'
 
 
 app = Flask(__name__, static_folder=static)
@@ -150,5 +147,5 @@ if prerender:
 #      'PORT: ', server['hostport'])
 
 
-if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=os.environ.get('PORT', 80))
+#if __name__ == "__main__":
+app.run(host='0.0.0.0', port=os.environ.get('PORT', 80))
