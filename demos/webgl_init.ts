@@ -15,7 +15,6 @@ function buffer(ms: number) {
 }
 
 const capable = tf.ENV.getBool('WEBGL_RENDER_FLOAT32_CAPABLE');
-glSupportHolderEl!.prepend("WebGL mediump float:  Evaluating device...");
 
 if (capable) {
     buffer(2000);
