@@ -130,8 +130,6 @@ def leaflet():
     return app.send_static_file('annotator.html')
 
 
-server = configure()
-
 if prerender:
     print('please wait while prerendering html...')
     prerender = prerender_thread()
@@ -148,4 +146,4 @@ if prerender:
 
 
 #if __name__ == "__main__":
-app.run(host='0.0.0.0', port=os.environ.get('PORT', 80))
+app.run(host=hosturl, port=os.environ.get('PORT', hostport))
