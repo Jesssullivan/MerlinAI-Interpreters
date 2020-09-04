@@ -1,4 +1,5 @@
 // spec_record_crop.ts v3
+
 import {audio_loader, audio_model, audio_utils, AudioRecorder, spectrogram_utils} from '../src/index';
 const noUiSlider = require('./nouislider');
 
@@ -12,8 +13,8 @@ const mainSection = document.querySelector('.container-fluid') as HTMLDivElement
 /* tslint:disable:prefer-const */
 let imgCrop = document.createElement('img');
 let imgSpec = document.createElement('img');
-
 /* tslint:enable:prefer-const */
+
 let recordedBlobs : Blob;
 let mediaRecorder : MediaRecorder;
 let audioCtx : AudioContext;
@@ -26,7 +27,7 @@ let currentWaveform : Float32Array;
 // Spectrogram Visualization Parameters
 const image_height = 300;
 const timeScale = 1.0;
-const targetSampleRate = 22050;
+const targetSampleRate = 44100;
 const stftWindowSeconds = 0.015;
 const stftHopSeconds = 0.005;
 const topDB = 80;

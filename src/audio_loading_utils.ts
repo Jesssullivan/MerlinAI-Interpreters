@@ -125,7 +125,9 @@ export async function resampleAndMakeMono(
       const originalAudio = getMonoAudio(audioBuffer);
       const resampledAudio = new Float32Array(lengthRes);
       resample(
+          //@ts-ignore
           ndarray(resampledAudio, [lengthRes]),
+          //@ts-ignore
           ndarray(originalAudio, [originalAudio.length]));
       return resampledAudio;
     }
