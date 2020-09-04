@@ -95,9 +95,9 @@ webglButton.onclick = () => {
     const capable = tf.ENV.getBool('WEBGL_RENDER_FLOAT32_CAPABLE');
 
     if (capable) {
-        glSupportHolderEl!.prepend("Terrific! This device's is capable of float32. Yay!  ");
+        glSupportHolderEl!.prepend("WebGL mediump float: Terrific! These demos are supported on your device.");
     } else {
-        glSupportHolderEl!.prepend("Nooo!  Looks like this device needs to stick with float16. :)");
+        glSupportHolderEl!.prepend("WebGL mediump float: Hmm, these demos are not supported on this device.  Come build an awesome native version with us @ https://github.com/JessSullivan/tmpUI");
     }
 };
 

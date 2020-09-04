@@ -1,9 +1,10 @@
 const tf = require('@tensorflow/tfjs');
 export {tf};
-require('@tensorflow/tfjs-backend-wasm');
 
-// Set the backend to WASM and wait for the module to be ready.
-tf.setBackend('wasm');
+// wasm....
+// :(
+// require('@tensorflow/tfjs-backend-wasm');
+// tf.setBackend('wasm');
 
 //@ts-ignore
 import AudioRecorder from 'audio-recorder-polyfill';
@@ -13,8 +14,10 @@ import * as audio_loader from './audio_loading_utils';
 import * as audio_model from './audio_model';
 import * as audio_utils from './audio_utils';
 import * as spectrogram_utils from './spectrogram_utils';
+import * as ui_utils from './ui_utils';
 
 export {
+    ui_utils,
     audio_loader,
     audio_model,
     audio_utils,

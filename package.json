@@ -56,8 +56,9 @@
     ]
   },
   "devDependencies": {
-    "@types/minimist": "latest",
+    "@tensorflow/tfjs-converter": "^2.3.0",
     "@types/dom-mediacapture-record": "^1.0.7",
+    "@types/minimist": "latest",
     "@types/ndarray": "^1.0.6",
     "http-server": "^0.12.3",
     "terser-webpack-plugin": "^1.4.5",

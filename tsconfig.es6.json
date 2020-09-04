@@ -1,13 +1,13 @@
 {
   "compilerOptions": {
     "noImplicitAny": true,
+    "outDir": "./.built",
     "removeComments": false,
     "preserveConstEnums": true,
     "declaration": true,
     "allowJs": false,
     "sourceMap": true,
     "lib": ["es2015", "dom"],
-    "outDir": "./es6",
     "noUnusedLocals": true,
     "noImplicitReturns": true,
     "noImplicitThis": true,
