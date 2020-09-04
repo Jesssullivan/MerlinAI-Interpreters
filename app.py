@@ -145,10 +145,10 @@ if prerender:
     print('...prerendering complete!  \n:)')
 
 
-print('starting ', server['type'], ' Flask server!\n ',
-      'URL: ', server['hosturl'], '\n',
-      'PORT: ', server['hostport'])
+#print('starting ', server['type'], ' Flask server!\n ',
+#      'URL: ', server['hosturl'], '\n',
+#      'PORT: ', server['hostport'])
 
 
 if __name__ == "__main__":
-    app.run(host=server['hosturl'], port=os.environ.get('PORT', server['hostport']))
+    app.run(host='0.0.0.0', port=os.environ.get('PORT', 80))
