@@ -1,14 +1,23 @@
 {
   "name": "tmpui-merlinai",
+  "license": "MIT",
+  "version": "0.3.2",
+  "proxy": "http://localhost:5000",
+  "mode": "development",
   "scripts": {
-    "develop": "chmod +x scripts/development.sh && ./scripts/development.sh",
-    "build-demos": "npm run-script clean-renders && webpack --config webpack/es6.demo.config.ts",
-    "build-minimal": "webpack --config webpack/minimal.demo.config.ts",
-    "production": "chmod +x scripts/production.sh && ./scripts/production.sh",
-    "sslgen-demos": "chmod +x scripts/sslgen.sh && ./scripts/sslgen.sh",
-    "clean-bundles": "rm -rf ./es6 && find demos/ -name \"*_bundle.js\" -print -delete",
-    "clean-renders": "rm -rf ./es6 && find demos/ -name \"*_render.html\" -print -delete",
-    "clean-all": "chmod u+x scripts/clean.sh && ./scripts/clean.sh"
+    "ios": "node node_modules/react-native/local-cli/cli.js run-ios",
+    "android-native": "node node_modules/react-native/local-cli/cli.js run-android",
+    "develop-web": "chmod +x scripts/development.sh && ./scripts/development.sh",
+    "production-web": "chmod +x scripts/production.sh && ./scripts/production.sh",
+    "demo-web-build": "npm run-script clean-renders && webpack --config webpack/es6.demo.config.ts",
+    "sslgen-web-demos": "chmod +x scripts/sslgen.sh && ./scripts/sslgen.sh",
+    "minimal-web-build": "webpack --config webpack/minimal.demo.config.ts",
+    "clean-web-bundles": "rm -rf ./es6 && find demos/ -name \"*_bundle.js\" -print -delete",
+    "clean-web-renders": "rm -rf ./es6 && find demos/ -name \"*_render.html\" -print -delete",
+    "clean-all": "chmod u+x scripts/clean.sh && ./scripts/clean.sh",
+    "start": "react-native start",
+    "test": "jest",
+    "lint": "eslint ."
   },
   "dependencies": {
     "@tensorflow/tfjs-backend-wasm": "2.0.1",
@@ -31,8 +40,36 @@
     "react-dom": "^16.13.1",
     "react-scripts": "3.4.3"
   },
+  "devDependencies": {
+    "@babel/core": "7.11.6",
+    "@babel/runtime": "7.11.2",
+    "@react-native-community/eslint-config": "1.1.0",
+    "babel-jest": "25.5.1",
+    "eslint": "6.8.0",
+    "jest": "25.5.4",
+    "metro-react-native-babel-preset": "0.59.0",
+    "react-test-renderer": "16.13.1",
+    "react": "16.13.1",
+    "react-native": "0.63.2",
+    "@tensorflow/tfjs-converter": "^2.3.0",
+    "@types/dom-mediacapture-record": "^1.0.7",
+    "@types/minimist": "latest",
+    "@types/ndarray": "^1.0.6",
+    "http-server": "^0.12.3",
+    "terser-webpack-plugin": "^1.4.5",
+    "ts-loader": "^5.3.0",
+    "ts-node": "^5.0.1",
+    "tsify": "^3.0.4",
+    "tslint": "^5.9.1",
+    "typescript": "^3.6.3",
+    "webpack": "latest",
+    "webpack-cli": "latest"
+  },
   "eslintConfig": {
     "extends": "tmpui-template"
+  },
+  "jest": {
+    "preset": "react-native"
   },
   "browserslist": {
     "production": [
@@ -53,24 +90,9 @@
     ],
     "plugins": [
       "@babel/plugin-proposal-class-properties"
-    ]
+    ],
+    "private": true
   },
-  "devDependencies": {
-    "@tensorflow/tfjs-converter": "^2.3.0",
-    "@types/dom-mediacapture-record": "^1.0.7",
-    "@types/minimist": "latest",
-    "@types/ndarray": "^1.0.6",
-    "http-server": "^0.12.3",
-    "terser-webpack-plugin": "^1.4.5",
-    "ts-loader": "^5.3.0",
-    "ts-node": "^5.0.1",
-    "tsify": "^3.0.4",
-    "tslint": "^5.9.1",
-    "typescript": "^3.6.3",
-    "webpack": "latest",
-    "webpack-cli": "latest"
-  },
-  "version": "0.3.1",
   "contributors": [
     {
       "name": "Jess Sullivan",
@@ -80,9 +102,5 @@
       "name": "Grant Van Horn",
       "url": "https://github.com/gvanhorn38"
     }
-  ],
-  "license": "MIT",
-  "mode": "development",
-  "proxy": "http://localhost:5000",
-  "private": true
+  ]
 }
