@@ -28,9 +28,9 @@ npm run-script develop
 ```console
 npm run-script develop && npm run-script production
 ```
-    
-- - - 
-    
+
+- - -
+
 #### *Whirring toward Annotation as a feature:*
 
 * User records a song; song spectrogram is cropped, annotated as either an already ID'd species or unknown song
@@ -41,13 +41,13 @@ npm run-script develop && npm run-script production
    * Aiming to make project contribution simple; easy to add to as many audio-enabled devices and projects as possible
    * sorting out these annotation tools (documentation, sensible api, Github presence, etc) seems to be the first and most important step
    * ingress data organization and whatnot would be next, not a big concern while we are experimenting
-   
+
 * How will this become part of new and exciting features (instead of a data cleaning task / tedium?)
    * ...what if audio is recorded during an eBird checklist, such that a user can tick a box when a bird is ID'd by ear, adding the species & timestamp?
    * ...could be "gamified" as part of the undergraduate Ornithology curriculum?
    * ...what if audio collection & annotation could be easily implemented on a Raspberry Pi, or incorporated into STEM curriculums?
    * ...part of some kind of feederwatch kiosk, allow easy guest annotations?
-   
+
 * Investigate adding non-audio data to both model and vetting process-
    * date & coordinates would narrow options considerably, an account of general surrounding habitat would result in just a handful of possible species at most
    * Recent or historical ebird check ins at same date / location would also improve accuracy and narrow possibilities
@@ -58,5 +58,4 @@ npm run-script develop && npm run-script production
   * could annotations be bundled as an "album/song" metadata?
 
 
-- - - 
-
+- - -

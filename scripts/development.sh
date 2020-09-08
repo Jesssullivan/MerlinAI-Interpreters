@@ -9,4 +9,4 @@ echo -e "development: packing done. \n..."
 # export FLASK_APP=app.py
 
 echo 'development: starting Flask...'
-flask run
+cd serve && flask run
