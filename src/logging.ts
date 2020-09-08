@@ -20,7 +20,7 @@
 /**
  * The different verbosity levels.
  */
-export const enum Level {
+export enum Level {
   NONE = 0,   // No messages will be logged.
   WARN = 5,   // WARN messages will be logged.
   INFO = 10,  // INFO and WARN messages will be logged.

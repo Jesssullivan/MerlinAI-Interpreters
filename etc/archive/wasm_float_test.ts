@@ -3,7 +3,7 @@
 // a wan attempt to get the float32 model working on ios
 
 require('@tensorflow/tfjs-backend-wasm');
-import {audio_model, audio_utils, spectrogram_utils, tf} from '../src/index';
+import {audio_model, audio_utils, spectrogram_utils, tf} from '../../src';
 
 // a default, hardcoded waveform snippet to try from different devices:
 const testWaveform = require('./test_waveform.json');

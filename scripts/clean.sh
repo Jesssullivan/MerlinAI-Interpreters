@@ -2,7 +2,6 @@
 
 
 echo -e "Warning: this script REMOVES:
-node_modules
 ./es6
 ./.built
 ./production
@@ -18,13 +17,11 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 
-
-echo "removing node_modules..."
+#echo "removing node_modules..."
 # rm -rf node_modules
 
 echo "removing ./es6..."
 find '.' -name "es6" -type d -print -exec rm -rf {} \;
-
 
 echo "removing ./production..."
 find '.' -name "production" -type d -exec rm -rf {} \;
