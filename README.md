@@ -53,7 +53,7 @@ prerender = True
 ### *pack up the web demos & start serving:* 
     
 ```console
-# see more script struff package.json & in `./scripts/`
+# see more script stuff in package.json & in `./scripts/`
 npm run-script develop-web
 ```
 
@@ -62,9 +62,7 @@ npm run-script develop-web
     
 ```
 # ios depends:
-cd ios
-pod install  
-cd ..
+cd ios && pod install && cd ..
 ```
 
 ### *Prepare a `./production` directory --> deploy web demos like this:*
