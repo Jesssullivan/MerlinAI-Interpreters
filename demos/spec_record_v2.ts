@@ -1,4 +1,4 @@
-import {audio_loader, audio_utils, spectrogram_utils, AudioRecorder} from '../src/index';
+import {audio_loader, audio_utils, AudioRecorder, spectrogram_utils} from '../src/index';
 
 window.MediaRecorder = AudioRecorder;
 
@@ -15,7 +15,6 @@ let audioCtx : AudioContext;
 const canvasCtx = canvas.getContext("2d");
 let chunks : Blob[] = [];
 
-
 // Spectrogram Visualization Parameters
 const targetSampleRate = 44100;
 const stftWindowSeconds = 0.015;
@@ -26,19 +25,17 @@ function generateSpectrogram(waveform : Float32Array) : Float32Array[]{
 
     const window_length_samples = Math.round(targetSampleRate * stftWindowSeconds);
     const hop_length_samples = Math.round(targetSampleRate * stftHopSeconds);
-    const fft_length = Math.pow(2, Math.ceil(Math.log(window_length_samples) / Math.log(2.0)))
+    const fft_length = Math.pow(2, Math.ceil(Math.log(window_length_samples) / Math.log(2.0)));
 
-    var spec_params = {
+    const spec_params = {
         sampleRate: targetSampleRate,
         hopLength: hop_length_samples,
         winLength: window_length_samples,
         nFft: fft_length,
-        topDB : topDB
+        topDB
     };
 
-    const dbSpec = audio_utils.dBSpectrogram(waveform, spec_params);
-
-    return dbSpec;
+    return audio_utils.dBSpectrogram(waveform, spec_params);
 
 }
 
@@ -46,32 +43,31 @@ function renderSpectrogram(imageURI : string, spectrogramLength: number){
 
     // render the (scaled) spectrogram
 
-    let image_height = 400;
-    let timeScale = 1.0;
-    let image_width = Math.round(spectrogramLength * timeScale);
+    const image_height = 400;
+    const timeScale = 1.0;
+    const image_width = Math.round(spectrogramLength * timeScale);
 
-    let img = document.createElement('img');
+    const img = document.createElement('img');
     img.src = imageURI;
     img.height = image_height;
     img.width =  image_width;
     console.log("Image Dims: [ " + image_height + ", " + image_width + "]");
 
     // Clear out previous images
-    let specHolderEl = document.getElementById('specHolder');
-    while (specHolderEl.firstChild) {
-        specHolderEl.removeChild(specHolderEl.firstChild);
+    const specHolderEl = document.getElementById('specHolder');
+    while (specHolderEl!.firstChild) {
+        specHolderEl!.removeChild(specHolderEl!.firstChild);
     }
 
     // Add the spectrogram
-    specHolderEl.appendChild(img);
+    specHolderEl!.appendChild(img);
 
 }
-
 
 function visualize(stream : MediaStream) {
     if(!audioCtx) {
         //@ts-ignore
-        var AudioContext = window.AudioContext || window.webkitAudioContext;
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
         audioCtx = new AudioContext();
     }
 
@@ -84,51 +80,50 @@ function visualize(stream : MediaStream) {
 
     source.connect(analyser);
 
-    draw()
+    draw();
 
     function draw() {
-        const WIDTH = canvas.width
+        const WIDTH = canvas.width;
         const HEIGHT = canvas.height;
 
         requestAnimationFrame(draw);
 
         analyser.getByteTimeDomainData(dataArray);
 
-        canvasCtx.fillStyle = 'rgb(200, 200, 200)';
-        canvasCtx.fillRect(0, 0, WIDTH, HEIGHT);
+        canvasCtx!.fillStyle = 'rgb(200, 200, 200)';
+        canvasCtx!.fillRect(0, 0, WIDTH, HEIGHT);
 
-        canvasCtx.lineWidth = 2;
-        canvasCtx.strokeStyle = 'rgb(0, 0, 0)';
+        canvasCtx!.lineWidth = 2;
+        canvasCtx!.strokeStyle = 'rgb(0, 0, 0)';
 
-        canvasCtx.beginPath();
+        canvasCtx!.beginPath();
 
-        let sliceWidth = WIDTH * 1.0 / bufferLength;
+        const sliceWidth = WIDTH / bufferLength;
         let x = 0;
-
 
         for(let i = 0; i < bufferLength; i++) {
 
-            let v = dataArray[i] / 128.0;
-            let y = v * HEIGHT/2;
+            const v = dataArray[i] / 128.0;
+            const y = v * HEIGHT/2;
 
             if(i === 0) {
-                canvasCtx.moveTo(x, y);
+                canvasCtx!.moveTo(x, y);
             } else {
-                canvasCtx.lineTo(x, y);
+                canvasCtx!.lineTo(x, y);
             }
 
             x += sliceWidth;
         }
 
-        canvasCtx.lineTo(canvas.width, canvas.height/2);
-        canvasCtx.stroke();
+        canvasCtx!.lineTo(canvas.width, canvas.height/2);
+        canvasCtx!.stroke();
 
     }
 }
 
-recordBtn.onclick = function() {
+recordBtn.onclick = () => {
 
-    let onSuccess = function(stream : MediaStream) {
+    const onSuccess = (stream : MediaStream) => {
 
         microphoneStream = stream;
 
@@ -140,7 +135,6 @@ recordBtn.onclick = function() {
         console.log("recorder started");
 
         visualize(stream);
-
 
         // mediaRecorder.onstop = function() {
         mediaRecorder.addEventListener('stop', e => {
@@ -156,8 +150,8 @@ recordBtn.onclick = function() {
                 .then((audioBuffer) => audio_loader.resampleAndMakeMono(audioBuffer, targetSampleRate))
                 .then((audioWaveform) => {
                     console.log("Number of samples: " + audioWaveform.length);
-                    let dbSpec = generateSpectrogram(audioWaveform);
-                    let imageURI = spectrogram_utils.dBSpectrogramToImage(dbSpec, topDB);
+                    const dbSpec = generateSpectrogram(audioWaveform);
+                    const imageURI = spectrogram_utils.dBSpectrogramToImage(dbSpec, topDB);
                     renderSpectrogram(imageURI, dbSpec.length);
 
                 });
@@ -171,17 +165,15 @@ recordBtn.onclick = function() {
             chunks.push(e.data);
         });
 
+    };
 
-    }
-
-
-    let onError = function(err : Error) {
+    const onError = (err : Error) => {
         console.log('The following error occured: ' + err);
 
         stopBtn.setAttribute('disabled',  'disabled');
         recordBtn.removeAttribute('disabled');
 
-    }
+    };
 
     stopBtn.removeAttribute('disabled');
     recordBtn.setAttribute('disabled',  'disabled');
@@ -189,9 +181,9 @@ recordBtn.onclick = function() {
     const constraints = { audio: true, video : false};
     navigator.mediaDevices.getUserMedia(constraints).then(onSuccess, onError);
 
-}
+};
 
-stopBtn.onclick = function() {
+stopBtn.onclick = () => {
     mediaRecorder.stop();
     console.log(mediaRecorder.state);
     console.log("recorder stopped");
@@ -199,15 +191,15 @@ stopBtn.onclick = function() {
     stopBtn.setAttribute('disabled',  'disabled');
     recordBtn.removeAttribute('disabled');
 
-    microphoneStream.getTracks().forEach(function(track) {
-        if (track.readyState == 'live' && track.kind === 'audio') {
+    microphoneStream.getTracks().forEach((track) => {
+        if (track.readyState === 'live' && track.kind === 'audio') {
             track.stop();
         }
     });
-}
+};
 
 // Make the canvas the full width
-window.addEventListener('resize', function(){
+window.addEventListener('resize', () => {
     canvas.width = mainSection.offsetWidth;
 });
 
