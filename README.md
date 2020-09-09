@@ -1,9 +1,9 @@
 
-## *Demos w/ the Merlin Sound ID Project*
-#### [Visit the demos & renders here](https://tmpui.herokuapp.com/)
+# *Demos w/ the Merlin Sound ID Project*
+## [Visit the demos & renders here](https://tmpui.herokuapp.com/)
 
     
-***Hack upon these demos:***
+### ***Hack upon these demos:***
     
 ```console
 # clone:
@@ -11,21 +11,21 @@ git clone https://github.com/Jesssullivan/tmpUI
 cd tmpUI
 ```
 
-#### *Install Node dependencies:*   
+### *Install Node dependencies:*   
     
 ```
 # node depends:
 npm install  
 ```
 
-#### *Set up a local Python environment for Flask if that's your thing:*
+### *Set up a local Python environment for Flask if that's your thing:*
 ```
 # set up a local venv:
 python3 -m venv tmpui_venv
 source tmpui_venv/bin/activate
 ```
 
-#### *Install depends for Flask demos:* 
+### *Install depends for Flask demos:* 
     
 ```
 # Flask depends:
@@ -35,8 +35,8 @@ pip3 install -r requirements.txt
 # ...as well
 ```
 
-#### *Configure Flask accordingly in `config.py`:*    
-    
+### *Configure Flask accordingly in `config.py`:*    
+   
 ```Python
 # config.py
 
@@ -47,7 +47,7 @@ devel = True
 prerender = True
 ```
 
-#### *pack up the web demos & start serving:* 
+### *pack up the web demos & start serving:* 
     
 ```console
 # see more script struff package.json & in `./scripts/`
@@ -55,7 +55,7 @@ npm run-script develop-web
 ```
 
    
-#### *Install Cocoa depends to get cracking on the ios demos:*   
+### *Install Cocoa depends to get cracking on the ios demos:*   
     
 ```
 # ios depends:
@@ -64,7 +64,7 @@ pod install
 cd ..
 ```
 
-#### *Prepare a `./production` directory --> deploy web demos like this:*
+### *Prepare a `./production` directory --> deploy web demos like this:*
 ```console
 # make sure all bundles and renders are bundled and rendered:
 # npm run-script develop
@@ -75,7 +75,7 @@ npm run-script production
 ```
 
 
-### *Whirring toward Annotation as a feature:*
+## *Whirring toward Annotation as a feature:*
 
 * User records a song; song spectrogram is cropped, annotated as either an already ID'd species or unknown song
    * this way, every song encountered is added to the data pool, corroborating or reshaping future models
