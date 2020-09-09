@@ -35,10 +35,10 @@ pip3 install -r requirements.txt
 # ...as well
 ```
 
-#### *Configure Flask accordingly in `serve/config.py`:*    
+#### *Configure Flask accordingly in `config.py`:*    
     
 ```Python
-# serve/config.py
+# config.py
 
 # `True` serves demos @ 127.0.0.1:5000 via node proxy (set `False` for production @ 0.0.0.0:80)
 devel = True
@@ -55,7 +55,7 @@ npm run-script develop-web
 ```
 
    
-#### *Install CocoaPod depends to get cracking on the ios demos:*   
+#### *Install Cocoa depends to get cracking on the ios demos:*   
     
 ```
 # ios depends:
