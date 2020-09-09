@@ -8,7 +8,7 @@
     
 ### ***Hack upon these demos:***
     
-```console
+```
 # clone:
 git clone https://github.com/Jesssullivan/tmpUI
 cd tmpUI
@@ -52,7 +52,7 @@ prerender = True
 
 ### *pack up the web demos & start serving:* 
     
-```console
+```
 # see more script stuff in package.json & in `./scripts/`
 npm run-script develop-web
 ```
@@ -66,7 +66,7 @@ cd ios && pod install && cd ..
 ```
 
 ### *Prepare a `./production` directory --> deploy web demos like this:*
-```console
+```
 # make sure all bundles and renders are bundled and rendered:
 # npm run-script develop
 
