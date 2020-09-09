@@ -1,10 +1,9 @@
 
-## Demos w/ the Merlin Sound ID Project
-### - [*Visit the demos & renders here*](https://tmpui.herokuapp.com/)
-### - [*readme @ github.io*](https://jesssullivan.github.io/tmpUI/)
+# Demos w/ the Merlin Sound ID Project
     
+- ***[*Visit the demos & renders here*](https://tmpui.herokuapp.com/)***  
+- ***[*readme @ github.io*](https://jesssullivan.github.io/tmpUI/)***
     
-- - - 
     
     
 ### ***Hack upon these demos:***
