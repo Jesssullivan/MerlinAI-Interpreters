@@ -37,7 +37,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="/Users/jess/git/tmpUI/tmpui_venv"
+VIRTUAL_ENV="/Users/jess/git/tmpui/tmpui_venv"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"

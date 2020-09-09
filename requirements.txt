@@ -1,4 +1,4 @@
-# pip3 install -r serve/requirements.txt
+# pip3 install -r requirements.txt
 gunicorn
 # Flask 1.1.2 has been causing headaches w/ Heroku, Jess has no idea why
 Flask==1.1.1  # sticking with 1.1.1 for now :(
