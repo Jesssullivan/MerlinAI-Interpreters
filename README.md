@@ -6,7 +6,7 @@
     
     
     
-### **Hack upon these demos:**
+## **Hack upon these demos:**
     
 ```
 # clone:
@@ -14,24 +14,24 @@ git clone https://github.com/Jesssullivan/tmpUI
 cd tmpUI
 ```
 
-### *Install Node dependencies:*   
+#### *Install Node dependencies:*   
     
 ```
 # node depends:
 npm install  
 ```
 
-# Web:
+## Web:
    
    
-### *Set up a local Python environment for Flask if that's your thing:*
+#### *Set up a local Python environment for Flask if that's your thing:*
 ```
 # set up a local venv:
 python3 -m venv tmpui_venv
 source tmpui_venv/bin/activate
 ```
 
-### *Install depends for Flask demos:* 
+#### *Install depends for Flask demos:* 
     
 ```
 # Flask depends:
@@ -41,7 +41,7 @@ pip3 install -r requirements.txt
 # ...as well
 ```
 
-### *Configure Flask accordingly in `config.py`:*    
+#### *Configure Flask accordingly in `config.py`:*    
    
 ```Python
 # config.py
@@ -53,14 +53,14 @@ devel = True
 prerender = True
 ```
 
-### *pack up the web demos & start serving:* 
+#### *pack up the web demos & start serving:* 
     
 ```
 # see more script stuff in package.json & in `./scripts/`
 npm run-script develop-web
 ```
 
-### *Prepare a `./production` directory --> deploy web demos like this:*
+#### *Prepare a `./production` directory --> deploy web demos like this:*
 ```
 # make sure all bundles and renders are bundled and rendered:
 # npm run-script develop
@@ -70,10 +70,10 @@ npm run-script production
 # (you'll want reconfigure config.py accordingly too)
 ```
 
-# Native:
+## Native:
     
    
-### *Install & link Cocoa depends to get cracking on the ios demos:*   
+#### *Install & link Cocoa depends to get cracking on the ios demos:*   
     
 ```
 # link ios depends:
@@ -83,7 +83,7 @@ cd ios && pod install && cd ..
 - The entrypoint for native tests is `./index.js`- fiddle with react-native from `./native/`.
         
         
-### *Build & deploy to Xcode Simulator:*   
+#### *Build & deploy to Xcode Simulator:*   
     
 ```
 # link ios depends:
@@ -92,7 +92,7 @@ npm run-script ios-native
 
 - - - 
 
-## *Many directions, all at once:*    
+### *Many directions, all at once:*    
 
 - I think Grant and I left off with building a native / hybrid Record --> Classify --> Annotate --> generate TFRecord demo
     - This is what Jess is currently working on, currently recycling spectrogram bits --> react-native 
@@ -103,7 +103,7 @@ npm run-script ios-native
      - I understand bringing in more human annotators via existing Macaulay recordings is currently the highest priority
   
     
-## *Macaulay Annotation features:*        
+### *Macaulay Annotation features:*        
 
 - Since Macaulay recording are already pretty well labeled by species, what if we make human annotations into a learning game of sorts?  i.e. In order for the user to guess, they must crop in on the song they are guessing on- free annotation lunch?  
     - We already know what the target species is, so even if they get it wrong while they learn a new song, we still get a labeled annotation
@@ -118,7 +118,7 @@ npm run-script ios-native
 
 ---    
    
-## *Field Annotation features:*
+### *Field Annotation features:*
 
 * User records a song; song spectrogram is cropped, annotated as either an already ID'd species or unknown song
    * this way, every song encountered is added to the data pool, corroborating or reshaping future models
