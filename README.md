@@ -6,7 +6,7 @@
     
     
     
-### ***Hack upon these demos:***
+### **Hack upon these demos:**
     
 ```
 # clone:
@@ -21,6 +21,9 @@ cd tmpUI
 npm install  
 ```
 
+# Web:
+   
+   
 ### *Set up a local Python environment for Flask if that's your thing:*
 ```
 # set up a local venv:
@@ -57,14 +60,6 @@ prerender = True
 npm run-script develop-web
 ```
 
-   
-### *Install Cocoa depends to get cracking on the ios demos:*   
-    
-```
-# ios depends:
-cd ios && pod install && cd ..
-```
-
 ### *Prepare a `./production` directory --> deploy web demos like this:*
 ```
 # make sure all bundles and renders are bundled and rendered:
@@ -75,8 +70,55 @@ npm run-script production
 # (you'll want reconfigure config.py accordingly too)
 ```
 
+# Native:
+    
+   
+### *Install & link Cocoa depends to get cracking on the ios demos:*   
+    
+```
+# link ios depends:
+cd ios && pod install && cd ..
+```
 
-## *Whirring toward Annotation as a feature:*
+- The entrypoint for native tests is `./index.js`- fiddle with react-native from `./native/`.
+        
+        
+### *Build & deploy to Xcode Simulator:*   
+    
+```
+# link ios depends:
+npm run-script ios-native
+```
+
+- - - 
+
+## *Many directions, all at once:*    
+
+- I think Grant and I left off with building a native / hybrid Record --> Classify --> Annotate --> generate TFRecord demo
+    - This is what Jess is currently working on, currently recycling spectrogram bits --> react-native 
+    - Looking for any existing eBird / Merlin logic or an api we can employ right off the bat for ruling out species based on location & date? (even just eBird's "rare" label?)        
+    
+- synced up with Brian & Drew- sounds like there is more interest in a vuejs-centric hybrid app over React      
+     - Lots of hopes to expand the nifty web annotator tool on the Cornell server 
+     - I understand bringing in more human annotators via existing Macaulay recordings is currently the highest priority
+  
+    
+## *Macaulay Annotation features:*        
+
+- Since Macaulay recording are already pretty well labeled by species, what if we make human annotations into a learning game of sorts?  i.e. In order for the user to guess, they must crop in on the song they are guessing on- free annotation lunch?  
+    - We already know what the target species is, so even if they get it wrong while they learn a new song, we still get a labeled annotation
+
+- Get humans annotating asap, ideally with a fun / educational twist
+   - it would be so cool to be able to hook up a bunch of ornithology professors and students up and down New England with a song study / game tool of sorts
+   - Would be fun to add this annotation-centered song learning game feature to the hybrid app, may be more helpful in the near term than field annotation 
+       
+- Another similar thread to the same end is automating the annotation / boxing of Macaulay recordings- 
+    - Could get pretty far with the existing species labels + vetting with time / date + a highpass filter, though this has less to do with UX and more with getting a jump on adding data for a more accurate model
+    - Similarly, since the only real task here is to isolate vocalizations (not id vocalizations)- detecting “Clearly a bird sound vs. not a bird sound”- for each recording, for each species- could be automated to operate without human assistance.  
+
+---    
+   
+## *Field Annotation features:*
 
 * User records a song; song spectrogram is cropped, annotated as either an already ID'd species or unknown song
    * this way, every song encountered is added to the data pool, corroborating or reshaping future models
