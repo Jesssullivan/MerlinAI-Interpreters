@@ -6,7 +6,7 @@
     
     
     
-### **Hack upon these demos:**
+## **Hack upon these demos:**
     
 ```
 # clone:
@@ -21,7 +21,7 @@ cd tmpUI
 npm install  
 ```
 
-# Web:
+## Web:
    
    
 #### *Set up a local Python environment for Flask if that's your thing:*
@@ -70,7 +70,7 @@ npm run-script production
 # (you'll want reconfigure config.py accordingly too)
 ```
 
-# Native:
+## Native:
     
    
 #### *Install & link Cocoa depends to get cracking on the ios demos:*   
