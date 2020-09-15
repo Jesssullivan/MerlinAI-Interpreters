@@ -27,7 +27,7 @@
     "@types/terser-webpack-plugin": "^4.1.0",
     "@types/webgl2": "0.0.5",
     "audio-recorder-polyfill": "^0.3.6",
-    "audiobuffer-to-wav": "~1.0.0",
+    "react-native-audio-polyfill": "^1.1.8",
     "clsx": "latest",
     "fft": "^0.2.1",
     "fft.js": "^4.0.3",
@@ -41,8 +41,7 @@
     "react-native-audio-recorder-player": "~2.5.3",
     "react-native-fs": "~2.16.6",
     "react-scripts": "3.4.3",
-    "rebuild": "^0.1.2",
-    "web-audio-api": "~0.2.2"
+    "rebuild": "^0.1.2"
   },
   "devDependencies": {
     "@babel/core": "^7.8.4",

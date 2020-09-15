@@ -4,11 +4,11 @@ import {
   View,
   ScrollView
 } from 'react-native';
-import {RecButtons} from './JS_PlaceholderBtns';
+import {RecButtons} from './RecBtns';
 import {AppHeader} from './AppHeader';
 
 
-export class Placeholder extends Component {
+export class App extends Component {
   render() {
     return (
         <View style={styles.container}>

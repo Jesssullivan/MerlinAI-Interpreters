@@ -296,6 +296,8 @@ PODS:
     - React-Core (= 0.63.2)
     - React-cxxreact (= 0.63.2)
     - React-jsi (= 0.63.2)
+  - RNAudio (1.1.8):
+    - React
   - RNAudioRecorderPlayer (2.5.3):
     - React
   - RNFS (2.16.6):
@@ -351,6 +353,7 @@ DEPENDENCIES:
   - React-RCTText (from `../node_modules/react-native/Libraries/Text`)
   - React-RCTVibration (from `../node_modules/react-native/Libraries/Vibration`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
+  - RNAudio (from `../node_modules/react-native-audio-polyfill`)
   - RNAudioRecorderPlayer (from `../node_modules/react-native-audio-recorder-player`)
   - RNFS (from `../node_modules/react-native-fs`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
@@ -421,6 +424,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/Libraries/Vibration"
   ReactCommon:
     :path: "../node_modules/react-native/ReactCommon"
+  RNAudio:
+    :path: "../node_modules/react-native-audio-polyfill"
   RNAudioRecorderPlayer:
     :path: "../node_modules/react-native-audio-recorder-player"
   RNFS:
@@ -465,11 +470,12 @@ SPEC CHECKSUMS:
   React-RCTText: 1b6773e776e4b33f90468c20fe3b16ca3e224bb8
   React-RCTVibration: 4d2e726957f4087449739b595f107c0d4b6c2d2d
   ReactCommon: a0a1edbebcac5e91338371b72ffc66aa822792ce
+  RNAudio: c15f86163b2e75fcf24794085e0b287782a7c285
   RNAudioRecorderPlayer: c2b7deeab6ff758d8ffdb8ae37af928b30467377
   RNFS: 2bd9eb49dc82fa9676382f0585b992c424cd59df
   Yoga: 7740b94929bbacbddda59bf115b5317e9a161598
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 621f95cbb272479e179db8bcf7b0a00d21f811a8
+PODFILE CHECKSUM: f2f2b8466e12d5d70a338e346b7373bb06e68410
 
 COCOAPODS: 1.9.3

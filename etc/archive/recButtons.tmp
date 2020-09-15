@@ -28,6 +28,20 @@ const btnStyles = StyleSheet.create({
   }
 });
 
+const btnStyles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  button: {
+    alignItems: 'center',
+    backgroundColor: '#DDDDDD',
+    padding: 10,
+    marginBottom: 10
+  }
+});
+
 export class RecButtons extends Component {
 
   RecMsg = 'Tap to begin recording';
@@ -179,3 +193,5 @@ z
     );
   }
 }
+
+

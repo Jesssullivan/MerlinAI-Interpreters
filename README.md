@@ -110,7 +110,7 @@ npm run-script ios-native
 
 - Get humans annotating asap, ideally with a fun / educational twist
    - it would be so cool to be able to hook up a bunch of ornithology professors and students up and down New England with a song study / game tool of sorts
-   - Would be fun to add this annotation-centered song learning game feature to the hybrid app, may be more helpful in the near term than field annotation 
+   - Would be fun to add this annotation-centered song learning rgame feature to the hybrid app, may be more helpful in the near term than field annotation 
        
 - Another similar thread to the same end is automating the annotation / boxing of Macaulay recordings- 
     - Could get pretty far with the existing species labels + vetting with time / date + a highpass filter, though this has less to do with UX and more with getting a jump on adding data for a more accurate model

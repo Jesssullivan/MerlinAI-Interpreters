@@ -1,6 +1,6 @@
 // this file is the entrypoint for native tests.
 
 import {AppRegistry} from 'react-native';
-import {Placeholder} from './native/Placeholder';
+import {App} from './native/App';
 
-AppRegistry.registerComponent('tmpui', () => Placeholder);
+AppRegistry.registerComponent('tmpui', () => App);
