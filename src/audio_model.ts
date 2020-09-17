@@ -1,6 +1,6 @@
  /* eslint-disable */
 
-require('@tensorflow/tfjs-backend-wasm');
+// require('@tensorflow/tfjs-backend-wasm');
 import * as  tf from '@tensorflow/tfjs';
 
 export class MerlinAudioModel {
@@ -151,6 +151,7 @@ export class MerlinAudioModel {
             labels.push(this.labels[indices[i]]);
         }
 
+        // @ts-ignore
         tf.dispose([tf_waveform, input_waveform_batch, input_samplerate_batch, outputs, tf_averageScores, topk]);
 
         return [labels, scores];

@@ -1,11 +1,10 @@
 
 # set `devel = False` for deployment
-devel = False
+devel = True
 
 # set `prerender = False` for deployment-
 # renders & bundles should already be generated
-prerender = False
-
+prerender = True
 
 # port `80` is enforced if devel = False
 devport = 5000
