@@ -1,13 +1,13 @@
 
 # Demos w/ the Merlin Sound ID Project
-    
+
 - ***[*Visit the web demos here*](https://tmpui.herokuapp.com/)***  
 - ***[*readme @ github.io*](https://jesssullivan.github.io/tmpUI/)***
-    
-    
-    
+
+
+
 ## **Hack upon these demos:**
-    
+
 ```
 # clone:
 git clone https://github.com/Jesssullivan/tmpUI
@@ -15,15 +15,15 @@ cd tmpUI
 ```
 
 #### *Install Node dependencies:*   
-    
+
 ```
 # node depends:
 npm install  
 ```
 
 ## Web:
-   
-   
+
+
 #### *Set up a local Python environment for Flask if that's your thing:*
 ```
 # set up a local venv:
@@ -31,18 +31,18 @@ python3 -m venv tmpui_venv
 source tmpui_venv/bin/activate
 ```
 
-#### *Install depends for Flask demos:* 
-    
+#### *Install depends for Flask demos:*
+
 ```
 # Flask depends:
 pip3 install -r requirements.txt
-# Flask & gunicorn will automatically go fetch... 
-# Werkzeug, itsdangerous, MarkupSafe, Jinja2, click 
+# Flask & gunicorn will automatically go fetch...
+# Werkzeug, itsdangerous, MarkupSafe, Jinja2, click
 # ...as well
 ```
 
 #### *Configure Flask accordingly in `config.py`:*    
-   
+
 ```Python
 # config.py
 
@@ -53,8 +53,8 @@ devel = True
 prerender = True
 ```
 
-#### *pack up the web demos & start serving:* 
-    
+#### *pack up the web demos & start serving:*
+
 ```
 # see more script stuff in package.json & in `./scripts/`
 npm run-script develop-web
@@ -68,39 +68,70 @@ npm run-script production-web
 # (you'll want reconfigure config.py accordingly too)
 ```
 
-## Native:
-    
-   
+### React Native:
+
+
 #### *Install & link Cocoa depends to get cracking on the ios demos:*   
-    
+
 ```
 # link ios depends:
 cd ios && pod install && cd ..
 ```
 
 - The entrypoint for native tests is `./index.js`- fiddle with react-native from `./native/`.
-        
-        
+
+
 #### *Build & deploy to Xcode Simulator:*   
-    
+
 ```
 # link ios depends:
 npm run-script ios-native
 ```
 
-- - - 
+### Swift Native:
 
-### *Many directions, all at once:*    
+- ***Still glueing together some .xcconfig schemes, hang tight***    
 
-- I think Grant and I left off with building a native / hybrid Record --> Classify --> Annotate --> generate TFRecord demo
-    - This is what Jess is currently working on, currently recycling spectrogram bits --> react-native 
-    - Looking for any existing eBird / Merlin logic or an api we can employ right off the bat for ruling out species based on location & date? (even just eBird's "rare" label?)        
-    
-- synced up with Brian & Drew- sounds like there is more interest in a vuejs-centric hybrid app over React      
-     - Lots of hopes to expand the nifty web annotator tool on the Cornell server 
-     - I understand bringing in more human annotators via existing Macaulay recordings is currently the highest priority
-  
-    
+
+- - -
+
+### Scripts:
+
+```
+### Removing stuff:
+
+# ...demo bundles:
+npm run-script clean-web-bundles
+# ...or `find demos/ -name "*_bundle.js" -print -delete`
+
+# ...demo renders:
+npm run-script clean-web-renders
+# ...or `find demos/ -name "*_render.html" -print -delete`
+
+# all web files and directories:
+npm run-script clean-web-all
+# ...or `chmod u+x scripts/clean.sh && ./scripts/clean.sh`
+
+# ...fruit debris:
+find '.' -name ".DS_Store" -print -delete
+
+### github environments:
+## obtain token @ https://github.com/settings/tokens
+
+# install jq:
+sudo apt install jq
+# ...or `brew install jq`
+
+# update ./scripts/remove_env.sh:
+sudo chmod +x scripts/remove_env.sh && ./scripts/remove_env.sh
+
+# See ./package.json & ./scripts/ for additional scripts
+```
+
+
+- - -
+
+
 ### *Macaulay Annotation features:*        
 
 - Since Macaulay recording are already pretty well labeled by species, what if we make human annotations into a learning game of sorts?  i.e. In order for the user to guess, they must crop in on the song they are guessing on- free annotation lunch?  
@@ -108,14 +139,14 @@ npm run-script ios-native
 
 - Get humans annotating asap, ideally with a fun / educational twist
    - it would be so cool to be able to hook up a bunch of ornithology professors and students up and down New England with a song study / game tool of sorts
-   - Would be fun to add this annotation-centered song learning rgame feature to the hybrid app, may be more helpful in the near term than field annotation 
-       
-- Another similar thread to the same end is automating the annotation / boxing of Macaulay recordings- 
+   - Would be fun to add this annotation-centered song learning rgame feature to the hybrid app, may be more helpful in the near term than field annotation
+
+- Another similar thread to the same end is automating the annotation / boxing of Macaulay recordings-
     - Could get pretty far with the existing species labels + vetting with time / date + a highpass filter, though this has less to do with UX and more with getting a jump on adding data for a more accurate model
     - Similarly, since the only real task here is to isolate vocalizations (not id vocalizations)- detecting “Clearly a bird sound vs. not a bird sound”- for each recording, for each species- could be automated to operate without human assistance.  
 
 ---    
-   
+
 ### *Field Annotation features:*
 
 * User records a song; song spectrogram is cropped, annotated as either an already ID'd species or unknown song
@@ -142,3 +173,13 @@ npm run-script ios-native
 * how to most effectively bundle waveform/spectrogram/annotations?
   * could annotations be bundled as an "album/song" metadata?
 
+
+- - -
+
+
+### *Additional bits:*    
+
+- Looking for any existing eBird / Merlin logic or an api we can employ right off the bat for ruling out species based on location & date? (even just eBird's "rare" label?)        
+- Angling toward / hybrid Record --> Classify --> Annotate --> generate TFRecord demo
+- Lots of hopes to expand the nifty web annotator tool on the Cornell server
+- I understand bringing in more human annotators via existing Macaulay recordings is currently the highest priority

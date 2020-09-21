@@ -88,7 +88,7 @@ export class RecorderToggles extends Component {
             console.log('Playback stopped.');
             await this.stopPlay();
         }
-    }
+    } // todo: initialize rtc bridge asap --> Saturday...
 
     render() {
         return (
