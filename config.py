@@ -107,4 +107,3 @@ if devel:
 else:
     hostport = 80
     hosturl = '0.0.0.0'
-
