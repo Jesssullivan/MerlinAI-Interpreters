@@ -192,8 +192,7 @@ npm run-script sslgen-web-demos
 - any notes on importing tflite in python3
 - looking forward to seeing the web annotator, would love to incorporate this as a game --> native app
 - thoughts on drumming up enthusiasm for open source / hacktoberfest?
-  - hardare?
-- any merlin apis or data sets?
+  - *external camera / mic hardware api? additional datasets?*
 
 
 - Looking for any existing eBird / Merlin logic or an api we can employ right off the bat for ruling out species based on location & date? (even just eBird's "rare" label?)        
@@ -201,5 +200,5 @@ npm run-script sslgen-web-demos
 - Lots of hopes to expand the nifty web annotator tool on the Cornell server
 - I understand bringing in more human annotators via existing Macaulay recordings is currently the highest priority
 
-  
+
 - Use `heroku buildpacks:add --index 1 heroku-community/apt -a tmpui` for librosa vorbis depend
