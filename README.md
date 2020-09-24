@@ -201,4 +201,5 @@ npm run-script sslgen-web-demos
 - I understand bringing in more human annotators via existing Macaulay recordings is currently the highest priority
 
 
+- `tmpui-testing` dyno used sporadically for debugging, keeping it @ maintenance mode atm
 - Use `heroku buildpacks:add --index 1 heroku-community/apt -a tmpui` for librosa vorbis depend
