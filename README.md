@@ -200,3 +200,6 @@ npm run-script sslgen-web-demos
 - Angling toward / hybrid Record --> Classify --> Annotate --> generate TFRecord demo
 - Lots of hopes to expand the nifty web annotator tool on the Cornell server
 - I understand bringing in more human annotators via existing Macaulay recordings is currently the highest priority
+
+  
+- Use `heroku buildpacks:add --index 1 heroku-community/apt -a tmpui` for librosa vorbis depend
