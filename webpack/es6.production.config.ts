@@ -20,9 +20,9 @@ const getDemos = (source: fs.PathLike) => {
       .filter(demo => specified.length ? specified.includes(demo) : true);
 };
 
-const entries = getDemos('./demos').reduce((obj, name) => {
+const entries = getDemos('./production').reduce((obj, name) => {
   // @ts-ignore
-  obj[name] = `./demos/${name}.ts`;
+  obj[name] = `./production/${name}.ts`;
   return obj;
 }, {});
 
