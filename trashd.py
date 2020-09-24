@@ -1,6 +1,6 @@
 from config import *
 
-# garbage collector for uploaded files for classification.
+# garbage collector for uploaded files to be classified.
 
 
 class Trash(object):
