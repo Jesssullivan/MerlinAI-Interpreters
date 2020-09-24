@@ -1,5 +1,7 @@
 #!/bin/bash
 
+mkdir production
+
 echo -e "production: packing, this could take a while..."
 # webpack --config webpack/es6.production.config.ts
 

@@ -1,18 +1,15 @@
-from flask import Flask
-from render import Render
-import os
 from config import *
-
-
-app = Flask(__name__, static_folder=static)
+from render import Render
+from trashd import Trash
+from classifier import Classifier
 
 
 """ routing """
 
 
-@app.route('/crop_3')
-def crop_3():
-    return app.send_static_file('spec_record_crop_v3.html' + ext)
+@app.route('/')
+def home():
+    return app.send_static_file('webgl_init.html' + ext)
 
 
 @app.route('/crop_dl')
@@ -20,9 +17,25 @@ def crop_4():
     return app.send_static_file('spec_record_crop_dl.html' + ext)
 
 
-@app.route('/')
-def webgl_init():
-    return app.send_static_file('webgl_init.html' + ext)
+@app.route('/webgl')
+def webgl():
+    return app.send_static_file('webgl_test.html' + ext)
+
+
+@app.route('/leaflet')
+def leaflet():
+    return app.send_static_file('annotator.html')
+
+
+@app.route('/uploader', methods=['GET', 'POST'])
+def wav_classify():
+    wavc = Classifier()
+    return wavc.main()
+
+
+@app.route('/crop_3')
+def crop_3():
+    return app.send_static_file('spec_record_crop_v3.html' + ext)
 
 
 @app.route('/display')
@@ -40,27 +53,15 @@ def rec2():
     return app.send_static_file('spec_record_v2.html' + ext)
 
 
-@app.route('/webgl')
-def webgl():
-    return app.send_static_file('webgl_float_test.html' + ext)
+# start the garbage daemon:
+Trash.truck()
 
 
-@app.route('/leaflet')
-def leaflet():
-    return app.send_static_file('annotator.html')
-
-
+# generate new, static html files?
 if prerender:
+    # configure this stuff in ./config.py
     Render.render()
-
-if devel:
-    hostport = devport
-    hosturl = devhost
-else:
-    hostport = 80
-    hosturl = '0.0.0.0'
 
 
 if __name__ == "__main__":
     app.run(host=hosturl, port=os.environ.get('PORT', hostport))
-

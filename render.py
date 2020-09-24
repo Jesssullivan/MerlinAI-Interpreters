@@ -1,4 +1,4 @@
-import glob
+
 from threading import Thread
 from config import *
 

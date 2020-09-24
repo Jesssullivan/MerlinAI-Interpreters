@@ -36,14 +36,18 @@ source tmpui_venv/bin/activate
 ```
 # Flask depends:
 pip3 install -r requirements.txt
+
 # Flask & gunicorn will automatically go fetch...
 # Werkzeug, itsdangerous, MarkupSafe, Jinja2, click
 # ...as well
+
+# see https://www.tensorflow.org/lite/guide/python
+# for tflite_runtime.interpreter only wheels
 ```
 
 #### *Configure Flask accordingly in `config.py`:*    
 
-```Python
+```
 # config.py
 
 # `True` serves demos @ 127.0.0.1:5000 via node proxy (set `False` for production @ 0.0.0.0:80)
@@ -90,7 +94,7 @@ npm run-script ios-native
 
 ### Swift Native:
 
-- ***Still glueing together some .xcconfig schemes, hang tight***    
+- ***Still gluing together some .xcconfig schemes, hang tight***    
 
 
 - - -
@@ -124,6 +128,12 @@ sudo apt install jq
 
 # update ./scripts/remove_env.sh:
 sudo chmod +x scripts/remove_env.sh && ./scripts/remove_env.sh
+
+### Generate local ssl certs for testing w/ node http-server:
+# linux:
+npm run-script sslgen-web-demos
+# ...or `sudo chmod +x scripts/sslgen.sh && ./scripts/sslgen.sh`
+# osx is a bit more finicky
 
 # See ./package.json & ./scripts/ for additional scripts
 ```
@@ -178,6 +188,13 @@ sudo chmod +x scripts/remove_env.sh && ./scripts/remove_env.sh
 
 
 ### *Additional bits:*    
+
+- any notes on importing tflite in python3
+- looking forward to seeing the web annotator, would love to incorporate this as a game --> native app
+- thoughts on drumming up enthusiasm for open source / hacktoberfest?
+  - hardare?
+- any merlin apis or data sets?
+
 
 - Looking for any existing eBird / Merlin logic or an api we can employ right off the bat for ruling out species based on location & date? (even just eBird's "rare" label?)        
 - Angling toward / hybrid Record --> Classify --> Annotate --> generate TFRecord demo

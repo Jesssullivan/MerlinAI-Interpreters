@@ -2,3 +2,12 @@
 gunicorn
 # Flask 1.1.2 has been causing headaches w/ Heroku, Jess has no idea why
 Flask==1.1.1  # sticking with 1.1.1 for now :(
+
+# tensorflow select ops seem to usually work better with the nightly builds
+# tf-nightly
+
+tensorflow-cpu==2.3.0
+librosa~=0.8.0
+cryptography~=3.1
+keyring~=18.0.1
+numpy~=1.18.2

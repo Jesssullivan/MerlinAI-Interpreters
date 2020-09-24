@@ -12,6 +12,7 @@ const mainSection = document.querySelector('.container-fluid') as HTMLDivElement
 /* tslint:disable:prefer-const */
 let imgCrop = document.createElement('img');
 let imgSpec = document.createElement('img');
+let waveformSample;
 /* tslint:enable:prefer-const */
 
 let recordedBlobs : Blob;
@@ -212,7 +213,8 @@ function renderSpectrogram(imageURI : string, spectrogramLength: number) {
             sampleHolderEl!.removeChild(sampleHolderEl!.firstChild);
         }
 
-        const waveformSample = updateVis();
+        //@ts-ignore
+        waveformSample = updateVis();
 
         // YMMV, but YOLO:
         averageClassifyWaveform(waveformSample).then(([labels, scores]) => {

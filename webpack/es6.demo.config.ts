@@ -20,9 +20,9 @@ const getDemos = (source: fs.PathLike) => {
       .filter(demo => specified.length ? specified.includes(demo) : true);
 };
 
-const entries = getDemos('./demos').reduce((obj, name) => {
+const entries = getDemos('./production').reduce((obj, name) => {
   // @ts-ignore
-  obj[name] = `./demos/${name}.ts`;
+  obj[name] = `./production/${name}.ts`;
   return obj;
 }, {});
 
@@ -38,7 +38,7 @@ module.exports = {
   },
   output: {
     filename: '[name]_bundle.js',
-    path: path.resolve(__dirname, '../demos'),
+    path: path.resolve(__dirname, '../production'),
   },
   module: {
     rules: [{
@@ -48,7 +48,7 @@ module.exports = {
     }],
   },
   devServer: {
-    contentBase: path.join(__dirname, '../demos'),
+    contentBase: path.join(__dirname, '../production'),
     port: 8080,
   },
 };
