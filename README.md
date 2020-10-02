@@ -1,7 +1,7 @@
 
 # Demos w/ the Merlin Sound ID Project
 
-- ***[*Visit the web demos here*](https://tmpui.herokuapp.com/)***  
+- ***[*Visit the web demos here*](https://tmpui.herokuapp.com/)***
 - ***[*readme @ github.io*](https://jesssullivan.github.io/tmpUI/)***
 
 
@@ -14,11 +14,11 @@ git clone https://github.com/Jesssullivan/tmpUI
 cd tmpUI
 ```
 
-#### *Install Node dependencies:*   
+#### *Install Node dependencies:*
 
 ```
 # node depends:
-npm install  
+npm install
 ```
 
 ## Web:
@@ -30,6 +30,7 @@ npm install
 python3 -m venv tmpui_venv
 source tmpui_venv/bin/activate
 ```
+
 
 #### *Install depends for Flask demos:*
 
@@ -45,7 +46,7 @@ pip3 install -r requirements.txt
 # for tflite_runtime.interpreter only wheels
 ```
 
-#### *Configure Flask accordingly in `config.py`:*    
+#### *Configure Flask accordingly in `config.py`:*
 
 ```
 # config.py
@@ -75,7 +76,7 @@ npm run-script production-web
 ### React Native:
 
 
-#### *Install & link Cocoa depends to get cracking on the ios demos:*   
+#### *Install & link Cocoa depends to get cracking on the ios demos:*
 
 ```
 # link ios depends:
@@ -85,7 +86,7 @@ cd ios && pod install && cd ..
 - The entrypoint for native tests is `./index.js`- fiddle with react-native from `./native/`.
 
 
-#### *Build & deploy to Xcode Simulator:*   
+#### *Build & deploy to Xcode Simulator:*
 
 ```
 # link ios depends:
@@ -94,7 +95,7 @@ npm run-script ios-native
 
 ### Swift Native:
 
-- ***Still gluing together some .xcconfig schemes, hang tight***    
+- ***Still gluing together some .xcconfig schemes, hang tight***
 
 
 - - -
@@ -142,9 +143,9 @@ npm run-script sslgen-web-demos
 - - -
 
 
-### *Macaulay Annotation features:*        
+### *Macaulay Annotation features:*
 
-- Since Macaulay recording are already pretty well labeled by species, what if we make human annotations into a learning game of sorts?  i.e. In order for the user to guess, they must crop in on the song they are guessing on- free annotation lunch?  
+- Since Macaulay recording are already pretty well labeled by species, what if we make human annotations into a learning game of sorts?  i.e. In order for the user to guess, they must crop in on the song they are guessing on- free annotation lunch?
     - We already know what the target species is, so even if they get it wrong while they learn a new song, we still get a labeled annotation
 
 - Get humans annotating asap, ideally with a fun / educational twist
@@ -153,9 +154,9 @@ npm run-script sslgen-web-demos
 
 - Another similar thread to the same end is automating the annotation / boxing of Macaulay recordings-
     - Could get pretty far with the existing species labels + vetting with time / date + a highpass filter, though this has less to do with UX and more with getting a jump on adding data for a more accurate model
-    - Similarly, since the only real task here is to isolate vocalizations (not id vocalizations)- detecting “Clearly a bird sound vs. not a bird sound”- for each recording, for each species- could be automated to operate without human assistance.  
+    - Similarly, since the only real task here is to isolate vocalizations (not id vocalizations)- detecting “Clearly a bird sound vs. not a bird sound”- for each recording, for each species- could be automated to operate without human assistance.
 
----    
+---
 
 ### *Field Annotation features:*
 
@@ -187,16 +188,10 @@ npm run-script sslgen-web-demos
 - - -
 
 
-### *Additional bits:*     
+#### *Additional bits:*
 
 
-- **zing Xcode tf-demo workspace into github ASAP**    
-  - super keen to bring spectrogram-drawing logic into Swift, pack it up as a reusable, speedy quick drawing chunk for ios
-  - finish sorting through xcconfig structure, build settings & toolchain for correctly and repeatably handling tflite model w/ select ops  
-
-- - -
-
-- Looking for existing eBird / Merlin logic bits or other classification apis we can employ right off the bat for ruling out species based on location & date? (even just eBird's "rare" label?)        
+- Looking for existing eBird / Merlin logic bits or other classification apis we can employ right off the bat for ruling out species based on location & date? (even just eBird's "rare" label?)
 - Angling toward / hybrid Record --> Classify --> Annotate --> generate TFRecord demo
 - Lots of hopes to expand the nifty web annotator tool on the Cornell server
 - I understand bringing in more human annotators via existing Macaulay recordings is currently the highest priority
@@ -206,8 +201,16 @@ npm run-script sslgen-web-demos
 - *external camera / mic hardware api? additional datasets?*
 
 
-- - -
-
-  
 - `tmpui-testing` dyno used sporadically for debugging, keeping it @ maintenance mode atm
 - Use `heroku buildpacks:add --index 1 heroku-community/apt -a tmpui` for librosa vorbis depend
+
+
+- - -
+
+### Notes:
+
+-
+
+- **zing Xcode tf-demo workspace into github ASAP**
+  - super keen to bring spectrogram-drawing logic into Swift, pack it up as a reusable, speedy quick drawing chunk for ios
+  - finish sorting through xcconfig structure, build settings & toolchain for correctly and repeatably handling tflite model w/ select ops
