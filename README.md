@@ -107,7 +107,7 @@ open swift/swift-pkgs-tmpui/swift-pkgs-tmpui.xcodeproj
 - make sure `info.plist` has permissed microphone acccess @ ```[Key = Privacy -> Microphone]```
  
   
-- **The entrypoint for Swift tests is `./swift/swift-pkgs-tmpui/swift-pkgs-tmpui/swift_pkgs_tmpuiApp.swift`, fiddle @ [`ContentView.swift`](ttps://github.com/Jesssullivan/tmpUI/blob/master/swift/swift-pkgs-tmpui/swift-pkgs-tmpui/ContentView.swift)**
+- **The entrypoint for Swift tests is `./swift/swift-pkgs-tmpui/swift-pkgs-tmpui/swift_pkgs_tmpuiApp.swift`, fiddle @ [`ContentView.swift`](https://github.com/Jesssullivan/tmpUI/blob/master/swift/swift-pkgs-tmpui/swift-pkgs-tmpui/ContentView.swift)**
 
     
 
