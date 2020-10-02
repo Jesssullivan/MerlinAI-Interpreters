@@ -156,7 +156,7 @@ npm run-script sslgen-web-demos
 - - -
 
 
-### *Macaulay Annotation features:*
+### *Macaulay Annotation:*
 
 - Since Macaulay recording are already pretty well labeled by species, what if we make human annotations into a learning game of sorts?  i.e. In order for the user to guess, they must crop in on the song they are guessing on- free annotation lunch?
     - We already know what the target species is, so even if they get it wrong while they learn a new song, we still get a labeled annotation
@@ -171,7 +171,7 @@ npm run-script sslgen-web-demos
 
 ---
 
-### *Field Annotation features:*
+### *Field Annotation:*
 
 * User records a song; song spectrogram is cropped, annotated as either an already ID'd species or unknown song
    * this way, every song encountered is added to the data pool, corroborating or reshaping future models
@@ -201,7 +201,7 @@ npm run-script sslgen-web-demos
 - - -
 
 
-#### *Additional bits:*
+### *Additional bits:*
 
 
 - Looking for existing eBird / Merlin logic bits or other classification apis we can employ right off the bat for ruling out species based on location & date? (even just eBird's "rare" label?)
