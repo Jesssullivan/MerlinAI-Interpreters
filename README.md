@@ -222,8 +222,7 @@ npm run-script sslgen-web-demos
 
 ### Notes:
 
--
-
-- **zing Xcode tf-demo workspace into github ASAP**
-  - super keen to bring spectrogram-drawing logic into Swift, pack it up as a reusable, speedy quick drawing chunk for ios
-  - finish sorting through xcconfig structure, build settings & toolchain for correctly and repeatably handling tflite model w/ select ops
+  - Banging out mel spectrogram drawing logic--> Swift; 
+   - using vDSP `Accelerate` builtins
+   - *pack up as reusable, speedy quick drawing chunk for ios*
+  - toolchain for correctly and repeatably handling tflite model w/ select ops is still totally not linking @ compiler :(
