@@ -83,7 +83,7 @@ npm run-script production-web
 cd ios && pod install && cd ..
 ```
 
-- **The entrypoint for react-native tests is `./index.js`- fiddle with react-native @ `./native/`.**
+- **The entrypoint for react-native tests is `./index.js`, fiddle @ `./native/`.**
 
 
 #### *Build & deploy to Xcode Simulator:*
@@ -97,14 +97,14 @@ npm run-script ios-native
         
 -  focusing on codepaths for:
     - generating mel spectrograms 
-    - tflite intepreter (cocoa linker is still wonky as of 10/1/2020)
+    - tflite interpreter (cocoa linker is still wonky as of 10/1/2020)
 
 ```
-# open from Xcode mime:
+# open in xcode:
 open swift/swift-pkgs-tmpui/swift-pkgs-tmpui.xcodeproj
 ```
     
-- make sure `info.plist` has permissed microphone acccess @ ```[Key = Privacy -> Microphone]```
+- make sure `info.plist` has permissions for microphone access in ```[Key = Privacy -> Microphone]```
  
   
 - **The entrypoint for Swift tests is `./swift/swift-pkgs-tmpui/swift-pkgs-tmpui/swift_pkgs_tmpuiApp.swift`, fiddle @ [`ContentView.swift`](https://github.com/Jesssullivan/tmpUI/blob/master/swift/swift-pkgs-tmpui/swift-pkgs-tmpui/ContentView.swift)**
@@ -224,5 +224,7 @@ npm run-script sslgen-web-demos
 
   - Banging out mel spectrogram drawing logic --> Swift;         
       - using vDSP `Accelerate` builtins
-      - *pack up as reusable, speedy quick drawing chunk for ios*       
+      - *pack up as reusable, speedy quick drawing chunk for ios*   
   - toolchain for correctly and repeatably handling tflite model w/ select ops is still totally not linking @ compiler :(
+     
+

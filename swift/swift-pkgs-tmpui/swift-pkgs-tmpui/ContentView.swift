@@ -16,11 +16,11 @@ import UIKit
 /// extra verbose logging to console from View & global env
 private func vLog(text: String) -> Void {
     //TODO: vLog: add OSLog components
-    // this is surely not how this is done...idk
     print("vLog: " + text)
 }
 
-extension View {
+private extension View {
+    // this is surely not how this is done...idk
     func vLog(_ vars: Any...) -> some View {
         for v in vars {
             print(v)
@@ -99,6 +99,7 @@ func getLocalWavFS(str: String) -> Array<Any> {
                 sampleRate: file.fileFormat.sampleRate,
                 channels: 1,
                 interleaved: false) else {
+            vLog(text: "Error reading AVAudioFormat from " + str + " ! ")
             return []
         }
         
@@ -108,21 +109,12 @@ func getLocalWavFS(str: String) -> Array<Any> {
         try! file.read(into: buf!)
         let wavformArray = Array(UnsafeBufferPointer(start: buf?.floatChannelData?[0], count:Int(buf!.frameLength)))
         
+        vLog(text: "Success reading AVAudioFormat from " + str +
+                ", returning waveform as Array")
         return wavformArray
     } catch {
-        //print("toast")
+        vLog(text: "Error parsing AVAudioPCMBuffer " + str + " ! ")
         return []
-    }
-}
-
-func dorp() -> Void {
-    print("Chonky Floof")
-}
-
-struct ContentVwiew: View {
-    var body: some View {
-        Text("Hello, world!")
-            .padding()
     }
 }
 
@@ -134,7 +126,7 @@ struct ContentView: View {
         }.onAppear {
             let wavPath = getStaticWavPath()
 
-            //TODO: whoo! this worked, pick up here tommorrow xD
+            //TODO: whoo! this worked, picking up here xD
             _ = getLocalWavFS(str: wavPath)
             
         }

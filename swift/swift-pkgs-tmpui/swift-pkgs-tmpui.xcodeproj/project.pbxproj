@@ -8,22 +8,20 @@
 
 /* Begin PBXBuildFile section */
 		C845EDD925262F7F00F89CB5 /* FullSongRecording.wav in Resources */ = {isa = PBXBuildFile; fileRef = C845EDD825262F7F00F89CB5 /* FullSongRecording.wav */; };
-		C856A832252482A400CF63F7 /* AudioSpectrogram.swift in Sources */ = {isa = PBXBuildFile; fileRef = C856A830252482A400CF63F7 /* AudioSpectrogram.swift */; };
-		C856A833252482A400CF63F7 /* AudioSpectrogram+AVCaptureAudioDataOutputSampleBufferDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C856A831252482A400CF63F7 /* AudioSpectrogram+AVCaptureAudioDataOutputSampleBufferDelegate.swift */; };
+		C856A832252482A400CF63F7 /* AudioSpectrogram.refSwift in Sources */ = {isa = PBXBuildFile; fileRef = C856A830252482A400CF63F7 /* AudioSpectrogram.refSwift */; };
+		C856A833252482A400CF63F7 /* AudioSpectrogram+AVCaptureAudioDataOutputSampleBufferDelegate.refSwift in Sources */ = {isa = PBXBuildFile; fileRef = C856A831252482A400CF63F7 /* AudioSpectrogram+AVCaptureAudioDataOutputSampleBufferDelegate.refSwift */; };
 		C886E65425237FAC00B724FF /* swift_pkgs_tmpuiApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C886E65325237FAC00B724FF /* swift_pkgs_tmpuiApp.swift */; };
 		C886E65625237FAC00B724FF /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C886E65525237FAC00B724FF /* ContentView.swift */; };
-		C886E65825237FAC00B724FF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C886E65725237FAC00B724FF /* Assets.xcassets */; };
 		C886E65B25237FAC00B724FF /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C886E65A25237FAC00B724FF /* Preview Assets.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		C845EDD825262F7F00F89CB5 /* FullSongRecording.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = FullSongRecording.wav; sourceTree = "<group>"; };
-		C856A830252482A400CF63F7 /* AudioSpectrogram.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioSpectrogram.swift; sourceTree = "<group>"; };
-		C856A831252482A400CF63F7 /* AudioSpectrogram+AVCaptureAudioDataOutputSampleBufferDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AudioSpectrogram+AVCaptureAudioDataOutputSampleBufferDelegate.swift"; sourceTree = "<group>"; };
+		C856A830252482A400CF63F7 /* AudioSpectrogram.refSwift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = AudioSpectrogram.refSwift; sourceTree = "<group>"; };
+		C856A831252482A400CF63F7 /* AudioSpectrogram+AVCaptureAudioDataOutputSampleBufferDelegate.refSwift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "AudioSpectrogram+AVCaptureAudioDataOutputSampleBufferDelegate.refSwift"; sourceTree = "<group>"; };
 		C886E65025237FAC00B724FF /* swift-pkgs-tmpui.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "swift-pkgs-tmpui.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C886E65325237FAC00B724FF /* swift_pkgs_tmpuiApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = swift_pkgs_tmpuiApp.swift; sourceTree = "<group>"; };
 		C886E65525237FAC00B724FF /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		C886E65725237FAC00B724FF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C886E65A25237FAC00B724FF /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		C886E65C25237FAC00B724FF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -61,9 +59,8 @@
 				C886E65325237FAC00B724FF /* swift_pkgs_tmpuiApp.swift */,
 				C886E65525237FAC00B724FF /* ContentView.swift */,
 				C845EDD825262F7F00F89CB5 /* FullSongRecording.wav */,
-				C856A830252482A400CF63F7 /* AudioSpectrogram.swift */,
-				C856A831252482A400CF63F7 /* AudioSpectrogram+AVCaptureAudioDataOutputSampleBufferDelegate.swift */,
-				C886E65725237FAC00B724FF /* Assets.xcassets */,
+				C856A830252482A400CF63F7 /* AudioSpectrogram.refSwift */,
+				C856A831252482A400CF63F7 /* AudioSpectrogram+AVCaptureAudioDataOutputSampleBufferDelegate.refSwift */,
 				C886E65C25237FAC00B724FF /* Info.plist */,
 				C886E65925237FAC00B724FF /* Preview Content */,
 			);
@@ -137,7 +134,6 @@
 			files = (
 				C886E65B25237FAC00B724FF /* Preview Assets.xcassets in Resources */,
 				C845EDD925262F7F00F89CB5 /* FullSongRecording.wav in Resources */,
-				C886E65825237FAC00B724FF /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -149,9 +145,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				C886E65625237FAC00B724FF /* ContentView.swift in Sources */,
-				C856A833252482A400CF63F7 /* AudioSpectrogram+AVCaptureAudioDataOutputSampleBufferDelegate.swift in Sources */,
+				C856A833252482A400CF63F7 /* AudioSpectrogram+AVCaptureAudioDataOutputSampleBufferDelegate.refSwift in Sources */,
 				C886E65425237FAC00B724FF /* swift_pkgs_tmpuiApp.swift in Sources */,
-				C856A832252482A400CF63F7 /* AudioSpectrogram.swift in Sources */,
+				C856A832252482A400CF63F7 /* AudioSpectrogram.refSwift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -277,6 +273,7 @@
 		C886E66025237FAC00B724FF /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"swift-pkgs-tmpui/Preview Content\"";
@@ -298,6 +295,7 @@
 		C886E66125237FAC00B724FF /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"swift-pkgs-tmpui/Preview Content\"";
