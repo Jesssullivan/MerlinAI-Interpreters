@@ -222,7 +222,7 @@ npm run-script sslgen-web-demos
 
 ### Notes:
 
-  - Banging out mel spectrogram drawing logic--> Swift;         
+  - Banging out mel spectrogram drawing logic --> Swift;         
       - using vDSP `Accelerate` builtins
       - *pack up as reusable, speedy quick drawing chunk for ios*       
   - toolchain for correctly and repeatably handling tflite model w/ select ops is still totally not linking @ compiler :(
