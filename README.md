@@ -83,7 +83,7 @@ npm run-script production-web
 cd ios && pod install && cd ..
 ```
 
-- The entrypoint for native tests is `./index.js`- fiddle with react-native from `./native/`.
+- **The entrypoint for react-native tests is `./index.js`- fiddle with react-native @ `./native/`.**
 
 
 #### *Build & deploy to Xcode Simulator:*
@@ -94,9 +94,22 @@ npm run-script ios-native
 ```
 
 ### Swift Native:
+        
+-  focusing on codepaths for:
+    - generating mel spectrograms 
+    - tflite intepreter (cocoa linker is still wonky as of 10/1/2020)
 
-- ***Still gluing together some .xcconfig schemes, hang tight***
+```
+# open w/ Xcode mime:
+open swift/swift-pkgs-tmpui/swift-pkgs-tmpui.xcodeproj
+```
+    
+- make sure `info.plist` has permissed microphone acccess @ ```[Key = Privacy -> Microphone]```
+ 
+  
+- **The entrypoint for Swift tests is [`swift_pkgs_tmpuiApp.swift`](https://github.com/Jesssullivan/tmpUI/blob/master/swift/swift-pkgs-tmpui/swift-pkgs-tmpui/ContentView.swift), fiddle @ [ContentView.swift](ttps://github.com/Jesssullivan/tmpUI/blob/master/swift/swift-pkgs-tmpui/swift-pkgs-tmpui/ContentView.swift)
 
+    
 
 - - -
 
