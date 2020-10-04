@@ -13,7 +13,6 @@
 		C856A832252482A400CF63F7 /* AudioSpectrogram.refswift in Sources */ = {isa = PBXBuildFile; fileRef = C856A830252482A400CF63F7 /* AudioSpectrogram.refswift */; };
 		C856A833252482A400CF63F7 /* SpecBufferEnvironment.refswift in Sources */ = {isa = PBXBuildFile; fileRef = C856A831252482A400CF63F7 /* SpecBufferEnvironment.refswift */; };
 		C886E65425237FAC00B724FF /* swift_pkgs_tmpuiApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C886E65325237FAC00B724FF /* swift_pkgs_tmpuiApp.swift */; };
-		C886E65625237FAC00B724FF /* FSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C886E65525237FAC00B724FF /* FSTests.swift */; };
 		C886E65B25237FAC00B724FF /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C886E65A25237FAC00B724FF /* Preview Assets.xcassets */; };
 /* End PBXBuildFile section */
 
@@ -25,7 +24,6 @@
 		C856A831252482A400CF63F7 /* SpecBufferEnvironment.refswift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SpecBufferEnvironment.refswift; sourceTree = "<group>"; };
 		C886E65025237FAC00B724FF /* swift-pkgs-tmpui.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "swift-pkgs-tmpui.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C886E65325237FAC00B724FF /* swift_pkgs_tmpuiApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = swift_pkgs_tmpuiApp.swift; sourceTree = "<group>"; };
-		C886E65525237FAC00B724FF /* FSTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FSTests.swift; sourceTree = "<group>"; };
 		C886E65A25237FAC00B724FF /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		C886E65C25237FAC00B724FF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -61,7 +59,6 @@
 			isa = PBXGroup;
 			children = (
 				C886E65325237FAC00B724FF /* swift_pkgs_tmpuiApp.swift */,
-				C886E65525237FAC00B724FF /* FSTests.swift */,
 				C8254285252A873100317245 /* CamLivePassThrough.swift */,
 				C845EDD825262F7F00F89CB5 /* FullSongRecording.wav */,
 				C856A830252482A400CF63F7 /* AudioSpectrogram.refswift */,
@@ -151,7 +148,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				C8254286252A873100317245 /* CamLivePassThrough.swift in Sources */,
-				C886E65625237FAC00B724FF /* FSTests.swift in Sources */,
 				C8254295252A8BCE00317245 /* ContentView.swift in Sources */,
 				C856A833252482A400CF63F7 /* SpecBufferEnvironment.refswift in Sources */,
 				C886E65425237FAC00B724FF /* swift_pkgs_tmpuiApp.swift in Sources */,
