@@ -1,12 +1,11 @@
 /*
-See LICENSE folder for this sample’s licensing information.
-
 Abstract:
 Class that generates a spectrogram from an audio signal.
 */
+
 import AVFoundation
 import Accelerate
-import UIKit
+import SwiftUI
 
 public class AudioSpectrogram: CALayer {
 
@@ -29,7 +28,6 @@ public class AudioSpectrogram: CALayer {
     override public init(layer: Any) {
         super.init(layer: layer)
     }
-    
     // MARK: Properties
     /// Samples per frame — the height of the spectrogram.
     static let sampleCount = 1024
@@ -221,7 +219,6 @@ public class AudioSpectrogram: CALayer {
     }
 }
 
-
 // MARK: Utility functions
 extension AudioSpectrogram {
     
@@ -229,11 +226,8 @@ extension AudioSpectrogram {
     ///
     /// `value` controls hue and brightness. Values near zero return dark blue, `127` returns red, and
     ///  `255` returns full-brightness green.
-    #if os(iOS)
-    typealias Color = UIColor
-    #else
-    typealias Color = NSColor
-    #endif
+
+    //typealias Color = NSColor
     
     static func brgValue(from value: Pixel_8) -> (red: Pixel_8,
                                                   green: Pixel_8,
@@ -243,11 +237,12 @@ extension AudioSpectrogram {
         // Define `hue` that's blue at `0.0` to red at `1.0`.
         let hue = 0.6666 - (0.6666 * normalizedValue)
         let brightness = sqrt(normalizedValue)
-
-        let color = Color(hue: hue,
-                          saturation: 1,
-                          brightness: brightness,
-                          alpha: 1)
+        
+        
+        let color = UIColor(hue: hue,
+                            saturation: 1,
+                            brightness: brightness,
+                            alpha: 1)
         
         var red = CGFloat()
         var green = CGFloat()

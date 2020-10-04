@@ -109,6 +109,7 @@ extension AudioSpectrogram: AVCaptureAudioDataOutputSampleBufferDelegate {
         }
         
         captureSession.commitConfiguration()
+        
     }
     
     /// Starts the audio spectrogram.

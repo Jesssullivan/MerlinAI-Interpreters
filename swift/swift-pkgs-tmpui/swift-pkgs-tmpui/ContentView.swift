@@ -5,32 +5,29 @@
 //
 
 import SwiftUI
-import AVKit
 import AVFoundation
 import Accelerate
-import CoreImage
-import UIKit
 
 //MARK: - internal
 
 /// extra verbose logging to console from View & global env
-private func vLog(text: String) -> Void {
+public func vLog(text: String) -> Void {
     //TODO: vLog: add OSLog components
     print("vLog: " + text)
 }
 
-private extension View {
-    // this is surely not how this is done...idk
+public extension View {
     func vLog(_ vars: Any...) -> some View {
         for v in vars {
             print(v)
         }
+        // this is surely not how this is done...idk
         return EmptyView()
     }
 }
 
 /// generate new file names:
-private func newFileName(hLength: Int? = nil, ext:String? = nil) -> String {
+public func newFileName(hLength: Int? = nil, ext:String? = nil) -> String {
 
     // use hour+minute time & hash string to name record file names
     let dFormatter = DateFormatter()
@@ -56,7 +53,7 @@ private func newFileName(hLength: Int? = nil, ext:String? = nil) -> String {
 }
 
 
-private func getStaticWavPath(staticName: String? = nil) -> String {
+public func getStaticWavPath(staticName: String? = nil) -> String {
     
     // defaults for static wav file:
     typealias staticFiles = (name: String, extension: String)
@@ -118,20 +115,37 @@ func getLocalWavFS(str: String) -> Array<Any> {
     }
 }
 
+
 struct ContentView: View {
+    
+    @State var textToUpdate = "new Filename for iOS File System..."
+    
     var body: some View {
         VStack {
-            Text(newFileName())
-            Text(newFileName(hLength:22, ext:".veryBig"))
-        }.onAppear {
-            let wavPath = getStaticWavPath()
-
-            //TODO: whoo! this worked, picking up here xD
-            _ = getLocalWavFS(str: wavPath)
+            // display a live captureSession- this needs to be a spectrogram asap.... :(
+            VStreaming.init()
             
+            // test FSUtils-
+            HStack {
+                Button(action: {
+                    self.textToUpdate = newFileName(hLength: 14, ext: ".wav")
+                }) {
+                    Circle()
+                        .frame(minWidth: 0, maxWidth:66)
+                        .foregroundColor(.green)
+                }
+                Text(textToUpdate)
+                Spacer(minLength: 33)
+            }.onAppear {
+                let wavPath = getStaticWavPath()
+            //TODO: whoo! this worked, picking up here xD
+                _ = getLocalWavFS(str: wavPath)
+            }
         }
     }
 }
+
+// MARK: - Preview Wrapper
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
