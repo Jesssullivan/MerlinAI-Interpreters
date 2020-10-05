@@ -7,6 +7,7 @@ import AVFoundation
 import Accelerate
 import SwiftUI
 
+
 public class AudioSpectrogram: CALayer {
 
     // MARK: Initialization

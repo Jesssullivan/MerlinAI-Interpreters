@@ -9,6 +9,8 @@ import AVFoundation
 import Accelerate
 import Foundation
 import SwiftUI
+import MobileCoreServices
+import AVKit
 
 class PreviewView: UIView {
     private var captureSession: AVCaptureSession?

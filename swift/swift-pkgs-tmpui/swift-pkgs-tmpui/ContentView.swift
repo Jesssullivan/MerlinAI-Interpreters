@@ -116,25 +116,34 @@ func getLocalWavFS(str: String) -> Array<Any> {
 }
 
 
+// MARK: Entry
 struct ContentView: View {
     
-    @State var textToUpdate = "new Filename for iOS File System..."
     
+    @State var TestTextToUpdate = "Test: Generate a new Filename..."
+    // @State var ReadAVTextToUpdate = "Test: Read PCM attributes from test .wav file..."
+
     var body: some View {
         VStack {
-            // display a live captureSession- this needs to be a spectrogram asap.... :(
-            VStreaming.init()
+            Spacer(minLength: 30)
+            Text("...Testing Ways to Display `AVCaptureSession`:")
+            HStack {
+                SpectrogramView()
+                Spacer(minLength: 10)
+                VStreaming.init()
+            }
             
             // test FSUtils-
+            Text("...Testing Ways to Use File System:")
             HStack {
                 Button(action: {
-                    self.textToUpdate = newFileName(hLength: 14, ext: ".wav")
+                    self.TestTextToUpdate = newFileName(hLength: 14, ext: ".wav")
                 }) {
                     Circle()
                         .frame(minWidth: 0, maxWidth:66)
                         .foregroundColor(.green)
                 }
-                Text(textToUpdate)
+                Text(TestTextToUpdate)
                 Spacer(minLength: 33)
             }.onAppear {
                 let wavPath = getStaticWavPath()
@@ -152,3 +161,4 @@ struct ContentView_Previews: PreviewProvider {
         ContentView()
     }
 }
+ 
