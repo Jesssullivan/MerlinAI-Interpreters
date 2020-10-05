@@ -46,8 +46,6 @@ private class SpecController: UIViewController {
 
 private struct _SpecViewer: UIViewControllerRepresentable {
     func makeUIViewController(context: UIViewControllerRepresentableContext<_SpecViewer>) -> UIViewController {
-        // let picker = UIImagePickerController()
-        // return picker
         let spec = SpecController()
         return spec
     }
