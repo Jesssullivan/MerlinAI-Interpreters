@@ -94,22 +94,22 @@ npm run-script ios-native
 ```
 
 ### Swift Native:
-        
+
 -  focusing on codepaths for:
-    - generating mel spectrograms 
+    - generating mel spectrograms
     - tflite interpreter (cocoa linker is still wonky as of 10/1/2020)
 
 ```
 # open in xcode:
 open swift/swift-pkgs-tmpui/swift-pkgs-tmpui.xcodeproj
 ```
-    
+
 - make sure `info.plist` has permissions for microphone access in ```[Key = Privacy -> Microphone]```
- 
-  
+
+
 - **The entrypoint for Swift tests is `./swift/swift-pkgs-tmpui/swift-pkgs-tmpui/swift_pkgs_tmpuiApp.swift`, fiddle @ [`ContentView.swift`](https://github.com/Jesssullivan/tmpUI/blob/master/swift/swift-pkgs-tmpui/swift-pkgs-tmpui/ContentView.swift)**
 
-    
+
 
 - - -
 
@@ -222,9 +222,17 @@ npm run-script sslgen-web-demos
 
 ### Notes:
 
-  - Banging out mel spectrogram drawing logic --> Swift;         
-      - using vDSP `Accelerate` builtins
-      - *pack up as reusable, speedy quick drawing chunk for ios*   
-  - toolchain for correctly and repeatably handling tflite model w/ select ops is still totally not linking @ compiler :(
-     
+*as of 10/04/2020:*   
+- Read existing PCM / .wav file to `AVAudioFile` [works well](https://github.com/Jesssullivan/tmpUI/blob/master/swift/swift-pkgs-tmpui/swift-pkgs-tmpui/ContentView.swift#L82)
+- Jess is *still* trying to capture live spectrogram + audio directly via `AVCaptureSession` as a video file :(
+  - This way, remove all ambiguity in syncing audio & spectrogram, can be cropped as a single unit 
+- [Apple's example spectrogram logic](https://github.com/Jesssullivan/tmpUI/blob/master/swift/swift-pkgs-tmpui/swift-pkgs-tmpui/AudioSpectrogram.refswift#L184) works great, haven't yet reimplemented the [example entry](https://developer.apple.com/documentation/accelerate/visualizing_sound_as_an_audio_spectrogram) explicitly within SwiftUI (*without* UIKit)  
+- Experimenting with approaches to capturing the live `AVCaptureSession` stream using the [camera](https://github.com/Jesssullivan/tmpUI/blob/master/swift/swift-pkgs-tmpui/swift-pkgs-tmpui/CamLivePassThrough.swift#L37) (because that already works xD) e.g. `videoDeviceInput`
 
+
+
+- etc, etc:
+    - Banging out mel spectrogram drawing logic --> Swift;         
+    - using vDSP `Accelerate` builtins
+    - *pack up as reusable, speedy quick drawing chunk for ios*   
+    - toolchain for correctly and repeatably handling tflite model w/ select ops is still totally not linking @ compiler :(
