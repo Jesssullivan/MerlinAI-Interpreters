@@ -203,12 +203,12 @@ npm run-script sslgen-web-demos
 
 ### *Additional bits:*
 
-- Lots of hopes to expand the nifty web annotator tool on the Cornell server
-- thoughts on drumming up enthusiasm for open source?
+- thoughts on drumming up open source enthusiasm?
+- ...to expand the web annotator tool as a song ID game --> app?
 - ...on external camera / mic hardware? 
-- would love to incorporate this as a game --> native app
 - ...toward / hybrid Record --> Classify --> Annotate --> generate TFRecord demo
- 
+  
+  
 - `tmpui-testing` dyno used sporadically for debugging, keeping it @ maintenance mode atm
 - Use `heroku buildpacks:add --index 1 heroku-community/apt -a tmpui` for librosa vorbis depend
 
