@@ -202,11 +202,11 @@ npm run-script sslgen-web-demos
 
 
 ### *Additional bits:*
-
-- thoughts on drumming up open source enthusiasm?
-- ...to expand the web annotator tool as a song ID game --> app?
-- ...on external camera / mic hardware? 
-- ...toward / hybrid Record --> Classify --> Annotate --> generate TFRecord demo
+    
+- thoughts on drumming up open source enthusiasm?    
+    - ...to expand the web annotator tool as a song ID game --> app?
+    - ...on external camera / mic hardware? 
+    - ...toward / hybrid Record --> Classify --> Annotate --> generate TFRecord demo
   
   
 - `tmpui-testing` dyno used sporadically for debugging, keeping it @ maintenance mode atm
