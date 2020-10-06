@@ -203,17 +203,12 @@ npm run-script sslgen-web-demos
 
 ### *Additional bits:*
 
-
-- Looking for existing eBird / Merlin logic bits or other classification apis we can employ right off the bat for ruling out species based on location & date? (even just eBird's "rare" label?)
-- Angling toward / hybrid Record --> Classify --> Annotate --> generate TFRecord demo
 - Lots of hopes to expand the nifty web annotator tool on the Cornell server
-- I understand bringing in more human annotators via existing Macaulay recordings is currently the highest priority
-
-- looking forward to seeing the web annotator, would love to incorporate this as a game --> native app
-- thoughts on drumming up enthusiasm for open source / hacktoberfest?
-- *external camera / mic hardware api? additional datasets?*
-
-
+- thoughts on drumming up enthusiasm for open source?
+- ...on external camera / mic hardware? 
+- would love to incorporate this as a game --> native app
+- ...toward / hybrid Record --> Classify --> Annotate --> generate TFRecord demo
+ 
 - `tmpui-testing` dyno used sporadically for debugging, keeping it @ maintenance mode atm
 - Use `heroku buildpacks:add --index 1 heroku-community/apt -a tmpui` for librosa vorbis depend
 
@@ -223,7 +218,7 @@ npm run-script sslgen-web-demos
 ### Notes:
 
 
-- Jess is *still* trying to capture live spectrogram + audio directly via `AVCaptureSession` as a video file :(
+- Jess is *still* trying to capture live spectrogram + audio directly via `AVCaptureSession` as a video file 
   - This way, remove all ambiguity in syncing audio & spectrogram, can be cropped as a single unit
 - [Apple's example spectrogram logic](https://github.com/Jesssullivan/tmpUI/blob/master/swift/swift-pkgs-tmpui/swift-pkgs-tmpui/AudioSpectrogram.swift#L184) works great
   - Wrapped the [example entry](https://developer.apple.com/documentation/accelerate/visualizing_sound_as_an_audio_spectrogram) to be compliant with SwiftUI, see [`SpectrogramView()`](https://github.com/Jesssullivan/tmpUI/blob/master/swift/swift-pkgs-tmpui/swift-pkgs-tmpui/UIViewUtils.swift)
