@@ -218,11 +218,13 @@ npm run-script sslgen-web-demos
 ### Notes:
 
 
-- Jess is *still* trying to capture live spectrogram + audio directly via `AVCaptureSession` as a video file 
-  - This way, remove all ambiguity in syncing audio & spectrogram, can be cropped as a single unit
-- [Apple's example spectrogram logic](https://github.com/Jesssullivan/tmpUI/blob/master/swift/swift-pkgs-tmpui/swift-pkgs-tmpui/AudioSpectrogram.swift#L184) works great
+- Jess is fiddling away with capturing live spectrogram + audio directly via `AVCaptureSession`   
+  - ...Wading through Apple's newish functional SwiftUI framework   
+  - ...Sounds like Dan is forging ahead with great stride, looking forward to syncing up our ios directions    
+  - ...Removing ambiguity in syncing audio & spectrogram by treating spectrogram as video file internally, this way can be cropped as a single unit   
+- [Apple's example spectrogram logic implemented here](https://github.com/Jesssullivan/tmpUI/blob/master/swift/swift-pkgs-tmpui/swift-pkgs-tmpui/AudioSpectrogram.swift#L184) is working well, straightforward enough to modify for ideal mel output
   - Wrapped the [example entry](https://developer.apple.com/documentation/accelerate/visualizing_sound_as_an_audio_spectrogram) to be compliant with SwiftUI, see [`SpectrogramView()`](https://github.com/Jesssullivan/tmpUI/blob/master/swift/swift-pkgs-tmpui/swift-pkgs-tmpui/UIViewUtils.swift)
-  - Experimenting with approaches to capturing the live `AVCaptureSession` stream using the [camera](https://github.com/Jesssullivan/tmpUI/blob/master/swift/swift-pkgs-tmpui/swift-pkgs-tmpui/CamLivePassThrough.swift#L37) (because that already works xD) e.g. `videoDeviceInput` 
+  - Experimenting with approaches to capturing the live `AVCaptureSession` stream using the [camera](https://github.com/Jesssullivan/tmpUI/blob/master/swift/swift-pkgs-tmpui/swift-pkgs-tmpui/CamLivePassThrough.swift#L37) solely because that already works xD e.g. `videoDeviceInput` 
 - Read existing PCM / .wav file to `AVAudioFile` [works well](https://github.com/Jesssullivan/tmpUI/blob/master/swift/swift-pkgs-tmpui/swift-pkgs-tmpui/ContentView.swift#L82)
 - etc, etc:
     - Banging out mel spectrogram drawing logic --> Swift;         
