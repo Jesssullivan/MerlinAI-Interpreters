@@ -29,7 +29,7 @@ print("Spectrogram Input Shape: %s" % input_details[0]['shape'])
 print("Output shape: %s" % output_details[0]['shape'])
 
 # Load in an audio file
-audio_fp = "/Users/GVH/Downloads/259309231.mp3"
+audio_fp = "./swift/swift-pkgs-tmpui/swift-pkgs-tmpui/FullSongRecording.wav"
 samples, sr = librosa.load(audio_fp, sr=SAMPLE_RATE, mono=True)
 
 assert sr == SAMPLE_RATE, "The preprocessing code assumes a sample rate of %d" % SAMPLE_RATE
