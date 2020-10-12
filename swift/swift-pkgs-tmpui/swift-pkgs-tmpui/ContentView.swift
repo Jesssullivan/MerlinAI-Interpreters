@@ -7,8 +7,7 @@
 import SwiftUI
 import AVFoundation
 import Accelerate
-
-//MARK: - internal
+import TensorFlowLite
 
 /// extra verbose logging to console from View & global env
 public func vLog(text: String) -> Void {
@@ -127,9 +126,10 @@ struct ContentView: View {
             Spacer(minLength: 30)
             Text("...Testing Ways to Display `AVCaptureSession`:")
             HStack {
-                SpectrogramView()
+                //RecordingView()
                 Spacer(minLength: 10)
                 VStreaming.init()
+                SpectrogramView()
             }
             
             // test FSUtils-

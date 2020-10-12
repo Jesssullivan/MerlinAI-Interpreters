@@ -1,0 +1,6 @@
+platform :ios, '14.0'
+target 'swift-pkgs-tmpui' do
+   use_frameworks!
+   pod 'TensorFlowLiteSwift', '~> 0.0.1-nightly', :subspecs => ['CoreML', 'Metal']
+   pod 'TensorFlowLiteSelectTfOps', '~> 0.0.1-nightly'
+end

@@ -1,5 +1,3 @@
-# temporary---!
-
 tmpui_venv
 # OSX
 #
@@ -58,4 +56,6 @@ buck-out/
 *.jsbundle
 
 # CocoaPods
-/ios/Pods/
+
+**/Pods
+**/Podfile.lock

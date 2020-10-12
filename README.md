@@ -97,14 +97,21 @@ npm run-script ios-native
 
 -  focusing on codepaths for:
     - generating mel spectrograms
-    - tflite interpreter (cocoa linker is still wonky as of 10/1/2020)
+    - tflite interpreter (cocoa linker is still wonky as of 10/10/2020)
+      - bazel binaries yield identical wonky results :(
+
 
 ```
-# open in xcode:
-open swift/swift-pkgs-tmpui/swift-pkgs-tmpui.xcodeproj
+# install pods:
+cd swift/swift-pkgs-tmpui/ && pod install && cd ../..
+```
+ 
+```
+# open resulting xcode workspace:
+open swift/swift-pkgs-tmpui/swift-pkgs-tmpui.xcworkspace
 ```
 
-- make sure `info.plist` has permissions for microphone access in ```[Key = Privacy -> Microphone]```
+- make sure `info.plist` has permissions for microphone access
 
 
 - **The entrypoint for Swift tests is `./swift/swift-pkgs-tmpui/swift-pkgs-tmpui/swift_pkgs_tmpuiApp.swift`, fiddle @ [`ContentView.swift`](https://github.com/Jesssullivan/tmpUI/blob/master/swift/swift-pkgs-tmpui/swift-pkgs-tmpui/ContentView.swift)**
@@ -202,13 +209,13 @@ npm run-script sslgen-web-demos
 
 
 ### *Additional bits:*
-    
-- thoughts on drumming up open source enthusiasm?    
+
+- thoughts on drumming up open source enthusiasm?
     - ...to expand the web annotator tool as a song ID game --> app?
-    - ...on external camera / mic hardware? 
+    - ...on external camera / mic hardware?
     - ...toward / hybrid Record --> Classify --> Annotate --> generate TFRecord demo
-  
-  
+
+
 - `tmpui-testing` dyno used sporadically for debugging, keeping it @ maintenance mode atm
 - Use `heroku buildpacks:add --index 1 heroku-community/apt -a tmpui` for librosa vorbis depend
 
@@ -218,16 +225,17 @@ npm run-script sslgen-web-demos
 ### Notes:
 
 
-- Jess is fiddling away with capturing live spectrogram + audio directly via `AVCaptureSession`   
-  - ...Wading through Apple's newish functional SwiftUI framework   
-  - ...Sounds like Dan is forging ahead with great stride, looking forward to syncing up our ios directions    
-  - ...Removing ambiguity in syncing audio & spectrogram by treating spectrogram as video file internally, this way can be cropped as a single unit   
+- Jess is fiddling away with capturing live spectrogram + audio directly via `AVCaptureSession`
+  - ...Wading through Apple's newish functional SwiftUI framework
+  - ...Sounds like Dan is forging ahead with great stride, looking forward to syncing up our ios directions
+  - ...Removing ambiguity in syncing audio & spectrogram by treating spectrogram as video file internally, this way can be cropped as a single unit
 - [Apple's example spectrogram logic implemented here](https://github.com/Jesssullivan/tmpUI/blob/master/swift/swift-pkgs-tmpui/swift-pkgs-tmpui/AudioSpectrogram.swift#L184) is working well, straightforward enough to modify for ideal mel output
   - Wrapped the [example entry](https://developer.apple.com/documentation/accelerate/visualizing_sound_as_an_audio_spectrogram) to be compliant with SwiftUI, see [`SpectrogramView()`](https://github.com/Jesssullivan/tmpUI/blob/master/swift/swift-pkgs-tmpui/swift-pkgs-tmpui/UIViewUtils.swift)
-  - Experimenting with approaches to capturing the live `AVCaptureSession` stream using the [camera](https://github.com/Jesssullivan/tmpUI/blob/master/swift/swift-pkgs-tmpui/swift-pkgs-tmpui/CamLivePassThrough.swift#L37) solely because that already works xD e.g. `videoDeviceInput` 
+  - Experimenting with approaches to capturing the live `AVCaptureSession` stream using the [camera](https://github.com/Jesssullivan/tmpUI/blob/master/swift/swift-pkgs-tmpui/swift-pkgs-tmpui/CamLivePassThrough.swift#L37) solely because that already works xD e.g. `videoDeviceInput`
+
 - Read existing PCM / .wav file to `AVAudioFile` [works well](https://github.com/Jesssullivan/tmpUI/blob/master/swift/swift-pkgs-tmpui/swift-pkgs-tmpui/ContentView.swift#L82)
 - etc, etc:
-    - Banging out mel spectrogram drawing logic --> Swift;         
+    - Banging out mel spectrogram drawing logic --> Swift;
     - using vDSP `Accelerate` builtins
-    - *pack up as reusable, speedy quick drawing chunk for ios*   
+    - *pack up as reusable, speedy quick drawing chunk for ios*
     - toolchain for correctly and repeatably handling tflite model w/ select ops is still totally not linking @ compiler :(
