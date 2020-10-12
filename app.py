@@ -27,10 +27,16 @@ def leaflet():
     return app.send_static_file('annotator.html')
 
 
-@app.route('/uploader', methods=['GET', 'POST'])
-def wav_classify():
+@app.route('/uploader_select', methods=['GET', 'POST'])
+def wav_select_classify():
     wavc = Classifier()
     return wavc.main()
+
+
+@app.route('/uploader_standard', methods=['GET', 'POST'])
+def wav_std_classify():
+    wavc = Classifier()
+    return wavc.main(std=True)
 
 
 @app.route('/crop_3')

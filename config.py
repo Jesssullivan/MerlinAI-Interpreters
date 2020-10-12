@@ -16,11 +16,11 @@ default values for web demos.
 
 
 # set `devel = False` for deployment
-devel = False
+devel = True
 
 # set `prerender = False` for deployment-
 # renders & bundles should already be generated
-prerender = False
+prerender = True
 
 # if `devel == False` prerender definitely also be False:
 #if not devel:
@@ -34,7 +34,7 @@ devhost = '127.0.0.1'
 
 # rendered html extension:
 ext = '_render.html'
-static = "./production/"
+static = "./demos/"
 
 # default html chunks:
 header = static + 'templates/header.html'
@@ -43,6 +43,8 @@ footer = static + 'templates/footer.html'
 # model paths:
 tflite_model_fp = static + "models/lite/model.tflite"
 labels_fp = static + "models/lite/labels.json"
+tflite_model_fp_std = static + "models/liteStdOps/model.tflite"
+labels_fp_std = static + "models/liteStdOps/labels.json"
 
 # uploaded files are placed in temporary server side directories:
 live_app_list = {}
@@ -57,8 +59,8 @@ WINDOW_STEP_SAMPLE_COUNT = 22050
 logger = False
 
 # how often should the garbage collector remove old directories?
-collection_int = 20  # secs
-collection_trash = 10  # secs
+collection_int = 60  # secs
+collection_trash = 30  # secs
 
 # recyclable serverside directories-
 
