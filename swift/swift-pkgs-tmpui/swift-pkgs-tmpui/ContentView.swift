@@ -108,7 +108,6 @@ func getLocalWavFS(str: String) -> Array<Any> {
         vLog(text: "Success reading AVAudioFormat from " + str +
                 ", returning waveform as Array")
         return wavformArray
-
     } catch {
         vLog(text: "Error parsing AVAudioPCMBuffer " + str + " ! ")
         return []
@@ -162,4 +161,3 @@ struct ContentView_Previews: PreviewProvider {
     }
 }
  
-

@@ -13,7 +13,7 @@ def home():
 
 
 @app.route('/crop_dl')
-def crop_dl():
+def crop_4():
     return app.send_static_file('spec_record_crop_dl.html' + ext)
 
 
@@ -29,14 +29,14 @@ def leaflet():
 
 @app.route('/uploader_select', methods=['GET', 'POST'])
 def wav_select_classify():
-    wavs = Classifier()
-    return wavs.main()
+    wavc = Classifier()
+    return wavc.main()
 
 
 @app.route('/uploader_standard', methods=['GET', 'POST'])
 def wav_std_classify():
-    wavs = Classifier()
-    return wavs.main(std=True)
+    wavc = Classifier()
+    return wavc.main(std=True)
 
 
 @app.route('/crop_3')

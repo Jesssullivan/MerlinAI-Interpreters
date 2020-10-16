@@ -2,11 +2,8 @@
 
 mkdir production
 
-#echo -e "production: packing, this could take a while..."
-#webpack --config webpack/es6.production.config.ts
-
-echo "production: copying bundles..."
-find demos/ -name \*_bundle.js  -print -exec cp {} production/ \;
+echo -e "production: packing, this could take a while..."
+# webpack --config webpack/es6.production.config.ts
 
 echo -e "production: packing done. \n..."
 

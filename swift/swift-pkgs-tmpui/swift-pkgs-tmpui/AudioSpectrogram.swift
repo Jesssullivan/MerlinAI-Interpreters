@@ -7,29 +7,7 @@ import AVFoundation
 import Accelerate
 import SwiftUI
 
-/*
 
-// MARK: - SO: https://stackoverflow.com/questions/32891012/spectrogram-from-avaudiopcmbuffer-using-accelerate-framework-in-swift
-
-public func inputOps() -> Void {
-    // fill / pad spectrogram scalar
-    var channelSamples: [[DSPComplex]] = []
-
-    for i in 0..<channelCount {
-        
-        channelSamples.append([])
-        let firstSample = buffer.format.interleaved ? i : i*bufferSize
-        
-        // pad scalar:
-        /*
-         for j=firstSample; j<bufferSize; j+=buffer.stride*2 {
-             channelSamples[i].append(DSPComplex(real: buffer.floatChannelData.memory[j], imag: buffer.floatChannelData.memory[j+buffer.stride]))
-         }
-         **/
-    
-    }
-}
-*/
 public class AudioSpectrogram: CALayer {
 
     // MARK: Initialization
@@ -60,7 +38,7 @@ public class AudioSpectrogram: CALayer {
     
     /// Determines the overlap between frames.
     static let hopCount = 512
-    
+
     let captureSession = AVCaptureSession()
     let audioOutput = AVCaptureAudioDataOutput()
     let captureQueue = DispatchQueue(label: "captureQueue",

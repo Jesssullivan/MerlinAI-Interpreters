@@ -10,7 +10,7 @@
 		558CC8D1C711C21EE5FF3A89 /* Pods_swift_pkgs_tmpui.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 574F124BC2CCC35F7A28EC93 /* Pods_swift_pkgs_tmpui.framework */; };
 		C8254286252A873100317245 /* CamLivePassThrough.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8254285252A873100317245 /* CamLivePassThrough.swift */; };
 		C8254295252A8BCE00317245 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8254294252A8BCE00317245 /* ContentView.swift */; };
-		C8258BC12533DD22008B373A /* StaticClassify.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8258BC02533DD22008B373A /* StaticClassify.swift */; };
+		C8258BC12533DD22008B373A /* StaticClassify.refSwift in Sources */ = {isa = PBXBuildFile; fileRef = C8258BC02533DD22008B373A /* StaticClassify.refSwift */; };
 		C845EDD925262F7F00F89CB5 /* FullSongRecording.wav in Resources */ = {isa = PBXBuildFile; fileRef = C845EDD825262F7F00F89CB5 /* FullSongRecording.wav */; };
 		C84B2ECC252B75C600D9AD4D /* UIViewUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = C84B2ECB252B75C600D9AD4D /* UIViewUtils.swift */; };
 		C856A832252482A400CF63F7 /* AudioSpectrogram.swift in Sources */ = {isa = PBXBuildFile; fileRef = C856A830252482A400CF63F7 /* AudioSpectrogram.swift */; };
@@ -27,7 +27,7 @@
 		B2ABFDC2DED4A92E04AC607C /* Pods-swift-pkgs-tmpui.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-swift-pkgs-tmpui.debug.xcconfig"; path = "Target Support Files/Pods-swift-pkgs-tmpui/Pods-swift-pkgs-tmpui.debug.xcconfig"; sourceTree = "<group>"; };
 		C8254285252A873100317245 /* CamLivePassThrough.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CamLivePassThrough.swift; sourceTree = "<group>"; };
 		C8254294252A8BCE00317245 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		C8258BC02533DD22008B373A /* StaticClassify.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaticClassify.swift; sourceTree = "<group>"; };
+		C8258BC02533DD22008B373A /* StaticClassify.refSwift */ = {isa = PBXFileReference; lastKnownFileType = text; path = StaticClassify.refSwift; sourceTree = "<group>"; };
 		C845EDD825262F7F00F89CB5 /* FullSongRecording.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = FullSongRecording.wav; sourceTree = "<group>"; };
 		C84B2ECB252B75C600D9AD4D /* UIViewUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewUtils.swift; sourceTree = "<group>"; };
 		C856A830252482A400CF63F7 /* AudioSpectrogram.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioSpectrogram.swift; sourceTree = "<group>"; };
@@ -85,7 +85,7 @@
 			children = (
 				C8DB358B2533DDFF007BCF56 /* labels.txt */,
 				C8DB358A2533DDF0007BCF56 /* model.tflite */,
-				C8258BC02533DD22008B373A /* StaticClassify.swift */,
+				C8258BC02533DD22008B373A /* StaticClassify.refSwift */,
 				C886E65325237FAC00B724FF /* swift_pkgs_tmpuiApp.swift */,
 				C8B5F549252E1580003480AB /* AVKitIO.swift */,
 				C8254285252A873100317245 /* CamLivePassThrough.swift */,
@@ -217,7 +217,7 @@
 				C856A833252482A400CF63F7 /* SpecBufferEnvironment.swift in Sources */,
 				C886E65425237FAC00B724FF /* swift_pkgs_tmpuiApp.swift in Sources */,
 				C8B5F54A252E1580003480AB /* AVKitIO.swift in Sources */,
-				C8258BC12533DD22008B373A /* StaticClassify.swift in Sources */,
+				C8258BC12533DD22008B373A /* StaticClassify.refSwift in Sources */,
 				C856A832252482A400CF63F7 /* AudioSpectrogram.swift in Sources */,
 				C84B2ECC252B75C600D9AD4D /* UIViewUtils.swift in Sources */,
 			);
@@ -346,7 +346,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = B2ABFDC2DED4A92E04AC607C /* Pods-swift-pkgs-tmpui.debug.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"swift-pkgs-tmpui/Preview Content\"";
@@ -369,7 +368,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 345683633031D7E69C724FB2 /* Pods-swift-pkgs-tmpui.release.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"swift-pkgs-tmpui/Preview Content\"";
