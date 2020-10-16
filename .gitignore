@@ -1,8 +1,11 @@
-tmpui_venv
+
 # OSX
 #
 .DS_Store
-
+#
+#
+tmpui_venv
+uploads
 # Xcode
 #
 build/
@@ -59,3 +62,5 @@ buck-out/
 
 **/Pods
 **/Podfile.lock
+**/*_render.html
+**/*_bundle.js

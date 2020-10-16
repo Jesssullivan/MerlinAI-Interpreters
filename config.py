@@ -20,7 +20,7 @@ devel = True
 
 # set `prerender = False` for deployment-
 # renders & bundles should already be generated
-prerender = True
+prerender = False
 
 # if `devel == False` prerender definitely also be False:
 #if not devel:
@@ -41,8 +41,9 @@ header = static + 'templates/header.html'
 footer = static + 'templates/footer.html'
 
 # model paths:
-tflite_model_fp = static + "models/lite/model.tflite"
-labels_fp = static + "models/lite/labels.json"
+tflite_model_fp_select = static + "models/lite/model.tflite"
+labels_fp_select = static + "models/lite/labels.json"
+
 tflite_model_fp_std = static + "models/liteStdOps/model.tflite"
 labels_fp_std = static + "models/liteStdOps/labels.json"
 
