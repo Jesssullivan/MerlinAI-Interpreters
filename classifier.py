@@ -1,22 +1,22 @@
-from config import *
 import tensorflow as tf
 import librosa
+from config import *
+
 
 # serverside classification --> json endpoint
 
-
 class Classifier(object):
 
-    # classification method using model built with select ops:
+    # classification method using model built with select ops-
     @classmethod
-    def classify_proc(cls, dir=''):
+    def classify_proc_select(cls, dir=''):
         # thanks Grant!
         # Load in the map from integer id to species code
-        with open(labels_fp) as f:
+        with open(labels_fp_select) as f:
             label_map = json.load(f)
 
         # Load TFLite model and allocate tensors.
-        interpreter = tf.lite.Interpreter(model_path=tflite_model_fp)
+        interpreter = tf.lite.Interpreter(model_path=tflite_model_fp_select)
         interpreter.allocate_tensors()
 
         # Get input and output tensors.
@@ -25,7 +25,6 @@ class Classifier(object):
 
         # Load in an audio file
         audio_fp = glob.glob(dir + '/*.wav')[0]
-        # print(audio_fp)
 
         samples, _ = librosa.load(audio_fp, sr=SAMPLE_RATE, mono=True)
 
@@ -81,10 +80,6 @@ class Classifier(object):
     def classify_standard_proc(cls, dir=''):
 
         # thanks to Grant!!!  xD
-        SAMPLE_RATE = 44100
-        MODEL_INPUT_SAMPLE_COUNT = 44100
-        WINDOW_STEP_SAMPLE_COUNT = 22050
-
         # Load in the map from integer id to species code
         with open(labels_fp_std) as f:
             label_map = json.load(f)
@@ -101,9 +96,9 @@ class Classifier(object):
 
         # Load in an audio file
         audio_fp = glob.glob(dir + '/*.wav')[0]
-
         samples, sr = librosa.load(audio_fp, sr=SAMPLE_RATE, mono=True)
-        # assert sr == SAMPLE_RATE, "The preprocessing code assumes a sample rate of %d" % SAMPLE_RATE
+
+        assert sr == SAMPLE_RATE, "The preprocessing code assumes a sample rate of %d" % SAMPLE_RATE
 
         waveform = samples
         samplerate = SAMPLE_RATE
@@ -120,7 +115,6 @@ class Classifier(object):
             tf.signal.stft(
                 signals=waveform,
                 frame_length=window_length_samples,
-
                 frame_step=hop_length_samples,
                 fft_length=fft_length
             )
@@ -152,7 +146,8 @@ class Classifier(object):
         if spectrogram.shape[0] < DESIRED_TIME_ROWS:
             # We need to add rows with 0s
             num_rows_to_add = DESIRED_TIME_ROWS - spectrogram.shape[0]
-            spectrogram = tf.stack([spectrogram, tf.zeros(num_rows_to_add, spectrogram.shape[1], dtype=tf.float32)])
+            spectrogram = tf.concat([spectrogram, tf.zeros([num_rows_to_add, spectrogram.shape[1]], dtype=tf.float32)],
+                                    axis=0)
 
         elif spectrogram.shape[0] > DESIRED_TIME_ROWS:
             # We need to clip the spectrogram What we actually want to do is probably window the spectrogram,
@@ -183,10 +178,12 @@ class Classifier(object):
 
         res = {}
 
+        print("Class Predictions:")
         for i in range(10):
             label = label_predictions[i]
             score = scores[label]
             species_code = label_map[label]
+            print("\t%7s %0.3f" % (species_code, score))
             res[str(species_code)] = str(score)
 
         # return resulting json:
@@ -221,9 +218,9 @@ class Classifier(object):
             if not os.path.isdir(usr_dir):
                 raise NotADirectoryError
             else:
-                if len(os.listdir(os.path.abspath(usr_dir)) )> 0:
+                if len(os.listdir(os.path.abspath(usr_dir))) > 0:
                     if not std:
-                        return cls.classify_proc(os.path.abspath(usr_dir))
+                        return cls.classify_proc_select(os.path.abspath(usr_dir))
                     else:
                         return cls.classify_standard_proc(os.path.abspath(usr_dir))
 
@@ -237,4 +234,3 @@ class Classifier(object):
             return app.send_static_file('uploaderSelectOps.html' + ext)
         else:
             return app.send_static_file('uploaderStandardOps.html' + ext)
-
