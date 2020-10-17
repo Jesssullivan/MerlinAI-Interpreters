@@ -100,7 +100,7 @@ cd swift/swift-pkgs-tmpui/ && pod install && cd ../..
 ```
 
 ```
-# open resulting xcode workspace:
+# open xcode workspace:
 open swift/swift-pkgs-tmpui/swift-pkgs-tmpui.xcworkspace
 ```
 
@@ -109,6 +109,11 @@ open swift/swift-pkgs-tmpui/swift-pkgs-tmpui.xcworkspace
 - **The entrypoint for Swift tests is `./swift/swift-pkgs-tmpui/swift-pkgs-tmpui/swift_pkgs_tmpuiApp.swift`, fiddle @ [`ContentView.swift`](https://github.com/Jesssullivan/tmpUI/blob/master/swift/swift-pkgs-tmpui/swift-pkgs-tmpui/ContentView.swift)**
 
 
+```
+# nifty switch between xcode versions: 
+sudo xcode-select --switch ~/Downloads/Xcode-beta.app
+```
+ 
 
 - - -
 
