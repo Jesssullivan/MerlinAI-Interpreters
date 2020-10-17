@@ -3,6 +3,9 @@ import librosa
 import numpy as np
 import tensorflow as tf
 
+# these operations are also used @ Classifier.classify_standard_proc() in classifier.py
+# line ~80 for the Flask endpoint on Herkoku.
+
 # classification method using model built WITHOUT select ops-
 # requires all spectrogram matrix transformations occur outside of model
 SAMPLE_RATE = 44100

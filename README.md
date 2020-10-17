@@ -64,15 +64,8 @@ prerender = True
 # see more script stuff in package.json & in `./scripts/`
 npm run-script develop-web
 ```
-
-#### *Prepare a `./production` directory --> deploy web demos like this:*
-```
-# make sure all bundles and renders are bundled and rendered:
-# build to a production directory:
-npm run-script production-web
-# (you'll want reconfigure config.py accordingly too)
-```
-
+ 
+ 
 ### React Native:
 
 
