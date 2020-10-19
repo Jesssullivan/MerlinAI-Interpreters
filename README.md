@@ -120,6 +120,14 @@ sudo xcode-select --switch ~/Downloads/Xcode-beta.app
 ### Scripts:
 
 ```
+### generate some .wav files-
+# see tone.py-
+# you can specify duration in seconds & frequency in Hz like so: 
+python3 tone.py 5 440 
+```
+    
+     
+```
 ### Removing stuff:
 
 # ...demo bundles:
@@ -136,7 +144,10 @@ npm run-script clean-web-all
 
 # ...fruit debris:
 find '.' -name ".DS_Store" -print -delete
-
+```
+  
+  
+```
 ### github environments:
 ## obtain token @ https://github.com/settings/tokens
 
@@ -226,7 +237,7 @@ npm run-script sslgen-web-demos
     - https://stackoverflow.com/questions/32891012/spectrogram-from-avaudiopcmbuffer-using-accelerate-framework-in-swift
     - https://gist.github.com/jeremycochoy/45346cbfe507ee9cb96a08c049dfd34f
 
-  - *"krafter" has a clear sketch in c++:*
+  - *"krafter" has a clear working c++ sketch:*
     - https://stackoverflow.com/questions/11686625/get-hz-frequency-from-audio-stream-on-iphone/19966776#19966776
   
 - accelerate & apple docs:
