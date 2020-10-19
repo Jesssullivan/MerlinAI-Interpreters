@@ -120,7 +120,7 @@ sudo xcode-select --switch ~/Downloads/Xcode-beta.app
 ### Scripts:
 
 ```
-### generate some .wav files-
+### generate some .wav files for testing fft things:
 # see tone.py-
 # you can specify duration in seconds & frequency in Hz like so: 
 python3 tone.py 5 440 
@@ -240,9 +240,9 @@ npm run-script sslgen-web-demos
   - *"krafter" has a clear working c++ sketch:*
     - https://stackoverflow.com/questions/11686625/get-hz-frequency-from-audio-stream-on-iphone/19966776#19966776
   
-- accelerate & apple docs:
-  - https://developer.apple.com/documentation/accelerate/equalizing_audio_with_vdsp
-  - https://medium.com/better-programming/audio-visualization-in-swift-using-metal-accelerate-part-1-390965c095d7
+  - accelerate & apple docs:
+    - https://developer.apple.com/documentation/accelerate/equalizing_audio_with_vdsp
+    - https://medium.com/better-programming/audio-visualization-in-swift-using-metal-accelerate-part-1-390965c095d7
 
 - Jess is fiddling away with capturing live spectrogram + audio directly via `AVCaptureSession`
   - ...Wading through Apple's functional SwiftUI framework
