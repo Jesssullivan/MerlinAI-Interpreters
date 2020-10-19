@@ -19,7 +19,6 @@
 		C886E65B25237FAC00B724FF /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C886E65A25237FAC00B724FF /* Preview Assets.xcassets */; };
 		C8B5F54A252E1580003480AB /* AVKitIO.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8B5F549252E1580003480AB /* AVKitIO.swift */; };
 		C8DB358C2533DDFF007BCF56 /* labels.txt in Resources */ = {isa = PBXBuildFile; fileRef = C8DB358B2533DDFF007BCF56 /* labels.txt */; };
-		C8EEF367253DA0A9004ADE75 /* tone_4_800.wav in Resources */ = {isa = PBXBuildFile; fileRef = C8EEF366253DA0A9004ADE75 /* tone_4_800.wav */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -41,7 +40,6 @@
 		C8DB358A2533DDF0007BCF56 /* model.tflite */ = {isa = PBXFileReference; lastKnownFileType = file; path = model.tflite; sourceTree = "<group>"; };
 		C8DB358B2533DDFF007BCF56 /* labels.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = labels.txt; sourceTree = "<group>"; };
 		C8EEF34E253D8892004ADE75 /* swift-pkgs-tmpui-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "swift-pkgs-tmpui-Bridging-Header.h"; sourceTree = "<group>"; };
-		C8EEF366253DA0A9004ADE75 /* tone_4_800.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = tone_4_800.wav; path = ../../../tone_4_800.wav; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,7 +84,6 @@
 		C886E65225237FAC00B724FF /* swift-pkgs-tmpui */ = {
 			isa = PBXGroup;
 			children = (
-				C8EEF366253DA0A9004ADE75 /* tone_4_800.wav */,
 				C8DB358B2533DDFF007BCF56 /* labels.txt */,
 				C8DB358A2533DDF0007BCF56 /* model.tflite */,
 				C8258BC02533DD22008B373A /* StaticClassify.refswift */,
@@ -181,7 +178,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				C886E65B25237FAC00B724FF /* Preview Assets.xcassets in Resources */,
-				C8EEF367253DA0A9004ADE75 /* tone_4_800.wav in Resources */,
 				C8DB358C2533DDFF007BCF56 /* labels.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

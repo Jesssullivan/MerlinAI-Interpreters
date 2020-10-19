@@ -220,7 +220,18 @@ npm run-script sslgen-web-demos
 - - -
 
 ### Notes:
+     
+- ***fft-related links:***
+  - simplest (beware some typos)
+    - https://stackoverflow.com/questions/32891012/spectrogram-from-avaudiopcmbuffer-using-accelerate-framework-in-swift
+    - https://gist.github.com/jeremycochoy/45346cbfe507ee9cb96a08c049dfd34f
 
+  - *"krafter" has a clear sketch in c++:*
+    - https://stackoverflow.com/questions/11686625/get-hz-frequency-from-audio-stream-on-iphone/19966776#19966776
+  
+- accelerate & apple docs:
+  - https://developer.apple.com/documentation/accelerate/equalizing_audio_with_vdsp
+  - https://medium.com/better-programming/audio-visualization-in-swift-using-metal-accelerate-part-1-390965c095d7
 
 - Jess is fiddling away with capturing live spectrogram + audio directly via `AVCaptureSession`
   - ...Wading through Apple's functional SwiftUI framework

@@ -11,6 +11,7 @@ import SwiftUI
 
 // MARK: - SO:
  fft info gist source:
+ https://stackoverflow.com/questions/11686625/get-hz-frequency-from-audio-stream-on-iphone/19966776#19966776
  https://gist.github.com/jeremycochoy/45346cbfe507ee9cb96a08c049dfd34f
  https://stackoverflow.com/questions/32891012/spectrogram-from-avaudiopcmbuffer-using-accelerate-framework-in-swift
  /// mel scale w/ vDSP apple docs:
@@ -18,6 +19,7 @@ import SwiftUI
  https://medium.com/better-programming/audio-visualization-in-swift-using-metal-accelerate-part-1-390965c095d7
  // really great answer:
  https://stackoverflow.com/questions/43353172/producing-spectrogram-from-microphone
+ https://stackoverflow.com/questions/11686625/get-hz-frequency-from-audio-stream-on-iphone/19966776#19966776
 public func inputOps() -> Void {
     // fill / pad spectrogram scalar
     var channelSamples: [[DSPComplex]] = []
