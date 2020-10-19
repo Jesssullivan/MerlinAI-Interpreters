@@ -9,8 +9,15 @@ import SwiftUI
 
 /*
 
-// MARK: - SO: https://stackoverflow.com/questions/32891012/spectrogram-from-avaudiopcmbuffer-using-accelerate-framework-in-swift
-
+// MARK: - SO:
+ fft info gist source:
+ https://gist.github.com/jeremycochoy/45346cbfe507ee9cb96a08c049dfd34f
+ https://stackoverflow.com/questions/32891012/spectrogram-from-avaudiopcmbuffer-using-accelerate-framework-in-swift
+ /// mel scale w/ vDSP apple docs:
+ https://developer.apple.com/documentation/accelerate/equalizing_audio_with_vdsp
+ https://medium.com/better-programming/audio-visualization-in-swift-using-metal-accelerate-part-1-390965c095d7
+ // really great answer:
+ https://stackoverflow.com/questions/43353172/producing-spectrogram-from-microphone
 public func inputOps() -> Void {
     // fill / pad spectrogram scalar
     var channelSamples: [[DSPComplex]] = []
@@ -30,6 +37,7 @@ public func inputOps() -> Void {
     }
 }
 */
+
 public class AudioSpectrogram: CALayer {
 
     // MARK: Initialization

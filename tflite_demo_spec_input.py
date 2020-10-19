@@ -18,7 +18,7 @@ labels_fp = "./demos/models/liteStdOps/labels.json"
 
 # example audio longer than 3 secs @ "./audio/long.wav",
 # example audio shorter than 3 secs @ "./audio/short.wav"
-audio_fp = "./audio/long.wav"
+audio_fp = "./tone_4_800.wav"
 
 # Load in the map from integer id to species code
 with open(labels_fp) as f:
@@ -60,6 +60,8 @@ magnitude_spectrogram = tf.abs(
     )
 )
 
+print(magnitude_spectrogram)
+quit()
 
 # Convert spectrogram into log mel spectrogram.
 linear_to_mel_weight_matrix = tf.signal.linear_to_mel_weight_matrix(
@@ -72,7 +74,7 @@ linear_to_mel_weight_matrix = tf.signal.linear_to_mel_weight_matrix(
 
 
 mel_spectrogram = tf.matmul(magnitude_spectrogram, linear_to_mel_weight_matrix)
-
+print(mel_spectrogram)
 # Nonlinear transformation of the magnitude values
 non_linear_alpha = -1.7
 spectrogram = tf.math.pow(mel_spectrogram, (1. / (1. + tf.math.exp(-non_linear_alpha))))
@@ -119,9 +121,13 @@ output_data = interpreter.get_tensor(output_details[0]['index'])[0]
 # Print the predictions
 scores = output_data
 label_predictions = np.argsort(scores)[::-1]
+"""
+
 print("Class Predictions:" )
 for i in range(10):
     label = label_predictions[i]
     score = scores[label]
     species_code = label_map[label]
     print("\t%7s %0.3f" % (species_code, score))
+
+"""

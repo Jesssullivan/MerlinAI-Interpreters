@@ -8,10 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		558CC8D1C711C21EE5FF3A89 /* Pods_swift_pkgs_tmpui.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 574F124BC2CCC35F7A28EC93 /* Pods_swift_pkgs_tmpui.framework */; };
+		C806B2AA253BA8760056D202 /* fft.swift in Sources */ = {isa = PBXBuildFile; fileRef = C806B2A9253BA8760056D202 /* fft.swift */; };
 		C8254286252A873100317245 /* CamLivePassThrough.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8254285252A873100317245 /* CamLivePassThrough.swift */; };
 		C8254295252A8BCE00317245 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8254294252A8BCE00317245 /* ContentView.swift */; };
-		C8258BC12533DD22008B373A /* StaticClassify.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8258BC02533DD22008B373A /* StaticClassify.swift */; };
-		C845EDD925262F7F00F89CB5 /* FullSongRecording.wav in Resources */ = {isa = PBXBuildFile; fileRef = C845EDD825262F7F00F89CB5 /* FullSongRecording.wav */; };
+		C8258BC12533DD22008B373A /* StaticClassify.refswift in Sources */ = {isa = PBXBuildFile; fileRef = C8258BC02533DD22008B373A /* StaticClassify.refswift */; };
 		C84B2ECC252B75C600D9AD4D /* UIViewUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = C84B2ECB252B75C600D9AD4D /* UIViewUtils.swift */; };
 		C856A832252482A400CF63F7 /* AudioSpectrogram.swift in Sources */ = {isa = PBXBuildFile; fileRef = C856A830252482A400CF63F7 /* AudioSpectrogram.swift */; };
 		C856A833252482A400CF63F7 /* SpecBufferEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = C856A831252482A400CF63F7 /* SpecBufferEnvironment.swift */; };
@@ -19,16 +19,17 @@
 		C886E65B25237FAC00B724FF /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C886E65A25237FAC00B724FF /* Preview Assets.xcassets */; };
 		C8B5F54A252E1580003480AB /* AVKitIO.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8B5F549252E1580003480AB /* AVKitIO.swift */; };
 		C8DB358C2533DDFF007BCF56 /* labels.txt in Resources */ = {isa = PBXBuildFile; fileRef = C8DB358B2533DDFF007BCF56 /* labels.txt */; };
+		C8EEF367253DA0A9004ADE75 /* tone_4_800.wav in Resources */ = {isa = PBXBuildFile; fileRef = C8EEF366253DA0A9004ADE75 /* tone_4_800.wav */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		345683633031D7E69C724FB2 /* Pods-swift-pkgs-tmpui.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-swift-pkgs-tmpui.release.xcconfig"; path = "Target Support Files/Pods-swift-pkgs-tmpui/Pods-swift-pkgs-tmpui.release.xcconfig"; sourceTree = "<group>"; };
 		574F124BC2CCC35F7A28EC93 /* Pods_swift_pkgs_tmpui.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_swift_pkgs_tmpui.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B2ABFDC2DED4A92E04AC607C /* Pods-swift-pkgs-tmpui.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-swift-pkgs-tmpui.debug.xcconfig"; path = "Target Support Files/Pods-swift-pkgs-tmpui/Pods-swift-pkgs-tmpui.debug.xcconfig"; sourceTree = "<group>"; };
+		C806B2A9253BA8760056D202 /* fft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = fft.swift; sourceTree = "<group>"; };
 		C8254285252A873100317245 /* CamLivePassThrough.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CamLivePassThrough.swift; sourceTree = "<group>"; };
 		C8254294252A8BCE00317245 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		C8258BC02533DD22008B373A /* StaticClassify.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaticClassify.swift; sourceTree = "<group>"; };
-		C845EDD825262F7F00F89CB5 /* FullSongRecording.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = FullSongRecording.wav; sourceTree = "<group>"; };
+		C8258BC02533DD22008B373A /* StaticClassify.refswift */ = {isa = PBXFileReference; lastKnownFileType = text; path = StaticClassify.refswift; sourceTree = "<group>"; };
 		C84B2ECB252B75C600D9AD4D /* UIViewUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewUtils.swift; sourceTree = "<group>"; };
 		C856A830252482A400CF63F7 /* AudioSpectrogram.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioSpectrogram.swift; sourceTree = "<group>"; };
 		C856A831252482A400CF63F7 /* SpecBufferEnvironment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpecBufferEnvironment.swift; sourceTree = "<group>"; };
@@ -39,6 +40,8 @@
 		C8B5F549252E1580003480AB /* AVKitIO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AVKitIO.swift; sourceTree = "<group>"; };
 		C8DB358A2533DDF0007BCF56 /* model.tflite */ = {isa = PBXFileReference; lastKnownFileType = file; path = model.tflite; sourceTree = "<group>"; };
 		C8DB358B2533DDFF007BCF56 /* labels.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = labels.txt; sourceTree = "<group>"; };
+		C8EEF34E253D8892004ADE75 /* swift-pkgs-tmpui-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "swift-pkgs-tmpui-Bridging-Header.h"; sourceTree = "<group>"; };
+		C8EEF366253DA0A9004ADE75 /* tone_4_800.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = tone_4_800.wav; path = ../../../tone_4_800.wav; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,19 +86,21 @@
 		C886E65225237FAC00B724FF /* swift-pkgs-tmpui */ = {
 			isa = PBXGroup;
 			children = (
+				C8EEF366253DA0A9004ADE75 /* tone_4_800.wav */,
 				C8DB358B2533DDFF007BCF56 /* labels.txt */,
 				C8DB358A2533DDF0007BCF56 /* model.tflite */,
-				C8258BC02533DD22008B373A /* StaticClassify.swift */,
+				C8258BC02533DD22008B373A /* StaticClassify.refswift */,
 				C886E65325237FAC00B724FF /* swift_pkgs_tmpuiApp.swift */,
 				C8B5F549252E1580003480AB /* AVKitIO.swift */,
 				C8254285252A873100317245 /* CamLivePassThrough.swift */,
-				C845EDD825262F7F00F89CB5 /* FullSongRecording.wav */,
 				C856A830252482A400CF63F7 /* AudioSpectrogram.swift */,
 				C856A831252482A400CF63F7 /* SpecBufferEnvironment.swift */,
 				C84B2ECB252B75C600D9AD4D /* UIViewUtils.swift */,
 				C8254294252A8BCE00317245 /* ContentView.swift */,
 				C886E65C25237FAC00B724FF /* Info.plist */,
 				C886E65925237FAC00B724FF /* Preview Content */,
+				C806B2A9253BA8760056D202 /* fft.swift */,
+				C8EEF34E253D8892004ADE75 /* swift-pkgs-tmpui-Bridging-Header.h */,
 			);
 			path = "swift-pkgs-tmpui";
 			sourceTree = "<group>";
@@ -148,6 +153,7 @@
 				TargetAttributes = {
 					C886E64F25237FAC00B724FF = {
 						CreatedOnToolsVersion = 12.0.1;
+						LastSwiftMigration = 1220;
 					};
 				};
 			};
@@ -175,8 +181,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				C886E65B25237FAC00B724FF /* Preview Assets.xcassets in Resources */,
+				C8EEF367253DA0A9004ADE75 /* tone_4_800.wav in Resources */,
 				C8DB358C2533DDFF007BCF56 /* labels.txt in Resources */,
-				C845EDD925262F7F00F89CB5 /* FullSongRecording.wav in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -215,9 +221,10 @@
 				C8254286252A873100317245 /* CamLivePassThrough.swift in Sources */,
 				C8254295252A8BCE00317245 /* ContentView.swift in Sources */,
 				C856A833252482A400CF63F7 /* SpecBufferEnvironment.swift in Sources */,
+				C806B2AA253BA8760056D202 /* fft.swift in Sources */,
 				C886E65425237FAC00B724FF /* swift_pkgs_tmpuiApp.swift in Sources */,
 				C8B5F54A252E1580003480AB /* AVKitIO.swift in Sources */,
-				C8258BC12533DD22008B373A /* StaticClassify.swift in Sources */,
+				C8258BC12533DD22008B373A /* StaticClassify.refswift in Sources */,
 				C856A832252482A400CF63F7 /* AudioSpectrogram.swift in Sources */,
 				C84B2ECC252B75C600D9AD4D /* UIViewUtils.swift in Sources */,
 			);
@@ -348,6 +355,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"swift-pkgs-tmpui/Preview Content\"";
 				DEVELOPMENT_TEAM = QP994XQKNH;
@@ -360,6 +368,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "jesss.swift-pkgs-tmpui";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "swift-pkgs-tmpui/swift-pkgs-tmpui-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -371,6 +381,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"swift-pkgs-tmpui/Preview Content\"";
 				DEVELOPMENT_TEAM = QP994XQKNH;
@@ -383,6 +394,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "jesss.swift-pkgs-tmpui";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "swift-pkgs-tmpui/swift-pkgs-tmpui-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

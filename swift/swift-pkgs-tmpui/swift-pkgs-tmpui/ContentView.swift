@@ -8,7 +8,7 @@ import SwiftUI
 import AVFoundation
 import Accelerate
 import TensorFlowLite
-
+import Foundation
 /// extra verbose logging to console from View & global env
 public func vLog(text: String) -> Void {
     //TODO: vLog: add OSLog components
@@ -58,7 +58,7 @@ public func getStaticWavPath(staticName: String? = nil) -> String {
     typealias staticFiles = (name: String, extension: String)
 
     enum defaults {
-        static let recording: staticFiles = (name: "FullSongRecording", extension: "wav")
+        static let recording: staticFiles = (name: "tone_4_800", extension: "wav")
     }
     
     // go get the static wav file :
@@ -75,8 +75,6 @@ public func getStaticWavPath(staticName: String? = nil) -> String {
     vLog(text: "got static wav file path @ " + wavPath)
     return wavPath
 }
-
-
 
 func getLocalWavFS(str: String) -> Array<Any> {
     
@@ -100,14 +98,78 @@ func getLocalWavFS(str: String) -> Array<Any> {
         }
         
         // todo: how can frameCapacity be calculated on the fly?
-        let buf = AVAudioPCMBuffer(pcmFormat: format, frameCapacity: 200000 )
+        let buf = AVAudioPCMBuffer(pcmFormat: format, frameCapacity: 2048)
         
         try! file.read(into: buf!)
         let wavformArray = Array(UnsafeBufferPointer(start: buf?.floatChannelData?[0], count:Int(buf!.frameLength)))
         
         vLog(text: "Success reading AVAudioFormat from " + str +
                 ", returning waveform as Array")
-        return wavformArray
+        
+        
+        // Your signal, array of length 1024
+        // --- INITIALIZATION
+
+        let length = vDSP_Length(wavformArray.count)
+        // The power of two of two times the length of the input.
+        // Do not forget this factor 2.
+        let log2n = vDSP_Length(ceil(log2(Float(length * 2))))
+        // Create the instance of the FFT class which allow computing FFT of complex vector with length
+        // up to `length`.
+        /*
+         let fftSetup = vDSP.FFT(log2n: log2n, radix: .radix2, ofType: DSPSplitComplex.self)!
+
+       
+         // --- Input / Output arrays
+         var forwardInputReal = [Float](wavformArray)
+         var forwardInputImag = [Float](repeating: 0, count: Int(length))
+         var forwardOutputReal = [Float](repeating: 0, count: Int(length))
+         var forwardOutputImag = [Float](repeating: 0, count: Int(length))
+         var magnitudes = [Float](repeating: 0, count: Int(length))
+         forwardInputReal.withUnsafeMutableBufferPointer { forwardInputRealPtr in
+           forwardInputImag.withUnsafeMutableBufferPointer { forwardInputImagPtr in
+             forwardOutputReal.withUnsafeMutableBufferPointer { forwardOutputRealPtr in
+               forwardOutputImag.withUnsafeMutableBufferPointer { forwardOutputImagPtr in
+                 // Input
+                 let forwardInput = DSPSplitComplex(realp: forwardInputRealPtr.baseAddress!, imagp: forwardInputImagPtr.baseAddress!)
+                 // Output
+                 var forwardOutput = DSPSplitComplex(realp: forwardOutputRealPtr.baseAddress!, imagp: forwardOutputImagPtr.baseAddress!)
+
+
+                 fftSetup.forward(input: forwardInput, output: &forwardOutput)
+                 vDSP.absolute(forwardOutput, result: &magnitudes)
+                 vLog(text: magnitudes.description)
+
+               }
+             }
+           }
+         }
+         **/
+    
+
+     
+        var prevRMSValue : Float = 0.3
+        
+        //fft setup object for 1024 values going forward (time domain -> frequency domain)
+        let fftSetup = vDSP_DFT_zop_CreateSetup(nil, 2048, vDSP_DFT_Direction.FORWARD)
+
+        func processAudioData(buffer: AVAudioPCMBuffer){
+            guard let channelData = buffer.floatChannelData?[0] else {return}
+            let frames = buffer.frameLength
+            
+            //rms
+            let rmsValue = SignalProcessing.rms(data: channelData, frameLength: UInt(frames))
+            let interpolatedResults = SignalProcessing.interpolate(current: rmsValue, previous: prevRMSValue)
+            prevRMSValue = rmsValue
+            
+            //fft
+            let fftMagnitudes =  SignalProcessing.fft(data: channelData, setup: fftSetup!)
+           // vLog(text: interpolatedResults	.description)
+        }
+
+        processAudioData(buffer: buf!)
+        
+        return []
 
     } catch {
         vLog(text: "Error parsing AVAudioPCMBuffer " + str + " ! ")
@@ -128,9 +190,11 @@ struct ContentView: View {
             Text("...Testing Ways to Display `AVCaptureSession`:")
             HStack {
                 //RecordingView()
+                Text("Yuki")
                 Spacer(minLength: 10)
-                VStreaming.init()
-                SpectrogramView()
+                Text("Henlo")
+                //VStreaming.init()
+                //SpectrogramView()
             }
             
             // test FSUtils-

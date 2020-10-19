@@ -28,7 +28,7 @@ npm install
 ```
 # set up a local venv:
 python3 -m venv tmpui_venv
-source tmpui_venv/bin/activate
+_source tmpui_venv/bin/activate_
 ```
 
 
@@ -223,7 +223,7 @@ npm run-script sslgen-web-demos
 
 
 - Jess is fiddling away with capturing live spectrogram + audio directly via `AVCaptureSession`
-  - ...Wading through Apple's newish functional SwiftUI framework
+  - ...Wading through Apple's functional SwiftUI framework
   - ...Sounds like Dan is forging ahead with great stride, looking forward to syncing up our ios directions
   - ...Removing ambiguity in syncing audio & spectrogram by treating spectrogram as video file internally, this way can be cropped as a single unit
 - [Apple's example spectrogram logic implemented here](https://github.com/Jesssullivan/tmpUI/blob/master/swift/swift-pkgs-tmpui/swift-pkgs-tmpui/AudioSpectrogram.swift#L184) is working well, straightforward enough to modify for ideal mel output

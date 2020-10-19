@@ -13,8 +13,6 @@ import TensorFlowLite
  todo: invoke tflite model from SwiftUI
  todo: add RTC decs & bindings for react-native interoperability
  */
-
-/*
 let len = 44100
 var audio = [Float](repeating: Float(1.0), count: len)
     
@@ -258,5 +256,3 @@ let wavformArray = Array(UnsafeBufferPointer(start: buf?.floatChannelData?[0], c
         print("Error with D'egg")
     }
 }
- */
-
