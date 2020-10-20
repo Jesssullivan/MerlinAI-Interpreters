@@ -119,11 +119,17 @@ sudo xcode-select --switch ~/Downloads/Xcode-beta.app
 
 ### Scripts:
 
+
+[*see tone.py-*](https://github.com/Jesssullivan/tmpUI/blob/master/tone.py) 
 ```
 ### generate some .wav files for testing fft things:
-# see tone.py-
-# you can specify duration in seconds & frequency in Hz like so: 
+python3 tone.py 
+
+# ...you can also specify duration in seconds & frequency in Hz like so: 
 python3 tone.py 5 440 
+
+# ...or just duration:
+python3 tone.py 2
 ```
     
      
