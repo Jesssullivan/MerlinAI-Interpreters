@@ -159,17 +159,26 @@ find '.' -name ".DS_Store" -print -delete
 
 # install jq:
 sudo apt install jq
-# ...or `brew install jq`
+
+# ...or:
+brew install jq
 
 # update ./scripts/remove_env.sh:
 sudo chmod +x scripts/remove_env.sh && ./scripts/remove_env.sh
-
+```
+ 
+```
 ### Generate local ssl certs for testing w/ node http-server:
+
 # linux:
 npm run-script sslgen-web-demos
-# ...or `sudo chmod +x scripts/sslgen.sh && ./scripts/sslgen.sh`
-# osx is a bit more finicky
 
+# ...or:
+sudo chmod +x scripts/sslgen.sh && ./scripts/sslgen.sh
+# osx is a bit more finicky
+```
+ 
+```
 # See ./package.json & ./scripts/ for additional scripts
 ```
 
