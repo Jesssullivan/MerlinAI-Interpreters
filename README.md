@@ -28,7 +28,7 @@ npm install
 ```
 # set up a local venv:
 python3 -m venv tmpui_venv
-_source tmpui_venv/bin/activate_
+source tmpui_venv/bin/activate
 ```
 
 
