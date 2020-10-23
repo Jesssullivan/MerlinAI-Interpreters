@@ -15,7 +15,6 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "axios": "~0.20.0",
     "@material-ui/core": "latest",
     "@tensorflow/tfjs": "latest",
     "@testing-library/jest-dom": "^4.2.4",
@@ -27,6 +26,7 @@
     "@types/terser-webpack-plugin": "^4.1.0",
     "@types/webgl2": "0.0.5",
     "audio-recorder-polyfill": "^0.3.6",
+    "axios": "~0.20.0",
     "clsx": "latest",
     "fft": "^0.2.1",
     "fft.js": "^4.0.3",
@@ -40,7 +40,7 @@
     "react-native-audio-polyfill": "^1.1.8",
     "react-native-audio-recorder-player": "~2.5.3",
     "react-native-fs": "~2.16.6",
-    "react-scripts": "3.4.3",
+    "react-scripts": "^3.4.4",
     "rebuild": "^0.1.2"
   },
   "devDependencies": {

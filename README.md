@@ -181,11 +181,43 @@ sudo chmod +x scripts/sslgen.sh && ./scripts/sslgen.sh
 ```
 # See ./package.json & ./scripts/ for additional scripts
 ```
-
-
+ 
+ 
 - - -
 
 
+#### *misc. notes & additional bits:*
+
+
+***ios things:***
+
+- Jess is fiddling away with capturing live spectrogram + audio directly via `AVCaptureSession`
+  - ...Wading through Apple's functional SwiftUI framework
+  - ...Sounds like Dan is forging ahead with great stride, looking forward to syncing up our ios directions
+  - ...Removing ambiguity in syncing audio & spectrogram by treating spectrogram as video file internally, this way can be cropped as a single unit
+- [Apple's example spectrogram logic implemented here](https://github.com/Jesssullivan/tmpUI/blob/master/swift/swift-pkgs-tmpui/swift-pkgs-tmpui/AudioSpectrogram.swift#L184) is working well, straightforward enough to modify for ideal mel output
+  - Wrapped the [example entry](https://developer.apple.com/documentation/accelerate/visualizing_sound_as_an_audio_spectrogram) to be compliant with SwiftUI, see [`SpectrogramView()`](https://github.com/Jesssullivan/tmpUI/blob/master/swift/swift-pkgs-tmpui/swift-pkgs-tmpui/UIViewUtils.swift)
+  - Experimenting with approaches to capturing the live `AVCaptureSession` stream using the [camera](https://github.com/Jesssullivan/tmpUI/blob/master/swift/swift-pkgs-tmpui/swift-pkgs-tmpui/CamLivePassThrough.swift#L37) solely because that already works xD e.g. `videoDeviceInput`
+
+- Read existing PCM / .wav file to `AVAudioFile` [works well](https://github.com/Jesssullivan/tmpUI/blob/master/swift/swift-pkgs-tmpui/swift-pkgs-tmpui/ContentView.swift#L82)
+- etc, etc:
+    - Banging out mel spectrogram drawing logic --> Swift;
+    - using vDSP `Accelerate` builtins
+    - *pack up as reusable, speedy quick drawing chunk for ios*
+    - toolchain for correctly and repeatably handling tflite model w/ select ops is still totally not linking @ compiler :(
+
+- thoughts on drumming up open source enthusiasm?
+    - ...to expand the web annotator tool as a song ID game --> app?
+    - ...on external camera / mic hardware?
+    - ...toward / hybrid Record --> Classify --> Annotate --> generate TFRecord demo
+
+
+- `tmpui-testing` dyno used sporadically for debugging, keeping it @ maintenance mode atm
+- Use `heroku buildpacks:add --index 1 heroku-community/apt -a tmpui` for librosa vorbis depend
+
+- - -
+ 
+ 
 ### *Macaulay Annotation:*
 
 - Since Macaulay recording are already pretty well labeled by species, what if we make human annotations into a learning game of sorts?  i.e. In order for the user to guess, they must crop in on the song they are guessing on- free annotation lunch?
@@ -228,26 +260,9 @@ sudo chmod +x scripts/sslgen.sh && ./scripts/sslgen.sh
   * could annotations be bundled as an "album/song" metadata?
 
 
-- - -
+  
+### *fft-related links:*
 
-
-### *Additional bits:*
-
-- thoughts on drumming up open source enthusiasm?
-    - ...to expand the web annotator tool as a song ID game --> app?
-    - ...on external camera / mic hardware?
-    - ...toward / hybrid Record --> Classify --> Annotate --> generate TFRecord demo
-
-
-- `tmpui-testing` dyno used sporadically for debugging, keeping it @ maintenance mode atm
-- Use `heroku buildpacks:add --index 1 heroku-community/apt -a tmpui` for librosa vorbis depend
-
-
-- - -
-
-### Notes:
-     
-- ***fft-related links:***
   - simplest (beware some typos)
     - https://stackoverflow.com/questions/32891012/spectrogram-from-avaudiopcmbuffer-using-accelerate-framework-in-swift
     - https://gist.github.com/jeremycochoy/45346cbfe507ee9cb96a08c049dfd34f
@@ -259,18 +274,37 @@ sudo chmod +x scripts/sslgen.sh && ./scripts/sslgen.sh
     - https://developer.apple.com/documentation/accelerate/equalizing_audio_with_vdsp
     - https://developer.apple.com/documentation/accelerate/vdsp/fast_fourier_transforms
     - https://medium.com/better-programming/audio-visualization-in-swift-using-metal-accelerate-part-1-390965c095d7
+  
+ 
+ 
+- - -
 
-- Jess is fiddling away with capturing live spectrogram + audio directly via `AVCaptureSession`
-  - ...Wading through Apple's functional SwiftUI framework
-  - ...Sounds like Dan is forging ahead with great stride, looking forward to syncing up our ios directions
-  - ...Removing ambiguity in syncing audio & spectrogram by treating spectrogram as video file internally, this way can be cropped as a single unit
-- [Apple's example spectrogram logic implemented here](https://github.com/Jesssullivan/tmpUI/blob/master/swift/swift-pkgs-tmpui/swift-pkgs-tmpui/AudioSpectrogram.swift#L184) is working well, straightforward enough to modify for ideal mel output
-  - Wrapped the [example entry](https://developer.apple.com/documentation/accelerate/visualizing_sound_as_an_audio_spectrogram) to be compliant with SwiftUI, see [`SpectrogramView()`](https://github.com/Jesssullivan/tmpUI/blob/master/swift/swift-pkgs-tmpui/swift-pkgs-tmpui/UIViewUtils.swift)
-  - Experimenting with approaches to capturing the live `AVCaptureSession` stream using the [camera](https://github.com/Jesssullivan/tmpUI/blob/master/swift/swift-pkgs-tmpui/swift-pkgs-tmpui/CamLivePassThrough.swift#L37) solely because that already works xD e.g. `videoDeviceInput`
+## *Notes:*
 
-- Read existing PCM / .wav file to `AVAudioFile` [works well](https://github.com/Jesssullivan/tmpUI/blob/master/swift/swift-pkgs-tmpui/swift-pkgs-tmpui/ContentView.swift#L82)
-- etc, etc:
-    - Banging out mel spectrogram drawing logic --> Swift;
-    - using vDSP `Accelerate` builtins
-    - *pack up as reusable, speedy quick drawing chunk for ios*
-    - toolchain for correctly and repeatably handling tflite model w/ select ops is still totally not linking @ compiler :(
+*Script stuff:*
+
+- begin experimenting with auto detecting bird songs on the fly
+  - ...could be used in conjunction with the web tools & interface in browser / local web app, "kiosk style":
+    - computer / Raspberry Pi / bird feeder stream on youtube / etc constantly processing audio stream, try to classify any sounds that might be a bird, etc
+    - web app served locally from cloned notebook, encourage fiddling 
+    - make interface to pit Merlin's guesses against user's annotation of clip, etc
+  - ...could also be used for "minimal human assistance" bulk collection of annotations via Macaulay, video stream, bird cams, etc
+
+
+*Web stuff:* 
+
+- modify web annotator to generate spectrogram in the browser instead of fetching a pre generated one 
+- add some audio --> spectrogram controls to web annotator for better annotations:
+  - add playback of  cropped / modified spectrogram audio as well!
+  - @Grant- modify spectrogram to better box all songs-
+    - thinking a user definable highpass filter will do the job? 
+    - or more like 4 or 5 parametric bands?
+  
+
+*Other stuff:*
+
+- add export function?  could fit [everything in ID3?](https://en.wikipedia.org/wiki/ID3) Bundle spectrogram as "album artwork", cropped / uncropped audio as "tracks", json attributes as album info?
+- musing on ways to allow a publicly encouraged project such as this access the "big merlin models" down the line, e.g. user experiments with / contributes to / learns from 
+- still want to eventually figure out TensorFlow with web assembly instead of webgl for mobile, perhaps later?  thoughts on this?
+
+- - - 
