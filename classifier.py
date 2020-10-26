@@ -8,77 +8,8 @@ from config import *
 class Classifier(object):
 
     # classification method using model built with select ops-
-    @classmethod
-    def classify_proc_select(cls, dir=''):
-        # thanks Grant!
-        # Load in the map from integer id to species code
-        with open(labels_fp_select) as f:
-            label_map = json.load(f)
-
-        # Load TFLite model and allocate tensors.
-        interpreter = tf.lite.Interpreter(model_path=tflite_model_fp_select)
-        interpreter.allocate_tensors()
-
-        # Get input and output tensors.
-        input_details = interpreter.get_input_details()
-        output_details = interpreter.get_output_details()
-
-        # Load in an audio file
-        audio_fp = glob.glob(dir + '/*.wav')[0]
-
-        samples, _ = librosa.load(audio_fp, sr=SAMPLE_RATE, mono=True)
-
-        # Do we need to pad with zeros?
-        if samples.shape[0] < MODEL_INPUT_SAMPLE_COUNT:
-            samples = np.concatenate(
-                [samples, np.zeros([MODEL_INPUT_SAMPLE_COUNT - samples.shape[0]], dtype=np.float32)])
-
-        # How many windows do we have for this sample?
-        num_windows = (samples.shape[0] - MODEL_INPUT_SAMPLE_COUNT) // WINDOW_STEP_SAMPLE_COUNT + 1
-
-        # We'll aggregate the outputs from each window in this list
-        window_outputs = list()
-
-        # Pass each window
-        for window_idx in range(num_windows):
-            # Construct the window
-            start_idx = window_idx * WINDOW_STEP_SAMPLE_COUNT
-            end_idx = start_idx + MODEL_INPUT_SAMPLE_COUNT
-            window_samples = samples[start_idx:end_idx]
-
-            # Classify the window
-            interpreter.set_tensor(input_details[0]['index'], window_samples)
-            interpreter.set_tensor(input_details[1]['index'], tf.constant(SAMPLE_RATE, dtype=tf.float32))
-            interpreter.invoke()
-            output_data = interpreter.get_tensor(output_details[0]['index'])[0]
-
-            # Save off the classification scores
-            window_outputs.append(output_data)
-
-        window_outputs = np.array(window_outputs)
-
-        # Take an average over all the windows
-        average_scores = window_outputs.mean(axis=0)
-
-        # Print the predictions
-        label_predictions = np.argsort(average_scores)[::-1]
-
-        res = {}
-
-        for i in range(10):
-            label = label_predictions[i]
-            score = average_scores[label]
-            species_code = label_map[label]
-            res[str(species_code)] = str(score)
-
-        # return resulting json:
-        return jsonify(res)
-
-    # classification method using model built WITHOUT select ops-
-    # requires all spectrogram matrix transformations occur outside of model
-    @classmethod
-    def classify_standard_proc(cls, dir=''):
-
+    @staticmethod
+    def classify_proc_std(usr_dir):
         # thanks to Grant!!!  xD
         # Load in the map from integer id to species code
         with open(labels_fp_std) as f:
@@ -95,7 +26,7 @@ class Classifier(object):
         print("Output shape: %s" % output_details[0]['shape'])
 
         # Load in an audio file
-        audio_fp = glob.glob(dir + '/*.wav')[0]
+        audio_fp = glob.glob(usr_dir + '/*.wav')[0]
         samples, sr = librosa.load(audio_fp, sr=SAMPLE_RATE, mono=True)
 
         assert sr == SAMPLE_RATE, "The preprocessing code assumes a sample rate of %d" % SAMPLE_RATE
@@ -186,50 +117,77 @@ class Classifier(object):
             print("\t%7s %0.3f" % (species_code, score))
             res[str(species_code)] = str(score)
 
-        # return resulting json:
-        return jsonify(res)
+        # return results:
+        return res
 
-    @classmethod
-    def main(cls, std=False):
+    @staticmethod
+    def classify_proc_select(dir=''):
+        # thanks Grant!
+        # Load in the map from integer id to species code
+        with open(labels_fp_select) as f:
+            label_map = json.load(f)
 
-        usrid = new_client()
-        usr_dir = os.path.join(inpath, usrid)
+        # Load TFLite model and allocate tensors.
+        interpreter = tf.lite.Interpreter(model_path=tflite_model_fp_select)
+        interpreter.allocate_tensors()
 
-        try:
-            if not os.path.exists('uploads'):
-                subprocess.Popen(str('mkdir uploads'),
-                                 shell=True,
-                                 executable='/bin/bash',
-                                 encoding='utf8')
+        # Get input and output tensors.
+        input_details = interpreter.get_input_details()
+        output_details = interpreter.get_output_details()
 
-            if not os.path.exists(usr_dir):
-                raise NotADirectoryError
+        # Load in an audio file
+        audio_fp = glob.glob(dir + '/*.wav')[0]
 
-        except NotADirectoryError:
-            subprocess.Popen(str('mkdir ' + usr_dir),
-                             shell=True,
-                             executable='/bin/bash',
-                             encoding='utf8')
+        samples, _ = librosa.load(audio_fp, sr=SAMPLE_RATE, mono=True)
 
-        uploader(usr_dir)
+        # Do we need to pad with zeros?
+        if samples.shape[0] < MODEL_INPUT_SAMPLE_COUNT:
+            samples = np.concatenate(
+                [samples, np.zeros([MODEL_INPUT_SAMPLE_COUNT - samples.shape[0]], dtype=np.float32)])
 
-        # after upload:
-        try:
-            if not os.path.isdir(usr_dir):
-                raise NotADirectoryError
-            else:
-                if len(os.listdir(os.path.abspath(usr_dir))) > 0:
-                    if not std:
-                        return cls.classify_proc_select(os.path.abspath(usr_dir))
-                    else:
-                        return cls.classify_standard_proc(os.path.abspath(usr_dir))
+        # How many windows do we have for this sample?
+        num_windows = (samples.shape[0] - MODEL_INPUT_SAMPLE_COUNT) // WINDOW_STEP_SAMPLE_COUNT + 1
 
-        except NotADirectoryError:
-            subprocess.Popen(str('mkdir ' + usr_dir),
-                             shell=True,
-                             executable='/bin/bash',
-                             encoding='utf8')
+        # We'll aggregate the outputs from each window in this list
+        window_outputs = list()
 
+        # Pass each window
+        for window_idx in range(num_windows):
+            # Construct the window
+            start_idx = window_idx * WINDOW_STEP_SAMPLE_COUNT
+            end_idx = start_idx + MODEL_INPUT_SAMPLE_COUNT
+            window_samples = samples[start_idx:end_idx]
+
+            # Classify the window
+            interpreter.set_tensor(input_details[0]['index'], window_samples)
+            interpreter.set_tensor(input_details[1]['index'], tf.constant(SAMPLE_RATE, dtype=tf.float32))
+            interpreter.invoke()
+            output_data = interpreter.get_tensor(output_details[0]['index'])[0]
+
+            # Save off the classification scores
+            window_outputs.append(output_data)
+
+        window_outputs = np.array(window_outputs)
+
+        # Take an average over all the windows
+        average_scores = window_outputs.mean(axis=0)
+
+        # Print the predictions
+        label_predictions = np.argsort(average_scores)[::-1]
+
+        res = {}
+
+        for i in range(10):
+            label = label_predictions[i]
+            score = average_scores[label]
+            species_code = label_map[label]
+            res[str(species_code)] = str(score)
+
+        # return results:
+        return res
+
+    @staticmethod
+    def send_static_html(std=False):
         if not std:
             return app.send_static_file('uploaderSelectOps.html' + ext)
         else:

@@ -1,4 +1,3 @@
-# config.py
 import os
 import time
 import secrets
@@ -8,22 +7,20 @@ import numpy as np
 import json
 import glob
 from flask import Flask, request, flash, redirect, jsonify
-
-
-"""
-default values for web demos.
-"""
+from flask_cors import CORS, cross_origin
+import tensorflow as tf
+import librosa
 
 
 # set `devel = False` for deployment
-devel = False
+devel = True
 
 # set `prerender = False` for deployment-
 # renders & bundles should already be generated
-prerender = False
+prerender = True
 
 # if `devel == False` prerender definitely also be False:
-#if not devel:
+# if not devel:
 #    prerender = False
 
 # port `80` is enforced if devel = False
@@ -72,7 +69,6 @@ rootpath = os.path.abspath(os.curdir)
 inpath = os.path.join(rootpath, 'uploads')
 outpath = os.path.join(rootpath, 'downloads')
 
-
 # file uploads:
 
 # placeholders for usr hash:
@@ -82,12 +78,34 @@ usr_id = ''
 # declare the Flask server:
 app = Flask(__name__, static_folder=static)
 
+# add x-origin support lol:
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
+app.secret_key = 'some secret key'
+
 
 # Common:
 
 
 def new_client():
     return secrets.token_hex(15)
+
+
+def new_client_dir(usrid):
+    usr_dir = os.path.join(inpath, usrid)
+
+    # make user a temporary directory:
+    try:
+        os.mkdir(usr_dir)
+    except:
+        pass
+
+    return usr_dir
+
+
+# set a root session key:
+_root = new_client()
+app.secret_key = _root
 
 
 def uploader(usrpath):
@@ -102,11 +120,3 @@ def uploader(usrpath):
         if file:
             f = request.files['file']
             f.save(os.path.join(usrpath, usrfile))
-
-# on Heroku we are serving via gunicorn @ 0.0.0.0:
-if devel:
-    hostport = devport
-    hosturl = devhost
-else:
-    hostport = 80
-    hosturl = '0.0.0.0'

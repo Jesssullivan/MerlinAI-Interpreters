@@ -157,5 +157,4 @@ export class MerlinAudioModel {
         return [labels, scores];
 
     }
-
 }

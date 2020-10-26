@@ -1,5 +1,5 @@
-// spec_record_crop_dl.ts
-import {ui_utils, audio_loader, audio_model, audio_utils, AudioRecorder, spectrogram_utils} from '../src/index';
+// spec_record_crop_post.ts
+import {ui_utils, audio_loader, audio_utils, AudioRecorder, spectrogram_utils} from '../src/index';
 const noUiSlider = require('./nouislider');
 
 window.MediaRecorder = AudioRecorder;
@@ -12,6 +12,7 @@ const mainSection = document.querySelector('.container-fluid') as HTMLDivElement
 /* tslint:disable:prefer-const */
 let imgCrop = document.createElement('img');
 let imgSpec = document.createElement('img');
+// @ts-ignore
 let waveformSample;
 let audioURL: string | Blob;
 /* tslint:enable:prefer-const */
@@ -34,11 +35,53 @@ const stftHopSeconds = 0.005;
 const topDB = 80;
 let slider : any = null;
 
-const MODEL_URL = 'models/audio/model.json';
-const LABELS_URL = 'models/audio/labels.json';
 const patchWindowSeconds = 1.0; // We'd like to process a minimum of 1 second of audio
 
-const merlinAudio = new audio_model.MerlinAudioModel(LABELS_URL, MODEL_URL);
+const handleWavPOST = (blob: Blob, destination: string) => {
+
+    // recordedBlobs to upload:
+    const file = blob;
+
+    // file is wrapped in `formData` for POST:
+    const formData = new FormData();
+
+    // `name: 'file'` is the ID Flask will use to find and parse the POST's `snippet.wav`:
+    formData.append('file', file, 'snippet.wav');
+
+    // this is where we'll display the classification results:
+    const sampleHolderEl = document.getElementById('specSampleHolder');
+    while (sampleHolderEl!.firstChild) {
+        sampleHolderEl!.removeChild(sampleHolderEl!.firstChild);
+    }
+
+    // make the POST w/ fetch, no one should be using IE anyway xD:
+    fetch(destination, {
+    method: 'POST',
+    body: formData
+    })
+    .then(response => {
+        response.json().then(data => {
+            const resultEl = document.createElement('ul');
+            console.log('received scores!');
+            let i;
+            for (i in data) {
+                const scoreEl = document.createElement('li');
+                scoreEl.textContent = i + " " + data[i];
+                resultEl.appendChild(scoreEl);
+                sampleHolderEl!.prepend(resultEl);
+                console.log(i + ' ' + data[i]);
+            }
+        });
+    })
+    .catch(error => {
+        console.error(error);
+    });
+};
+
+async function postClassifyWaveform() {
+    // posts blob directly, all parsing is done in Flask
+    return handleWavPOST(recordedBlobs, '/uploader_standard');
+}
 
 function updateVis() {
 
@@ -79,15 +122,6 @@ function updateVis() {
     specCropImage!.appendChild(imgCrop);
 
     return waveformSample;
-
-}
-
-async function averageClassifyWaveform(waveform : Float32Array) {
-
-    const result = await merlinAudio.averagePredictV3(waveform, targetSampleRate);
-    const labels = result[0] as string[];
-    const scores = result[1] as Float32Array;
-    return [labels, scores];
 
 }
 
@@ -208,25 +242,10 @@ function renderSpectrogram(imageURI : string, spectrogramLength: number) {
     // wait for a click:
     analyzeBtn.onclick = async () => {
 
-        // add a div to hold the Visualization of the sample
-        const sampleHolderEl = document.getElementById('specSampleHolder');
-        while (sampleHolderEl!.firstChild) {
-            sampleHolderEl!.removeChild(sampleHolderEl!.firstChild);
-        }
-
         //@ts-ignore
         waveformSample = updateVis();
-
         // YMMV, but YOLO:
-        averageClassifyWaveform(waveformSample).then(([labels, scores]) => {
-            const resultEl = document.createElement('ul');
-            for (let i = 0; i < 10; i++) {
-                const scoreEl = document.createElement('li');
-                scoreEl.textContent = labels[i] + " " + scores[i];
-                resultEl.appendChild(scoreEl);
-                sampleHolderEl!.prepend(resultEl);
-            }
-        });
+        await postClassifyWaveform();
     };
 }
 

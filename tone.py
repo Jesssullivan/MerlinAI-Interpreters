@@ -1,11 +1,9 @@
 #!/usr/bin/env python3
 
-
-from numpy import linspace, pi, sin
-from scipy.io import wavfile
+import numpy as np
+from scipy.io.wavfile import write
 from sys import argv
 from os.path import abspath
-
 
 # Generate .wav file from the command line
 #
@@ -44,15 +42,14 @@ def generate_sine_wav(frequency=440, length=5):
     print("...Creating file `" + file_name + "` ")
 
     # generate a file:
-    file = linspace(0, length, _sample_rate * length)
+    file = np.linspace(0, length, _sample_rate * length)
 
     # set frequency in Hz:
-    file_freq = sin(frequency * 2 * pi * file)
-
+    output_array = np.sin(frequency * 2 * np.pi * file)
     # write out the .wav file:
-    wavfile.write(file_name, _sample_rate, file_freq)
+    write(file_name, _sample_rate, output_array)
 
-    # tell someone about it:
+    # tell everyone about it:
     print("...Generated file: \n " +
           str(abspath(file_name)) +
           "\n:)")

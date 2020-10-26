@@ -25,7 +25,7 @@ if (capable) {
     buffer(2000);
     const message = "WebGL mediump float: Hmm, these demos are not supported on this device.  Come build an awesome native version with us @ https://github.com/JessSullivan/tmpUI";
     glSupportHolderEl!.prepend(message);
-    alert(message);
+    window.location.href = '/crop_post';
 }
 
 // Make the canvas the full width
