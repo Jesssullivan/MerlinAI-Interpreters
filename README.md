@@ -37,13 +37,6 @@ source tmpui_venv/bin/activate
 ```
 # Flask depends:
 pip3 install -r requirements.txt
-
-# Flask & gunicorn will automatically go fetch...
-# Werkzeug, itsdangerous, MarkupSafe, Jinja2, click
-# ...as well
-
-# see https://www.tensorflow.org/lite/guide/python
-# for tflite_runtime.interpreter only wheels
 ```
 
 #### *Configure Flask accordingly in `config.py`:*
@@ -74,13 +67,10 @@ npm run-script develop-web
     - if browser cannot do classification (i.e. safari on mobile, webgl mediump not supported) recording is beamed up to `/uploader_standard` for processing
     - both POST destinations `/uploader_select` & `/uploader_standard` can also be operated from within browser as a multipart form
 
-***requirements.txt:***
-```
-# requirements.txt:
-# tf-nightly causes Heroku slug size to be too big;
-# use cpu only tensorflow for deployment
-# (also dependabot gets upset with tf-nightly)
-```
+***requirements.txt:***     
+- tf-nightly causes Heroku slug size to be too big;
+- use cpu only tensorflow for deployment
+- (dependabot will get upset)
  
 ### React Native:
 
