@@ -62,7 +62,7 @@ npm run-script develop-web
 
 #### *misc:*
 
-- url @ `/` runs `webgl_init`, which figures out if the browser can or cannot make classifications and routes the client accordingly. 
+- `/` runs `webgl_init`, which figures out if the browser can or cannot make classifications and routes the client accordingly. 
     - *classification options:* 
     - if browser cannot do classification (i.e. safari on mobile, webgl mediump not supported) recording is beamed up to `/uploader_standard` for processing
     - both POST destinations `/uploader_select` & `/uploader_standard` can also be operated from within browser as a multipart form
