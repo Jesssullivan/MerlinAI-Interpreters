@@ -10,10 +10,10 @@ Flask==1.1.1  # sticking with 1.1.1 for now :(
 flask-cors
 
 # tensorflow select ops seem to usually work better with the nightly builds
-# tf-nightly
+tf-nightly
 
 ### Using 2.3.0 cpu only for Heroku:
-tensorflow-cpu==2.3.0
+# tensorflow-cpu==2.3.0
 
 # audio etc, for both notebooks & web:
 librosa~=0.8.0
