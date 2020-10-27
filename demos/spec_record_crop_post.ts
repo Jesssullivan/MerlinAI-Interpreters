@@ -63,13 +63,25 @@ const handleWavPOST = (blob: Blob, destination: string) => {
         response.json().then(data => {
             const resultEl = document.createElement('ul');
             console.log('received scores!');
+
+            // zing the received json Object into a sortable Array:
+            let ix;
+            let results = [];
+            for (ix in data) {
+                results.push([ix, data[ix]]);
+            }
+
+            // sort the Array by descending value:
+            results = results.sort((a, b) =>  b[1] - a[1]);
+
+            // generate a html list to show the user:
             let i;
-            for (i in data) {
+            for (i in results) {
                 const scoreEl = document.createElement('li');
-                scoreEl.textContent = i + " " + data[i];
+                scoreEl.textContent = ' ' + i + ' ' + results[i].join(" ");
                 resultEl.appendChild(scoreEl);
                 sampleHolderEl!.prepend(resultEl);
-                console.log(i + ' ' + data[i]);
+                console.log(i + ' ' + results[i]);
             }
         });
     })

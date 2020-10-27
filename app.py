@@ -105,6 +105,8 @@ if devel:
 else:
     hostport = 80
     hosturl = '0.0.0.0'
+    logger = False
+
 
 
 if __name__ == "__main__":
