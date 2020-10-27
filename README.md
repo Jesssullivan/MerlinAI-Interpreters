@@ -56,6 +56,7 @@ devel = True
 
 # rebuild header + demo + footer html renders before serving anything (set `False` for production):
 prerender = True
+
 ```
 
 #### *pack up the web demos & start serving:*
@@ -64,7 +65,22 @@ prerender = True
 # see more script stuff in package.json & in `./scripts/`
 npm run-script develop-web
 ```
- 
+
+
+#### *misc:*
+
+- url @ `/` runs `webgl_init`, which figures out if the browser can or cannot make classifications and routes the client accordingly. 
+    - *classification options:* 
+    - if browser cannot do classification (i.e. safari on mobile, webgl mediump not supported) recording is beamed up to `/uploader_standard` for processing
+    - both POST destinations `/uploader_select` & `/uploader_standard` can also be operated from within browser as a multipart form
+
+***requirements.txt:***
+```
+# requirements.txt:
+# tf-nightly causes Heroku slug size to be too big;
+# use cpu only tensorflow for deployment
+# (also dependabot gets upset with tf-nightly)
+```
  
 ### React Native:
 

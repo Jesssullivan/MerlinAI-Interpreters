@@ -32,7 +32,7 @@ def leaflet():
     return app.send_static_file('annotator.html')
 
 
-@app.route('/uploader_standard',methods=['GET','POST'])
+@app.route('/uploader_standard', methods=['GET','POST'])
 @cross_origin()
 def uploader_std():
     if request.method == 'POST':
