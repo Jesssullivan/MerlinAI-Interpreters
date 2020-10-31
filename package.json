@@ -4,6 +4,7 @@
   "scripts": {
     "ios-native": "react-native run-ios",
     "android-native": "react-native run-android",
+    "build-anno": "chmod +x scripts/annotator.sh && ./scripts/annotator.sh",
     "develop-web": "chmod +x scripts/development.sh && ./scripts/development.sh",
     "production-web": "chmod +x scripts/production.sh && ./scripts/production.sh",
     "sslgen-web-demos": "chmod +x scripts/sslgen.sh && ./scripts/sslgen.sh",
@@ -45,6 +46,12 @@
     "rebuild": "^0.1.2"
   },
   "devDependencies": {
+    "leaflet": "^1.6.0",
+    "leaflet-draw": "^1.0.4",
+    "polygon-clipping": "^0.14.3",
+    "@babel/cli": "^7.12.1",
+    "style-loader": "^1.1.0",
+    "url-loader": "^3.0.0",
     "@babel/core": "^7.8.4",
     "@babel/runtime": "^7.8.4",
     "@react-native-community/eslint-config": "^1.1.0",
