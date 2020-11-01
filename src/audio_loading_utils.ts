@@ -44,7 +44,7 @@ function decodeAudioData(arrayBuffer : ArrayBuffer){
 Loads audio from a url.
 */
 export async function loadAudioFromURL(url: string) : Promise<AudioBuffer> {
-    return fetch(url)
+     return fetch(url)
       .then(body => body.arrayBuffer())
       .then(buffer => decodeAudioData(buffer));
 }

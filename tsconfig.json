@@ -10,7 +10,6 @@
       "es2015",
       "dom"
     ],
-    "outDir": "./built",
     "noUnusedLocals": true,
     "noImplicitReturns": true,
     "noImplicitThis": true,

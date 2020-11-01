@@ -56,7 +56,7 @@ prerender = True
 
 ```
 # see more script stuff in package.json & in `./scripts/`
-npm run-script develop-web
+npm run-script develop-web-demos
 ```
 
 

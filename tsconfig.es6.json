@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
     "noImplicitAny": true,
-    "outDir": "./.built",
     "removeComments": false,
     "preserveConstEnums": true,
     "declaration": true,

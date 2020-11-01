@@ -1,6 +1,8 @@
 
 // misc clientside functions.
 
+import {audio_utils, spectrogram_utils} from "./index";
+
 export function MuiButton(titleName: string, holderName: string) {
 
     // MuiButton uses material-ui bootstrap:
@@ -18,5 +20,29 @@ export function MuiButton(titleName: string, holderName: string) {
 
     MuiHolder!.appendChild(MuiBtn);
     return(MuiBtn);
+
+}
+
+export function generateSpectrogramToURI(waveform : Float32Array) {
+
+    // Spectrogram Visualization Parameters
+    const targetSampleRate = 44100;
+    const stftWindowSeconds = 0.015;
+    const stftHopSeconds = 0.005;
+    const topDB = 80;
+    const window_length_samples = Math.round(targetSampleRate * stftWindowSeconds);
+    const hop_length_samples = Math.round(targetSampleRate * stftHopSeconds);
+    const fft_length = Math.pow(2, Math.ceil(Math.log(window_length_samples) / Math.log(2.0)));
+
+    const spec_params = {
+        sampleRate: targetSampleRate,
+        hopLength: hop_length_samples,
+        winLength: window_length_samples,
+        nFft: fft_length,
+        topDB
+    };
+
+    const dbSpec = audio_utils.dBSpectrogram(waveform, spec_params);
+    return spectrogram_utils.dBSpectrogramToImage(dbSpec, topDB);
 
 }

@@ -1,6 +1,6 @@
 import {Greys} from './greys';
 
-function colorMapLookup(x : number) : number{
+function colorMapLookup(x : number) : number {
 
     let i = 1;
     while (Greys[i][0] < x) {
@@ -19,10 +19,17 @@ function colorMapLookup(x : number) : number{
 
 }
 
-export function dBSpectrogramToImage(spec : Float32Array[], topDB : number) : string{
+export function dBSpectrogramToImage(spec : Float32Array[], topDB : number) : string {
 
     const spec_width = spec.length;
-    const spec_height = spec[0].length;
+    console.log(spec_width);
+
+    const spec_height_at_zero = spec[0].length;
+    console.log('@ 0 :'  + spec_height_at_zero.toString());
+
+    const spec_height = spec[1].length;
+    console.log('@ 1 :' + spec_height.toString());
+
     const image_buffer = new Uint8ClampedArray(spec_width * spec_height * 4); // enough bytes for RGBA
 
     // console.log("Spec Dimensions: [ " + spec_height + ", " + spec_width + "]");

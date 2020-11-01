@@ -1,5 +1,5 @@
 // spec_record_crop_dl.ts
-import {ui_utils, audio_loader, audio_model, audio_utils, AudioRecorder, spectrogram_utils} from '../src/index';
+import {ui_utils, audio_loader, audio_model, AudioRecorder, spectrogram_utils, audio_utils} from '../src/index';
 const noUiSlider = require('./nouislider');
 
 window.MediaRecorder = AudioRecorder;
@@ -29,8 +29,8 @@ let currentWaveform : Float32Array;
 const image_height = 300;
 const timeScale = 1.0;
 const targetSampleRate = 44100;
-const stftWindowSeconds = 0.015;
 const stftHopSeconds = 0.005;
+const stftWindowSeconds = 0.015;
 const topDB = 80;
 let slider : any = null;
 
@@ -39,6 +39,24 @@ const LABELS_URL = 'models/audio/labels.json';
 const patchWindowSeconds = 1.0; // We'd like to process a minimum of 1 second of audio
 
 const merlinAudio = new audio_model.MerlinAudioModel(LABELS_URL, MODEL_URL);
+
+function generateSpectrogram(waveform : Float32Array) : Float32Array[]{
+
+    const window_length_samples = Math.round(targetSampleRate * stftWindowSeconds);
+    const hop_length_samples = Math.round(targetSampleRate * stftHopSeconds);
+    const fft_length = Math.pow(2, Math.ceil(Math.log(window_length_samples) / Math.log(2.0)));
+
+    const spec_params = {
+        sampleRate: targetSampleRate,
+        hopLength: hop_length_samples,
+        winLength: window_length_samples,
+        nFft: fft_length,
+        topDB
+    };
+
+    return audio_utils.dBSpectrogram(waveform, spec_params);
+
+}
 
 function updateVis() {
 
@@ -88,24 +106,6 @@ async function averageClassifyWaveform(waveform : Float32Array) {
     const labels = result[0] as string[];
     const scores = result[1] as Float32Array;
     return [labels, scores];
-
-}
-
-function generateSpectrogram(waveform : Float32Array) : Float32Array[]{
-
-    const window_length_samples = Math.round(targetSampleRate * stftWindowSeconds);
-    const hop_length_samples = Math.round(targetSampleRate * stftHopSeconds);
-    const fft_length = Math.pow(2, Math.ceil(Math.log(window_length_samples) / Math.log(2.0)));
-
-    const spec_params = {
-        sampleRate: targetSampleRate,
-        hopLength: hop_length_samples,
-        winLength: window_length_samples,
-        nFft: fft_length,
-        topDB
-    };
-
-    return audio_utils.dBSpectrogram(waveform, spec_params);
 
 }
 

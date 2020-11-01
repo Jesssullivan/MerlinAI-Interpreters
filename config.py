@@ -13,11 +13,11 @@ import librosa
 
 
 # set `devel = False` for deployment
-devel = True
+devel = False
 
 # set `prerender = False` for deployment-
 # renders & bundles should already be generated
-prerender = True
+prerender = False
 
 # if `devel == False` prerender definitely also be False:
 # if not devel:
@@ -78,12 +78,6 @@ usr_id = ''
 # declare the Flask server:
 app = Flask(__name__, static_folder=static)
 
-# add x-origin support lol:
-cors = CORS(app)
-app.config['CORS_HEADERS'] = 'Content-Type'
-app.secret_key = 'some secret key'
-
-
 # Common:
 
 
@@ -101,11 +95,6 @@ def new_client_dir(usrid):
         pass
 
     return usr_dir
-
-
-# set a root session key:
-_root = new_client()
-app.secret_key = _root
 
 
 def uploader(usrpath):

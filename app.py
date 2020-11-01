@@ -2,7 +2,7 @@ from render import Render
 from trashd import Trash
 from classifier import Classifier
 from config import *
-
+from flask_cors import CORS, cross_origin
 
 """ routing """
 
@@ -27,9 +27,10 @@ def webgl():
     return app.send_static_file('webgl_test.html' + ext)
 
 
-@app.route('/leaflet')
+@app.route('/leaflet', methods=['GET', 'POST'])
+@cross_origin(origin='http://localhost:63342', headers=['Content-Type', 'Authorization'])
 def leaflet():
-    return app.send_static_file('annotator.html')
+    return app.send_static_file('annotator_client.html' + ext)
 
 
 @app.route('/uploader_standard', methods=['GET','POST'])
@@ -107,7 +108,9 @@ else:
     hosturl = '0.0.0.0'
     logger = False
 
-
+# still need to update x-origin support lol:
+cors = CORS(app)
+app.secret_key = 'yuki is the roundest seal'
 
 if __name__ == "__main__":
     app.run(host=hosturl, port=os.environ.get('PORT', hostport))

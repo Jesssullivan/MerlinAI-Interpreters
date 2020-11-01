@@ -85,7 +85,6 @@ function resampleWebAudio(audioBuffer: AudioBuffer, targetSr: number):
     });
 }
 
-
 export async function fetch_audio(audio_url : string, targetSampleRate : number) : Promise<{waveform : Float32Array; sourceSampleRate : number; }> {
   // tslint:disable-next-line:max-line-length
     /* The goal here is to load in an audio waveform with unknown sample rate and number of channels
@@ -239,7 +238,6 @@ function _powerToDb(spec : Float32Array[], amin = 1e-10, topDb = 80.0) : Float32
   return logSpec;
 }
 
-
 export function dBSpectrogram(y: Float32Array, params: SpecParams): Float32Array[] {
 
     if (!params.power) {
@@ -259,10 +257,6 @@ export function dBSpectrogram(y: Float32Array, params: SpecParams): Float32Array
 
     return transformed_mel_spec;
 }
-
-
-
-
 
 /**
  * Parameters for computing a spectrogram from audio.
