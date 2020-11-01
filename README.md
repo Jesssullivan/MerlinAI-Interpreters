@@ -10,8 +10,7 @@
 
 ```
 # clone:
-git clone https://github.com/Jesssullivan/tmpUI
-cd tmpUI
+git clone --branch=master --depth=2 https://github.com/Jesssullivan/tmpUI && cd tmpUI
 ```
 
 #### *Install Node dependencies:*
@@ -37,7 +36,15 @@ source tmpui_venv/bin/activate
 ```
 # Flask depends:
 pip3 install -r requirements.txt
-```
+```  
+ 
+***requirements.txt:***      
+- tf-nightly causes Heroku slug size to be too big:
+  - use cpu-only tensorflow for deployment
+  - (dependabot will get upset)
+- on Heroku, `numpy~=1.18.**` is still a reverse depend of cpu-only tensorflow 2.3.*
+  -  otherwise, stick with whatever `tf-nightly` calls for, e.g.`numpy>=1.19.2`
+
 
 #### *Configure Flask accordingly in `config.py`:*
 
@@ -67,10 +74,6 @@ npm run-script develop-web-demos
     - if browser cannot do classification (i.e. safari on mobile, webgl mediump not supported) recording is beamed up to `/uploader_standard` for processing
     - both POST destinations `/uploader_select` & `/uploader_standard` can also be operated from within browser as a multipart form
 
-***requirements.txt:***     
-- tf-nightly causes Heroku slug size to be too big;
-- use cpu only tensorflow for deployment
-- (dependabot will get upset)
  
 ### React Native:
 
@@ -96,8 +99,8 @@ npm run-script ios-native
 
 -  focusing on codepaths for:
     - generating mel spectrograms
-    - tflite interpreter (cocoa linker is still wonky as of 10/10/2020)
-      - bazel binaries yield identical wonkiness
+    - ~~tflite interpreter (cocoa & bazel linker is still wonky as of 10/10/2020)~~
+        - as of 10/31/2020 nightly cocoapod is fixed apparently
 
 
 ```
@@ -116,7 +119,7 @@ open swift/swift-pkgs-tmpui/swift-pkgs-tmpui.xcworkspace
 
 
 ```
-# nifty switch between xcode versions: 
+# niftily switch between xcode versions: 
 sudo xcode-select --switch ~/Downloads/Xcode-beta.app
 ```
  
@@ -125,8 +128,27 @@ sudo xcode-select --switch ~/Downloads/Xcode-beta.app
 
 ### Scripts:
 
+```
+# See ./package.json & ./scripts/ for additional scripts
+```
 
-[*see tone.py-*](https://github.com/Jesssullivan/tmpUI/blob/master/tone.py) 
+#### *web annotator:*
+
+*webpack script links:*
+- [develop-web-demos](https://github.com/Jesssullivan/tmpUI/blob/master/scripts/development.sh)
+- [build-anno-tool](https://github.com/Jesssullivan/tmpUI/blob/master/scripts/annotator_tool.sh)
+- [build-anno-client](https://github.com/Jesssullivan/tmpUI/blob/master/scripts/annotator_client.sh)
+
+```
+# pack only tool definitions @ `./src/annotator_tool.js:
+npm run-script build-anno-tool
+```
+```
+# pack only implementations of annotator tool @ `./src/annotator_client.js:
+npm run-script build-anno-client
+```
+  
+#### [*./tone.py:*](*https://github.com/Jesssullivan/tmpUI/blob/master/tone.py) 
 ```
 ### generate some .wav files for testing fft things:
 python3 tone.py 
@@ -137,31 +159,31 @@ python3 tone.py 5 440
 # ...or just duration:
 python3 tone.py 2
 ```
-    
-     
-```
-### Removing stuff:
 
+
+ 
+#### *removing stuff:*    
+```
 # ...demo bundles:
 npm run-script clean-web-bundles
-# ...or `find demos/ -name "*_bundle.js" -print -delete`
-
+# ...or:
+find demos/ -name "*_bundle.js" -print -delete
+```
+```
 # ...demo renders:
 npm run-script clean-web-renders
-# ...or `find demos/ -name "*_render.html" -print -delete`
-
-# all web files and directories:
-npm run-script clean-web-all
-# ...or `chmod u+x scripts/clean.sh && ./scripts/clean.sh`
-
+# ...or:
+find demos/ -name "*_render.html" -print -delete
+```
+```
 # ...fruit debris:
 find '.' -name ".DS_Store" -print -delete
 ```
-  
-  
+
+#### *github environments:*
+
 ```
-### github environments:
-## obtain token @ https://github.com/settings/tokens
+## tokens @ https://github.com/settings/tokens
 
 # install jq:
 sudo apt install jq
@@ -173,6 +195,7 @@ brew install jq
 sudo chmod +x scripts/remove_env.sh && ./scripts/remove_env.sh
 ```
  
+#### *local ssl:*
 ```
 ### Generate local ssl certs for testing w/ node http-server:
 
@@ -182,10 +205,6 @@ npm run-script sslgen-web-demos
 # ...or:
 sudo chmod +x scripts/sslgen.sh && ./scripts/sslgen.sh
 # osx is a bit more finicky
-```
- 
-```
-# See ./package.json & ./scripts/ for additional scripts
 ```
  
  
@@ -210,7 +229,7 @@ sudo chmod +x scripts/sslgen.sh && ./scripts/sslgen.sh
     - Banging out mel spectrogram drawing logic --> Swift;
     - using vDSP `Accelerate` builtins
     - *pack up as reusable, speedy quick drawing chunk for ios*
-    - toolchain for correctly and repeatably handling tflite model w/ select ops is still totally not linking @ compiler :(
+    - ~~toolchain for correctly and repeatably handling tflite model w/ select ops is still totally not linking @ compiler :(~~
 
 - thoughts on drumming up open source enthusiasm?
     - ...to expand the web annotator tool as a song ID game --> app?

@@ -108,7 +108,7 @@ else:
     hosturl = '0.0.0.0'
     logger = False
 
-# still need to update x-origin support lol:
+# x-origin support, lol:
 cors = CORS(app)
 app.secret_key = 'yuki is the roundest seal'
 
