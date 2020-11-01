@@ -100,7 +100,7 @@ npm run-script ios-native
 -  focusing on codepaths for:
     - generating mel spectrograms
     - ~~tflite interpreter (cocoa & bazel linker is still wonky as of 10/10/2020)~~
-        - as of 10/31/2020 nightly cocoapod is fixed apparently
+        - as of 10/31/2020 nightly cocoapod has been fixed apparently, see [#4b6c152](https://github.com/tensorflow/tensorflow/commit/4b6c15218b690c5c75b28c423991096e4f0ea51b) 
 
 
 ```
