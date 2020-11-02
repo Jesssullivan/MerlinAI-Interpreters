@@ -1,14 +1,18 @@
-//
-//  tmp.swift
-//  swift-pkgs-tmpui
-//
-//  Created by Jess on 10/5/20.
-//
+/*
+ 
+This file wraps AudioSpectrogram's CALayer & UIViewController
+to conform as a View in SwiftUI.
+ 
+// @ swift-pkgs-tmpui
+// created by Jess
+ 
+*/
 
 import Foundation
 import SwiftUI
 import AVFoundation
 import Accelerate
+
 
 // MARK: - Utility UIViewController --> SwiftUI View Components
 /// - ...to wrap Apple's example AudioSpectrogram CALayer & UIViewController within SwiftUI View `SpectrogramView()`

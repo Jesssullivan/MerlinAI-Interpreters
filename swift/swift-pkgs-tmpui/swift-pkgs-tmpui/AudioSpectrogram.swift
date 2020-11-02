@@ -1,15 +1,7 @@
 /*
-Abstract:
-Class that generates a spectrogram from an audio signal.
-*/
+ 
+This file contains parts of Apple's example spectrogram.
 
-import AVFoundation
-import Accelerate
-import SwiftUI
-
-/*
-
-// MARK: - SO:
  fft info gist source:
  https://stackoverflow.com/questions/11686625/get-hz-frequency-from-audio-stream-on-iphone/19966776#19966776
  https://gist.github.com/jeremycochoy/45346cbfe507ee9cb96a08c049dfd34f
@@ -20,25 +12,12 @@ import SwiftUI
  // really great answer:
  https://stackoverflow.com/questions/43353172/producing-spectrogram-from-microphone
  https://stackoverflow.com/questions/11686625/get-hz-frequency-from-audio-stream-on-iphone/19966776#19966776
-public func inputOps() -> Void {
-    // fill / pad spectrogram scalar
-    var channelSamples: [[DSPComplex]] = []
 
-    for i in 0..<channelCount {
-        
-        channelSamples.append([])
-        let firstSample = buffer.format.interleaved ? i : i*bufferSize
-        
-        // pad scalar:
-        /*
-         for j=firstSample; j<bufferSize; j+=buffer.stride*2 {
-             channelSamples[i].append(DSPComplex(real: buffer.floatChannelData.memory[j], imag: buffer.floatChannelData.memory[j+buffer.stride]))
-         }
-         **/
-    
-    }
-}
 */
+
+import AVFoundation
+import Accelerate
+import SwiftUI
 
 public class AudioSpectrogram: CALayer {
 

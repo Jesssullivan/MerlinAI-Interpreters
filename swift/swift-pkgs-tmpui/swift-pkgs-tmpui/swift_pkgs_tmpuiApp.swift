@@ -2,7 +2,7 @@
 //  swift_pkgs_tmpuiApp.swift
 //  swift-pkgs-tmpui
 //
-//  Created by Jess on 9/29/20.
+//  Created by Jess.
 //
 
 import SwiftUI
@@ -11,7 +11,7 @@ import SwiftUI
 struct swift_pkgs_tmpuiApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ConsoleView()
         }
     }
 }

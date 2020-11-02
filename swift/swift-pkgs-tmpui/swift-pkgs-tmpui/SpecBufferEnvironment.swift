@@ -1,8 +1,10 @@
 /*
+ 
+This file is part of Apple's example spectrogram.
+ 
 See LICENSE folder for this sample’s licensing information.
-
-Abstract:
 AudioSpectrogram extension for AVFoundation support.
+ 
 */
 
 import AVFoundation
