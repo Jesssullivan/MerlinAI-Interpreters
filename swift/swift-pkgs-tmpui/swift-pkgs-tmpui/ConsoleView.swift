@@ -4,7 +4,6 @@
 //
 //  Created by Jess.
 
-
 import SwiftUI
 import AVFoundation
 import Accelerate
@@ -21,7 +20,6 @@ private let sampleRate = 44100
 private let maxInt16AsFloat32: Float32 = 32767.0
 
 // MARK: Local methods:
-
 /// extra verbose logging to console from View & global env
 func vLog(text: String) -> Void {
     // ...when not called from a `View`:
@@ -41,7 +39,6 @@ public extension View {
 
 
 // MARK: Bundled files:
-
 // accessing of bundled files:
 typealias BundleStorage = (name: String, extension: String)
 
@@ -53,7 +50,6 @@ public enum BundledFiles {
 
 
 // MARK: Merlin's Interpreter:
-
 class MerlinInterpreter {
     
     /// to be populated from initializer:
@@ -90,6 +86,8 @@ class MerlinInterpreter {
             vLog(text: "Failed to create interpreter! \n @ \(error.localizedDescription)!")
             return nil
         }
+      
+        // MARK: Establish Labels:
         
         /// intialize & map labels available in BundledFiles:
         let filename = BundledFiles.labels.name
@@ -111,6 +109,7 @@ class MerlinInterpreter {
         } catch {
             fatalError("An awful thing has happened")
         }
+        
     }
 
     // MARK: Public Interpreter Methods:
@@ -165,7 +164,7 @@ class MerlinInterpreter {
 
     public func classify(buffer: [Float]) -> Void {
       
-        let outputTensor: Tensor
+        var outputTensor: Tensor
      
         do {
                         
@@ -179,24 +178,21 @@ class MerlinInterpreter {
             var rate = Int32(sampleRate)
             let sampleRateData = Data(bytes: &rate, count: MemoryLayout.size(ofValue: rate))
             try interpreter.copy(sampleRateData, toInputAt: sampleRateInputTensorIndex)
-
+            
+            vLog(text: try interpreter.input(at: 0).shape.dimensions.description)
             /// YOLO:
             try interpreter.invoke()
 
-            outputTensor = try interpreter.output(at: 0)
-        
-            let scores = [Float32](unsafeData: outputTensor.data) ?? []
-            var results: [Float32] = []
+            let outputTensor = try interpreter.output(at: 0)
             
-            let resultingLabels: Int = labels.count
-            vLog(text: "Label Count: " + resultingLabels.description)
-
-            for i in 0..<resultingLabels-1 {
-                results.append(scores[i])
-            }
+            vLog(text: outputTensor.data.description)
+            // Copy output to `Data` to process the inference results.
+            let outputSize = outputTensor.shape.dimensions.reduce(1, {x, y in x * y})
+            let outputData =
+                  UnsafeMutableBufferPointer<Float32>.allocate(capacity: outputSize)
+            outputTensor.data.copyBytes(to: outputData)
             
-            // Let's see what values we got:
-            vLog(text: "scores? " + results.description)
+       
             vLog(text: "@ Tensor: " + outputTensor.data.description)
             
         } catch let error {
@@ -243,7 +239,6 @@ extension Array {
 }
 
 // MARK: Entry:
-
 struct ConsoleView: View {
 
     @State var Info = "Loading Intepreter..."

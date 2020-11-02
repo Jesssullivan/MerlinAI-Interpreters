@@ -11,7 +11,8 @@ import SwiftUI
 struct swift_pkgs_tmpuiApp: App {
     var body: some Scene {
         WindowGroup {
-            ConsoleView()
+            CreateInterpreterView()
+            // ConsoleView()
         }
     }
 }
