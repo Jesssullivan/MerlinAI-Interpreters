@@ -1,9 +1,9 @@
 //
-//  ContentViewa.swift
+//  ConsoleView.swift
 //  swift-pkgs-tmpui
 //
-//  Created by Jess on 11/1/20.
-//
+//  Created by Jess.
+
 
 import SwiftUI
 import AVFoundation
@@ -11,37 +11,70 @@ import Accelerate
 import TensorFlowLite
 import Foundation
 
-// MARK: Bundled Files
+
+// MARK: Private properties:
+private var buffer:[Float] = []
+private var labels: [String] = []
+private let audioBufferInputTensorIndex = 0
+private let sampleRateInputTensorIndex = 1
+private let sampleRate = 44100
+private let maxInt16AsFloat32: Float32 = 32767.0
+
+// MARK: Local methods:
+
+/// extra verbose logging to console from View & global env
+func vLog(text: String) -> Void {
+    // ...when not called from a `View`:
+    print("vLog: " + text)
+}
+
+public extension View {
+    func vLog(_ vars: String...) -> some View {
+        for text in vars {
+            // when called from a `View`:
+            print(": " + text)
+        }
+        // this is surely not how this is done...idk
+        return EmptyView()
+    }
+}
+
+
+// MARK: Bundled files:
 
 // accessing of bundled files:
 typealias BundleStorage = (name: String, extension: String)
 
 public enum BundledFiles {
     static let model: BundleStorage = (name: "Model", extension: "tflite")
-    static let labelsInfo: BundleStorage = (name: "Labels", extension: "txt")
-    static let recording: BundleStorage = (name: "FullSongRecording", extension: "wav")
+    static let labels: BundleStorage = (name: "Labels", extension: "txt")
+    static let recording: BundleStorage = (name: "TestWaveform", extension: "wav")
 }
 
-// MARK: Load Interpreter w/ model.
-class ModelInterpreter {
+
+// MARK: Merlin's Interpreter:
+
+class MerlinInterpreter {
     
     /// to be populated from initializer:
     private var interpreter: Interpreter
     
+    // MARK: Load Interpreter w/ model.
     init?() {
         
-        // go get the static wav file:
+        /// load in model in `BundledFiles`:
         guard let modelPath = Bundle.main.path(
             forResource: BundledFiles.model.name,
             ofType: BundledFiles.model.extension
         ) else {
-            vLog(text: "Failed to load the model @ \n" + BundledFiles.model.name)
+            vLog(text: "Failed to load the model :(")
             return nil
         }
         
-        vLog(text: "Successfully loaded model!")
+        vLog(text: "Successfully loaded model! :)")
         
-        // MARK: initialize the intepreter w/ the model:
+        // MARK: initialize Interpreter:
+        
         do {
             
             // Create Interpreter:
@@ -50,17 +83,167 @@ class ModelInterpreter {
             
             // Allocate tensors:
             try interpreter.allocateTensors()
-            vLog(text: "Successfully created allocated tensors! \n\n:)")
+            vLog(text: "Successfully allocated tensors! \n\n:)")
     
             
         } catch let error {
             vLog(text: "Failed to create interpreter! \n @ \(error.localizedDescription)!")
             return nil
         }
+        
+        /// intialize & map labels available in BundledFiles:
+        let filename = BundledFiles.labels.name
+        let fileExtension = BundledFiles.labels.extension
+        
+        /// load from bundle:
+        guard let fileURL = Bundle.main.url(forResource: filename, withExtension: fileExtension) else {
+            fatalError("a terrible issue has occured with labels @ " +
+                        "\(filename).\(fileExtension) !")
+        }
+        
+        do {
+            
+            let contents = try String(contentsOf: fileURL, encoding: .utf8)
+            
+            /// TODO:  it'd be better to load from the json version
+            labels = contents.components(separatedBy: .newlines)
+            
+        } catch {
+            fatalError("An awful thing has happened")
+        }
+    }
+
+    // MARK: Public Interpreter Methods:
+    
+    public func wavToArray(file: BundleStorage) -> [Float] {
+                
+        guard let bundledWav = Bundle.main.path(
+            forResource: file.name,
+            ofType: file.extension
+        ) else {
+            vLog(text: "Failed to load wavToArray @ " + file.name)
+            return []
+        }
+       
+        // load as URL for AVAudioFile:
+        let url = URL(string: bundledWav)
+
+        // use AVFoundation to import the audio:
+        do {
+            
+            let file = try AVAudioFile(forReading: url!)
+            
+            vLog(text: "Received Sample Rate: " + String(file.fileFormat.sampleRate))
+            vLog(text: "Received Channel Count: " + String(file.fileFormat.channelCount))
+            
+            // Immediately unwrap:
+            guard let format = AVAudioFormat(
+                    commonFormat: .pcmFormatFloat32,
+                    sampleRate: file.fileFormat.sampleRate,
+                    channels: 1,
+                    interleaved: false) else {
+                vLog(text: "Error reading AVAudioFormat!")
+                return []
+            }
+            
+            /// todo: how can frameCapacity be calculated on the fly?
+            let buf = AVAudioPCMBuffer(pcmFormat: format, frameCapacity: AVAudioFrameCount(sampleRate))
+            try! file.read(into: buf!)
+            
+            let wavformArray = Array(UnsafeBufferPointer(start: buf?.floatChannelData?[0], count:Int(buf!.frameLength)))
+            
+            vLog(text: "Success reading AVAudioFormat! returning waveform as Array...")
+            
+            /// array can now be passed to classifier:
+            return wavformArray
+
+        } catch {
+            vLog(text: "Error parsing AVAudioPCMBuffer.")
+            return []
+        }
+    }
+
+    public func classify(buffer: [Float]) -> Void {
+      
+        let outputTensor: Tensor
+     
+        do {
+                        
+            /// Copy buffer:
+            let audioBufferData = Data(copyingBufferOf: buffer.map { Float($0) })
+            vLog(text: "audioBufferData: " + audioBufferData.description)
+            
+            try interpreter.copy(audioBufferData, toInputAt: audioBufferInputTensorIndex)
+
+            /// Copy sample rate:
+            var rate = Int32(sampleRate)
+            let sampleRateData = Data(bytes: &rate, count: MemoryLayout.size(ofValue: rate))
+            try interpreter.copy(sampleRateData, toInputAt: sampleRateInputTensorIndex)
+
+            /// YOLO:
+            try interpreter.invoke()
+
+            outputTensor = try interpreter.output(at: 0)
+        
+            let scores = [Float32](unsafeData: outputTensor.data) ?? []
+            var results: [Float32] = []
+            
+            let resultingLabels: Int = labels.count
+            vLog(text: "Label Count: " + resultingLabels.description)
+
+            for i in 0..<resultingLabels-1 {
+                results.append(scores[i])
+            }
+            
+            // Let's see what values we got:
+            vLog(text: "scores? " + results.description)
+            vLog(text: "@ Tensor: " + outputTensor.data.description)
+            
+        } catch let error {
+            print("Something has gone horribly wrong." +
+                  "\n\n \(error.localizedDescription)")
+        }
     }
 }
 
+extension Data {
+  /// Creates a new buffer by copying the buffer pointer of the given array.
+  ///
+  /// - Warning: The given array's element type `T` must be trivial in that it can be copied bit
+  ///     for bit with no indirection or reference-counting operations; otherwise, reinterpreting
+  ///     data from the resulting buffer has undefined behavior.
+  /// - Parameter array: An array with elements of type `T`.
+  init<T>(copyingBufferOf array: [T]) {
+    self = array.withUnsafeBufferPointer(Data.init)
+  }
+}
+
+extension Array {
+  /// Creates a new array from the bytes of the given unsafe data.
+  ///
+  /// - Warning: The array's `Element` type must be trivial in that it can be copied bit for bit
+  ///     with no indirection or reference-counting operations; otherwise, copying the raw bytes in
+  ///     the `unsafeData`'s buffer to a new array returns an unsafe copy.
+  /// - Note: Returns `nil` if `unsafeData.count` is not a multiple of
+  ///     `MemoryLayout<Element>.stride`.
+  /// - Parameter unsafeData: The data containing the bytes to turn into an array.
+  init?(unsafeData: Data) {
+    guard unsafeData.count % MemoryLayout<Element>.stride == 0 else { return nil }
+    #if swift(>=5.0)
+    self = unsafeData.withUnsafeBytes { .init($0.bindMemory(to: Element.self)) }
+    #else
+    self = unsafeData.withUnsafeBytes {
+      .init(UnsafeBufferPointer<Element>(
+        start: $0,
+        count: unsafeData.count / MemoryLayout<Element>.stride
+      ))
+    }
+    #endif
+  }
+}
+
 // MARK: Entry:
+
 struct ConsoleView: View {
 
     @State var Info = "Loading Intepreter..."
@@ -73,9 +256,10 @@ struct ConsoleView: View {
             Spacer(minLength: 33)
             Text(Info)
         }.onAppear {
-            ModelInterpreter()
-            sleep(1)
-            self.Info = "...Finished Loading Intepreter."
+            let Merlin = MerlinInterpreter()
+            let audioArray = Merlin?.wavToArray(file: (name: "TestWaveform", extension: "wav"))
+            Merlin?.classify(buffer: audioArray!)
+            self.Info = "Check Logs."
         }
     }
 }

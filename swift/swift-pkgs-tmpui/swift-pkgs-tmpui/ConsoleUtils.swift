@@ -1,9 +1,5 @@
 /*
- 
- This file contains a variety of utility functions used to operate a bare-bones tflite example, connected to the  XCode console.
-
- Created by Jess.
-
+Misc.
  */
 
 import SwiftUI
@@ -11,22 +7,6 @@ import AVFoundation
 import Accelerate
 import TensorFlowLite
 import Foundation
-
-/// extra verbose logging to console from View & global env
-func vLog(text: String) -> Void {
-    // ...when not called from a `View`:
-    print("vLog: " + text)
-}
-
-public extension View {
-    func vLog(_ vars: String...) -> some View {
-        for text in vars {
-            print("pub. Log: " + text)
-        }
-        // this is surely not how this is done...idk
-        return EmptyView()
-    }
-}
 
 
 // generate new file names:
@@ -70,43 +50,4 @@ public func getStaticWavPath(staticName: String? = nil) -> String {
 
     vLog(text: "got static wav file path @ " + wavPath)
     return wavPath
-}
-
-func getLocalWavFS(str: String) -> Array<Any> {
-    
-    let url = URL(string: str)
-   
-    // use Apple's AVFoundation to import the audio:
-    do {
-        
-        let file = try AVAudioFile(forReading: url!)
-        vLog(text: "Received Sample Rate: " + String(file.fileFormat.sampleRate))
-        vLog(text: "Received Channel Count: " + String(file.fileFormat.channelCount))
-        
-        // Immediately unwrap:
-        guard let format = AVAudioFormat(
-                commonFormat: .pcmFormatFloat32,
-                sampleRate: file.fileFormat.sampleRate,
-                channels: 1,
-                interleaved: false) else {
-            vLog(text: "Error reading AVAudioFormat from " + str + " ! ")
-            return []
-        }
-        
-        // todo: how can frameCapacity be calculated on the fly?
-        let buf = AVAudioPCMBuffer(pcmFormat: format, frameCapacity: 2048)
-        
-        try! file.read(into: buf!)
-        let wavformArray = Array(UnsafeBufferPointer(start: buf?.floatChannelData?[0], count:Int(buf!.frameLength)))
-        
-        vLog(text: "Success reading AVAudioFormat from " + str +
-                ", returning waveform as Array")
-        
-            
-        return wavformArray
-
-    } catch {
-        vLog(text: "Error parsing AVAudioPCMBuffer " + str + " ! ")
-        return []
-    }
 }
