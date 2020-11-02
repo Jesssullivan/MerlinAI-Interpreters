@@ -14,11 +14,12 @@
 		C84D9C6F25506667009D1146 /* CreateInterpreterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C84D9C6E25506667009D1146 /* CreateInterpreterView.swift */; };
 		C856A832252482A400CF63F7 /* AudioSpectrogram.swift in Sources */ = {isa = PBXBuildFile; fileRef = C856A830252482A400CF63F7 /* AudioSpectrogram.swift */; };
 		C856A833252482A400CF63F7 /* SpecBufferEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = C856A831252482A400CF63F7 /* SpecBufferEnvironment.swift */; };
-		C85B7D51254F7D4F009A2BE2 /* ConsoleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C85B7D50254F7D4F009A2BE2 /* ConsoleView.swift */; };
-		C85B7D58254F7F15009A2BE2 /* ConsoleUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = C85B7D57254F7F15009A2BE2 /* ConsoleUtils.swift */; };
+		C85B7D51254F7D4F009A2BE2 /* ConsoleView.refswift in Sources */ = {isa = PBXBuildFile; fileRef = C85B7D50254F7D4F009A2BE2 /* ConsoleView.refswift */; };
+		C85B7D58254F7F15009A2BE2 /* ConsoleUtils.refswift in Sources */ = {isa = PBXBuildFile; fileRef = C85B7D57254F7F15009A2BE2 /* ConsoleUtils.refswift */; };
 		C886E65425237FAC00B724FF /* swift_pkgs_tmpuiApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C886E65325237FAC00B724FF /* swift_pkgs_tmpuiApp.swift */; };
 		C886E65B25237FAC00B724FF /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C886E65A25237FAC00B724FF /* Preview Assets.xcassets */; };
 		C896BEC8254FBFC500EF3760 /* TestWaveform.wav in Resources */ = {isa = PBXBuildFile; fileRef = C896BEC7254FBFC500EF3760 /* TestWaveform.wav */; };
+		C8DDE4612550AC48002144E0 /* CreateInterpreterDan.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8DDE4602550AC48002144E0 /* CreateInterpreterDan.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,13 +32,14 @@
 		C84D9C6E25506667009D1146 /* CreateInterpreterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateInterpreterView.swift; sourceTree = "<group>"; };
 		C856A830252482A400CF63F7 /* AudioSpectrogram.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioSpectrogram.swift; sourceTree = "<group>"; };
 		C856A831252482A400CF63F7 /* SpecBufferEnvironment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpecBufferEnvironment.swift; sourceTree = "<group>"; };
-		C85B7D50254F7D4F009A2BE2 /* ConsoleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsoleView.swift; sourceTree = "<group>"; };
-		C85B7D57254F7F15009A2BE2 /* ConsoleUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsoleUtils.swift; sourceTree = "<group>"; };
+		C85B7D50254F7D4F009A2BE2 /* ConsoleView.refswift */ = {isa = PBXFileReference; lastKnownFileType = text; path = ConsoleView.refswift; sourceTree = "<group>"; };
+		C85B7D57254F7F15009A2BE2 /* ConsoleUtils.refswift */ = {isa = PBXFileReference; lastKnownFileType = text; path = ConsoleUtils.refswift; sourceTree = "<group>"; };
 		C886E65025237FAC00B724FF /* swift-pkgs-tmpui.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "swift-pkgs-tmpui.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C886E65325237FAC00B724FF /* swift_pkgs_tmpuiApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = swift_pkgs_tmpuiApp.swift; sourceTree = "<group>"; };
 		C886E65A25237FAC00B724FF /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		C886E65C25237FAC00B724FF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C896BEC7254FBFC500EF3760 /* TestWaveform.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = TestWaveform.wav; sourceTree = "<group>"; };
+		C8DDE4602550AC48002144E0 /* CreateInterpreterDan.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateInterpreterDan.swift; sourceTree = "<group>"; };
 		C8EEF34E253D8892004ADE75 /* swift-pkgs-tmpui-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "swift-pkgs-tmpui-Bridging-Header.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -83,18 +85,19 @@
 		C886E65225237FAC00B724FF /* swift-pkgs-tmpui */ = {
 			isa = PBXGroup;
 			children = (
-				C85B7D57254F7F15009A2BE2 /* ConsoleUtils.swift */,
+				C85B7D57254F7F15009A2BE2 /* ConsoleUtils.refswift */,
 				C886E65325237FAC00B724FF /* swift_pkgs_tmpuiApp.swift */,
 				C856A830252482A400CF63F7 /* AudioSpectrogram.swift */,
 				C856A831252482A400CF63F7 /* SpecBufferEnvironment.swift */,
 				C84B2ECB252B75C600D9AD4D /* UIViewUtils.swift */,
-				C85B7D50254F7D4F009A2BE2 /* ConsoleView.swift */,
+				C85B7D50254F7D4F009A2BE2 /* ConsoleView.refswift */,
 				C896BEC7254FBFC500EF3760 /* TestWaveform.wav */,
 				C81FEB71254F797B00ED1527 /* Labels.txt */,
 				C81FEB72254F797B00ED1527 /* Model.tflite */,
 				C886E65C25237FAC00B724FF /* Info.plist */,
 				C886E65925237FAC00B724FF /* Preview Content */,
 				C8EEF34E253D8892004ADE75 /* swift-pkgs-tmpui-Bridging-Header.h */,
+				C8DDE4602550AC48002144E0 /* CreateInterpreterDan.swift */,
 				C84D9C6E25506667009D1146 /* CreateInterpreterView.swift */,
 			);
 			path = "swift-pkgs-tmpui";
@@ -215,8 +218,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				C856A833252482A400CF63F7 /* SpecBufferEnvironment.swift in Sources */,
-				C85B7D58254F7F15009A2BE2 /* ConsoleUtils.swift in Sources */,
-				C85B7D51254F7D4F009A2BE2 /* ConsoleView.swift in Sources */,
+				C8DDE4612550AC48002144E0 /* CreateInterpreterDan.swift in Sources */,
+				C85B7D58254F7F15009A2BE2 /* ConsoleUtils.refswift in Sources */,
+				C85B7D51254F7D4F009A2BE2 /* ConsoleView.refswift in Sources */,
 				C886E65425237FAC00B724FF /* swift_pkgs_tmpuiApp.swift in Sources */,
 				C84D9C6F25506667009D1146 /* CreateInterpreterView.swift in Sources */,
 				C856A832252482A400CF63F7 /* AudioSpectrogram.swift in Sources */,
