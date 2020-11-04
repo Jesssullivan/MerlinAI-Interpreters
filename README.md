@@ -97,25 +97,16 @@ npm run-script ios-native
 
 ### Swift Native:
 
+```
+# Hack on Swift stuff:
+npm run-script develop-swift-demos
+```
+
 -  focusing on codepaths for:
-    - generating mel spectrograms
-    - ~~tflite interpreter (cocoa & bazel linker is still wonky as of 10/10/2020)~~
-        - as of 10/31/2020 nightly cocoapod has been fixed apparently, see [#4b6c152](https://github.com/tensorflow/tensorflow/commit/4b6c15218b690c5c75b28c423991096e4f0ea51b) 
-
-
-```
-# install pods:
-cd swift/swift-pkgs-tmpui/ && pod install && cd ../..
-```
-
-```
-# open xcode workspace:
-open swift/swift-pkgs-tmpui/swift-pkgs-tmpui.xcworkspace
-```
-
+    - tflite interpreter
+    - generating mel spectrograms 
 - make sure `info.plist` has permissions for microphone access
-
-- **The entrypoint for Swift tests is `./swift/swift-pkgs-tmpui/swift-pkgs-tmpui/swift_pkgs_tmpuiApp.swift`, fiddle @ [`ContentView.swift`](https://github.com/Jesssullivan/tmpUI/blob/master/swift/swift-pkgs-tmpui/swift-pkgs-tmpui/ContentView.swift)**
+- **The entrypoint for Swift tests is `./swift/swift-pkgs-tmpui/swift-pkgs-tmpui/swift_pkgs_tmpuiApp.swift`**
 
 
 ```
