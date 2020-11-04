@@ -102,7 +102,7 @@ npm run-script ios-native
 npm run-script develop-swift-demos
 ```
 
--  focusing on codepaths for:
+-  *focusing on codepaths for:*
     - tflite interpreter
     - generating mel spectrograms 
 - make sure `info.plist` has permissions for microphone access
