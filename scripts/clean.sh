@@ -1,14 +1,5 @@
 #!/bin/bash
 
-
-echo -e "Warning: this script REMOVES:
-./es6
-./.built
-./production
-ALL renders
-ALL bundles
-"
-
 if [[ $EUID -ne 0 ]]; then
    echo -e "If you are certain this is what you want to do, run the following sudo:\n
    sudo ./scripts/clean.sh
@@ -17,7 +8,7 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 
-#echo "removing node_modules..."
+# echo "removing node_modules..."
 # rm -rf node_modules
 
 echo "removing ./.built..."
