@@ -4,6 +4,7 @@
 //
 //  Created by Jess.
 
+/*
 import SwiftUI
 import AVFoundation
 import Accelerate
@@ -17,7 +18,6 @@ private var labels: [String] = []
 private let audioBufferInputTensorIndex = 0
 private let sampleRateInputTensorIndex = 1
 private let sampleRate = 44100
-private let maxInt16AsFloat32: Float32 = 32767.0
 
 // MARK: Local methods:
 /// extra verbose logging to console from View & global env
@@ -259,3 +259,4 @@ struct ConsoleView: View {
         }
     }
 }
+*/
