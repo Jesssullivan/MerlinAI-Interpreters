@@ -12,7 +12,7 @@ build tool:
 */
 
 // audio & spectrogram-related utilities:
-import {audio_loader, audio_utils, spectrogram_utils} from '../src/index'
+import {audio_loader, audio_utils, spectrogram_utils, ui_utils} from '../src/index'
 
 let annotatorRendered = null; // allows us to export annotations
 let currentImageIndex = 0; // keep track of which image we are working on.
@@ -257,6 +257,171 @@ function startAnnotating(images_data, categories, annotations, config){
                 // convert dB into something we can display:
                 let waveData = spectrogram_utils.dBSpectrogramToImage(dbSpec, topDB);
 
+               /*
+
+               TODO: toggle between the browser-generated / Macaulay spectrogram source.
+
+                 ...
+
+                create a Toggle Spectrogram Source button:
+                const specToggleSourceHolder = 'specToggleSourceHolder';
+                const specToggleButton = ui_utils.MuiButton('Toggle Spectrogram Source', specToggleSourceHolder);
+
+                // wait for a click:
+                // specToggleButton.onclick = () => {
+
+                // Create an image element and load in the pixels
+                let imageEl = new Image();
+                // We need to have access to the pixels before initializing Leaflet
+                imageEl.onload = function(){
+
+                    // Get the dimensions of the spectrogram
+                    spectrogram_height = imageEl.height;
+                    spectrogram_width = imageEl.width;
+
+                    function addAudioFunctions(annotatorRendered){
+
+                        // Setup the view for the audio
+                        annotatorRendered.renderForSpectrogram(targetSpectrogramHeight);
+                        annotatorRendered.turnOffZoom();
+                        annotatorRendered.turnOffDrag();
+
+                        // Audio Controls
+                        // space bar is play and pause
+                        pixels_per_second = null;
+                        pixels_per_ms = null;
+
+                        audioElement = new Audio();
+                        playing_audio = false;
+                        playing_audio_timing_id = null;
+                        current_offset = 0;
+
+                        // Load in the audio for the spectrogram
+                        audioElement.addEventListener('canplaythrough', () => {
+                            let duration = audioElement.duration;
+                            // The duration variable now holds the duration (in seconds) of the audio clip
+
+                            // This should be ~250 (because of the SoX command)
+                            pixels_per_second = 250.0; //spectrogram_width / duration;
+
+                            pixels_per_ms = pixels_per_second / 1000.0;
+
+                            console.log("Spectrogram Height: " +  spectrogram_height);
+                            console.log("Spectrogram Width: " +  spectrogram_width);
+                            console.log("Duration " + duration);
+                            console.log("Pixels / second : " + pixels_per_second);
+                            console.log("Pixels / milisecond : " + pixels_per_ms);
+                            console.log("Current Time " + audioElement.currentTime);
+
+                            enableAudioKeys();
+
+                            $("#currentAudioDuration").text('Dur: ' + duration.toFixed(2) + ' sec');
+
+                        });
+                        audioElement.src = image_info.audio;
+                        audioElement.addEventListener('error', () => {
+                            alert("Error loading the audio for image " + image_info.id + ". Perhaps the resouce has been deleted? Maybe skip or try to come back to this asset?");
+                        });
+                        audioElement.load();
+
+                    }
+
+                    function delayAudioPrepTillRender(annotatorRendered){
+
+                        if (!('audio' in image_info)){
+                            console.log("No audio url in image info");
+                            return;
+                        }
+
+                        // Annoying, but we need leaflet to render the image before we start
+                        // doing transformations
+                        setTimeout(()=>addAudioFunctions(annotatorRendered), 100);
+                    }
+
+                    // Create the Leaflet.annotation element
+                    let annotator = React.createElement(document.LeafletAnnotation, {
+                        imageElement : imageEl,
+                        image : image_info,
+                        annotations : existing_annotations,
+                        categories : categories,
+                        options : {
+                            enableEditingImmediately : true,
+
+                            map : {
+                                attributionControl : false,
+                                zoomControl : false,
+                                boxZoom : false,
+                                doubleClickZoom : false,
+                                keyboard : false,
+                                scrollWheelZoom : false
+                            },
+
+                            quickAccessCategoryIDs : quickAccessCatIDs,
+
+                            newInstance: {
+                                annotateCategory: true,
+                                annotateSupercategory: false,
+                                annotationType: 'box'
+                            },
+
+                            duplicateInstance : {
+                                enable : true,
+                                duplicateY : true  // duplicate the frequcy components of the box
+                            },
+
+                            showCategory : true,
+                            showSupercategory: true,
+                            showIsCrowdCheckbox: false,
+
+                            enableBoxEdit : true,
+                            renderBoxes : true,
+
+                            enableSegmentationEdit : false,
+                            renderSegmentations : false,
+
+                            imageInfoComponent : document.MLAudioInfo,
+
+                            didMountLeafletCallback : delayAudioPrepTillRender,
+                            didFocusOnAnnotationCallback : mapPannedTo
+                        }
+                    }, null);
+
+                    // Render the annotator
+                    annotatorRendered = ReactDOM.render(annotator, document.getElementById('annotationHolder'));
+
+
+                    // Create the one second intervals lines that will appear over the spectrogram.
+                    // These are 1px wide lines.
+                    // NOTE: these values are hard coded for a window width of 1200px with one second being 240px.
+                    let interval_offset = 120;
+                    let one_second_interval = 240;
+                    for(let i = 0; i < 5; i++){
+                        $(".leaflet-image-holder").append(
+                            $("<span></span>").css({
+                                "content" : "",
+                                "width": "1px",
+                                "height": "100%",
+                                "display": "block",
+                                "z-index": 999,
+                                "left": "" + (interval_offset + (i * one_second_interval)) + "px",
+                                "position": "absolute",
+                                "background-image": "linear-gradient(#495057bf, #495057bf)",
+                                "background-size": "1px 100%",
+                                "background-repeat": "no-repeat",
+                                "background-position": "center center"
+                            })
+                        );
+                    }
+
+
+                }
+                imageEl.addEventListener('error', () => {
+                    alert("Error loading the pixels for image " + image_info.id + ". Perhaps the resouce has been deleted? Maybe skip?");
+                });
+                imageEl.src = image_info.url;
+
+                ...
+                */
                 const imageEl = new Image();
 
                 //  visualization:
