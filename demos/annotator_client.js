@@ -12,7 +12,7 @@ build tool:
 */
 
 // audio & spectrogram-related utilities:
-import {audio_loader, audio_utils, spectrogram_utils} from './index'
+import {audio_loader, audio_utils, spectrogram_utils} from '../src/index'
 
 let annotatorRendered = null; // allows us to export annotations
 let currentImageIndex = 0; // keep track of which image we are working on.

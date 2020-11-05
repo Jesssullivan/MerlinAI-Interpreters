@@ -12,7 +12,7 @@ module.exports = {
   },
   devtool: 'inline-source-map',
   mode: 'development',
-  entry:'./src/annotator_client.js',
+  entry:'./demos/annotator_client.js',
   output: {
     filename: 'annotator_client_bundle.js',
     path: path.resolve(__dirname, '../demos'),

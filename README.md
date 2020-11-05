@@ -166,10 +166,7 @@ npm run-script clean-web-renders
 # ...or:
 find demos/ -name "*_render.html" -print -delete
 ```
-```
-# ...fruit debris:
-find '.' -name ".DS_Store" -print -delete
-```
+
 
 #### *github environments:*
 
