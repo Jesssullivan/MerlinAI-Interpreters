@@ -15,9 +15,6 @@ import {MLAudioInfo} from "./annotator/macaulay_asset_info.jsx";
 import "./annotator/Leaflet.annotation.css";
 
 
-// TODO: @Jess: fix coercion warning (== --> ===)
-
-
 // This is need to add call the init hooks to bring in the edit functionality
 // E.g. see https://github.com/Leaflet/Leaflet.draw/blob/develop/src/edit/handler/Edit.Rectangle.js#L117
 import Draw from 'leaflet-draw';
@@ -155,15 +152,14 @@ export class Annotator_tool extends React.Component {
         ************************************************
         */
 
-
         // Initialize the category data structure
         this.categoryMap = {};
         var supercategorySet = new Set();
-        for(var i = 0; i < this.props.categories.length; i++){
+        for (let i = 0; i < this.props.categories.length; i++) {
             var category = this.props.categories[i]
             this.categoryMap[category.id] = category;
 
-            if (category.supercategory != 'undefined' && category.supercategory != null){
+            if (category.supercategory !== 'undefined' && category.supercategory !== null) {
                 supercategorySet.add(category.supercategory);
             }
         }
@@ -200,7 +196,7 @@ export class Annotator_tool extends React.Component {
      * Runs after the component output has been rendered to the DOM.
      * Initialize the leaflet map and add the annotations.
     */
-    componentDidMount(){
+    componentDidMount() {
         // Create the leaflet map
         this.leafletMap = L.map(this.leafletHolderEl, {
             center : [0, 0],
@@ -274,21 +270,21 @@ export class Annotator_tool extends React.Component {
         // We'll use this list to mirror the json annotations
         this.annotation_layers = [];
         // Add the annotations
-        for(var i=0; i < this.state.annotations.length; i++){
+        for (let i=0; i < this.state.annotations.length; i++) {
             this.annotation_layers.push(this.addAnnotation(this.state.annotations[i], i));
         }
 
-        if (this.options.enableEditingImmediately){
+        if (this.options.enableEditingImmediately) {
             this.enableEditing();
         }
-        if (this.options.enableHotKeysImmediately){
+        if (this.options.enableHotKeysImmediately) {
             this.enableHotKeys();
         }
 
         // Rerender
         this.setState(this.state);
 
-        if(this.props.options.didMountLeafletCallback != null){
+        if (this.props.options.didMountLeafletCallback !== null) {
             this.props.options.didMountLeafletCallback(this);
         }
 
@@ -297,11 +293,11 @@ export class Annotator_tool extends React.Component {
     /**
      * Try to clean up after ourselves.
     */
-    componentWillUnmount(){
+    componentWillUnmount() {
         this.leafletMap.remove();
     }
 
-    componentDidUpdate(prevProps, prevState, snapshot){
+    componentDidUpdate(prevProps, prevState, snapshot) {
 
     }
 
@@ -315,7 +311,7 @@ export class Annotator_tool extends React.Component {
      *      2. Add padding around the spectrogram so that it "starts" in the center "finishes" in the center
      *      3. Compute the image-pixel to map-pixel scale conversion so that we can pan appropriately.
      */
-    renderForSpectrogram(targetHeight=400){
+    renderForSpectrogram(targetHeight=400) {
 
         // NOTE: Make sure to set `zoomSnap : 0` in the Leaflet Map constructor in order to allow for arbitrary zooming.
 
@@ -352,7 +348,7 @@ export class Annotator_tool extends React.Component {
 
     }
 
-    fillMapPrev(){
+    fillMapPrev() {
 
         // NOTE: Make sure to set zoomSnap to 0 in order for the math to work out
 
@@ -410,13 +406,13 @@ export class Annotator_tool extends React.Component {
     }
 
 
-    turnOffDrag(){
+    turnOffDrag() {
 
         this.leafletMap.dragging.disable();
 
     }
 
-    turnOffZoom(){
+    turnOffZoom() {
 
         this.leafletMap.touchZoom.disable();
         this.leafletMap.doubleClickZoom.disable();
@@ -426,7 +422,7 @@ export class Annotator_tool extends React.Component {
 
     }
 
-    // panBy(image_offset){
+    // panBy(image_offset) {
 
     //     // We want to pan by a pixel in the image space.
     //     // So we need to convert to the number of map pixels.
@@ -440,7 +436,7 @@ export class Annotator_tool extends React.Component {
 
     // }
 
-    panTo(x){
+    panTo(x) {
         /* x is in pixels.
         */
 
@@ -459,7 +455,7 @@ export class Annotator_tool extends React.Component {
     }
 
 
-    // addVerticalLine(x_loc){
+    // addVerticalLine(x_loc) {
 
     //     var latlngs = [
     //         this.leafletMap.unproject([x_loc, this.imageHeight], this.leafletMap.getMinZoom()),
@@ -474,7 +470,7 @@ export class Annotator_tool extends React.Component {
     /**
      * Allow all annotation layers to be edited.
      */
-    enableEditing(){
+    enableEditing() {
         this.editor.enable();
         // Remove the edit styling for the markers.
         $( ".leaflet-marker-icon" ).removeClass( "leaflet-edit-marker-selected" );
@@ -483,21 +479,21 @@ export class Annotator_tool extends React.Component {
     /**
      * Prevent annotations from being annotated
      */
-    disableEditing(){
+    disableEditing() {
         this.editor.disable();
     }
 
-    enableHotKeys(){
+    enableHotKeys() {
         // Register keypresses
         document.addEventListener("keydown", this.handleKeyDown);
     }
 
-    disableHotKeys(){
+    disableHotKeys() {
         // Unregister keypresses
         document.removeEventListener("keydown", this.handleKeyDown);
     }
 
-    handleKeyDown(e){
+    handleKeyDown(e) {
 
         let ESCAPE_KEY = 27; // Quit / Cancel annotation
         let S_KEY = 83; // Save annotations
@@ -507,9 +503,9 @@ export class Annotator_tool extends React.Component {
 
         //console.log("key down " + e.keyCode);
 
-        switch(e.keyCode){
+        switch(e.keyCode) {
             case ESCAPE_KEY:
-                if(this.state.annotating){
+                if (this.state.annotating) {
                     this.cancelAnnotation();
                 }
                 break;
@@ -530,7 +526,7 @@ export class Annotator_tool extends React.Component {
      * Create a path style for a box.
      * See: https://leafletjs.com/reference-1.6.0.html#path
      */
-    getBoxPathStyle(index){
+    getBoxPathStyle(index) {
         let options = this.options;
         let color = options.boxColors[index % options.boxColors.length];
         let pathStyle = $.extend(true, {}, options.boxPathStyle);
@@ -540,7 +536,7 @@ export class Annotator_tool extends React.Component {
         return pathStyle;
     }
 
-    createBoxLayer(box, pathStyle){
+    createBoxLayer(box, pathStyle) {
 
     }
 
@@ -564,10 +560,10 @@ export class Annotator_tool extends React.Component {
           'segmentation' : null,
         };
 
-        if (options.renderBoxes){
+        if (options.renderBoxes) {
 
             // Add the bounding box
-            if(annotation.bbox != 'undefined' && annotation.bbox != null){
+            if (annotation.bbox !== 'undefined' && annotation.bbox !== null) {
 
                 let pathStyle = this.getBoxPathStyle(annotationIndex);
 
@@ -588,8 +584,8 @@ export class Annotator_tool extends React.Component {
 
         }
 
-        if (options.renderSegmentations){
-            if(annotation.segmentation != undefined && annotation.segmentation != null){
+        if (options.renderSegmentations) {
+            if (annotation.segmentation !== undefined && annotation.segmentation !== null) {
 
                 // A bit hacky... is there some transform class we can use?
 
@@ -644,9 +640,9 @@ export class Annotator_tool extends React.Component {
      * Add an annotation layer to the leaflet map.
      * @param {*} layer
      */
-    addLayer(layer){
-        if(layer != undefined && layer != null){
-            if(!this.annotationFeatures.hasLayer(layer)){
+    addLayer(layer) {
+        if (layer !== undefined && layer !== null) {
+            if (!this.annotationFeatures.hasLayer(layer)) {
                 this.annotationFeatures.addLayer(layer);
 
                 // Remove the edit styling for the markers.
@@ -659,10 +655,10 @@ export class Annotator_tool extends React.Component {
      * Remove an annotation layer from the leaflet map.
      * @param {*} layer
      */
-    removeLayer(layer){
+    removeLayer(layer) {
 
-        if(layer != undefined && layer != null){
-            if(this.annotationFeatures.hasLayer(layer)){
+        if (layer !== undefined && layer !== null) {
+            if (this.annotationFeatures.hasLayer(layer)) {
                 this.annotationFeatures.removeLayer(layer);
             }
         }
@@ -674,9 +670,9 @@ export class Annotator_tool extends React.Component {
      * We do this because editing segmentations requires the painting interface,
      * as opposed to the Leaflet.Draw interface.
      */
-    addSegmentationLayer(layer){
-        if(layer != undefined && layer != null){
-            if(!this.leafletMap.hasLayer(layer)){
+    addSegmentationLayer(layer) {
+        if (layer !== undefined && layer !== null) {
+            if (!this.leafletMap.hasLayer(layer)) {
                 this.leafletMap.addLayer(layer);
             }
         }
@@ -686,9 +682,9 @@ export class Annotator_tool extends React.Component {
      * Segmentation layers are not currently part of this.annotationFeatures,
      * they are added directly to the map.
      */
-    removeSegmentationLayer(layer){
-        if(layer != undefined && layer != null){
-            if(this.leafletMap.hasLayer(layer)){
+    removeSegmentationLayer(layer) {
+        if (layer !== undefined && layer !== null) {
+            if (this.leafletMap.hasLayer(layer)) {
                 this.leafletMap.removeLayer(layer);
             }
         }
@@ -700,18 +696,18 @@ export class Annotator_tool extends React.Component {
      * @param  {[type]} y [description]
      * @return {[type]}   [description]
      */
-    restrictPointToImageBounds(x, y){
+    restrictPointToImageBounds(x, y) {
 
-        if(x > this.imageWidth){
+        if (x > this.imageWidth) {
             x = this.imageWidth;
         }
-        else if(x < 0){
+        else if (x < 0) {
             x = 0;
         }
-        if (y > this.imageHeight){
+        if (y > this.imageHeight) {
             y = this.imageHeight;
         }
-        else if(y < 0){
+        else if (y < 0) {
             y = 0;
         }
 
@@ -722,7 +718,7 @@ export class Annotator_tool extends React.Component {
     /**
      * Clip the layer to be inside the image.
      */
-    clipRectangleLayerToImageBounds(layer){
+    clipRectangleLayerToImageBounds(layer) {
 
         var bounds = layer.getBounds();
         var point1 = this.leafletMap.project(bounds.getNorthWest(), 0);
@@ -738,10 +734,10 @@ export class Annotator_tool extends React.Component {
 
         // Is one of the dimensions 0?
         var valid=true;
-        if(x2 - x1 <= 0){
+        if (x2 - x1 <= 0) {
             return null;
         }
-        else if(y2 - y1 <= 0){
+        else if (y2 - y1 <= 0) {
             return null;
         }
 
@@ -758,7 +754,7 @@ export class Annotator_tool extends React.Component {
     /**
      * Restrict a segmentation layer to be inside the image bounds.
      */
-    clipSegmentationLayerToImageBounds(layer){
+    clipSegmentationLayerToImageBounds(layer) {
 
     }
 
@@ -768,16 +764,16 @@ export class Annotator_tool extends React.Component {
      * @param {*} annotation
      * @param {*} annotation_layer
      */
-    showAnnotation(annotation, annotation_layer){
+    showAnnotation(annotation, annotation_layer) {
 
         // Show the bounding box
-        if(annotation_layer['bbox'] != 'undefined' && annotation_layer['bbox'] != null){
+        if (annotation_layer['bbox'] !== 'undefined' && annotation_layer['bbox'] !== null) {
             let layer = annotation_layer['bbox'];
             this.addLayer(layer);
         }
 
         // Show the segmentation
-        if(annotation_layer.segmentation != undefined && annotation_layer.segmentation != null){
+        if (annotation_layer.segmentation !== undefined && annotation_layer.segmentation !== null) {
             let layer = annotation_layer.segmentation;
             this.addSegmentationLayer(layer);
         }
@@ -789,16 +785,16 @@ export class Annotator_tool extends React.Component {
      * @param {*} annotation
      * @param {*} annotation_layer
      */
-    hideAnnotation(annotation, annotation_layer){
+    hideAnnotation(annotation, annotation_layer) {
 
         // Hide the bounding box for this annotation
-        if(annotation_layer['bbox'] != 'undefined' && annotation_layer['bbox'] != null){
+        if (annotation_layer['bbox'] !== 'undefined' && annotation_layer['bbox'] !== null) {
             let layer = annotation_layer['bbox'];
             this.removeLayer(layer);
         }
 
         // Hide the segmentation
-        if(annotation_layer.segmentation != undefined && annotation_layer.segmentation != null){
+        if (annotation_layer.segmentation !== undefined && annotation_layer.segmentation !== null) {
             let layer = annotation_layer.segmentation;
             this.removeSegmentationLayer(layer);
         }
@@ -811,9 +807,9 @@ export class Annotator_tool extends React.Component {
     annotateBBox({
         isNewInstance = false,
         annotationIndex = null
-    }={}){
+    }={}) {
 
-        let index = annotationIndex != null ? annotationIndex : this.state.annotations.length;
+        let index = annotationIndex !== null ? annotationIndex : this.state.annotations.length;
         let pathStyle = this.getBoxPathStyle(index);
 
         let drawer = new L.Draw.Rectangle(this.leafletMap, {
@@ -841,7 +837,7 @@ export class Annotator_tool extends React.Component {
     /**
      * Update the "crosshairs" when drawing a box.
     */
-    bboxCursorUpdate(e){
+    bboxCursorUpdate(e) {
         let ch_horizontal = this.drawState.bbox_crosshairs[0];
         let ch_vertical = this.drawState.bbox_crosshairs[1];
 
@@ -854,15 +850,15 @@ export class Annotator_tool extends React.Component {
         ch_vertical.style.left = x + "px";
     }
 
-    cancelAnnotation(){
+    cancelAnnotation() {
 
-        if (this.drawState.drawer != null){
+        if (this.drawState.drawer !== null) {
             // GVH: important to do this before drawer.disable()
             this.drawState.drawSuccessfullyCreated = true;  // This is confusing, but we need to use another state variable
                                                             // to decide if the user "messed up" the annotation:
                                                             //		doing a single click for a bounding box, etc.
 
-            if(this.drawState.type == 'box'){
+            if (this.drawState.type === 'box') {
 
                 this.drawState.drawer.disable();
 
@@ -900,7 +896,7 @@ export class Annotator_tool extends React.Component {
     duplicateAnnotationAtIndex({
         annotationIndex,
         objectCenter=null
-    }={}){
+    }={}) {
 
         let annotation = this.state.annotations[annotationIndex];
         let annotationLayer = this.annotation_layers[annotationIndex];
@@ -920,18 +916,18 @@ export class Annotator_tool extends React.Component {
         let imageHeight = this.imageHeight;
 
         // Duplicate the box
-        if (annotationLayer.bbox != null){
+        if (annotationLayer.bbox !== null) {
             let layer = annotationLayer.bbox;
             var newBox = this.extractBBox(layer);
 
             var [x, y, w, h] = newBox;
 
             // Center the duplicate box at `objectCenter`
-            if (objectCenter != null){
+            if (objectCenter !== null) {
                 x = objectCenter[0] - ( w / 2.0 );
 
                 // For spectrograms (we want to duplicate the frequency position of the box
-                if (this.options.duplicateInstance.duplicateY == true){
+                if (this.options.duplicateInstance.duplicateY === true) {
                     y = y
                 }
                 else{
@@ -944,7 +940,7 @@ export class Annotator_tool extends React.Component {
                 x = x + 0.05 * w;
 
                 // For spectrograms (we want to duplicate the frequency position of the box
-                if (this.options.duplicateInstance.duplicateY == true){
+                if (this.options.duplicateInstance.duplicateY === true) {
                     y = y
                 }
                 else{
@@ -956,17 +952,17 @@ export class Annotator_tool extends React.Component {
             x = x < 0 ? 0 : x;
             y = y < 0 ? 0 : y;
 
-            if ( (x + w) > 1 ){
+            if ( (x + w) > 1 ) {
 
-                if (x >= 1){
+                if (x >= 1) {
                     x = 0.95;
                 }
                 w = 1 - x;
 
             }
 
-            if ( (y + h) > 1){
-                if (y >= 1){
+            if ( (y + h) > 1) {
+                if (y >= 1) {
                     y = 0.95;
                 }
                 h = 1 - y;
@@ -997,20 +993,20 @@ export class Annotator_tool extends React.Component {
      * is a mechanism for the UI to set all the current annotations to unmodified.
      * NOTE: there are mostlikely corner cases that this does not handle (currently annotating when saving)
      */
-    setAnnotationsModified(modified){
+    setAnnotationsModified(modified) {
 
         let annotations = this.state.annotations;
         let annotation_layers = this.annotation_layers;
 
-        for (var i =0; i < annotations.length; i++){
+        for (let i = 0; i < annotations.length; i++) {
 
             let annotation = annotations[i];
             let annotation_layer = annotation_layers[i];
 
             annotation._modified = modified;
 
-            for (var layerName in  annotation_layer){
-                if(annotation_layer[layerName] != null){
+            for (let layerName in  annotation_layer) {
+                if (annotation_layer[layerName] !== null) {
                     annotation_layer[layerName].modified = modified;
                 }
             }
@@ -1024,29 +1020,29 @@ export class Annotator_tool extends React.Component {
     /**
      * A layer has been moved.
      */
-    _layerMoved(e){
+    _layerMoved(e) {
         e.layer.modified = true;
     }
 
     /**
      * A layer has been resized.
      */
-    _layerResized(e){
+    _layerResized(e) {
         e.layer.modified = true;
     }
 
     /**
      * We've started drawing a new layer.
      */
-    _drawStartEvent(e){
+    _drawStartEvent(e) {
         console.log("draw start");
 
         // Add cross hairs for the box annotations.
-        if(this.drawState.type == 'box'){
+        if (this.drawState.type === 'box') {
 
             // If the user clicks on the image (rather than clicking and dragging) then this
             // function will be called again, but we don't want to duplicate the cross hairs.
-            if (this.drawState.bbox_crosshairs == null){
+            if (this.drawState.bbox_crosshairs === null) {
 
                 // Setup cross hair stuff
                 let ch_horizontal = document.createElement('div');
@@ -1079,18 +1075,18 @@ export class Annotator_tool extends React.Component {
     _drawStopEvent(e) {
         console.log("draw stop");
 
-        if(this.drawState.type == 'box'){
+        if (this.drawState.type === 'box') {
 
             // The user triggered some click, but didn't successfully create the annotation.
             // This can occur (for example) when a user clicks on the image when trying to draw a rectangle.
             // They need to "click and drag".
-            if(this.state.annotating && !this.drawState.drawSuccessfullyCreated){
+            if (this.state.annotating && !this.drawState.drawSuccessfullyCreated) {
                 this.drawState.drawer.enable();
             }
             else{
                 // Always turn off the mouse move
                 $(this.leafletHolderEl).off('mousemove', this.bboxCursorUpdate);
-                if(this.drawState.bbox_crosshairs != null){
+                if (this.drawState.bbox_crosshairs !== null) {
                     let ch_horizontal = this.drawState.bbox_crosshairs[0];
                     let ch_vertical = this.drawState.bbox_crosshairs[1];
                     $(ch_horizontal).remove();
@@ -1115,7 +1111,7 @@ export class Annotator_tool extends React.Component {
 
         var layer = e.layer;
 
-        if(this.drawState.type='box'){
+        if (this.drawState.type === 'box') {
 
             // We want to clamp the box to the image bounds.
             layer = this.clipRectangleLayerToImageBounds(layer);
@@ -1123,7 +1119,7 @@ export class Annotator_tool extends React.Component {
             this.addLayer(layer);
 
             // Is this a box for a brand new instance?
-            if (this.drawState.isNewInstance){
+            if (this.drawState.isNewInstance) {
 
                 // Create the annotation data structure
                 var annotation = {
@@ -1135,12 +1131,12 @@ export class Annotator_tool extends React.Component {
                 };
 
                 // Grab the category that was chosen by the user for the new instance.
-                if  (this.options.newInstance.annotateCategory){
+                if  (this.options.newInstance.annotateCategory) {
                     let category = this.props.categories[this.categorySelectionState.category_index]
                     annotation.category_id = category.id
                     annotation.supercategory = category.supercategory
                 }
-                else if (this.options.newInstance.annotateSupercategory){
+                else if (this.options.newInstance.annotateSupercategory) {
                     annotation.supercategory = this.supercategoryList[this.categorySelectionState.category_index]
                 }
 
@@ -1148,14 +1144,15 @@ export class Annotator_tool extends React.Component {
                 var annotation_layer = {
                     'bbox': layer
                 };
+
                 this.annotation_layers.push(annotation_layer);
 
                 // Add the annotation to our state
-                this.setState(function(prevState, props){
+                this.setState(function(prevState, props) {
                     var annotations = prevState.annotations;
                     annotations.push(annotation);
                     return {
-                        'annnotations' : annotations
+                        'annotations' : annotations
                     };
                 });
             }
@@ -1168,7 +1165,7 @@ export class Annotator_tool extends React.Component {
             }
 
             // If this is the first instance, then we need to enable editing.
-            if (this.options.enableBoxEdit){
+            if (this.options.enableBoxEdit) {
                 this.enableEditing();
             }
 
@@ -1179,9 +1176,12 @@ export class Annotator_tool extends React.Component {
 
         // Destroy the drawer
         this.drawState.drawer = null;
-        this.drawState.drawSuccessfullyCreated = true;  // This is confusing, but we need to use another state variable
-                                                        // to decide if the user "messed up" the annotation:
-                                                        //		doing a single click for a bounding box, etc.
+        /*
+        This is confusing, but we need to use another state variable
+        to decide if the user "messed up" the annotation:
+         doing a single click for a bounding box, etc.
+         */
+        this.drawState.drawSuccessfullyCreated = true;
         this.drawState.isNewInstance = null;
         this.drawState.annotationIndex = null;
 
@@ -1203,7 +1203,7 @@ export class Annotator_tool extends React.Component {
     /**
      * Duplicate the previous annotation, centered at the mouse location.
      */
-    _handleLeaftletContextMenu(mouseEvent){
+    _handleLeafletContextMenu(mouseEvent) {
 
         let centerPoint = this.leafletMap.project(mouseEvent.latlng, 0);
         var x1 = centerPoint.x;
@@ -1215,23 +1215,23 @@ export class Annotator_tool extends React.Component {
         let centerY = y1 / this.imageHeight;
 
         // Do we have a previous annotation?
-        if(this.state.annotations.length >= 1){
+        if (this.state.annotations.length >= 1) {
 
-            if (this.options.duplicateInstance.enable != true){
+            if (this.options.duplicateInstance.enable !== true) {
                 return;
             }
 
             // Find the most recent annotation that is not deleted.
             var prevAnnotationIndex = null;
-            for (var i = this.state.annotations.length - 1; i >= 0; i--){
+            for (let i = this.state.annotations.length - 1; i >= 0; i--) {
                 let prevAnnotation = this.state.annotations[i];
-                if (prevAnnotation.deleted == null || prevAnnotation.deleted == false){
+                if (prevAnnotation.deleted === null || prevAnnotation.deleted === false) {
                     prevAnnotationIndex = i;
                     break;
                 }
             }
 
-            if (prevAnnotationIndex != null){
+            if (prevAnnotationIndex !== null) {
 
                 let prevAnnotation = this.state.annotations[prevAnnotationIndex];
 
@@ -1243,11 +1243,11 @@ export class Annotator_tool extends React.Component {
                 this.annotation_layers.push(newAnnotationLayer);
 
                 // Add the annotation to our state
-                this.setState(function(prevState, props){
+                this.setState(function(prevState, props) {
                     var annotations = prevState.annotations;
                     annotations.push(newAnnotation);
                     return {
-                        'annnotations' : annotations
+                        'annotations' : annotations
                     };
                 });
 
@@ -1266,9 +1266,9 @@ export class Annotator_tool extends React.Component {
     /**
      * Allow the user to annotate a new instance with a bbox.
      */
-    handleCreateNewIndividual(event){
+    handleCreateNewIndividual(event) {
 
-        if(this.state.annotating){
+        if (this.state.annotating) {
             // ignore, the user needs to finish their annotation.
             // Maybe we can flash a message
             return;
@@ -1279,7 +1279,7 @@ export class Annotator_tool extends React.Component {
         this.categorySelectionState.category_index = null;
 
         // The user needs to choose a category
-        if  (config.annotateCategory){
+        if  (config.annotateCategory) {
 
             this.categorySelectionState.type = 'category';
 
@@ -1292,7 +1292,7 @@ export class Annotator_tool extends React.Component {
         }
 
         // The user needs to choose a supercategory
-        else if (config.annotateSupercategory){
+        else if (config.annotateSupercategory) {
 
             this.categorySelectionState.type = 'supercategory';
 
@@ -1307,7 +1307,7 @@ export class Annotator_tool extends React.Component {
         // Just perform the pixel annotation.
         else{
 
-            if (config.annotationType == 'box'){
+            if (config.annotationType === 'box') {
                 this.annotateBBox({isNewInstance: true});
             }
             else{
@@ -1320,11 +1320,11 @@ export class Annotator_tool extends React.Component {
     /**
      * Hide all of the annotations.
      */
-    handleHideAllAnnotations(event){
-        for(var i = 0; i < this.state.annotations.length; i++){
+    handleHideAllAnnotations(event) {
+        for (let i = 0; i < this.state.annotations.length; i++) {
 
             let annotation = this.state.annotations[i];
-            if (annotation.deleted != 'undefined' && annotation.deleted){
+            if (annotation.deleted !== 'undefined' && annotation.deleted) {
                 continue;
             }
 
@@ -1337,12 +1337,12 @@ export class Annotator_tool extends React.Component {
         this.setState(this.state);
     }
 
-    handleShowAllAnnotations(event){
+    handleShowAllAnnotations(event) {
 
-        for(var i = 0; i < this.state.annotations.length; i++){
+        for (let i = 0; i < this.state.annotations.length; i++) {
 
             let annotation = this.state.annotations[i];
-            if (annotation.deleted != 'undefined' && annotation.deleted){
+            if (annotation.deleted !== 'undefined' && annotation.deleted) {
               continue;
             }
 
@@ -1359,12 +1359,12 @@ export class Annotator_tool extends React.Component {
 
     /**
      * Delete an annotation, removing the annotation layers from the map.
-     * @param {*} annotation_id
+     * @param {*} annotationIndex
      */
-    handleAnnotationDelete(annotationIndex){
+    handleAnnotationDelete(annotationIndex) {
 
         // Are we trying to delete the instance we are currently annotating?
-        if (this.state.annotating){
+        if (this.state.annotating) {
             return;
         }
 
@@ -1372,18 +1372,18 @@ export class Annotator_tool extends React.Component {
         let annotation_layer = this.annotation_layers[annotationIndex];
 
         // Remove the bbox.
-        if(annotation_layer.bbox != undefined && annotation_layer.bbox != null){
+        if (annotation_layer.bbox !== undefined && annotation_layer.bbox !== null) {
             let layer = annotation_layer.bbox;
             this.removeLayer(layer);
         }
 
-        if(annotation_layer.segmentation != undefined && annotation_layer.segmentation != null){
+        if (annotation_layer.segmentation !== undefined && annotation_layer.segmentation !== null) {
             let layer = annotation_layer.segmentation;
             this.removeSegmentationLayer(layer);
         }
 
         // Update the annotations
-        this.setState(function(prevState, props){
+        this.setState(function(prevState, props) {
 
             let annotations = prevState.annotations;
 
@@ -1402,7 +1402,7 @@ export class Annotator_tool extends React.Component {
      * Focus on a particular instance by zooming in on it.
      * @param {*} annotationIndex
      */
-    handleAnnotationFocus(annotationIndex){
+    handleAnnotationFocus(annotationIndex) {
 
         let annotation = this.state.annotations[annotationIndex];
         let annotation_layer = this.annotation_layers[annotationIndex];
@@ -1410,11 +1410,11 @@ export class Annotator_tool extends React.Component {
         // lets show the annotations if they are not shown
         this.showAnnotation(annotation, annotation_layer);
 
-        if(annotation_layer['bbox'] != 'undefined' && annotation_layer['bbox'] != null){
+        if (annotation_layer['bbox'] !== 'undefined' && annotation_layer['bbox'] !== null) {
             let layer = annotation_layer['bbox'];
             let bounds = layer.getBounds();
 
-            if (this.allowZoomWhenFocusing){
+            if (this.allowZoomWhenFocusing) {
                 this.leafletMap.fitBounds(bounds);
             }
             else{
@@ -1429,7 +1429,7 @@ export class Annotator_tool extends React.Component {
 
             let center_x = pixel_center.x / this.specFactor;
 
-            if (this.props.options.didFocusOnAnnotationCallback != null){
+            if (this.props.options.didFocusOnAnnotationCallback !== null) {
                 this.props.options.didFocusOnAnnotationCallback(center_x);
             }
 
@@ -1444,18 +1444,18 @@ export class Annotator_tool extends React.Component {
      * Hide all other annotations.
      * @param {*} annotationIndex
      */
-    handleHideOtherAnnotations(annotationIndex){
+    handleHideOtherAnnotations(annotationIndex) {
 
-        for(var i = 0; i < this.state.annotations.length; i++){
+        for (let i = 0; i < this.state.annotations.length; i++) {
 
             let annotation = this.state.annotations[i];
-            if (annotation.deleted != 'undefined' && annotation.deleted){
+            if (annotation.deleted !== 'undefined' && annotation.deleted) {
                 continue;
             }
 
             let annotation_layer = this.annotation_layers[i];
 
-            if (i == annotationIndex){
+            if (i === annotationIndex) {
                 // make sure this annotation is shown
                 this.showAnnotation(annotation, annotation_layer);
             }
@@ -1473,9 +1473,9 @@ export class Annotator_tool extends React.Component {
     /**
      * Show the Category Selection Component to change the category id for this category
      */
-    handleAnnotationCategoryChange(annotationIndex){
+    handleAnnotationCategoryChange(annotationIndex) {
 
-        if (this.state.annotating){
+        if (this.state.annotating) {
             return;
         }
 
@@ -1494,9 +1494,9 @@ export class Annotator_tool extends React.Component {
     /**
      * Show the Category Selection Component to change the category id for this category
      */
-    handleAnnotationSupercategoryChange(annotationIndex){
+    handleAnnotationSupercategoryChange(annotationIndex) {
 
-        if (this.state.annotating){
+        if (this.state.annotating) {
             return;
         }
 
@@ -1512,10 +1512,10 @@ export class Annotator_tool extends React.Component {
 
     }
 
-    handleAnnotationIsCrowdChange(annotationIndex, isCrowd){
+    handleAnnotationIsCrowdChange(annotationIndex, isCrowd) {
 
         // Update the annotations
-        this.setState(function(prevState, props){
+        this.setState(function(prevState, props) {
 
             let annotations = prevState.annotations;
 
@@ -1530,16 +1530,16 @@ export class Annotator_tool extends React.Component {
 
     }
 
-    handleAnnotationDrawBox(annotationIndex){
+    handleAnnotationDrawBox(annotationIndex) {
 
         this.annotateBBox({isNewInstance: false, annotationIndex: annotationIndex});
 
     }
 
     // Go into segmentation mode
-    handleAnnotationDoSegmentation(annotationIndex){
+    handleAnnotationDoSegmentation(annotationIndex) {
 
-        if (this.state.annotating){
+        if (this.state.annotating) {
             return;
         }
         this.disableEditing();
@@ -1573,12 +1573,12 @@ export class Annotator_tool extends React.Component {
 
         // Does this annotation have an existing segmentation?
 
-        if (annotation_layer.segmentation != null && annotation_layer.segmentation != undefined){
+        if (annotation_layer.segmentation !== null && annotation_layer.segmentation !== undefined) {
 
             let seg_layer = annotation_layer.segmentation;
 
             let features = seg_layer.toGeoJSON();
-            if (features.type == "FeatureCollection"){
+            if (features.type === "FeatureCollection") {
                 features = features.features[0];
             }
 
@@ -1598,19 +1598,19 @@ export class Annotator_tool extends React.Component {
 
     }
 
-    handleAnnotationDeleteSegmentation(annotationIndex){
+    handleAnnotationDeleteSegmentation(annotationIndex) {
 
         let annotation = this.state.annotations[annotationIndex];
         let annotation_layer = this.annotation_layers[annotationIndex];
 
-        if (annotation_layer.segmentation != undefined && annotation_layer.segmentation != null){
+        if (annotation_layer.segmentation !== undefined && annotation_layer.segmentation !== null) {
             let layer = annotation_layer.segmentation;
 
             this.removeSegmentationLayer(layer);
             delete annotation_layer.segmentation;
 
             // Remove the segmentation data from the annotation model
-            this.setState(function(prevState, props){
+            this.setState(function(prevState, props) {
 
                 var annotations = prevState.annotations;
                 var annotation = prevState.annotations[annotationIndex];
@@ -1635,14 +1635,14 @@ export class Annotator_tool extends React.Component {
     /*******************************/
     /** Category Selection Events **/
 
-    handleCategorySelected(categoryIndex){
+    handleCategorySelected(categoryIndex) {
 
         // Are we creating a new instance?
-        if (this.state.selectingCategoryForNewInstance){
+        if (this.state.selectingCategoryForNewInstance) {
 
             this.categorySelectionState.category_index = categoryIndex;
 
-            if (this.options.newInstance.annotationType == 'box'){
+            if (this.options.newInstance.annotationType === 'box') {
                 this.annotateBBox({isNewInstance: true});
 
                 this.setState({
@@ -1663,12 +1663,12 @@ export class Annotator_tool extends React.Component {
             let annotationIndex = this.categorySelectionState.annotationIndex;
             var modifyCategoryId;
             var modifyValue;
-            if (this.categorySelectionState.type == 'category'){
+            if (this.categorySelectionState.type === 'category') {
                 modifyCategoryId = true;
                 modifyValue = this.props.categories[categoryIndex].id;
 
                 // Has anything actually changed?
-                if (this.state.annotations[annotationIndex].category_id == modifyValue){
+                if (this.state.annotations[annotationIndex].category_id === modifyValue) {
 
                     this.categorySelectionState.category_index = null;
                     this.categorySelectionState.annotationIndex = null;
@@ -1691,7 +1691,7 @@ export class Annotator_tool extends React.Component {
 
                 // Has anything actually changed?
                 let annotation = this.state.annotations[annotationIndex];
-                if (annotation.supercategory == modifyValue && annotation.category_id == null){
+                if (annotation.supercategory === modifyValue && annotation.category_id === null) {
 
                     this.categorySelectionState.category_index = null;
                     this.categorySelectionState.annotationIndex = null;
@@ -1712,13 +1712,13 @@ export class Annotator_tool extends React.Component {
             this.categorySelectionState.annotationIndex = null;
             this.categorySelectionState.type = null;
 
-            this.setState(function(prevState, props){
+            this.setState(function(prevState, props) {
 
                 var annotations = prevState.annotations;
                 var annotation = prevState.annotations[annotationIndex];
 
                 // Update the category_id
-                if (modifyCategoryId){
+                if (modifyCategoryId) {
                     annotation.category_id = modifyValue;
 
                     // Make sure to update the supercategory value
@@ -1749,22 +1749,22 @@ export class Annotator_tool extends React.Component {
     /**
      * Remove the category label for this annotation.
      */
-    handleCategoryRemoved(){
+    handleCategoryRemoved() {
 
 
         let annotationIndex = this.categorySelectionState.annotationIndex;
-        let removeCategoryId = this.categorySelectionState.type == 'category';
+        let removeCategoryId = this.categorySelectionState.type === 'category';
 
         this.categorySelectionState.category_index = null;
         this.categorySelectionState.annotationIndex = null;
         this.categorySelectionState.type = null;
 
-        this.setState(function(prevState, props){
+        this.setState(function(prevState, props) {
 
             let annotations = prevState.annotations;
 
             // Remove the category_id
-            if (removeCategoryId){
+            if (removeCategoryId) {
                 delete annotations[annotationIndex].category_id;
             }
             // Remove the category_id and the supercategory
@@ -1783,7 +1783,7 @@ export class Annotator_tool extends React.Component {
 
     }
 
-    handleCategorySelectionCancelled(){
+    handleCategorySelectionCancelled() {
 
         this.categorySelectionState.category_index = null;
         this.categorySelectionState.annotationIndex = null;
@@ -1803,13 +1803,13 @@ export class Annotator_tool extends React.Component {
     /***********************************/
     /** Segmentation Events **/
 
-    handleSegmentationFinished(){
+    handleSegmentationFinished() {
 
         console.log("Done with segmentation.");
 
         // Get the polygons for the segmentation
         let segmentationLayer = this.drawState.drawer.getLayer();
-        if(segmentationLayer != null && segmentationLayer != undefined){
+        if (segmentationLayer !== null && segmentationLayer !== undefined) {
 
             segmentationLayer.modified = true;
 
@@ -1850,7 +1850,7 @@ export class Annotator_tool extends React.Component {
      * Extract a bbox annotation from a Rectangle layer
      * @param {*} layer
      */
-    extractBBox(layer){
+    extractBBox(layer) {
 
         let bounds = layer.getBounds();
         let point1 = this.leafletMap.project(bounds.getNorthWest(), 0);
@@ -1874,10 +1874,10 @@ export class Annotator_tool extends React.Component {
     }
 
 
-    extractSegmentation(layer){
+    extractSegmentation(layer) {
 
         let features = layer.toGeoJSON();
-        if (features.type == "FeatureCollection"){
+        if (features.type === "FeatureCollection") {
             features = features.features[0];
         }
 
@@ -1885,7 +1885,7 @@ export class Annotator_tool extends React.Component {
 
         // make sure coords is a multipolygon
         var multipolygon_coords;
-        if(geometry.type == 'Polygon'){
+        if (geometry.type === 'Polygon') {
             multipolygon_coords = [geometry.coordinates];
         }
         else{
@@ -1931,7 +1931,7 @@ export class Annotator_tool extends React.Component {
     /**
      * Return the current state of the annotations
      */
-    getAnnotations({modifiedOnly = false, excludeDeleted = false} = {}){
+    getAnnotations({modifiedOnly = false, excludeDeleted = false} = {}) {
 
         let annotations = this.state.annotations;
         let annotation_layers = this.annotation_layers;
@@ -1939,15 +1939,15 @@ export class Annotator_tool extends React.Component {
         // The return value
         var annotations_to_save = [];
 
-        for (var i =0; i < annotations.length; i++){
+        for (let i =0; i < annotations.length; i++) {
 
             let annotation = annotations[i];
             let annotation_layer = annotation_layers[i];
 
             // Have any of the layers for this annotation been modified?
             let someLayerHasBeenModified = false;
-            for (var layerName in  annotation_layer){
-                if(annotation_layer[layerName] != null){
+            for (let layerName in  annotation_layer) {
+                if (annotation_layer[layerName] !== null) {
                     someLayerHasBeenModified = someLayerHasBeenModified || annotation_layer[layerName].modified;
                 }
             }
@@ -1958,11 +1958,11 @@ export class Annotator_tool extends React.Component {
             }
 
             // Was this annotation created and then deleted?
-            if(annotation._created && annotation.deleted) {
+            if (annotation._created && annotation.deleted) {
                 continue;
             }
 
-            if(annotation.deleted && excludeDeleted){
+            if (annotation.deleted && excludeDeleted) {
                 continue;
             }
 
@@ -1972,13 +1972,13 @@ export class Annotator_tool extends React.Component {
             delete new_annotation._modified;
             delete new_annotation._created;
 
-            if(annotation_layer.bbox != null){
+            if (annotation_layer.bbox !== null) {
                 let layer = annotation_layer['bbox'];
                 let new_bbox = this.extractBBox(layer);
                 new_annotation['bbox'] = new_bbox;
             }
 
-            if(annotation_layer.segmentation != null){
+            if (annotation_layer.segmentation !== null) {
                 let layer = annotation_layer['segmentation'];
 
                 let segmentation = this.extractSegmentation(layer);
@@ -1993,22 +1993,22 @@ export class Annotator_tool extends React.Component {
 
     }
 
-    render(){
+    render() {
 
         var sidebarEl;
 
         // Are we currently annotating?
-        if (this.state.annotating){
+        if (this.state.annotating) {
 
             // Render the "Category Selection" component
-            if (this.state.selectingCategory){
+            if (this.state.selectingCategory) {
 
                 var category_options;
                 var categoryType="";
                 var removeCategoryIsValid = false;
                 var quickAccessCategoryIDs = [];
-                if (this.state.selectingCategoryForNewInstance){
-                    if ( this.categorySelectionState.type == 'category' ){
+                if (this.state.selectingCategoryForNewInstance) {
+                    if ( this.categorySelectionState.type === 'category' ) {
                         category_options = this.props.categories;
                         categoryType = "Category"
                         removeCategoryIsValid = false;
@@ -2021,13 +2021,13 @@ export class Annotator_tool extends React.Component {
                         // Grab the categories that have been added to this image
                         let annotated_category_ids = this.state.annotations.map(anno => {return anno.category_id});
                         let qa_category_ids = this.options.quickAccessCategoryIDs.concat(annotated_category_ids);
-                        quickAccessCategoryIDs = qa_category_ids.reduce(function(a,b){
+                        quickAccessCategoryIDs = qa_category_ids.reduce(function(a,b) {
                             if (a.indexOf(b) < 0 ) a.push(b);
                             return a;
                         },[]);
 
                     }
-                    else if ( this.categorySelectionState.type == 'supercategory' ){
+                    else if ( this.categorySelectionState.type === 'supercategory' ) {
                         category_options = this.supercategoryList.map(s => {return {name: s}});
                         categoryType = "Supercategory"
                         removeCategoryIsValid = false;
@@ -2038,7 +2038,7 @@ export class Annotator_tool extends React.Component {
                 }
                 // We are editing an existing annotation
                 else{
-                    if ( this.categorySelectionState.type == 'category' ){
+                    if ( this.categorySelectionState.type === 'category' ) {
                         category_options = this.props.categories;
                         categoryType = "Category"
                         removeCategoryIsValid = this.options.allowCategoryRemoval;
@@ -2051,12 +2051,12 @@ export class Annotator_tool extends React.Component {
                         // Grab the categories that have been added to this image
                         let annotated_category_ids = this.state.annotations.map(anno => {return anno.category_id});
                         let qa_category_ids = this.options.quickAccessCategoryIDs.concat(annotated_category_ids);
-                        quickAccessCategoryIDs = qa_category_ids.reduce(function(a,b){
+                        quickAccessCategoryIDs = qa_category_ids.reduce(function(a,b) {
                             if (a.indexOf(b) < 0 ) a.push(b);
                             return a;
                         },[]);
                     }
-                    else if ( this.categorySelectionState.type == 'supercategory' ){
+                    else if ( this.categorySelectionState.type === 'supercategory' ) {
                         category_options = this.supercategoryList.map(s => {return {name: s}});
                         categoryType = "Supercategory"
                         removeCategoryIsValid = this.options.allowSupercategoryRemoval;
@@ -2076,14 +2076,14 @@ export class Annotator_tool extends React.Component {
                 />
             }
             // We are currently drawing a box
-            else if (this.drawState.type == 'box'){
+            else if (this.drawState.type === 'box') {
                 sidebarEl = (
                     <div className="alert alert-primary" role="alert">
                         Click and drag a box on the image.
                     </div>
                 );
             }
-            else if (this.drawState.type == 'segmentation'){
+            else if (this.drawState.type === 'segmentation') {
                 sidebarEl = (
                     <div>
                         <div className="row">
@@ -2112,36 +2112,36 @@ export class Annotator_tool extends React.Component {
             // On the first rendering, we haven't added any annotation layers because the
             // map gets rendered in componentDidMount()
             // So just ignore for now:
-            if (this.annotation_layers != null){
+            if (this.annotation_layers !== null) {
 
                 // Build up the annotation instance list
                 var annotation_instances = [];
 
-                for (var i=0; i < this.state.annotations.length; i++){
+                for (let i=0; i < this.state.annotations.length; i++) {
 
                     let annotation = this.state.annotations[i];
 
                     // Has this annotation been deleted?
-                    if (annotation.deleted != 'undefined' && annotation.deleted){
+                    if (annotation.deleted !== 'undefined' && annotation.deleted) {
                         continue;
                     }
 
                     // Does this annotation have a box / layers? If so, is it hidden?
                     var hasBox = false;
-                    if (this.annotation_layers[i]['bbox'] != null){
+                    if (this.annotation_layers[i]['bbox'] !== null) {
                         hasBox = true;
                     }
 
                     // Get the hidden state for this annotation
                     // Make sure we have actually rendered the map though
                     var isHidden = false;
-                    if (this.annotationFeatures != null){
+                    if (this.annotationFeatures !== null) {
                         isHidden = !this.annotationFeatures.hasLayer(this.annotation_layers[i]['bbox']);
                     }
 
                     // Get the category for this annotation, if available
                     var category = null;
-                    if (annotation.category_id != 'undefined' && annotation.category_id){
+                    if (annotation.category_id !== 'undefined' && annotation.category_id) {
                         category = this.categoryMap[annotation.category_id];
                     }
 
@@ -2181,7 +2181,6 @@ export class Annotator_tool extends React.Component {
 
                 }
 
-
                 sidebarEl = <AnnotationSidebar
                     onCreateNewInstance={this.handleCreateNewIndividual}
                     onShowAllAnnotations={this.handleShowAllAnnotations}
@@ -2189,13 +2188,11 @@ export class Annotator_tool extends React.Component {
                     {annotation_instances}
                     </AnnotationSidebar>
             }
-            else{
+            else {
                 sidebarEl = "";
             }
         }
-
-
-
+        
         return (
             <div className='leaflet-annotation-container'>
                 <div className="row justify-content-around no-gutters">
@@ -2215,7 +2212,6 @@ export class Annotator_tool extends React.Component {
                     </div>
                 </div>
             </div>
-
 
         )
     }

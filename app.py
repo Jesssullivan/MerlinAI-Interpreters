@@ -2,44 +2,36 @@ from render import Render
 from trashd import Trash
 from classifier import Classifier
 from config import *
-from flask_cors import CORS, cross_origin
 
 """ routing """
 
 
 @app.route('/')
-@cross_origin(origin='*', headers=['Content-Type', 'Authorization'])
 def home():
     return app.send_static_file('webgl_init.html' + ext)
 
 
 @app.route('/crop_dl')
-@cross_origin(origin='*', headers=['Content-Type', 'Authorization'])
 def crop_dl():
     return app.send_static_file('spec_record_crop_dl.html' + ext)
 
 
 @app.route('/crop_post')
-@cross_origin(origin='*', headers=['Content-Type', 'Authorization'])
 def crop_post():
     return app.send_static_file('spec_record_crop_post.html' + ext)
 
 
 @app.route('/webgl')
-@cross_origin(origin='*', headers=['Content-Type', 'Authorization'])
 def webgl():
     return app.send_static_file('webgl_test.html' + ext)
 
 
 @app.route('/leaflet', methods=['GET', 'POST'])
-@cross_origin(origin='*', headers=['Content-Type', 'Authorization'])
 def leaflet():
     return app.send_static_file('annotator_client.html' + ext)
 
 
-@app.route('/uploader_standard', methods=['GET', 'POST'])
-@cross_origin(origin='*', headers=['Content-Type', 'Authorization'])
-@cross_origin()
+@app.route('/uploader_standard', methods=['GET','POST'])
 def uploader_std():
     if request.method == 'POST':
         print('received POST')
@@ -56,8 +48,7 @@ def uploader_std():
         return Classifier.send_static_html(std=True)
 
 
-@app.route('/uploader_select',methods=['GET', 'POST'])
-@cross_origin(origin='*', headers=['Content-Type', 'Authorization'])
+@app.route('/uploader_select',methods=['GET','POST'])
 def uploader_select():
     if request.method == 'POST':
         print('received POST')
@@ -75,25 +66,21 @@ def uploader_select():
 
 
 @app.route('/crop_3')
-@cross_origin(origin='*', headers=['Content-Type', 'Authorization'])
 def crop_3():
     return app.send_static_file('spec_record_crop_v3.html' + ext)
 
 
 @app.route('/display')
-@cross_origin(origin='*', headers=['Content-Type', 'Authorization'])
 def disp():
     return app.send_static_file('spec_display.html' + ext)
 
 
 @app.route('/load')
-@cross_origin(origin='*', headers=['Content-Type', 'Authorization'])
 def load():
     return app.send_static_file('load_audio.html' + ext)
 
 
 @app.route('/record_v2')
-@cross_origin(origin='*', headers=['Content-Type', 'Authorization'])
 def rec2():
     return app.send_static_file('spec_record_v2.html' + ext)
 
@@ -117,8 +104,7 @@ else:
     hosturl = '0.0.0.0'
     logger = False
 
-# x-origin support, lol:
-cors = CORS(app)
+# still need to update x-origin support lol:
 app.secret_key = 'yuki is the roundest seal'
 
 if __name__ == "__main__":
