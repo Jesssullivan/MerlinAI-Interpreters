@@ -15,9 +15,10 @@ import Foundation
 // MARK: Private properties:
 private var buffer:[Float] = []
 private var labels: [String] = []
-private let audioBufferInputTensorIndex = 0
-private let sampleRateInputTensorIndex = 1
-private let sampleRate = 44100
+private let audioBufferInputTensorIndex: Int = 0
+private let sampleRateInputTensorIndex: Int = 1
+private let sampleRate: Int = 44100
+private let ALPHA: Float = -1.7
 
 // MARK: Bundled files:
 // accessing of bundled files:
@@ -26,7 +27,7 @@ typealias BundleStorage = (name: String, extension: String)
 public enum BundledFiles {
     static let model: BundleStorage = (name: "Model", extension: "tflite")
     static let labels: BundleStorage = (name: "Labels", extension: "txt")
-    static let recording: BundleStorage = (name: "TestWaveform", extension: "wav")
+    static let recording: BundleStorage = (name: "FullSongRecording", extension: "wav")
 }
 
 
@@ -65,7 +66,7 @@ func wavToArray(file: BundleStorage) -> [Float] {
         let buf = AVAudioPCMBuffer(pcmFormat: format, frameCapacity: AVAudioFrameCount(sampleRate))
         try! file.read(into: buf!)
         
-        let wavformArray:[Float32] = Array(UnsafeBufferPointer(start: buf?.floatChannelData?[0], count:Int(buf!.frameLength)))
+        let wavformArray:[Float] = Array(UnsafeBufferPointer(start: buf?.floatChannelData?[0], count:Int(Float(buf!.frameLength))))
         
         NSLog("Success reading AVAudioFormat! returning waveform as Array...")
         
@@ -106,19 +107,16 @@ struct CreateInterpreterView: View {
             do {
                 
                 // MARK: load labels:
-                
                 let labelsURL = Bundle.main.url(forResource: "Labels", withExtension: "txt")
                 NSLog("labesURL: " + (labelsURL?.path.description)!)
                 self.labelInfo = "labesURL: " + (labelsURL?.path.description)!
                 
                 let contents = try String(contentsOf: labelsURL!, encoding: .utf8)
-                
                 labels = contents.components(separatedBy: .newlines)
-                // NSLog("labels: " + labels.description)
-                // self.labelInfo = "labels: " + labels.description
+                NSLog("labels: " + labels.description)
+                self.labelInfo = "labels: " + labels.description
                 
                 // MARK: load Model & initialize interpreter:
-
                 let modelPath = Bundle.main.bundleURL.appendingPathComponent("Model.tflite").path
                 NSLog("modelPath: " + modelPath.description)
                 self.modelInfo = "modelPath: " + modelPath.description
@@ -132,16 +130,18 @@ struct CreateInterpreterView: View {
                 self.interpreterInfo = "allocated Tensors"
 
                 // MARK: load test waveform:
-                
-                let waveformArray: [Float] = wavToArray(file: (name: "TestWaveform", extension: "wav"))
-             
-                let audioBufferData = Data(copyingBufferOf: waveformArray.map { Float32($0) })
-                
+                let waveformArray = wavToArray(file: (BundledFiles.recording.name,
+                                                                 extension: BundledFiles.recording.extension))
+              
+                let bytes = waveformArray.map { x in return abs( x / ALPHA ) }
+                // print read values?
+                // bytes.map { i in return NSLog(i.description) }
+        
+                let byteData = Data(bytes: bytes, count: sampleRate * 4)
+
                 // MARK: run interpreter:
-                
-                /// Copy the input data to the input `Tensor`.
-                try interpreter.copy(audioBufferData, toInputAt: 0)
-                
+                try interpreter.copy(byteData, toInputAt: audioBufferInputTensorIndex)
+
                 /// Run inference by invoking the `Interpreter`.
                 try interpreter.invoke()
                 NSLog("invoked interpreter...")
@@ -156,16 +156,7 @@ struct CreateInterpreterView: View {
                 let outputSize = outputTensor.shape.dimensions.reduce(1, {x, y in x * y})
                 NSLog("outputSize: " + outputSize.description)
                 self.tensorInfo = "outputSize: " + outputSize.description
-
-                var results: [Float] = []
-
-                for i in outputTensor.data {
-                    results.append(Float(i))
-                    self.Info = i.description
-                }
-                
-                self.Info = results.description
-                NSLog(results.description)
+                self.Info = outputTensor.data.map {i in return i}.description
                 
                 NSLog("finished.")
 
@@ -212,6 +203,6 @@ extension Array {
         count: unsafeData.count / MemoryLayout<Element>.stride
       ))
     }
-    #endif
+    #endif  // swift(>=5.0)
   }
 }

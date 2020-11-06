@@ -8,6 +8,13 @@ import Accelerate
 import TensorFlowLite
 import Foundation
 
+ typealias BundleStorage = (name: String, extension: String)
+
+ public enum BundledFiles {
+     static let model: BundleStorage = (name: "Model", extension: "tflite")
+     static let labels: BundleStorage = (name: "Labels", extension: "txt")
+     static let recording: BundleStorage = (name: "TestWaveform", extension: "wav")
+ }
 
 // generate new file names:
 public func newFileName(hLength: Int? = nil, ext:String? = nil) -> String {
