@@ -12,9 +12,8 @@ echo -e "\n ...: copying model files to Swift directory..."
 cp -R $MODELDIR"model.tflite" $SWIFT"Model.tflite"
 cp -R $MODELDIR"labels.txt" $SWIFT"Labels.txt"
 
-
+echo -e "\n...cd swift/swift-pkgs-tmpui \n..." 
 cd swift/swift-pkgs-tmpui/
-echo -e "\n...(path is now)" $pwd
 
 pod install
 
@@ -23,6 +22,6 @@ echo -e "\n ...: updating & installing latest nightly cocoapods..."
 pod update
 
 
-echo -e "...: done. \ncurrent path is now " $pwd
+echo -e "...: done."
 
 open swift-pkgs-tmpui.xcworkspace

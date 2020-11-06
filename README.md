@@ -105,9 +105,37 @@ npm run-script develop-swift-demos
 -  *focusing on codepaths for:*
     - tflite interpreter
     - generating mel spectrograms 
+    - *Actually obtain scores...*
 - make sure `info.plist` has permissions for microphone access
 - **The entrypoint for Swift tests is `./swift/swift-pkgs-tmpui/swift-pkgs-tmpui/swift_pkgs_tmpuiApp.swift`**
 
+
+#### Other Linker Libraries:
+
+*Project:*
+
+```
+$(inherited)
+-force_load Pods/TensorFlowLiteSelectTfOps/Frameworks/TensorFlowLiteSelectTfOps.framework/TensorFlowLiteSelectTfOps
+-force_load Pods/TensorFlowLiteC/Frameworks/TensorFlowLiteC.framework/TensorFlowLiteC
+-force_load Pods/TensorFlowLiteC/Frameworks/TensorFlowLiteCCoreML.framework/TensorFlowLiteCCoreML
+-force_load Pods/TensorFlowLiteC/Frameworks/TensorFlowLiteCMetal.framework/TensorFlowLiteCMetal
+-ObjC
+-l"c++"
+```
+
+
+*Target:*
+
+```
+-force_load Pods/TensorFlowLiteSelectTfOps/Frameworks/TensorFlowLiteSelectTfOps.framework/TensorFlowLiteSelectTfOps
+-force_load Pods/TensorFlowLiteC/Frameworks/TensorFlowLiteC.framework/TensorFlowLiteC
+-force_load Pods/TensorFlowLiteC/Frameworks/TensorFlowLiteCCoreML.framework/TensorFlowLiteCCoreML
+-force_load Pods/TensorFlowLiteC/Frameworks/TensorFlowLiteCMetal.framework/TensorFlowLiteCMetal
+-ObjC
+-l"c++"
+
+```
 
 ```
 # niftily switch between xcode versions: 
