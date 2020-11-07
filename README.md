@@ -76,6 +76,7 @@ npm run-script develop-web-demos
     - if browser cannot do classification (i.e. safari on mobile, webgl mediump not supported) recording is beamed up to `/uploader_standard` for processing
     - both POST destinations `/uploader_select` & `/uploader_standard` can also be operated from within browser as a multipart form
 
+- - - 
  
 ### React Native:
 
@@ -96,6 +97,10 @@ cd ios && pod install && cd ..
 # link ios depends:
 npm run-script ios-native
 ```
+
+
+- - - 
+
 
 ### Swift Native:
 
@@ -260,6 +265,7 @@ sudo chmod +x scripts/sslgen.sh && ./scripts/sslgen.sh
 - `tmpui-testing` dyno used sporadically for debugging, keeping it @ maintenance mode atm
 - Use `heroku buildpacks:add --index 1 heroku-community/apt -a tmpui` for librosa vorbis depend
 
+
 - - -
  
  
@@ -304,7 +310,7 @@ sudo chmod +x scripts/sslgen.sh && ./scripts/sslgen.sh
 * how to most effectively bundle waveform/spectrogram/annotations?
   * could annotations be bundled as an "album/song" metadata?
 
-
+- - - 
   
 ### *fft-related links:*
 
