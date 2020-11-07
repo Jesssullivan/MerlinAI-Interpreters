@@ -102,13 +102,10 @@ npm run-script ios-native
 npm run-script develop-swift-demos
 ```
 
-## Updated w/ working interpreter-
-- *Now just need to actually get the scores...*
-
 -  *focusing on codepaths for:*
     - tflite interpreter
     - generating mel spectrograms 
-    - *Actually obtain scores...*
+    - *obtain scores...*
     - *haven't yet figured out how to load array of floats into the input Tensor via `ByteBuffer` --> `Data()`--> `interpreter.copy()`, inputs are still implicitly coerced as `Uint8`*  
       
 - make sure `info.plist` has permissions for microphone access
