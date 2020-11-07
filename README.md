@@ -109,8 +109,7 @@ npm run-script develop-swift-demos
     - tflite interpreter
     - generating mel spectrograms 
     - *Actually obtain scores...*
-    - *Jess hasn't figured out how to load array of floats into the input Tensor via `ByteBuffer` --> `Data()`--> `interpreter.copy()`*  
-       - *(keep ending up with `Uint8`, hmmm....)*    
+    - *haven't yet figured out how to load array of floats into the input Tensor via `ByteBuffer` --> `Data()`--> `interpreter.copy()`, inputs are still implicitly coerced as `Uint8`*  
       
 - make sure `info.plist` has permissions for microphone access
 - **The entrypoint for Swift tests is `./swift/swift-pkgs-tmpui/swift-pkgs-tmpui/swift_pkgs_tmpuiApp.swift`**
