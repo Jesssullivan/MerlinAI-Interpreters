@@ -12,7 +12,8 @@ struct swift_pkgs_tmpuiApp: App {
     var body: some Scene {
         WindowGroup {
             CreateInterpreterView()
-            //CreateInterpreterDan()
+            // CreateInterpreterViewV2()
+            // CreateInterpreterDan()
             // ConsoleView()
         }
     }

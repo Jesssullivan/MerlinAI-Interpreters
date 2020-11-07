@@ -1,7 +1,7 @@
 
 ## Updated w/ working interpreter-
-*Now just need to actually get the scores...*
-
+- *Now just need to actually get the scores...*
+- *haven't figured out how to load Array of Floats as `ByteBuffer` --> `Data()`--> `interpreter.copy()`, keep ending up with `Uint8`, hmmm*
 
 ```
 # setup for Swift & Xcode from repository root:
