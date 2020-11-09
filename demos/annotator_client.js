@@ -12,7 +12,7 @@ build tool:
 */
 
 // audio & spectrogram-related utilities:
-import {audio_loader, audio_utils, spectrogram_utils, ui_utils} from '../src/index'
+import {audio_loader, audio_utils, spectrogram_utils} from '../src/index'
 
 let annotatorRendered = null; // allows us to export annotations
 let currentImageIndex = 0; // keep track of which image we are working on.
@@ -27,7 +27,6 @@ let targetSpectrogramHeight = 300; // the height that the spectrogram should be 
 let pixels_per_second = null;
 let pixels_per_ms = null;
 let pan_interval_ms = 100; // the interval that we should pan the spectrogram at.
-
 
 let audioElement = null;
 let playing_audio = false;
@@ -170,6 +169,54 @@ function disableAudioKeys(){
     document.removeEventListener("keydown", handleKeyDown);
 }
 
+
+/**
+ * generate mel spectrogram in the browser.
+ * (opposed to fetch from online source, e.g. Macaulay)
+ *
+ * @returns Image() Element; spectrogram png image to display @ `ImageEl.src`
+ * @param image_info parsed image info.
+ */
+async function specInBrowser(image_info) {
+
+    let audioURL = [image_info['audio']];
+
+    const spec_params = {
+        sampleRate: targetSampleRate,
+        hopLength: hop_length_samples,
+        winLength: window_length_samples,
+        nFft: fft_length,
+        topDB
+    };
+
+    // atm, all processing of spectrogram generated in the browser occurs
+    // within the fulfillment of `audioWaveform` Promise.
+    return audio_loader.loadAudioFromURL(audioURL)
+        .then((audioBuffer) => audio_loader.resampleAndMakeMono(audioBuffer, targetSampleRate))
+        .then((audioWaveform) => {
+
+            // generate dB spectrogram-
+            let dbSpec = audio_utils.dBSpectrogram(audioWaveform, spec_params);
+
+            // make an image we can display:
+            let imageEl = new Image();
+
+            imageEl.src = spectrogram_utils.dBSpectrogramToImage(dbSpec, topDB);
+            imageEl.height = targetSpectrogramHeight;
+            imageEl.width = Math.round(dbSpec.length);
+
+            return imageEl;
+
+        });
+
+}
+/*
+
+async function specFromURL(image_info) {
+    ...
+}
+*/
+
 function startAnnotating(images_data, categories, annotations, config){
 
     if (images_data.length === 0) {
@@ -194,8 +241,7 @@ function startAnnotating(images_data, categories, annotations, config){
         image_id_to_annotations[image_id].push(anno);
     });
 
-
-    function annotateImage(imageIndex){
+    async function annotateImage(imageIndex) {
 
         let image_info = images_data[imageIndex];
         let existing_annotations = image_id_to_annotations[image_info.id];
@@ -215,219 +261,21 @@ function startAnnotating(images_data, categories, annotations, config){
 
         $("#currentAudioDuration").text('Dur: ? sec');
 
-        if(imageIndex === 0) {
+        if (imageIndex === 0) {
             $("#previousImageButton").prop("disabled", true);
-        }
-
-        else {
+        } else {
             $("#previousImageButton").prop("disabled", false);
         }
 
-        if(imageIndex === images_data.length - 1) {
+        if (imageIndex === images_data.length - 1) {
             $("#nextImageButton").prop("disabled", true);
-        }
-
-        else {
+        } else {
             $("#nextImageButton").prop("disabled", false);
         }
 
-        // Create an image element and load in the pixels:
-        let audioURL = [image_info['audio']];
-
-        const spec_params = {
-            sampleRate: targetSampleRate,
-            hopLength: hop_length_samples,
-            winLength: window_length_samples,
-            nFft: fft_length,
-            topDB
-        };
-
-        // atm, all processing of spectrogram generated in the browser occurs
-        // within the fulfillment of `audioWaveform` Promise.
-        audio_loader.loadAudioFromURL(audioURL)
-            .then((audioBuffer) => audio_loader.resampleAndMakeMono(audioBuffer, targetSampleRate))
-            .then((audioWaveform) => {
-
-                // generate dB spectrogram-
-                // TODO: how can tools like
-                //  `audio_utils.dBSpectrogram` & `spectrogram_utils.dBSpectrogramToImage`
-                //   be organized within a more sensible sdk, with other utility functions?
-                let dbSpec = audio_utils.dBSpectrogram(audioWaveform, spec_params);
-
-                // convert dB into something we can display:
-                let waveData = spectrogram_utils.dBSpectrogramToImage(dbSpec, topDB);
-
-               /*
-
-               TODO: toggle between the browser-generated / Macaulay spectrogram source.
-
-                 ...
-
-                create a Toggle Spectrogram Source button:
-                const specToggleSourceHolder = 'specToggleSourceHolder';
-                const specToggleButton = ui_utils.MuiButton('Toggle Spectrogram Source', specToggleSourceHolder);
-
-                // wait for a click:
-                // specToggleButton.onclick = () => {
-
-                // Create an image element and load in the pixels
-                let imageEl = new Image();
-                // We need to have access to the pixels before initializing Leaflet
-                imageEl.onload = function(){
-
-                    // Get the dimensions of the spectrogram
-                    spectrogram_height = imageEl.height;
-                    spectrogram_width = imageEl.width;
-
-                    function addAudioFunctions(annotatorRendered){
-
-                        // Setup the view for the audio
-                        annotatorRendered.renderForSpectrogram(targetSpectrogramHeight);
-                        annotatorRendered.turnOffZoom();
-                        annotatorRendered.turnOffDrag();
-
-                        // Audio Controls
-                        // space bar is play and pause
-                        pixels_per_second = null;
-                        pixels_per_ms = null;
-
-                        audioElement = new Audio();
-                        playing_audio = false;
-                        playing_audio_timing_id = null;
-                        current_offset = 0;
-
-                        // Load in the audio for the spectrogram
-                        audioElement.addEventListener('canplaythrough', () => {
-                            let duration = audioElement.duration;
-                            // The duration variable now holds the duration (in seconds) of the audio clip
-
-                            // This should be ~250 (because of the SoX command)
-                            pixels_per_second = 250.0; //spectrogram_width / duration;
-
-                            pixels_per_ms = pixels_per_second / 1000.0;
-
-                            console.log("Spectrogram Height: " +  spectrogram_height);
-                            console.log("Spectrogram Width: " +  spectrogram_width);
-                            console.log("Duration " + duration);
-                            console.log("Pixels / second : " + pixels_per_second);
-                            console.log("Pixels / milisecond : " + pixels_per_ms);
-                            console.log("Current Time " + audioElement.currentTime);
-
-                            enableAudioKeys();
-
-                            $("#currentAudioDuration").text('Dur: ' + duration.toFixed(2) + ' sec');
-
-                        });
-                        audioElement.src = image_info.audio;
-                        audioElement.addEventListener('error', () => {
-                            alert("Error loading the audio for image " + image_info.id + ". Perhaps the resouce has been deleted? Maybe skip or try to come back to this asset?");
-                        });
-                        audioElement.load();
-
-                    }
-
-                    function delayAudioPrepTillRender(annotatorRendered){
-
-                        if (!('audio' in image_info)){
-                            console.log("No audio url in image info");
-                            return;
-                        }
-
-                        // Annoying, but we need leaflet to render the image before we start
-                        // doing transformations
-                        setTimeout(()=>addAudioFunctions(annotatorRendered), 100);
-                    }
-
-                    // Create the Leaflet.annotation element
-                    let annotator = React.createElement(document.LeafletAnnotation, {
-                        imageElement : imageEl,
-                        image : image_info,
-                        annotations : existing_annotations,
-                        categories : categories,
-                        options : {
-                            enableEditingImmediately : true,
-
-                            map : {
-                                attributionControl : false,
-                                zoomControl : false,
-                                boxZoom : false,
-                                doubleClickZoom : false,
-                                keyboard : false,
-                                scrollWheelZoom : false
-                            },
-
-                            quickAccessCategoryIDs : quickAccessCatIDs,
-
-                            newInstance: {
-                                annotateCategory: true,
-                                annotateSupercategory: false,
-                                annotationType: 'box'
-                            },
-
-                            duplicateInstance : {
-                                enable : true,
-                                duplicateY : true  // duplicate the frequcy components of the box
-                            },
-
-                            showCategory : true,
-                            showSupercategory: true,
-                            showIsCrowdCheckbox: false,
-
-                            enableBoxEdit : true,
-                            renderBoxes : true,
-
-                            enableSegmentationEdit : false,
-                            renderSegmentations : false,
-
-                            imageInfoComponent : document.MLAudioInfo,
-
-                            didMountLeafletCallback : delayAudioPrepTillRender,
-                            didFocusOnAnnotationCallback : mapPannedTo
-                        }
-                    }, null);
-
-                    // Render the annotator
-                    annotatorRendered = ReactDOM.render(annotator, document.getElementById('annotationHolder'));
-
-
-                    // Create the one second intervals lines that will appear over the spectrogram.
-                    // These are 1px wide lines.
-                    // NOTE: these values are hard coded for a window width of 1200px with one second being 240px.
-                    let interval_offset = 120;
-                    let one_second_interval = 240;
-                    for(let i = 0; i < 5; i++){
-                        $(".leaflet-image-holder").append(
-                            $("<span></span>").css({
-                                "content" : "",
-                                "width": "1px",
-                                "height": "100%",
-                                "display": "block",
-                                "z-index": 999,
-                                "left": "" + (interval_offset + (i * one_second_interval)) + "px",
-                                "position": "absolute",
-                                "background-image": "linear-gradient(#495057bf, #495057bf)",
-                                "background-size": "1px 100%",
-                                "background-repeat": "no-repeat",
-                                "background-position": "center center"
-                            })
-                        );
-                    }
-
-
-                }
-                imageEl.addEventListener('error', () => {
-                    alert("Error loading the pixels for image " + image_info.id + ". Perhaps the resouce has been deleted? Maybe skip?");
-                });
-                imageEl.src = image_info.url;
-
-                ...
-                */
-                const imageEl = new Image();
-
-                //  visualization:
-                imageEl.src = waveData;
-                imageEl.height = targetSpectrogramHeight;
-                imageEl.width = Math.round(dbSpec.length);
+        // generate & display a spectrogram:
+        specInBrowser(image_info)
+            .then((imageEl) => {
 
                 // Get the dimensions of the spectrogram:
                 spectrogram_height = imageEl.height;
@@ -505,7 +353,6 @@ function startAnnotating(images_data, categories, annotations, config){
                     categories : categories,
                     options : {
                         enableEditingImmediately : true,
-
                         map : {
                             attributionControl : false,
                             zoomControl : false,
@@ -525,7 +372,7 @@ function startAnnotating(images_data, categories, annotations, config){
 
                         duplicateInstance : {
                             enable : true,
-                            duplicateY : true  // duplicate the frequcy components of the box
+                            duplicateY : true  // duplicate the frequency components of the box
                         },
 
                         showCategory : true,
@@ -542,7 +389,7 @@ function startAnnotating(images_data, categories, annotations, config){
                 annotatorRendered = ReactDOM.render(annotator, document.getElementById('annotationHolder'));
 
                 imageEl.addEventListener('error', () => {
-                    alert("Error loading the pixels for image " + image_info.id + ". Perhaps the resouce has been deleted? Maybe skip?");
+                    alert("Error loading the pixels for image " + image_info.id + ". Perhaps the resource has been deleted? Maybe skip?");
 
                 });
 
@@ -563,7 +410,6 @@ function startAnnotating(images_data, categories, annotations, config){
             image_id_to_annotations[image_id] = annos;
         }
     }
-
 
     $("#nextImageButton").click(function(){
 
