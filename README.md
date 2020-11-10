@@ -43,7 +43,7 @@ pip3 install -r requirements.txt
 ***requirements.txt:***      
 - tf-nightly causes Heroku slug size to be too big:
   - use cpu-only tensorflow for deployment
-  - (dependabot will get upset)
+  - (dependabot may get upset)
 - on Heroku, `numpy~=1.18.**` is still a reverse depend of cpu-only tensorflow 2.3.*
   -  otherwise, stick with whatever `tf-nightly` calls for, e.g.`numpy>=1.19.2`
 
@@ -111,9 +111,9 @@ npm run-script develop-swift-demos
 
 -  *focusing on codepaths for:*
     - tflite interpreter
-    - generating mel spectrograms
     - *obtain scores...*
-    - *haven't yet figured out how to load array of floats into the input Tensor via `ByteBuffer` --> `Data()`--> `interpreter.copy()`, inputs are still implicitly coerced as `Uint8`*  
+    - **haven't yet figured out how to load array of floats into the input Tensor via `ByteBuffer` / `Data()`/ `interpreter.copy()`**
+    - ~~generating mel spectrograms~~
 
 - make sure `info.plist` has permissions for microphone access
 - **The entrypoint for Swift tests is `./swift/swift-pkgs-tmpui/swift-pkgs-tmpui/swift_pkgs_tmpuiApp.swift`**
@@ -176,7 +176,7 @@ npm run-script build-anno-tool
 npm run-script build-anno-client
 ```
 
-#### [*./etc/tone.py:*](*https://github.com/Jesssullivan/tmpUI/blob/master/etc/tone.py)
+#### [*./etc/tone.py:*](https://github.com/Jesssullivan/tmpUI/blob/master/etc/tone.py)
 ```
 ### generate some .wav files for testing fft things:
 python3 tone.py

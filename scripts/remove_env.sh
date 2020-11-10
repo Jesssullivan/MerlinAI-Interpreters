@@ -13,8 +13,8 @@
 
 env="<old-env>"  # environment to remove
 token="<shiny-token>"
-repo="this-repo"
-user="you"
+repo="<this-repo>"
+user="me"
 
 for id in $(curl -u $user:$token https://api.github.com/repos/$user/$repo/deployments\?environment\=$env | jq ".[].id"); do
     curl -X POST -u $user:$token -d '{"state":"inactive"}' -H 'accept: application/vnd.github.ant-man-preview+json' https://api.github.com/repos/$user/$repo/deployments/$id/statuses
