@@ -1,10 +1,9 @@
 //
-//  CreateInterpreterViewV2.swift
+//  CreateInterpreterViewV1.swift
 //  swift-pkgs-tmpui
 //
 //  Created by Jess on 11/2/20.
 //
-
 import SwiftUI
 import AVFoundation
 import Accelerate
@@ -12,8 +11,9 @@ import TensorFlowLite
 import Foundation
 
 
+
 // MARK: Entry:
-struct CreateInterpreterViewV2: View {
+struct CreateInterpreterViewV1: View {
    
     @State var labelInfo = "...waiting for Labels Info..."
     @State var modelInfo = "...waiting for Model Info..."
@@ -45,7 +45,8 @@ struct CreateInterpreterViewV2: View {
                 self.labelInfo = "labesURL: " + (labelsURL?.path.description)!
                 
                 let contents = try String(contentsOf: labelsURL!, encoding: .utf8)
-                labels = contents.components(separatedBy: .newlines)
+                let labels = contents.components(separatedBy: .newlines)
+                
                 NSLog("labels: " + labels.description)
                 self.labelInfo = "labels: " + labels.description
                 
@@ -62,30 +63,18 @@ struct CreateInterpreterViewV2: View {
                 NSLog("allocated Tensors")
                 self.interpreterInfo = "allocated Tensors"
 
-                /// todo: how can frameCapacity be calculated on the fly?
-                let url = Bundle.main.url(forResource: BundledFiles.recording.name,
-                                                             withExtension: BundledFiles.recording.extension)
+                // MARK: load test waveform:
+                let waveformArray = wavToArray(file: (BundledFiles.recording.name,
+                                                      extension: BundledFiles.recording.extension))
+              
+                let bytes = waveformArray.map { x in return abs( x / ALPHA ) }
+                // print read values?
+                // bytes.map { i in return NSLog(i.description) }
+        
+                let byteData = Data(bytes: bytes, count: sampleRate * 4)
 
-                let file = try AVAudioFile(forReading: url!)
-                
-                NSLog("Received Sample Rate: " + String(file.fileFormat.sampleRate))
-                NSLog("Received Channel Count: " + String(file.fileFormat.channelCount))
-                
-                // Immediately unwrap:
-                let format = AVAudioFormat(
-                        commonFormat: .pcmFormatFloat32,
-                        sampleRate: file.fileFormat.sampleRate,
-                        channels: 1,
-                        interleaved: false)
-                
-                let buf = AVAudioPCMBuffer(pcmFormat: format!, frameCapacity: AVAudioFrameCount(sampleRate))
-               
-                try file.read(into: buf!)
-                
-                let byteData = toNSData(PCMBuffer: buf!)
-                
                 // MARK: run interpreter:
-                try interpreter.copy(byteData as Data, toInputAt: audioBufferInputTensorIndex)
+                try interpreter.copy(byteData, toInputAt: audioBufferInputTensorIndex)
 
                 /// Run inference by invoking the `Interpreter`.
                 try interpreter.invoke()
@@ -114,3 +103,4 @@ struct CreateInterpreterViewV2: View {
         }
     }
 }
+

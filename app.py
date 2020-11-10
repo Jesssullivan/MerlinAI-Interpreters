@@ -3,6 +3,7 @@ from trashd import Trash
 from classifier import Classifier
 from config import *
 
+
 """ routing """
 
 
@@ -105,7 +106,7 @@ else:
     logger = False
 
 # still need to update x-origin support lol:
-app.secret_key = 'yuki is the roundest seal'
+app.secret_key = new_client()
 
 if __name__ == "__main__":
     app.run(host=hosturl, port=os.environ.get('PORT', hostport))

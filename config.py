@@ -7,7 +7,7 @@ import numpy as np
 import json
 import glob
 from flask import Flask, request, flash, redirect, jsonify
-# from flask_cors import CORS, cross_origin
+from flask_cors import CORS, cross_origin
 import tensorflow as tf
 import librosa
 
@@ -77,6 +77,7 @@ usr_id = ''
 
 # declare the Flask server:
 app = Flask(__name__, static_folder=static)
+cors = CORS(app, resources={r"*": {"origins": "*"}})
 
 # Common:
 

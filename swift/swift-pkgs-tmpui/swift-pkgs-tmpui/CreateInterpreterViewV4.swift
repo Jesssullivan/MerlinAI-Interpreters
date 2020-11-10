@@ -1,5 +1,5 @@
 //
-//  CreateInterpreterViewV2.swift
+//  CreateInterpreterViewV4.swift
 //  swift-pkgs-tmpui
 //
 //  Created by Jess on 11/2/20.
@@ -12,8 +12,9 @@ import TensorFlowLite
 import Foundation
 
 
+
 // MARK: Entry:
-struct CreateInterpreterViewV2: View {
+struct CreateInterpreterViewV4: View {
    
     @State var labelInfo = "...waiting for Labels Info..."
     @State var modelInfo = "...waiting for Model Info..."
@@ -54,6 +55,8 @@ struct CreateInterpreterViewV2: View {
                 NSLog("modelPath: " + modelPath.description)
                 self.modelInfo = "modelPath: " + modelPath.description
                 
+                let outputTensor: Tensor
+                
                 let interpreter = try Interpreter(modelPath: modelPath)
                 NSLog("Created interpreter")
                 self.interpreterInfo = "Created interpreter"
@@ -61,11 +64,9 @@ struct CreateInterpreterViewV2: View {
                 try interpreter.allocateTensors()
                 NSLog("allocated Tensors")
                 self.interpreterInfo = "allocated Tensors"
-
-                /// todo: how can frameCapacity be calculated on the fly?
+                
                 let url = Bundle.main.url(forResource: BundledFiles.recording.name,
-                                                             withExtension: BundledFiles.recording.extension)
-
+                                                                     withExtension: BundledFiles.recording.extension)
                 let file = try AVAudioFile(forReading: url!)
                 
                 NSLog("Received Sample Rate: " + String(file.fileFormat.sampleRate))
@@ -78,35 +79,43 @@ struct CreateInterpreterViewV2: View {
                         channels: 1,
                         interleaved: false)
                 
-                let buf = AVAudioPCMBuffer(pcmFormat: format!, frameCapacity: AVAudioFrameCount(sampleRate))
-               
-                try file.read(into: buf!)
+                let buffer = AVAudioPCMBuffer(pcmFormat: format!, frameCapacity: AVAudioFrameCount(sampleRate))
+                try file.read(into: buffer!)
                 
-                let byteData = toNSData(PCMBuffer: buf!)
-                
-                // MARK: run interpreter:
-                try interpreter.copy(byteData as Data, toInputAt: audioBufferInputTensorIndex)
+                let floatChannel = UnsafeBufferPointer(start: buffer?.floatChannelData, count: 1)
+             
+                let floatData = Data(bytes: floatChannel[0], count:Int(buffer!.frameCapacity * buffer!.format.streamDescription.pointee.mBytesPerFrame))
 
+                try interpreter.copy(floatData, toInputAt: audioBufferInputTensorIndex)
+
+                var rate = Int32(sampleRate)
+                
+                let sampleRateData = Data(bytes: &rate, count: MemoryLayout.size(ofValue: rate))
+                
+                try interpreter.copy(sampleRateData, toInputAt: sampleRateInputTensorIndex)
+                
+                // MARK: load test waveform:
+                
                 /// Run inference by invoking the `Interpreter`.
                 try interpreter.invoke()
                 NSLog("invoked interpreter...")
                 self.interpreterInfo = "invoked interpreter..."
 
                 // Get the output `Tensor`
-                let outputTensor = try interpreter.output(at: 0)
+                outputTensor = try interpreter.output(at: 0)
                 NSLog("outputTensor dimensions: " + outputTensor.shape.dimensions.description)
                 self.tensorInfo = "outputTensor dimensions: " + outputTensor.shape.dimensions.description
-
-                // Copy output to `Data` to process the inference results.
-                let outputSize = outputTensor.shape.dimensions.reduce(1, {x, y in x * y})
-                NSLog("outputSize: " + outputSize.description)
-                self.tensorInfo = "outputSize: " + outputSize.description
-                self.Info = outputTensor.data.map {i in return i}.description
+               
+                // Gets the formatted and averaged results.
+                let scores = [Float32](unsafeData: outputTensor.data) ?? []
+                NSLog(scores.description)
                 
-                NSLog("finished.")
-
+                let results = outputTensor.data.map {i in return i}.description
+                NSLog(results.description)
+                self.Info = results
+                
             } catch {
-                
+            
                 NSLog("\(error)")
                 self.Info = "\(error)"
 

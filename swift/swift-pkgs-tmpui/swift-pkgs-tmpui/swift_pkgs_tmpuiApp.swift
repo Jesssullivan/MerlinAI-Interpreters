@@ -11,10 +11,11 @@ import SwiftUI
 struct swift_pkgs_tmpuiApp: App {
     var body: some Scene {
         WindowGroup {
-            CreateInterpreterView()
+            // CreateInterpreterViewDan()
+            // CreateInterpreterViewV1()
             // CreateInterpreterViewV2()
-            // CreateInterpreterDan()
-            // ConsoleView()
+            // CreateInterpreterViewV3()
+            CreateInterpreterViewV4()
         }
     }
 }

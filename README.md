@@ -20,7 +20,7 @@ git clone --branch=master --depth=2 https://github.com/Jesssullivan/tmpUI && cd 
 npm install
 ```
 
-- - - 
+- - -
 
 ## Web:
 
@@ -39,7 +39,7 @@ source tmpui_venv/bin/activate
 # Flask depends:
 pip3 install -r requirements.txt
 ```  
- 
+
 ***requirements.txt:***      
 - tf-nightly causes Heroku slug size to be too big:
   - use cpu-only tensorflow for deployment
@@ -71,13 +71,13 @@ npm run-script develop-web-demos
 
 #### *misc:*
 
-- `/` runs `webgl_init`, which figures out if the browser can or cannot make classifications and routes the client accordingly. 
-    - *classification options:* 
+- `/` runs `webgl_init`, which figures out if the browser can or cannot make classifications and routes the client accordingly.
+    - *classification options:*
     - if browser cannot do classification (i.e. safari on mobile, webgl mediump not supported) recording is beamed up to `/uploader_standard` for processing
     - both POST destinations `/uploader_select` & `/uploader_standard` can also be operated from within browser as a multipart form
 
-- - - 
- 
+- - -
+
 ### React Native:
 
 
@@ -99,7 +99,7 @@ npm run-script ios-native
 ```
 
 
-- - - 
+- - -
 
 
 ### Swift Native:
@@ -111,10 +111,10 @@ npm run-script develop-swift-demos
 
 -  *focusing on codepaths for:*
     - tflite interpreter
-    - generating mel spectrograms 
+    - generating mel spectrograms
     - *obtain scores...*
     - *haven't yet figured out how to load array of floats into the input Tensor via `ByteBuffer` --> `Data()`--> `interpreter.copy()`, inputs are still implicitly coerced as `Uint8`*  
-      
+
 - make sure `info.plist` has permissions for microphone access
 - **The entrypoint for Swift tests is `./swift/swift-pkgs-tmpui/swift-pkgs-tmpui/swift_pkgs_tmpuiApp.swift`**
 - *Toggle various interpreter experiments from entrypoint*
@@ -147,10 +147,10 @@ $(inherited)
 ```
 
 ```
-# niftily switch between xcode versions: 
+# niftily switch between xcode versions:
 sudo xcode-select --switch ~/Downloads/Xcode-beta.app
 ```
- 
+
 
 - - -
 
@@ -175,21 +175,21 @@ npm run-script build-anno-tool
 # pack only implementations of annotator tool @ `./src/annotator_client.js:
 npm run-script build-anno-client
 ```
-  
-#### [*./tone.py:*](*https://github.com/Jesssullivan/tmpUI/blob/master/tone.py) 
+
+#### [*./etc/tone.py:*](*https://github.com/Jesssullivan/tmpUI/blob/master/etc/tone.py)
 ```
 ### generate some .wav files for testing fft things:
-python3 tone.py 
+python3 tone.py
 
-# ...you can also specify duration in seconds & frequency in Hz like so: 
-python3 tone.py 5 440 
+# ...you can also specify duration in seconds & frequency in Hz like so:
+python3 tone.py 5 440
 
 # ...or just duration:
 python3 tone.py 2
 ```
 
 
- 
+
 #### *removing stuff:*    
 ```
 # ...demo bundles:
@@ -219,7 +219,7 @@ brew install jq
 # update ./scripts/remove_env.sh:
 sudo chmod +x scripts/remove_env.sh && ./scripts/remove_env.sh
 ```
- 
+
 #### *local ssl:*
 ```
 ### Generate local ssl certs for testing w/ node http-server:
@@ -231,8 +231,8 @@ npm run-script sslgen-web-demos
 sudo chmod +x scripts/sslgen.sh && ./scripts/sslgen.sh
 # osx is a bit more finicky
 ```
- 
- 
+
+
 - - -
 
 
@@ -267,8 +267,8 @@ sudo chmod +x scripts/sslgen.sh && ./scripts/sslgen.sh
 
 
 - - -
- 
- 
+
+
 ### *Macaulay Annotation:*
 
 - Since Macaulay recording are already pretty well labeled by species, what if we make human annotations into a learning game of sorts?  i.e. In order for the user to guess, they must crop in on the song they are guessing on- free annotation lunch?
@@ -310,8 +310,8 @@ sudo chmod +x scripts/sslgen.sh && ./scripts/sslgen.sh
 * how to most effectively bundle waveform/spectrogram/annotations?
   * could annotations be bundled as an "album/song" metadata?
 
-- - - 
-  
+- - -
+
 ### *fft-related links:*
 
   - simplest (beware some typos)
@@ -320,14 +320,14 @@ sudo chmod +x scripts/sslgen.sh && ./scripts/sslgen.sh
 
   - *"krafter" has a nice clear working sketch:*
     - https://stackoverflow.com/questions/11686625/get-hz-frequency-from-audio-stream-on-iphone/19966776#19966776
-  
+
   - accelerate & apple docs:
     - https://developer.apple.com/documentation/accelerate/equalizing_audio_with_vdsp
     - https://developer.apple.com/documentation/accelerate/vdsp/fast_fourier_transforms
     - https://medium.com/better-programming/audio-visualization-in-swift-using-metal-accelerate-part-1-390965c095d7
-  
- 
- 
+
+
+
 - - -
 
 ## *Notes:*
@@ -337,25 +337,25 @@ sudo chmod +x scripts/sslgen.sh && ./scripts/sslgen.sh
 - begin experimenting with auto detecting bird songs on the fly
   - ...could be used in conjunction with the web tools & interface in browser / local web app, "kiosk style":
     - computer / Raspberry Pi / bird feeder stream on youtube / etc constantly processing audio stream, try to classify any sounds that might be a bird, etc
-    - web app served locally from cloned notebook, encourage fiddling 
+    - web app served locally from cloned notebook, encourage fiddling
     - make interface to pit Merlin's guesses against user's annotation of clip, etc
   - ...could also be used for "minimal human assistance" bulk collection of annotations via Macaulay, video stream, bird cams, etc
 
 
-*Web stuff:* 
+*Web stuff:*
 
-- modify web annotator to generate spectrogram in the browser instead of fetching a pre generated one 
+- modify web annotator to generate spectrogram in the browser instead of fetching a pre generated one
 - add some audio --> spectrogram controls to web annotator for better annotations:
   - add playback of  cropped / modified spectrogram audio as well!
   - @Grant- modify spectrogram to better box all songs-
-    - thinking a user definable highpass filter will do the job? 
+    - thinking a user definable highpass filter will do the job?
     - or more like 4 or 5 parametric bands?
-  
+
 
 *Other stuff:*
 
 - add export function?  could fit [everything in ID3?](https://en.wikipedia.org/wiki/ID3) Bundle spectrogram as "album artwork", cropped / uncropped audio as "tracks", json attributes as album info?
-- musing on ways to allow a publicly encouraged project such as this access the "big merlin models" down the line, e.g. user experiments with / contributes to / learns from 
+- musing on ways to allow a publicly encouraged project such as this access the "big merlin models" down the line, e.g. user experiments with / contributes to / learns from
 - still want to eventually figure out TensorFlow with web assembly instead of webgl for mobile, perhaps later?  thoughts on this?
 
-- - - 
+- - -
