@@ -1,5 +1,5 @@
 
-# Demos w/ the Merlin Sound ID Project
+# Demos with the Merlin Sound ID Project.
 
 - ***[*Visit the web demos here*](https://tmpui.herokuapp.com/)***
 - ***[*readme @ github.io*](https://jesssullivan.github.io/tmpUI/)***
@@ -111,8 +111,8 @@ npm run-script develop-swift-demos
 
 -  *focusing on codepaths for:*
     - tflite interpreter
-    - *obtain scores...*
-    - **haven't yet figured out how to load array of floats into the input Tensor via `ByteBuffer` / `Data()`/ `interpreter.copy()`**
+    - ~~*obtain scores...*~~ 
+    - ~~**haven't yet figured out how to load array of floats into the input Tensor via `ByteBuffer` / `Data()`/ `interpreter.copy()`**~~
     - ~~generating mel spectrograms~~
 
 - make sure `info.plist` has permissions for microphone access
@@ -154,52 +154,106 @@ sudo xcode-select --switch ~/Downloads/Xcode-beta.app
 
 - - -
 
+
+
+### *Interpreter Operations*
+
+*Hack on fft functions:*
+*[*./etc/tone.py:*](https://github.com/Jesssullivan/tmpUI/blob/master/etc/tone.py)*
+
+```
+### copy from here:
+cp etc/tone.py .
+
+### generate some .wav files for testing fft things:
+python3 tone.py
+
+### ...you can also specify duration in seconds & frequency in Hz like so:
+python3 tone.py 5 440
+
+### ...or just duration:
+python3 tone.py 2
+```
+
+*some fft-related links*
+  - simplest (beware some typos)
+    - https://stackoverflow.com/questions/32891012/spectrogram-from-avaudiopcmbuffer-using-accelerate-framework-in-swift
+    - https://gist.github.com/jeremycochoy/45346cbfe507ee9cb96a08c049dfd34f
+
+  - *"krafter" has a nice clear working sketch:*
+    - https://stackoverflow.com/questions/11686625/get-hz-frequency-from-audio-stream-on-iphone/19966776#19966776
+
+  - accelerate & apple docs:
+    - https://developer.apple.com/documentation/accelerate/equalizing_audio_with_vdsp
+    - https://developer.apple.com/documentation/accelerate/vdsp/fast_fourier_transforms
+    - https://medium.com/better-programming/audio-visualization-in-swift-using-metal-accelerate-part-1-390965c095d7
+
+
+- - - 
+
+### Leaflet.annotation @ tmpUI:     
+ 
+*Hack on Annotator:*
+```
+# develop-anno-demos:
+# packs annotator demos
+# generates unique openssl cert & key
+# serves annotator demos on node http-server
+
+npm run-script develop-anno-demos
+
+```
+
+```
+# pack only tool definitions @ `./src/annotator_tool.js:
+npm run-script build-anno-tool
+```
+
+```
+# pack only implementations of audio annotator @ `./demos/annotator_audio.ts:
+npm run-script build-anno-audio
+```
+
+```
+# pack only implementations of photo annotator @ `./demos/annotator_photo.ts:
+npm run-script build-anno-photo
+```
+
+
+- - -
+
 ### Scripts:
 
 ```
 # See ./package.json & ./scripts/ for additional scripts
 ```
 
-#### *web annotator:*
-
-*webpack script links:*
-- [develop-web-demos](https://github.com/Jesssullivan/tmpUI/blob/master/scripts/development.sh)
-- [build-anno-tool](https://github.com/Jesssullivan/tmpUI/blob/master/scripts/annotator_tool.sh)
-- [build-anno-client](https://github.com/Jesssullivan/tmpUI/blob/master/scripts/annotator_client.sh)
-
-```
-# pack only tool definitions @ `./src/annotator_tool.js:
-npm run-script build-anno-tool
-```
-```
-# pack only implementations of annotator tool @ `./src/annotator_client.js:
-npm run-script build-anno-client
-```
-
-#### [*./etc/tone.py:*](https://github.com/Jesssullivan/tmpUI/blob/master/etc/tone.py)
-```
-### generate some .wav files for testing fft things:
-python3 tone.py
-
-# ...you can also specify duration in seconds & frequency in Hz like so:
-python3 tone.py 5 440
-
-# ...or just duration:
-python3 tone.py 2
-```
-
+*main scripts links:*
+- [develop-web-demos](https://github.com/Jesssullivan/tmpUI/blob/master/scripts/develop_web_demos.sh)
+- [develop-anno-demos](https://github.com/Jesssullivan/tmpUI/blob/master/scripts/develop_anno_demos.sh)
+- [develop-swift-demos](https://github.com/Jesssullivan/tmpUI/blob/master/scripts/develop_swift_demos.sh)
 
 
 #### *removing stuff:*    
+
+```
+# clean up with:
+npm run-script clean all 
+# ...and follow the instruction prompt
+```
+
 ```
 # ...demo bundles:
 npm run-script clean-web-bundles
+
 # ...or:
 find demos/ -name "*_bundle.js" -print -delete
 ```
+
 ```
 # ...demo renders:
 npm run-script clean-web-renders
+
 # ...or:
 find demos/ -name "*_render.html" -print -delete
 ```
@@ -222,10 +276,12 @@ sudo chmod +x scripts/remove_env.sh && ./scripts/remove_env.sh
 
 #### *local ssl:*
 ```
-### Generate local ssl certs for testing w/ node http-server:
+# Generates local ssl certs for testing w/ node http-server:
+npm run-script sslgen
 
-# linux:
-npm run-script sslgen-web-demos
+# you can also provide a $DOMAIN argument like so:
+npm run-script sslgen hiyori
+# ...returns key `hiyori_key.pem` & cert `hiyori.pem`
 
 # ...or:
 sudo chmod +x scripts/sslgen.sh && ./scripts/sslgen.sh
@@ -251,12 +307,8 @@ sudo chmod +x scripts/sslgen.sh && ./scripts/sslgen.sh
 
 - Read existing PCM / .wav file to `AVAudioFile` [works well](https://github.com/Jesssullivan/tmpUI/blob/master/swift/swift-pkgs-tmpui/swift-pkgs-tmpui/ContentView.swift#L82)
 - etc, etc:
-    - Banging out mel spectrogram drawing logic --> Swift;
-    - using vDSP `Accelerate` builtins
-    - *pack up as reusable, speedy quick drawing chunk for ios*
-    - ~~toolchain for correctly and repeatably handling tflite model w/ select ops is still totally not linking @ compiler :(~~
-
-- thoughts on drumming up open source enthusiasm?
+    - ...using vDSP `Accelerate` builtins
+    - ...*pack up as reusable, speedy quick drawing chunk for ios*
     - ...to expand the web annotator tool as a song ID game --> app?
     - ...on external camera / mic hardware?
     - ...toward / hybrid Record --> Classify --> Annotate --> generate TFRecord demo
@@ -309,24 +361,6 @@ sudo chmod +x scripts/sslgen.sh && ./scripts/sslgen.sh
 
 * how to most effectively bundle waveform/spectrogram/annotations?
   * could annotations be bundled as an "album/song" metadata?
-
-- - -
-
-### *fft-related links:*
-
-  - simplest (beware some typos)
-    - https://stackoverflow.com/questions/32891012/spectrogram-from-avaudiopcmbuffer-using-accelerate-framework-in-swift
-    - https://gist.github.com/jeremycochoy/45346cbfe507ee9cb96a08c049dfd34f
-
-  - *"krafter" has a nice clear working sketch:*
-    - https://stackoverflow.com/questions/11686625/get-hz-frequency-from-audio-stream-on-iphone/19966776#19966776
-
-  - accelerate & apple docs:
-    - https://developer.apple.com/documentation/accelerate/equalizing_audio_with_vdsp
-    - https://developer.apple.com/documentation/accelerate/vdsp/fast_fourier_transforms
-    - https://medium.com/better-programming/audio-visualization-in-swift-using-metal-accelerate-part-1-390965c095d7
-
-
 
 - - -
 

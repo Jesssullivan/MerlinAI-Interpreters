@@ -4,7 +4,6 @@
   "scripts": {
     "serve-node": "http-server -S -C ./demos/demos.pem -K ./demos/key.pem -o ./demos/annotator_audio.html",
     "serve-flask": "flask run",
-
     "sslgen": "chmod +x scripts/sslgen.sh && ./scripts/sslgen.sh",
     "build-all": "chmod +x scripts/build.sh && ./scripts/build_all.sh",
     "build-anno-tool": "chmod +x scripts/annotator_tool.sh && ./scripts/annotator_tool.sh",
