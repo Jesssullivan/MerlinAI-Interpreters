@@ -156,7 +156,7 @@ sudo xcode-select --switch ~/Downloads/Xcode-beta.app
 
 
 
-### *Interpreter Operations*
+### *Interpreter Operations:*
 
 *Hack on fft functions:*
 *[*./etc/tone.py:*](https://github.com/Jesssullivan/tmpUI/blob/master/etc/tone.py)*
