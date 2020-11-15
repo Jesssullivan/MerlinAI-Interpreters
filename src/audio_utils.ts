@@ -99,7 +99,7 @@ export async function fetch_audio(audio_url : string, targetSampleRate : number)
     //   new appeaseTsLintWindow.webkitOfflineAudioContext(1, WEBKIT_SAMPLE_RATE, WEBKIT_SAMPLE_RATE) :
     //   new appeaseTsLintWindow.OfflineAudioContext(1, targetSampleRate, targetSampleRate);
 
-    const audioContext = new window.AudioContext()
+    const audioContext = new window.AudioContext();
 
     // const decodeAudioDataPromise = (buffer : ArrayBuffer) => new Promise ((resolve, reject) => {
     //   offlineCtx.decodeAudioData(buffer,
@@ -122,12 +122,12 @@ export async function fetch_audio(audio_url : string, targetSampleRate : number)
             return audioContext.decodeAudioData(arrayBuffer);
           }
         })
-        .then((sourceAudioBuffer : AudioBuffer) => {
+        .then((sourceAudioBuffer: any) => {
 
-              let sourceSampleRate = sourceAudioBuffer.sampleRate
+              const sourceSampleRate = sourceAudioBuffer.sampleRate;
               console.log("Source Audio Sample Rate: " + sourceSampleRate);
 
-              if(sourceAudioBuffer.sampleRate == targetSampleRate){
+              if(sourceAudioBuffer.sampleRate === targetSampleRate){
                   return {
                     waveform : getMonoAudio(sourceAudioBuffer),
                     sourceSampleRate : sourceSampleRate
@@ -141,7 +141,7 @@ export async function fetch_audio(audio_url : string, targetSampleRate : number)
                   return {
                     waveform : resampledSourceAudioBuffer.getChannelData(0),
                     sourceSampleRate : sourceSampleRate
-                  }
+                  };
               });
 
               // if (!isSafari){
@@ -169,7 +169,6 @@ export async function fetch_audio(audio_url : string, targetSampleRate : number)
               //       ndarray(originalAudio, [originalAudio.length]));
               //   return { waveform: resampledAudio, sourceSampleRate : sourceSampleRate}
               // }
-
 
               // if (isSafari){
 
@@ -210,7 +209,8 @@ function _powerToDb(spec : Float32Array[], amin = 1e-10, topDb = 80.0) : Float32
       logSpec[i] = new Float32Array(height);
   }
 
-  let refValue = Math.max.apply(null, spec.map(arr => Math.max.apply(null, arr)));
+  // @ts-ignore
+  const refValue = Math.max.apply(null, spec.map(arr => Math.max.apply(null, arr)));
   //console.log("Ref Value: " + refValue);
   //refValue = 10.0;
 
@@ -294,8 +294,8 @@ export async function loadAudioFromUrl(url: string): Promise<AudioBuffer> {
  * By default, audio is loaded at 16kHz monophonic for compatibility with
  * model. In Safari, audio must be loaded at 44.1kHz instead.
  *
- * @param url A path to a audio file to load.
  * @returns The loaded audio in an AudioBuffer.
+ * @param blob
  */
 export async function loadAudioFromFile(blob: Blob): Promise<AudioBuffer> {
   const fileReader = new FileReader();
@@ -403,7 +403,9 @@ export async function resampleAndMakeMono(
     const originalAudio = getMonoAudio(audioBuffer);
     const resampledAudio = new Float32Array(lengthRes);
     resample(
+        // @ts-ignore
         ndarray(resampledAudio, [lengthRes]),
+        // @ts-ignore
         ndarray(originalAudio, [originalAudio.length]));
     return resampledAudio;
   }
@@ -453,6 +455,7 @@ export function stft(y: Float32Array, params: SpecParams): Float32Array[] {
   for (let i = 0; i < width; i++) {
     // Populate the STFT matrix.
     const winBuffer = applyWindow(yFrames[i], fftWindow);
+    // @ts-ignore
     const col = fft(winBuffer);
     stftMatrix[i].set(col.slice(0, height));
   }

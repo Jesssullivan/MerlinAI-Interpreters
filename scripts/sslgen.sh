@@ -1,8 +1,10 @@
 #!/bin/bash
 
-# generate new self-signed openssl keys
-# run from:
-# `npm run-script sslgen-demos`
+# generate a new self-signed openssl key
+#
+# run with:
+# `npm run-script sslgen`
+
 
 echo -e "sslgen: generating new ssl keys, useful if using a base http-server + Chrome.
 - Not needed for development w/ Flask.
@@ -15,5 +17,12 @@ else
     DOMAIN=$1
 fi
 
-# heard this may not work on OSX + Chrome, YMMV
-openssl req -newkey rsa:2048 -nodes -keyout ../$DOMAIN.key -x509 -days 365 -out ../$DOMAIN.crt
+KEY=${DOMAIN}_key
+
+# openssl on fruit is dodgy at best:
+if [[ "$OSTYPE" == "darwin"* ]] ; then
+  echo -e "\nsslgen: Detected fruit-based operating system! \n...openssl may not work as expected on Mac OSX."
+fi
+
+echo "sslgen:  continuing..."
+openssl req -x509 -newkey rsa:4096 -nodes -keyout ./demos/$KEY.pem -out ./demos/$DOMAIN.pem -days 365 -subj '/CN=127.0.0.1:8080'
