@@ -191,9 +191,11 @@ python3 tone.py 2
 
 - - - 
 
-### Leaflet.annotation @ tmpUI:     
+### ~~Leaflet.annotation @ tmpUI~~:     
  
-*Hack on Annotator:*
+**Still typifying Annotator source, hang tight**
+
+~~*Hack on Annotator:*~~
 ```
 # develop-anno-demos:
 # packs annotator demos
