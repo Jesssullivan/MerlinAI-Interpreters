@@ -100,6 +100,7 @@ npm run-script develop-web-demos
       </th> 
       <th>
         <a href="https://youtu.be/JkIgp_F_u64"><img src="https://img.youtube.com/vi/JkIgp_F_u64/default.jpg" alt="tests"></a>
+         <br/><em>Watch a 32 second demo here</em>
       </th>
     </tr>
   </thead>
