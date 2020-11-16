@@ -32,6 +32,7 @@ npm run-script develop-web-demos
 
 ### Web:
 
+
 <table>
 <thead>
 <tr>
@@ -45,6 +46,8 @@ npm run-script develop-web-demos
 </tr>
 </tbody>
 </table>
+
+  
 
 #### *Configure Flask accordingly in `config.py`:*
 
@@ -91,6 +94,19 @@ npm run-script develop-web-demos
 
 |[![demos](./icons/Leaflet.annotation-favicon-dark/android-chrome-192x192.png)](https://tmpui.herokuapp.com/leaflet_audio) <br/> *Leaflet.annotation: Visit the web demo* |[![video](https://img.youtube.com/vi/JkIgp_F_u64/0.jpg)](https://www.youtube.com/watch?v=JkIgp_F_u64&feature=youtu.be) <br/> *32 second demo over here* |
 |---|---|
+
+<table>
+<thead>
+<tr>
+<th><a href="https://tmpui.herokuapp.com/"><img src="./icons/Leaflet.annotation-favicon-dark/android-chrome-192x192.png" alt="demos"></a> <br/> <em>Leaflet.annotation: Visit the web demo</em></th> <th><a href="https://tmpui.herokuapp.com/"><img src="./etc/merlinaiscript.gif" alt="tests"></a><em>    32 second demo over here </em></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+</tr>
+</tbody>
+</table>
 
 - *(Jess is still typifying Annotator source, hang tight)*
 
