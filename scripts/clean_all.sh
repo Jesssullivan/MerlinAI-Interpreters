@@ -3,10 +3,10 @@
 if [[ $EUID -ne 0 ]]; then
 
   echo -e "Warning:\n Clean All script removes:"
-  echo "openssl stuff"
-  echo ".built/ type declarations"
-  echo "ALL webpack bundles"
-  echo -e "ALL html renders \n"
+  echo -e "\nopenssl stuff"
+  echo -e "\n.built/ type declarations"
+  echo -e "\nALL webpack bundles"
+  echo -e "\nALL html renders \n"
   echo "If you are certain this is what you want to do, run the following sudo:"
   echo -e "\nsudo ./scripts/clean_all.sh\n"
 
@@ -22,10 +22,10 @@ find demos/ -name "*.pem" -print -delete
 find demos/ -name "*.crt" -print -delete
 
 
-echo "cleaning ALL renders..."
+echo -e "\ncleaning ALL renders..."
 find '.' -name "*_render.html" -print -delete
 
-echo "cleaning ALL bundles..."
+echo -e "\ncleaning ALL bundles..."
 find '.' -name "*_bundle.js" -print -delete
 
 echo -e "\nAll done! :) \n"

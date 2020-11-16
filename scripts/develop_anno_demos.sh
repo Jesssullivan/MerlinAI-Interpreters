@@ -1,5 +1,14 @@
 #!/bin/bash
 
+echo """
+      ___  ___          _ _        ___ _____
+      |  \/  |         | (_)      / _ |_   _|
+      | .  . | ___ _ __| |_ _ __ / /_\ \| |
+      | |\/| |/ _ | '__| | | '_ \|  _  || |
+      | |  | |  __| |  | | | | | | | | _| |_
+      \_|  |_/\___|_|  |_|_|_| |_\_| |_\___/
+     """
+
 echo "development: Developing Annotator Demos:"
 
 # specify openssl domain to refresh on each each launch:

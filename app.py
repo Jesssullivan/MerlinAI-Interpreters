@@ -27,9 +27,14 @@ def webgl():
     return app.send_static_file('webgl_test.html' + ext)
 
 
-@app.route('/leaflet', methods=['GET', 'POST'])
-def leaflet():
-    return app.send_static_file('annotator_client.html' + ext)
+@app.route('/leaflet_audio', methods=['GET', 'POST'])
+def leaflet_audio():
+    return app.send_static_file('annotator_audio.html' + ext)
+
+
+@app.route('/leaflet_photo', methods=['GET', 'POST'])
+def leaflet_photo():
+    return app.send_static_file('annotator_photo.html' + ext)
 
 
 @app.route('/uploader_standard', methods=['GET','POST'])

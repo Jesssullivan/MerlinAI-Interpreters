@@ -1,8 +1,8 @@
-/* tslint:disable:max-line-length */
 /**
- * Utiltities for loading audio and computing mel spectrograms, based on
+ *
+ *
+ * Refactored utilities for loading audio and computing mel spectrograms, based on
  * {@link https://github.com/google/web-audio-recognition/blob/librosa-compat}.
- * TODO(adarob): Rewrite using tfjs.
  *
  * @license
  * Copyright 2018 Google Inc. All Rights Reserved.
@@ -20,13 +20,10 @@
  */
 
 //@ts-ignore
+import * as resample from 'ndarray-resample';
+//@ts-ignore
 import * as FFT from 'fft.js';
 import * as ndarray from 'ndarray';
-//@ts-ignore
-import * as resample from 'ndarray-resample';
-
-//import {fetch} from '../core/compat/global';
-import * as logging from './logging';
 
 // Safari Webkit only supports 44.1kHz audio.
 const WEBKIT_SAMPLE_RATE = 44100;
@@ -49,24 +46,6 @@ if (!window.AudioContext && window.webkitAudioContext) {
   window.OfflineAudioContext = window.webkitOfflineAudioContext;
 }
 
-// function resampleWebAudio(audioBuffer: AudioBuffer, targetSr: number):
-//       Promise<AudioBuffer> {
-//     const sourceSr = audioBuffer.sampleRate;
-//     const lengthRes = audioBuffer.length * targetSr / sourceSr;
-//     const offlineCtx = new OfflineAudioContext(1, lengthRes, targetSr);
-
-//     return new Promise((resolve, reject) => {
-//       const bufferSource = offlineCtx.createBufferSource();
-//       bufferSource.buffer = audioBuffer;
-//       offlineCtx.oncomplete = (event) => {
-//         resolve(event.renderedBuffer);
-//       };
-//       bufferSource.connect(offlineCtx.destination);
-//       bufferSource.start();
-//       offlineCtx.startRendering();
-//     });
-// }
-
 function resampleWebAudio(audioBuffer: AudioBuffer, targetSr: number):
       Promise<AudioBuffer> {
     const sourceSr = audioBuffer.sampleRate;
@@ -86,35 +65,16 @@ function resampleWebAudio(audioBuffer: AudioBuffer, targetSr: number):
 }
 
 export async function fetch_audio(audio_url : string, targetSampleRate : number) : Promise<{waveform : Float32Array; sourceSampleRate : number; }> {
-  // tslint:disable-next-line:max-line-length
-    /* The goal here is to load in an audio waveform with unknown sample rate and number of channels
-    // and transform it into a mono channel at a specific sampling rate.
-    */
-
-    //@ts-ignore
-    //var AudioContext = window.AudioContext || window.webkitAudioContext;
-    //var audioCtx = new AudioContext();
-
-    // const offlineCtx = isSafari ?
-    //   new appeaseTsLintWindow.webkitOfflineAudioContext(1, WEBKIT_SAMPLE_RATE, WEBKIT_SAMPLE_RATE) :
-    //   new appeaseTsLintWindow.OfflineAudioContext(1, targetSampleRate, targetSampleRate);
 
     const audioContext = new window.AudioContext();
 
-    // const decodeAudioDataPromise = (buffer : ArrayBuffer) => new Promise ((resolve, reject) => {
-    //   offlineCtx.decodeAudioData(buffer,
-    //     (audioBuffer : AudioBuffer) => resolve(audioBuffer),
-    //     (e : Error) => {console.log("here :("); reject(e)}
-    //   )
-    // });
-
-    const resampledMonoAudio = fetch(audio_url)
+  return fetch(audio_url)
         .then(body => body.arrayBuffer())
-        .then((arrayBuffer : ArrayBuffer) => {
+        .then((arrayBuffer: ArrayBuffer) => {
 
           if (audioContext.decodeAudioData.length === 2) { // Safari
             return new Promise(resolve => {
-              audioContext.decodeAudioData(arrayBuffer, (buffer : AudioBuffer) => {
+              audioContext.decodeAudioData(arrayBuffer, (buffer: AudioBuffer) => {
                 resolve(buffer);
               });
             });
@@ -122,82 +82,28 @@ export async function fetch_audio(audio_url : string, targetSampleRate : number)
             return audioContext.decodeAudioData(arrayBuffer);
           }
         })
-        .then((sourceAudioBuffer: any) => {
+        .then((sourceAudioBuffer: AudioBuffer) => {
 
               const sourceSampleRate = sourceAudioBuffer.sampleRate;
               console.log("Source Audio Sample Rate: " + sourceSampleRate);
 
-              if(sourceAudioBuffer.sampleRate === targetSampleRate){
-                  return {
-                    waveform : getMonoAudio(sourceAudioBuffer),
-                    sourceSampleRate : sourceSampleRate
-                  };
+              if (sourceAudioBuffer.sampleRate === targetSampleRate) {
+                return {
+                  waveform: getMonoAudio(sourceAudioBuffer),
+                  sourceSampleRate
+                };
               }
 
               console.log("Resampling Source Audio to: " + targetSampleRate);
 
-              return resampleWebAudio(sourceAudioBuffer, targetSampleRate).then(
-                (resampledSourceAudioBuffer : AudioBuffer) => {
-                  return {
-                    waveform : resampledSourceAudioBuffer.getChannelData(0),
-                    sourceSampleRate : sourceSampleRate
-                  };
+              return resampleWebAudio(sourceAudioBuffer, targetSampleRate).then((resampledSourceAudioBuffer: AudioBuffer) => {
+                return {
+                  waveform: resampledSourceAudioBuffer.getChannelData(0),
+                  sourceSampleRate
+                };
               });
 
-              // if (!isSafari){
-
-              //   const offlineCtx = new window.OfflineAudioContext(sourceAudioBuffer.numberOfChannels, sourceAudioBuffer.duration * targetSampleRate, targetSampleRate);
-              //   const bufferSource = offlineCtx.createBufferSource();
-              //   bufferSource.buffer = sourceAudioBuffer;
-              //   bufferSource.connect(offlineCtx.destination);
-              //   bufferSource.start();
-              //   return offlineCtx.startRendering().then(function(buffer){
-              //     return { waveform: buffer.getChannelData(0), sourceSampleRate : sourceSampleRate}
-              //   });
-
-              // }
-              // else{
-              //   logging.log(
-              //     'Safari does not support WebAudio resampling, so this may be slow.',
-              //     'O&F', logging.Level.WARN);
-
-              //   const originalAudio = getMonoAudio(sourceAudioBuffer);
-              //   const lengthRes = sourceAudioBuffer.length * targetSampleRate / sourceAudioBuffer.sampleRate;
-              //   const resampledAudio = new Float32Array(lengthRes);
-              //   resample(
-              //       ndarray(resampledAudio, [lengthRes]),
-              //       ndarray(originalAudio, [originalAudio.length]));
-              //   return { waveform: resampledAudio, sourceSampleRate : sourceSampleRate}
-              // }
-
-              // if (isSafari){
-
-              // }
-
-              // else{
-
-              // const offlineCtx = new window.OfflineAudioContext(sourceAudioBuffer.numberOfChannels, sourceAudioBuffer.duration * targetSampleRate, targetSampleRate);
-              // const bufferSource = offlineCtx.createBufferSource();
-              // bufferSource.buffer = sourceAudioBuffer;
-              // bufferSource.connect(offlineCtx.destination);
-              // bufferSource.start();
-              // return offlineCtx.startRendering().then(function(buffer){
-              //   return { waveform: buffer.getChannelData(0), sourceSampleRate : sourceSampleRate}
-              // });
-              //}
-
-            }
-            // (error : Error) => {
-            //   console.log('Error decoding audio data.');
-            //   let waveform : any = [];
-            //   return {
-            //     waveform : waveform,
-            //     sourceSampleRate : 0
-            //   }
-            // })
-        );//, reason => {console.log("Failed to decode audio data"); console.log(reason)});
-
-    return resampledMonoAudio;
+        });
 
 }
 
@@ -209,10 +115,7 @@ function _powerToDb(spec : Float32Array[], amin = 1e-10, topDb = 80.0) : Float32
       logSpec[i] = new Float32Array(height);
   }
 
-  // @ts-ignore
   const refValue = Math.max.apply(null, spec.map(arr => Math.max.apply(null, arr)));
-  //console.log("Ref Value: " + refValue);
-  //refValue = 10.0;
 
   for (let i = 0; i < width; i++) {
       for (let j = 0; j < height; j++) {
@@ -226,7 +129,7 @@ function _powerToDb(spec : Float32Array[], amin = 1e-10, topDb = 80.0) : Float32
           throw new Error(`topDb must be non-negative.`);
       }
 
-      let maxVal = Math.max.apply(null, logSpec.map(arr => Math.max.apply(null, arr)));
+      const maxVal = Math.max.apply(null, logSpec.map(arr => Math.max.apply(null, arr)));
 
       for (let i = 0; i < width; i++) {
           //const maxVal = max(logSpec[i]);
@@ -253,9 +156,7 @@ export function dBSpectrogram(y: Float32Array, params: SpecParams): Float32Array
     }
 
     const amin = 1e-10;
-    const transformed_mel_spec = _powerToDb(spec, amin, params.topDB);
-
-    return transformed_mel_spec;
+  return _powerToDb(spec, amin, params.topDB);
 }
 
 /**
@@ -395,17 +296,11 @@ export async function resampleAndMakeMono(
     return offlineCtx.startRendering().then(
         (buffer: AudioBuffer) => buffer.getChannelData(0));
   } else {
-    // Safari does not support resampling with WebAudio.
-    logging.log(
-        'Safari does not support WebAudio resampling, so this may be slow.',
-        'O&F', logging.Level.WARN);
 
     const originalAudio = getMonoAudio(audioBuffer);
     const resampledAudio = new Float32Array(lengthRes);
     resample(
-        // @ts-ignore
         ndarray(resampledAudio, [lengthRes]),
-        // @ts-ignore
         ndarray(originalAudio, [originalAudio.length]));
     return resampledAudio;
   }
@@ -455,7 +350,6 @@ export function stft(y: Float32Array, params: SpecParams): Float32Array[] {
   for (let i = 0; i < width; i++) {
     // Populate the STFT matrix.
     const winBuffer = applyWindow(yFrames[i], fftWindow);
-    // @ts-ignore
     const col = fft(winBuffer);
     stftMatrix[i].set(col.slice(0, height));
   }

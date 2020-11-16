@@ -2,8 +2,16 @@
 #
 # `npm run-script develop-swift-demos`
 #
+echo """
+      ___  ___          _ _        ___ _____
+      |  \/  |         | (_)      / _ |_   _|
+      | .  . | ___ _ __| |_ _ __ / /_\ \| |
+      | |\/| |/ _ | '__| | | '_ \|  _  || |
+      | |  | |  __| |  | | | | | | | | _| |_
+      \_|  |_/\___|_|  |_|_|_| |_\_| |_\___/
+     """
 
-echo -e "\n : setting up Swift environment..."
+echo -e ": setting up Swift environment..."
 
 MODELDIR="demos/models/lite/"
 SWIFT="swift/swift-pkgs-tmpui/swift-pkgs-tmpui/"

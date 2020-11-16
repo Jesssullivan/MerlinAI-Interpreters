@@ -9,36 +9,26 @@
 ## **Hack upon these demos:**
 
 ```
-# clone:
+# Clone:
 git clone --branch=master --depth=2 https://github.com/Jesssullivan/tmpUI && cd tmpUI
-```
 
-#### *Install Node dependencies:*
-
-```
-# node depends:
+# Node:
 npm install
+
+# Venv:
+python3 -m venv tmpui_venv
+source tmpui_venv/bin/activate
+
+# Python:
+pip3 install -r requirements.txt
+
+# Launch: 
+npm run-script develop-web-demos
 ```
 
 - - -
 
-## Web:
-
-
-#### *Set up a local Python environment for Flask if that's your thing:*
-```
-# set up a local venv:
-python3 -m venv tmpui_venv
-source tmpui_venv/bin/activate
-```
-
-
-#### *Install depends for Flask demos:*
-
-```
-# Flask depends:
-pip3 install -r requirements.txt
-```  
+### Web:
 
 ***requirements.txt:***      
 - tf-nightly causes Heroku slug size to be too big:

@@ -8,7 +8,6 @@
 import * as ndarray from 'ndarray';
 //@ts-ignore
 import * as resample from 'ndarray-resample';
-import * as logging from './logging';
 
 // Safari Webkit only supports 44.1kHz audio.
 const WEBKIT_SAMPLE_RATE = 44100;
@@ -94,11 +93,6 @@ export function getMonoAudio(audioBuffer: AudioBuffer) {
 export async function resampleAndMakeMono(
       audioBuffer: AudioBuffer, targetSr = SAMPLE_RATE) {
 
-    logging.log(
-        // tslint:disable-next-line:max-line-length
-        'Resampling source audio from ' + audioBuffer.sampleRate + ' Hz to ' + targetSr + ' Hz.',
-        'GVH', logging.Level.INFO);
-
     if (audioBuffer.sampleRate === targetSr) {
       return getMonoAudio(audioBuffer);
     }
@@ -117,18 +111,17 @@ export async function resampleAndMakeMono(
         (buffer: AudioBuffer) => buffer.getChannelData(0));
 
     } else {
-      // Safari does not support resampling with WebAudio.
-      logging.log(
-          'Safari does not support WebAudio resampling, so this may be slow.',
-          'O&F', logging.Level.WARN);
 
-      const originalAudio = getMonoAudio(audioBuffer);
-      const resampledAudio = new Float32Array(lengthRes);
-      resample(
-          //@ts-ignore
-          ndarray(resampledAudio, [lengthRes]),
-          //@ts-ignore
-          ndarray(originalAudio, [originalAudio.length]));
-      return resampledAudio;
+        const originalAudio = getMonoAudio(audioBuffer);
+        const resampledAudio = new Float32Array(lengthRes);
+
+        resample(
+            //@ts-ignore
+            ndarray(resampledAudio, [lengthRes]),
+            //@ts-ignore
+            ndarray(originalAudio, [originalAudio.length]));
+
+        return resampledAudio;
+
     }
-  }
+}
