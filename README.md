@@ -30,6 +30,9 @@ npm run-script develop-web-demos
 
 ### Web:
 
+|![](./icons/tmpUI.MerlinAI-favicon-dark/android-chrome-192x192.png) <br/> *MerlinAI Web Demos*| ![tests](./etc/merlinaiscript.gif) |
+|---|---|
+
 ***requirements.txt:***      
 - tf-nightly causes Heroku slug size to be too big:
   - use cpu-only tensorflow for deployment
@@ -101,8 +104,6 @@ npm run-script develop-swift-demos
 
 -  *focusing on codepaths for:*
     - tflite interpreter
-    - ~~*obtain scores...*~~
-    - ~~**haven't yet figured out how to load array of floats into the input Tensor via `ByteBuffer` / `Data()`/ `interpreter.copy()`**~~
     - ~~generating mel spectrograms~~
 
 - make sure `info.plist` has permissions for microphone access
