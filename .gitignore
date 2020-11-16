@@ -1,5 +1,6 @@
 # venv
 tmpui_venv
+merlinai_venv
 
 # bytecode
 **/__pycache__/

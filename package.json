@@ -21,6 +21,7 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@tensorflow/tfjs": "latest",
     "@types/jquery": "^3.5.4",
     "audio-recorder-polyfill": "latest",
     "babel-loader": "~8.2.0",
@@ -31,7 +32,6 @@
     "ndarray-resample": "^1.0.1",
     "react": "^16.13.1",
     "@material-ui/core": "latest",
-    "@tensorflow/tfjs": "latest",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
@@ -42,6 +42,7 @@
     "axios": "~0.20.0",
     "clsx": "latest",
     "fft": "^0.2.1",
+    "terser": "~5.3.8",
     "metro-react-native-babel-preset": "~0.63.0",
     "node-gyp": "^7.1.0",
     "react-dom": "^16.13.1",

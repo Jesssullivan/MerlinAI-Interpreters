@@ -1,6 +1,6 @@
 import * as glob from 'glob';
 import * as path from 'path';
-import Terser from 'terser-webpack-plugin';
+const Terser = require('terser-webpack-plugin');
 
 const src = path.resolve(__dirname, '../src');
 const matches = glob.sync('*.ts', {cwd: src});

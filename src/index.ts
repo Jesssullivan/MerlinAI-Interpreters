@@ -1,9 +1,9 @@
+const tf = require('@tensorflow/tfjs');
+export {tf};
+
 //@ts-ignore
 import AudioRecorder from 'audio-recorder-polyfill';
 export {AudioRecorder};
-
-const tf = require('@tensorflow/tfjs');
-export {tf};
 
 import * as audio_loader from './audio_loading_utils';
 import * as audio_utils from './audio_utils';

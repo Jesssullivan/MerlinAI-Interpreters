@@ -16,13 +16,13 @@ git clone --branch=master --depth=2 https://github.com/Jesssullivan/tmpUI && cd 
 npm install
 
 # Venv:
-python3 -m venv tmpui_venv
-source tmpui_venv/bin/activate
+python3 -m venv merlinai_venv
+source merlinai_venv/bin/activate
 
 # Python:
 pip3 install -r requirements.txt
 
-# Launch: 
+# Launch:
 npm run-script develop-web-demos
 ```
 
@@ -101,7 +101,7 @@ npm run-script develop-swift-demos
 
 -  *focusing on codepaths for:*
     - tflite interpreter
-    - ~~*obtain scores...*~~ 
+    - ~~*obtain scores...*~~
     - ~~**haven't yet figured out how to load array of floats into the input Tensor via `ByteBuffer` / `Data()`/ `interpreter.copy()`**~~
     - ~~generating mel spectrograms~~
 
@@ -145,8 +145,7 @@ sudo xcode-select --switch ~/Downloads/Xcode-beta.app
 - - -
 
 
-
-### *Interpreter Operations:*
+### Interpreter Operations:
 
 *Hack on fft functions:*
 *[*./etc/tone.py:*](https://github.com/Jesssullivan/tmpUI/blob/master/etc/tone.py)*
@@ -179,15 +178,20 @@ python3 tone.py 2
     - https://medium.com/better-programming/audio-visualization-in-swift-using-metal-accelerate-part-1-390965c095d7
 
 
-- - - 
+- - -
 
-### ~~Leaflet.annotation @ tmpUI~~:     
- 
-**Still typifying Annotator source, hang tight**
+### Leaflet.annotation @ tmpUI:  
 
-~~*Hack on Annotator:*~~
+
+|![](./icons/Leaflet.annotation-favicon-dark/android-chrome-192x192.png) <br/> *32 second demo over here:*|[![tests](https://img.youtube.com/vi/JkIgp_F_u64/0.jpg)](https://www.youtube.com/watch?v=JkIgp_F_u64&feature=youtu.be)|
+|---|---|
+
+- *(Jess is still typifying Annotator source, hang tight)*
+
+*Hack on Annotator:*
 ```
-# develop-anno-demos:
+#### develop-anno-demos:
+
 # packs annotator demos
 # generates unique openssl cert & key
 # serves annotator demos on node http-server
@@ -221,7 +225,7 @@ npm run-script build-anno-photo
 ```
 
 *main scripts links:*
-- [develop-web-demos](https://github.com/Jesssullivan/tmpUI/blob/master/scripts/develop_web_demos.sh)
+- [**develop-web-demos**](https://github.com/Jesssullivan/tmpUI/blob/master/scripts/develop_web_demos.sh)
 - [develop-anno-demos](https://github.com/Jesssullivan/tmpUI/blob/master/scripts/develop_anno_demos.sh)
 - [develop-swift-demos](https://github.com/Jesssullivan/tmpUI/blob/master/scripts/develop_swift_demos.sh)
 
@@ -230,7 +234,7 @@ npm run-script build-anno-photo
 
 ```
 # clean up with:
-npm run-script clean all 
+npm run-script clean all
 # ...and follow the instruction prompt
 ```
 
