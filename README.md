@@ -95,12 +95,12 @@ npm run-script develop-web-demos
   <thead>
     <tr>
       <th>
-        <a href="https://tmpui.herokuapp.com/"><img src="./icons/Leaflet.annotation-favicon-dark/android-chrome-192x192.png" alt="demos"></a>
-        <br/> <em>Leaflet.annotation: Visit @ the web demo</em>
+        <a href="https://tmpui.herokuapp.com/leaflet_audio"><img src="./icons/Leaflet.annotation-favicon-dark/android-chrome-192x192.png" alt="demos"></a>
+        <br/> <em> Visit Leaflet.annotation demo </em>
       </th> 
       <th>
         <a href="https://youtu.be/JkIgp_F_u64"><img src="https://img.youtube.com/vi/JkIgp_F_u64/default.jpg" alt="tests"></a>
-         <br/><em>Watch a 32 second demo here</em>
+         <br/><em> Watch a 32 second demo here </em>
       </th>
     </tr>
   </thead>
