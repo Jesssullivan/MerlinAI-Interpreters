@@ -26,19 +26,14 @@ pip3 install -r requirements.txt
 npm run-script develop-web-demos
 ```
 
+
 - - -
+
 
 ### Web:
 
-|![](./icons/tmpUI.MerlinAI-favicon-dark/android-chrome-192x192.png) <br/> *MerlinAI Web Demos*| ![tests](./etc/merlinaiscript.gif) |
+|[![demos](./icons/tmpUI.MerlinAI-favicon-dark/android-chrome-192x192.png)](https://tmpui.herokuapp.com/) <br/> *MerlinAI Web Demos*| [![tests](./etc/merlinaiscript.gif)](https://tmpui.herokuapp.com/) |
 |---|---|
-
-***requirements.txt:***      
-- tf-nightly causes Heroku slug size to be too big:
-  - use cpu-only tensorflow for deployment
-  - (dependabot may get upset)
-- on Heroku, `numpy~=1.18.**` is still a reverse depend of cpu-only tensorflow 2.3.*
-  -  otherwise, stick with whatever `tf-nightly` calls for, e.g.`numpy>=1.19.2`
 
 
 #### *Configure Flask accordingly in `config.py`:*
@@ -69,26 +64,51 @@ npm run-script develop-web-demos
     - if browser cannot do classification (i.e. safari on mobile, webgl mediump not supported) recording is beamed up to `/uploader_standard` for processing
     - both POST destinations `/uploader_select` & `/uploader_standard` can also be operated from within browser as a multipart form
 
+
+***requirements.txt:***      
+- tf-nightly causes Heroku slug size to be too big:
+  - use cpu-only tensorflow for deployment
+  - (dependabot may get upset)
+- on Heroku, `numpy~=1.18.**` is still a reverse depend of cpu-only tensorflow 2.3.*
+  -  otherwise, stick with whatever `tf-nightly` calls for, e.g.`numpy>=1.19.2`
+
+
 - - -
 
-### React Native:
+
+### Leaflet.annotation @ tmpUI:  
 
 
-#### *Install & link Cocoa depends to get cracking on the ios demos:*
+|[![demos](./icons/Leaflet.annotation-favicon-dark/android-chrome-192x192.png)](https://tmpui.herokuapp.com/leaflet_audio) <br/> *Leaflet.annotation: Visit the web demo* |[![video](https://img.youtube.com/vi/JkIgp_F_u64/0.jpg)](https://www.youtube.com/watch?v=JkIgp_F_u64&feature=youtu.be) <br/> *32 second demo over here* |
+|---|---|
+
+- *(Jess is still typifying Annotator source, hang tight)*
+
+*Hack on Annotator:*
+```
+#### develop-anno-demos:
+
+# packs annotator demos
+# generates unique openssl cert & key
+# serves annotator demos on node http-server
+
+npm run-script develop-anno-demos
 
 ```
-# link ios depends:
-cd ios && pod install && cd ..
-```
-
-- **The entrypoint for react-native tests is `./index.js`, fiddle @ `./native/`.**
-
-
-#### *Build & deploy to Xcode Simulator:*
 
 ```
-# link ios depends:
-npm run-script ios-native
+# pack only tool definitions @ `./src/annotator_tool.js:
+npm run-script build-anno-tool
+```
+
+```
+# pack only implementations of audio annotator @ `./demos/annotator_audio.ts:
+npm run-script build-anno-audio
+```
+
+```
+# pack only implementations of photo annotator @ `./demos/annotator_photo.ts:
+npm run-script build-anno-photo
 ```
 
 
@@ -143,6 +163,26 @@ sudo xcode-select --switch ~/Downloads/Xcode-beta.app
 ```
 
 
+### React Native:
+
+
+#### *Install & link Cocoa depends to get cracking on the ios demos:*
+
+```
+# link ios depends:
+cd ios && pod install && cd ..
+```
+
+- **The entrypoint for react-native tests is `./index.js`, fiddle @ `./native/`.**
+
+
+#### *Build & deploy to Xcode Simulator:*
+
+```
+# link ios depends:
+npm run-script ios-native
+```
+
 - - -
 
 
@@ -180,42 +220,6 @@ python3 tone.py 2
 
 
 - - -
-
-### Leaflet.annotation @ tmpUI:  
-
-
-|![](./icons/Leaflet.annotation-favicon-dark/android-chrome-192x192.png) <br/> *32 second demo over here:*|[![tests](https://img.youtube.com/vi/JkIgp_F_u64/0.jpg)](https://www.youtube.com/watch?v=JkIgp_F_u64&feature=youtu.be)|
-|---|---|
-
-- *(Jess is still typifying Annotator source, hang tight)*
-
-*Hack on Annotator:*
-```
-#### develop-anno-demos:
-
-# packs annotator demos
-# generates unique openssl cert & key
-# serves annotator demos on node http-server
-
-npm run-script develop-anno-demos
-
-```
-
-```
-# pack only tool definitions @ `./src/annotator_tool.js:
-npm run-script build-anno-tool
-```
-
-```
-# pack only implementations of audio annotator @ `./demos/annotator_audio.ts:
-npm run-script build-anno-audio
-```
-
-```
-# pack only implementations of photo annotator @ `./demos/annotator_photo.ts:
-npm run-script build-anno-photo
-```
-
 
 - - -
 
