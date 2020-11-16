@@ -32,9 +32,19 @@ npm run-script develop-web-demos
 
 ### Web:
 
-|[![demos](./icons/tmpUI.MerlinAI-favicon-dark/android-chrome-192x192.png)](https://tmpui.herokuapp.com/) <br/> *MerlinAI Web Demos*| [![tests](./etc/merlinaiscript.gif)](https://tmpui.herokuapp.com/) |
-|---|---|
-
+<table>
+<thead>
+<tr>
+<th><a href="https://tmpui.herokuapp.com/"><img src="./icons/tmpUI.MerlinAI-favicon-dark/android-chrome-192x192.png" alt="demos"></a> <br/> <em>MerlinAI Web Demos</em></th>
+<th><a href="https://tmpui.herokuapp.com/"><img src="./etc/merlinaiscript.gif" alt="tests"></a></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+</tr>
+</tbody>
+</table>
 
 #### *Configure Flask accordingly in `config.py`:*
 
