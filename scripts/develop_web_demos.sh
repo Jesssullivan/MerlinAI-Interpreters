@@ -37,9 +37,9 @@ touch $FLASKLOG
 touch $PACKLOG
 
 # copy web assets if they aren't already there:
-cp -rf ./icons/tmpUI.MerlinAI-favicon-light/* ./demos/
-# cp -rf ./icons/tmpUI.MerlinAI-favicon-dark/* ./demos/
-# cp -rf ./icons/Leaflet.annotation-favicon-dark/* ./demos/
+# cp -rf ./icons/tmpUI.MerlinAI-favicon-light/* ./demos/ &> $PACKLOG &
+cp -rf ./icons/tmpUI.MerlinAI-favicon-dark/* ./demos/ &> $PACKLOG &
+# cp -rf ./icons/Leaflet.annotation-favicon-dark/* ./demos/ &> $PACKLOG &
 
 # run primary webpack within its own process, really does takes while
 webpack --config webpack/es6.demo.config.ts &> $PACKLOG &
