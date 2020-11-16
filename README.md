@@ -34,17 +34,16 @@ npm run-script develop-web-demos
 
 
 <table>
-<thead>
-<tr>
-<th><a href="https://tmpui.herokuapp.com/"><img src="./icons/tmpUI.MerlinAI-favicon-dark/android-chrome-192x192.png" alt="demos"></a> <br/> <em>MerlinAI Web Demos</em></th>
-<th><a href="https://tmpui.herokuapp.com/"><img src="./etc/merlinaiscript.gif" alt="tests"></a></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-</tr>
-</tbody>
+  <thead>
+    <tr>
+      <th>
+        <a href="https://tmpui.herokuapp.com/"><img src="./icons/tmpUI.MerlinAI-favicon-dark/android-chrome-192x192.png" alt="demos"></a> <br/> <em>MerlinAI Web Demos</em>
+      </th>
+      <th>
+        <a href="https://tmpui.herokuapp.com/"><img src="./etc/merlinaiscript.gif" alt="tests"></a>
+      </th>
+    </tr>
+  </thead>
 </table>
 
   
@@ -93,17 +92,17 @@ npm run-script develop-web-demos
 
 
 <table>
-<thead>
-<tr>
-<th><a href="https://tmpui.herokuapp.com/"><img src="./icons/Leaflet.annotation-favicon-dark/android-chrome-192x192.png" alt="demos"></a> <br/> <em>Leaflet.annotation: Visit @ the web demo</em></th> <th><a href="https://youtu.be/JkIgp_F_u64"><img src="https://img.youtube.com/vi/JkIgp_F_u64/default.jpg
-" alt="tests"></a></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-</tr>
-</tbody>
+  <thead>
+    <tr>
+      <th>
+        <a href="https://tmpui.herokuapp.com/"><img src="./icons/Leaflet.annotation-favicon-dark/android-chrome-192x192.png" alt="demos"></a>
+        <br/> <em>Leaflet.annotation: Visit @ the web demo</em>
+      </th> 
+      <th>
+        <a href="https://youtu.be/JkIgp_F_u64"><img src="https://img.youtube.com/vi/JkIgp_F_u64/default.jpg" alt="tests"></a>
+      </th>
+    </tr>
+  </thead>
 </table>
 
 
