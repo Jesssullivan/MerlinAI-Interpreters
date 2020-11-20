@@ -12,7 +12,7 @@
 
 ```
 # Clone:
-git clone --branch=master --depth=2 https://github.com/Jesssullivan/tmpUI && cd tmpUI
+git clone --branch=master --depth=1 https://github.com/Jesssullivan/tmpUI && cd tmpUI
 
 # Node:
 npm install

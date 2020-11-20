@@ -20,6 +20,23 @@ VENVPATH=$(which python3)
 ## precheck ##
 
 
+# check node modules:
+if [[ ! -d "./node_modules" ]] ; then
+
+  echo -e "\n ...did not find ./node_modules!
+  please install node node depends, e.g.
+
+
+  npm install
+
+
+  ...and try again. \n"
+
+  exit 0
+
+fi
+
+
 # make sure we actually in the right venv:
 if [[ ! $VENVPATH == *_venv/bin/* ]] ; then
 
@@ -35,22 +52,6 @@ if [[ ! $VENVPATH == *_venv/bin/* ]] ; then
     # install Python depends:
     pip3 install -r requirements.txt
     \n"
-
-  exit 0
-
-fi
-
-# check node modules:
-if [[ ! -d "./node_modules" ]] ; then
-
-  echo -e "\n ...did not find ./node_modules!
-  please install node node depends, e.g.
-
-
-  npm install
-
-
-  ...and try again. \n"
 
   exit 0
 
