@@ -103,8 +103,6 @@ class MerlinInterpreter {
         do {
             
             let contents = try String(contentsOf: fileURL, encoding: .utf8)
-            
-            /// TODO:  it'd be better to load from the json version
             labels = contents.components(separatedBy: .newlines)
             
         } catch {
@@ -146,7 +144,6 @@ class MerlinInterpreter {
                 return []
             }
             
-            /// todo: how can frameCapacity be calculated on the fly?
             let buf = AVAudioPCMBuffer(pcmFormat: format, frameCapacity: AVAudioFrameCount(sampleRate))
             try! file.read(into: buf!)
             

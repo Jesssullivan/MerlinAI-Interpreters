@@ -14,7 +14,7 @@
  * ` npm run-script build-audio `
  *
  * build all files:
- * ` npm run-script build `
+ * ` npm run-script develop `
  */
 
 // audio & spectrogram-related utilities:

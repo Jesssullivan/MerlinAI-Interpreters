@@ -62,7 +62,6 @@ struct CreateInterpreterViewV2: View {
                 NSLog("allocated Tensors")
                 self.interpreterInfo = "allocated Tensors"
 
-                /// todo: how can frameCapacity be calculated on the fly?
                 let url = Bundle.main.url(forResource: BundledFiles.recording.name,
                                                              withExtension: BundledFiles.recording.extension)
 

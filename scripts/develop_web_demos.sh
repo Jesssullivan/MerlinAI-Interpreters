@@ -1,16 +1,64 @@
 #!/bin/bash
 
-# A cringy multiprocess build script for web demos
+# A cringy build script for web demos
 #
 # Includes launchers for both Debian & Mac OSX
 
-FLASKLOG=flask.log
 
+# stdout to these log files instead of to the console
+FLASKLOG=flask.log
 PACKLOG=pack.log
 
+#  bash --> browser:
 DEBBROWSER=google-chrome
-
 MACBROWSER=open
+
+# check python path:
+VENVPATH=$(which python3)
+
+
+## precheck ##
+
+
+# make sure we actually in the right venv:
+if [[ ! $VENVPATH == *_venv/bin/* ]] ; then
+
+  echo -e "\n  ...venv path not contain identified!
+  please source into venv and try again, e.g. \n
+
+    # create new venv:
+    python3 -m venv merlinai_venv
+
+    # source:
+    source merlinai_venv/bin/activate
+
+    # install Python depends:
+    pip3 install -r requirements.txt
+    \n"
+
+  exit 0
+
+fi
+
+# check node modules:
+if [[ ! -d "./node_modules" ]] ; then
+
+  echo -e "\n ...did not find ./node_modules!
+  please install node node depends, e.g.
+
+
+  npm install
+
+
+  ...and try again. \n"
+
+  exit 0
+
+fi
+
+
+## build ##
+
 
 # use a trap to make sure we quit child processes,
 # upon receiving ` ^C `
@@ -25,6 +73,7 @@ echo """
       | |\/| |/ _ | '__| | | '_ \|  _  || |
       | |  | |  __| |  | | | | | | | | _| |_
       \_|  |_/\___|_|  |_|_|_| |_\_| |_\___/
+
      """
 
 echo "development: ...entering & packing demos, this could take a while..."
@@ -33,13 +82,16 @@ echo -ne  '(#                              (5%)\r'
 
 # initialize log files if they aren't already there:
 touch $FLASKLOG
-
 touch $PACKLOG
 
 # copy web assets if they aren't already there:
-# cp -rf ./icons/tmpUI.MerlinAI-favicon-light/* ./demos/ &> $PACKLOG &
-cp -rf ./icons/tmpUI.MerlinAI-favicon-dark/* ./demos/ &> $PACKLOG &
-# cp -rf ./icons/Leaflet.annotation-favicon-dark/* ./demos/ &> $PACKLOG &
+# cp -rf ./icons/tmpUI.MerlinAI-favicon-light/* ./demos/ &> $FLASKLOG &
+cp -rf ./icons/tmpUI.MerlinAI-favicon-dark/* ./demos/ &> $FLASKLOG &
+# cp -rf ./icons/Leaflet.annotation-favicon-dark/* ./demos/ &> $FLASKLOG &
+
+
+## webpack ##
+
 
 # run primary webpack within its own process, really does takes while
 webpack --config webpack/es6.demo.config.ts &> $PACKLOG &
@@ -94,6 +146,10 @@ echo -ne '(################             (75%)\r'
 
 # webpack --config webpack/webpack.annotator_audio.ts &> $PACKLOG &
 
+
+## Flask ##
+
+
 echo -ne '(#################            (80%)\r'
 
 echo "development: ...packing done!"
@@ -116,10 +172,10 @@ echo "development: setting up flask..."
 
 echo -ne '(###################          (85%)\r'
 
-rm -rf __pycache__/ &
+rm -rf __pycache__/ &> flask.log &
 
-export FLASK_APP=app.py &
 
+## launch ##
 
 
 echo -ne '(#####################        (90%)\r'
@@ -162,7 +218,6 @@ $BROWSER http://127.0.0.1:5000/
 
 # check status like this:
 # ps aux | grep flask
-#echo -e "\nExiting Merlin AI Web Demos..."
+# echo -e "\nExiting Merlin AI Web Demos..."
 
 wait
-

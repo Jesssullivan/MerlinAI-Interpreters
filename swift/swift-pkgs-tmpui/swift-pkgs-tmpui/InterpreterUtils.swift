@@ -66,7 +66,6 @@ func wavToArray(file: BundleStorage) -> [Float] {
             return []
         }
         
-        /// todo: how can frameCapacity be calculated on the fly?
         let buf = AVAudioPCMBuffer(pcmFormat: format, frameCapacity: AVAudioFrameCount(sampleRate))
         try! file.read(into: buf!)
         

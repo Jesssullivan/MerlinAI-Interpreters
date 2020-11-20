@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "outDir": "../dist/",
+    "outDir": ".built/",
     "noImplicitAny": true,
     "removeComments": false,
     "preserveConstEnums": true,

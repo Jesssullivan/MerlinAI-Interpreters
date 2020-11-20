@@ -24,7 +24,6 @@ class Render(object):
         :param src_list: ordered list of HTML file chunks to render
         :return: void
         """
-
         renderf = f + ext
 
         with open(renderf, "w+") as rendering:

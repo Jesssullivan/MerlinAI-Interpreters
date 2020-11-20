@@ -1,5 +1,7 @@
 
 # Demos with the Merlin Sound ID Project.
+*Demos, interpreter implementations & data ingress tools for annotating, interpreting, and deploying trained models.*
+
 
 - ***[*Visit the web demos here*](https://tmpui.herokuapp.com/)***
 - ***[*readme @ github.io*](https://jesssullivan.github.io/tmpUI/)***
@@ -29,9 +31,7 @@ npm run-script develop-web-demos
 
 - - -
 
-
 ### Web:
-
 
 <table>
   <thead>
@@ -46,9 +46,38 @@ npm run-script develop-web-demos
   </thead>
 </table>
 
-  
 
-#### *Configure Flask accordingly in `config.py`:*
+*Hack on web demos:*
+```
+# Clone:
+git clone --branch=master --depth=2 https://github.com/Jesssullivan/merlin_ai && cd merlin_ai/deploy/
+
+# Node:
+npm install
+
+# Venv:
+python3 -m venv merlinai_venv
+source merlinai_venv/bin/activate
+
+# Python:
+pip3 install -r requirements.txt
+
+# Launch:
+npm run-script develop-web-demos
+```
+
+
+| Demo | Description |
+|-----------|-------------|
+| [deploy/demos/spec_record_crop_dl](demos/spec_record_crop_dl.ts) <br/>  [deploy/demos/spec_record_crop_post](demos/spec_record_crop_post.ts) <br/>   | Experiments with record --> crop --> classify --> download; both client-side & server-side classifications methods |
+| [deploy/demos/load_audio](demos/load_audio.ts) <br/> [deploy/demos/spec_display](demos/spec_display.ts) <br/>   | Experiment with Macaulay audio sources --> spectrogram |
+| [deploy/demos/spec_record_crop_v3](demos/spec_record_crop_v3.ts) <br/> [deploy/demos/spec_record_v2](demos/spec_record_v2.ts) <br/> [deploy/demos/spec_record_v2](demos/spec_record_v2.ts) <br/> | Single page feature experiments |
+| [deploy/demos/webgl_init](demos/webgl_init.ts) <br/> [deploy/demos/deploy/demos/webgl_float_test](demos/webgl_float_test.ts) <br/> [deploy/demos/spec_record_v2](demos/spec_record_v2.ts) <br/> | Evaluate web client's capability for classification |
+
+
+#### Notes:
+
+*Configure Flask in `config.py`:*
 
 ```
 # config.py
@@ -60,17 +89,6 @@ devel = True
 prerender = True
 
 ```
-
-#### *pack up the web demos & start serving:*
-
-```
-# see more script stuff in package.json & in `./scripts/`
-npm run-script develop-web-demos
-```
-
-
-#### *misc:*
-
 - `/` runs `webgl_init`, which figures out if the browser can or cannot make classifications and routes the client accordingly.
     - *classification options:*
     - if browser cannot do classification (i.e. safari on mobile, webgl mediump not supported) recording is beamed up to `/uploader_standard` for processing
@@ -97,7 +115,7 @@ npm run-script develop-web-demos
       <th>
         <a href="https://tmpui.herokuapp.com/leaflet_audio"><img src="./icons/Leaflet.annotation-favicon-dark/android-chrome-192x192.png" alt="demos"></a>
         <br/> <em> Visit Leaflet.annotation demo </em>
-      </th> 
+      </th>
       <th>
         <a href="https://youtu.be/JkIgp_F_u64"><img src="https://img.youtube.com/vi/JkIgp_F_u64/default.jpg" alt="tests"></a>
          <br/><em> Watch a 32 second demo here </em>
@@ -119,23 +137,24 @@ npm run-script develop-web-demos
 # serves annotator demos on node http-server
 
 npm run-script develop-anno-demos
-
 ```
 
 ```
 # pack only tool definitions @ `./src/annotator_tool.js:
 npm run-script build-anno-tool
-```
 
-```
 # pack only implementations of audio annotator @ `./demos/annotator_audio.ts:
 npm run-script build-anno-audio
-```
 
-```
 # pack only implementations of photo annotator @ `./demos/annotator_photo.ts:
 npm run-script build-anno-photo
 ```
+
+
+| Demo | Description |
+|-----------|-------------|
+|  [deploy/demos/annotator_audio](demos/annotator_audio.ts) | Leaflet.annotator tool implementations for generating, labeling, exporting mel spectrogams as annotation data |
+|  [deploy/demos/annotator_photo](demos/annotator_photo.ts) | Leaflet.annotator tool implementations for labeling &  exporting photo annotations |
 
 
 - - -
@@ -215,7 +234,7 @@ npm run-script ios-native
 - - -
 
 
-### Interpreter Operations:
+#### Interpreter Operations:
 
 *Hack on fft functions:*
 *[*./etc/tone.py:*](https://github.com/Jesssullivan/tmpUI/blob/master/etc/tone.py)*
@@ -252,57 +271,16 @@ python3 tone.py 2
 - - -
 
 
-### Scripts:
+## Scripts:
 
 ```
 # See ./package.json & ./scripts/ for additional scripts
 ```
 
 *main scripts links:*
-- [**develop-web-demos**](https://github.com/Jesssullivan/tmpUI/blob/master/scripts/develop_web_demos.sh)
-- [develop-anno-demos](https://github.com/Jesssullivan/tmpUI/blob/master/scripts/develop_anno_demos.sh)
-- [develop-swift-demos](https://github.com/Jesssullivan/tmpUI/blob/master/scripts/develop_swift_demos.sh)
-
-
-#### *removing stuff:*    
-
-```
-# clean up with:
-npm run-script clean all
-# ...and follow the instruction prompt
-```
-
-```
-# ...demo bundles:
-npm run-script clean-web-bundles
-
-# ...or:
-find demos/ -name "*_bundle.js" -print -delete
-```
-
-```
-# ...demo renders:
-npm run-script clean-web-renders
-
-# ...or:
-find demos/ -name "*_render.html" -print -delete
-```
-
-
-#### *github environments:*
-
-```
-## tokens @ https://github.com/settings/tokens
-
-# install jq:
-sudo apt install jq
-
-# ...or:
-brew install jq
-
-# update ./scripts/remove_env.sh:
-sudo chmod +x scripts/remove_env.sh && ./scripts/remove_env.sh
-```
+- [***develop-web-demos***](https://github.com/Jesssullivan/tmpUI/blob/master/scripts/develop_web_demos.sh)
+- [***develop-anno-demos***](https://github.com/Jesssullivan/tmpUI/blob/master/scripts/develop_anno_demos.sh)
+- [***develop-swift-demos***](https://github.com/Jesssullivan/tmpUI/blob/master/scripts/develop_swift_demos.sh)
 
 #### *local ssl:*
 ```
@@ -316,6 +294,36 @@ npm run-script sslgen hiyori
 # ...or:
 sudo chmod +x scripts/sslgen.sh && ./scripts/sslgen.sh
 # osx is a bit more finicky
+```
+
+#### *tone generator:*
+
+```
+### available from here:
+cp etc/tone.py .
+
+### generate some .wav files for testing fft things:
+python3 tone.py
+
+### ...you can also specify duration in seconds & frequency in Hz like so:
+python3 tone.py 5 440
+
+### ...or just duration:
+python3 tone.py 2
+```
+
+#### *removing stuff:*    
+
+```
+# clean up with:
+npm run-script clean all
+# ...and follow the instruction prompt
+
+# ...demo bundles:
+npm run-script clean-web-bundles
+
+# ...demo renders:
+npm run-script clean-web-renders
 ```
 
 
@@ -418,7 +426,7 @@ sudo chmod +x scripts/sslgen.sh && ./scripts/sslgen.sh
 
 *Other stuff:*
 
-- add export function?  could fit [everything in ID3?](https://en.wikipedia.org/wiki/ID3) Bundle spectrogram as "album artwork", cropped / uncropped audio as "tracks", json attributes as album info?
+- add export TFRecord function?  could fit [everything in ID3?](https://en.wikipedia.org/wiki/ID3) Bundle spectrogram as "album artwork", cropped / uncropped audio as "tracks", json attributes as album info?
 - musing on ways to allow a publicly encouraged project such as this access the "big merlin models" down the line, e.g. user experiments with / contributes to / learns from
 - still want to eventually figure out TensorFlow with web assembly instead of webgl for mobile, perhaps later?  thoughts on this?
 
