@@ -299,6 +299,26 @@
 
             <div id="annotationHolder"></div>
 
+            <!-- toggle waitLoader's hidden state while drawing spectrogram -->
+            <div id="waitLoader" class="loader benigncenter" title="Drawing Spectrogram..." >
+                <style>
+                    .loader {
+                        border-top: 44px solid lightyellow;
+                        border-right: 44px solid rgb(58,119,52);
+                        border-bottom: 44px solid lightyellow;
+                        border-left: 44px solid rgb(58,119,52);
+                        border-radius: 70%;
+                        width: 280px;
+                        height: 280px;
+                        animation: spin 3s linear infinite;
+                    }
+                    @keyframes spin {
+                        0% { transform: rotate(0deg); }
+                        100% { transform: rotate(360deg); }
+                    }
+                </style>
+            </div>
+
             <!-- <div class="row justify-content-md-center">
                 <div class="col-md-1"><p id="currentImageProgress">Image 0 / 0</p></div>
                 <div class="col-md-2">

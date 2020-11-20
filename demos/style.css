@@ -35,6 +35,9 @@ ul {
 .benigncenter div {
   width: 100%;
   height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /**
@@ -108,4 +111,5 @@ button:active svg{
 button:disabled svg{
   fill:#e50000
 }
+
 #recordButton:disabled svg{fill:#e50000}

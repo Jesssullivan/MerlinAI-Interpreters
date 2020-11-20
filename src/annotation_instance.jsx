@@ -17,6 +17,7 @@ export class AnnotationInstance extends React.Component {
         this.onDelete = this.onDelete.bind(this);
         this.onFocus = this.onFocus.bind(this);
         this.onHideOthers = this.onHideOthers.bind(this);
+        this.onClassify = this.onClassify.bind(this);
         this.onCategoryChange = this.onCategoryChange.bind(this);
         this.onSupercategoryChange = this.onSupercategoryChange.bind(this);
         this.onGroupChange = this.onGroupChange.bind(this);
@@ -29,35 +30,40 @@ export class AnnotationInstance extends React.Component {
 
     }
 
-    onMouseEnter(){
-
+    onMouseEnter() {
+        // continue
     }
 
-    onMouseLeave(){
-
+    onMouseLeave() {
+        // continue
     }
 
-    onDelete(){
+    onDelete() {
         this.props.handleDelete(this.props.index);
     }
 
-    onFocus(){
+    onFocus() {
         this.props.handleFocus(this.props.index);
     }
 
-    onHideOthers(){
+    onClassify() {
+        this.props.handleClassify(this.props.index);
+    }
+
+
+    onHideOthers() {
         this.props.handleHideOthers(this.props.index);
     }
 
-    onCategoryChange(){
+    onCategoryChange() {
         this.props.handleCategoryChange(this.props.index);
     }
 
-    onSupercategoryChange(){
+    onSupercategoryChange() {
         this.props.handleSupercategoryChange(this.props.index);
     }
 
-    onGroupChange(e){
+    onGroupChange(e) {
         this.props.handleGroupChange(this.props.index, e.target.checked);
     }
 
@@ -217,6 +223,7 @@ export class AnnotationInstance extends React.Component {
                             <div className="btn-group" role="group">
                                 <button type="button" className="btn btn-sm btn-outline-secondary" onClick={this.onFocus}>Focus</button>
                                 <button type="button" className="btn btn-sm btn-outline-secondary" onClick={this.onHideOthers}>Hide Others</button>
+                                <button type="button" className="btn btn-sm btn-outline-secondary" onClick={this.onClassify}>Classify</button>
                             </div>
                         </div>
                     </div>

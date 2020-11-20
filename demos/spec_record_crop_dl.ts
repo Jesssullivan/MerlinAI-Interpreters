@@ -133,7 +133,11 @@ function renderSpectrogram(imageURI : string, spectrogramLength: number) {
     }
 
     slider = document.createElement('div');
-    slider.style.width = "" + specImageHolderEl!.offsetWidth + "px";
+    try {
+        slider.style.width = "" + specImageHolderEl!.offsetWidth + "px";
+    } catch (err) {
+        // console.log('error with offestWidth, continuing...');
+    }
     specSliderHolderEl!.appendChild(slider);
 
     const hop_length_samples = Math.round(targetSampleRate * stftHopSeconds);

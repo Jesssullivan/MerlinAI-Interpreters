@@ -63,6 +63,7 @@
     "tsify": "^3.0.4",
     "node-gyp": "^7.1.0",
     "http-server": "~0.12.3",
+    "metro-react-native-babel-preset": "~0.64.0",
     "webpack": "~4.44.1",
     "webpack-cli": "~4.0.0",
     "webpack-dev-server": "latest"

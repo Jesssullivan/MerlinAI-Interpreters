@@ -3,13 +3,6 @@
  *
  * implementations of `annotator_tool` for annotating spectrograms.
  *
- * class SpectrogramPlayer() provides access to variety of mel spectrogram-related methods,
- * e.g. generating, annotating, audio / visual playback, etc
- *
- * each spectrogram is generated in the browser, using the audio url
- * specified in images.json at:
- * [image_info['audio']]
- *
  * build only this file:
  * ` npm run-script build-audio `
  *
@@ -17,23 +10,30 @@
  * ` npm run-script develop `
  */
 
-// audio & spectrogram-related utilities:
-import {audio_loader, audio_utils, spectrogram_utils} from '../src/index';
-
 // selector:
 const $ = require('jquery');
 
+// global variables:
+let annotatorRendered: any = null;
+let spectrogram_width: number = null;
+let spectrogram_height: number = null;
+let currentImageIndex: number = 0;
+
 /**
+ * spectrogram_player.ts
+ *
+ *  class SpectrogramPlayer() provides access to variety of mel spectrogram-related methods,
+ * e.g. generating, annotating, audio / visual playback, etc
+ *
+ * each spectrogram is generated in the browser, using the audio url
+ * specified in images.json at:
+ * [image_info['audio']]
  *
  * make sure we can pass spectrogram size between
  * Spectrogram() and Audio(), so we can keep playback
- * rate in sync:
- * todo: get dregs properly into SpectrogramPlayer() scope
+ * rate in sync
  */
-let annotatorRendered: any = null; // allows us to export annotations
-let currentImageIndex = 0; // keep track of which image we are working on.
-let spectrogram_height: number = null;
-let spectrogram_width: number = null;
+import {audio_loader, audio_utils, spectrogram_utils} from "../src/index";
 
 /**
  * Audio Interface to keep track of mutable types
@@ -222,7 +222,7 @@ interface SpectrogramInterface {
  * @returns Image() Element; spectrogram png image to display @ `ImageEl.src`
  * @param image_info parsed image information from images.json
  */
-class SpectrogramPlayer extends AudioPlayer implements SpectrogramInterface {
+export class SpectrogramPlayer extends AudioPlayer implements SpectrogramInterface {
 
     // Spectrogram Visualization Parameters:
     targetSpectrogramHeight = 300;
@@ -346,6 +346,9 @@ function startAnnotating(images_data: any[], categories: any,
             $("#nextImageButton").prop("disabled", false);
         }
 
+        // show a loader graphic, can take a while to draw a big spectrogram:
+        document.getElementById("waitLoader").style.visibility = "visible";
+
         // generate & display a spectrogram:
         spectrogram.generate(image_info)
             .then((imageEl) => {
@@ -353,6 +356,9 @@ function startAnnotating(images_data: any[], categories: any,
                 // Get the dimensions of the spectrogram:
                 spectrogram_height = imageEl.height;
                 spectrogram_width = imageEl.width;
+
+                // remove loader:
+                document.getElementById("waitLoader").style.visibility = "hidden";
 
                 function addAudioFunctions(annotatorRendered: {
                     renderForSpectrogram: (arg0: any) => void;
@@ -496,6 +502,15 @@ function startAnnotating(images_data: any[], categories: any,
             const image_id = images_data[currentImageIndex].id;
             image_id_to_annotations[image_id] = annos;
         }
+
+    }
+
+    function classifyCurrentAnnotations() {
+
+        saveCurrentAnnotations();
+
+        const image_id = images_data[currentImageIndex].id;
+        console.log(image_id_to_annotations[image_id]);
 
     }
 

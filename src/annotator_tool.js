@@ -83,9 +83,11 @@ let defaultOptions = {
     // Image Information rendered under the Map
     imageInfoComponent : ImageInfo,
 
-    // Callback for after Leaflet has been rendered
-    didMountLeafletCallback : null,
-    didFocusOnAnnotationCallback : null
+    // Callback for after Leaflet has been rendered?
+    // didMountLeafletCallback : null,
+    // didFocusOnAnnotationCallback : null,
+    // didClassifyOnAnnotationCallback : null
+
 }
 
 function uuidv4() {
@@ -96,6 +98,7 @@ function uuidv4() {
 
 
 export class Annotator_tool extends React.Component {
+
 
     constructor(props) {
         super(props);
@@ -184,6 +187,9 @@ export class Annotator_tool extends React.Component {
 
         this.handleAnnotationDelete = this.handleAnnotationDelete.bind(this);
         this.handleAnnotationFocus = this.handleAnnotationFocus.bind(this);
+
+        this.handleAnnotationClassify = this.handleAnnotationClassify.bind(this);
+
         this.handleHideOtherAnnotations = this.handleHideOtherAnnotations.bind(this);
         this.handleAnnotationCategoryChange = this.handleAnnotationCategoryChange.bind(this);
         this.handleAnnotationSupercategoryChange = this.handleAnnotationSupercategoryChange.bind(this);
@@ -1406,7 +1412,7 @@ export class Annotator_tool extends React.Component {
             if (this.allowZoomWhenFocusing) {
                 this.leafletMap.fitBounds(bounds);
             }
-            else{
+            else {
                 this.leafletMap.fitBounds(bounds, {maxZoom : this.leafletMap.getZoom()});
             }
 
@@ -1424,6 +1430,47 @@ export class Annotator_tool extends React.Component {
 
 
         }
+
+        // Rerender to update "hidden" tags
+        this.setState(this.state);
+    }
+
+    /**
+     * Classify on a particular instance.
+     * @param {*} annotationIndex
+     */
+    handleAnnotationClassify(annotationIndex) {
+
+        let annotation = this.state.annotations[annotationIndex];
+        let annotation_layer = this.annotation_layers[annotationIndex];
+
+        // lets show the annotations if they are not shown
+        this.showAnnotation(annotation, annotation_layer);
+
+        if (annotation_layer['bbox'] !== 'undefined' && annotation_layer['bbox'] !== null) {
+            let layer = annotation_layer['bbox'];
+            let bounds = layer.getBounds();
+
+            if (this.allowZoomWhenFocusing) {
+                this.leafletMap.fitBounds(bounds);
+            }
+            else {
+                this.leafletMap.fitBounds(bounds, {maxZoom : this.leafletMap.getZoom()});
+            }
+
+            // Let any listeners know that we moved the map to a specific location
+            // This is currently very specific to handling the panning of spectrograms.
+            let zoom = this.leafletMap.getZoom();
+            let center = bounds.getCenter();
+            let pixel_center = this.leafletMap.project(center, zoom);
+
+            let center_x = pixel_center.x / this.specFactor;
+
+        }
+
+        console.log("Clicked Classify!")
+        console.log(annotation_layer.bbox)
+        console.log(annotation_layer.annotations)
 
         // Rerender to update "hidden" tags
         this.setState(this.state);
@@ -2130,6 +2177,7 @@ export class Annotator_tool extends React.Component {
 
                                     handleDelete={ this.handleAnnotationDelete }
                                     handleFocus={ this.handleAnnotationFocus }
+                                    handleClassify={ this.handleAnnotationClassify }
                                     handleHideOthers={ this.handleHideOtherAnnotations }
                                     handleCategoryChange={this.handleAnnotationCategoryChange}
                                     handleSupercategoryChange={this.handleAnnotationSupercategoryChange}
