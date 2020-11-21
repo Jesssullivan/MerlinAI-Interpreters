@@ -1469,9 +1469,7 @@ export class Annotator_tool extends React.Component {
         }
 
         console.log("Clicked Classify!")
-        console.log(annotation_layer.bbox)
-        console.log(annotation_layer.annotations)
-
+        alert("Annotation Classify feature is not live on this Heroku web demo just yet")
         // Rerender to update "hidden" tags
         this.setState(this.state);
     }
