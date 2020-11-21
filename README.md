@@ -113,7 +113,7 @@ prerender = True
   <thead>
     <tr>
       <th>
-        <a href="https://tmpui.herokuapp.com/leaflet_audio"><img src="../icons/tmpUI.MerlinAI-favicon-light/android-chrome-192x192.png" alt="demos"></a>
+        <a href="https://tmpui.herokuapp.com/leaflet_audio"><img src="./icons/tmpUI.MerlinAI-favicon-light/android-chrome-192x192.png" alt="demos"></a>
         <br/><em> Visit Leaflet.annotation Audio demo </em>
       </th>
         <th>
