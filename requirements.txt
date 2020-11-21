@@ -14,10 +14,10 @@ flask-cors
 # numpy~=1.19.2
 
 # tensorflow select ops seem to usually work better with the nightly builds
-tf-nightly
+# tf-nightly
 
 ### Using 2.3.0 cpu only for Heroku:
-# tensorflow-cpu==2.3.1
+tensorflow-cpu==2.3.1
 
 # audio etc, for both notebooks & web:
 librosa~=0.8.0

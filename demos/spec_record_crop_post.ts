@@ -104,13 +104,21 @@ function updateVis() {
     // Take into account the offset of the image (by scrolling)
     const specImageHolderEl = document.getElementById('specImageHolder');
     const scrollOffset = specImageHolderEl!.scrollLeft;
+
     pos1 += scrollOffset;
     pos2 += scrollOffset;
 
+    console.log("pos1:" + pos1);
+    console.log("pos2:" + pos2);
+
     // Need to go from spectrogram position to waveform sample index
     const hopLengthSamples = Math.round(targetSampleRate * stftHopSeconds);
+
     const samplePos1 = pos1 * hopLengthSamples / timeScale;
     const samplePos2 = pos2 * hopLengthSamples / timeScale;
+
+    console.log("samplePos1:" + samplePos1);
+    console.log("samplePos2:" + samplePos2);
 
     const waveformSample = currentWaveform.slice(samplePos1, samplePos2);
 
@@ -377,7 +385,7 @@ recordBtn.onclick = () => {
     };
 
     const onError = (err : Error) => {
-        // console.log('The following error occured: ' + err);
+        // console.log('The following error occurred: ' + err);
         stopBtn.setAttribute('disabled',  'disabled');
         recordBtn.removeAttribute('disabled');
 
@@ -404,9 +412,17 @@ stopBtn.onclick = () => {
     });
 };
 
-// Make the canvas the full width
+// try to make the canvas the full width; catch silently
 window.addEventListener('resize', () => {
-    canvas.width = mainSection.offsetWidth;
+    try {
+        canvas.width = mainSection.offsetWidth;
+    } catch (err) {
+        // console.log("caught offsetWidth error, continuing..." + err);
+    }
 });
 
-window.dispatchEvent(new Event('resize'));
+try {
+    window.dispatchEvent(new Event('resize'));
+} catch (err) {
+    // console.log("caught resize error, continuing..." + err);
+}

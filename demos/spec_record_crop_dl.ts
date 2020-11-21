@@ -377,9 +377,17 @@ stopBtn.onclick = () => {
     });
 };
 
-// Make the canvas the full width
+// try to make the canvas the full width; catch silently
 window.addEventListener('resize', () => {
-    canvas.width = mainSection.offsetWidth;
+    try {
+        canvas.width = mainSection.offsetWidth;
+    } catch (err) {
+        // console.log("caught offsetWidth error, continuing..." + err);
+    }
 });
 
-window.dispatchEvent(new Event('resize'));
+try {
+    window.dispatchEvent(new Event('resize'));
+} catch (err) {
+    // console.log("caught resize error, continuing..." + err);
+}
