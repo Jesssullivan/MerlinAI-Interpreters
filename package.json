@@ -1,6 +1,6 @@
 {
   "name": "tmpui",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "scripts": {
     "build-anno-tool": "chmod +x scripts/annotator_tool.sh && ./scripts/annotator_tool.sh",
     "build-anno-audio": "chmod +x scripts/annotator_audio.sh && ./scripts/annotator_audio.sh",
@@ -11,10 +11,10 @@
     "sslgen": "chmod +x scripts/sslgen.sh && ./scripts/sslgen.sh",
     "serve-node": "http-server -S -C ./demos/demos.pem -K ./demos/key.pem -o ./demos/annotator_audio.html",
     "serve-flask": "flask run",
-    "clean-anno-built": "chmod +x scripts/clean_built.sh && ./scripts/clean_built.sh",
     "clean-web-bundles": "find demos/ -name \"*_bundle.js\" -print -delete",
     "clean-web-renders": "find demos/ -name \"*_render.html\" -print -delete",
     "clean-all": "chmod +x scripts/clean_all.sh && ./scripts/clean_all.sh",
+    "clean-quietly": "chmod +x scripts/clean.sh && ./scripts/clean.sh",
     "ios-native": "react-native run-ios",
     "android-native": "react-native run-android",
     "test": "jest",

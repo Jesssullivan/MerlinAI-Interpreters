@@ -10,8 +10,9 @@ FLASKLOG=flask.log
 PACKLOG=pack.log
 
 #  bash --> browser:
-DEBBROWSER=google-chrome
+DEBBROWSER=chromium
 MACBROWSER=open
+INCOGNITO=TRUE
 
 # check python path:
 VENVPATH=$(which python3)
@@ -74,12 +75,10 @@ echo """
       | |\/| |/ _ | '__| | | '_ \|  _  || |
       | |  | |  __| |  | | | | | | | | _| |_
       \_|  |_/\___|_|  |_|_|_| |_\_| |_\___/
-
      """
 
 echo "development: ...entering & packing demos, this could take a while..."
 
-echo -ne  '(#                              (5%)\r'
 
 # initialize log files if they aren't already there:
 touch $FLASKLOG
@@ -93,9 +92,12 @@ cp -rf ./icons/tmpUI.MerlinAI-favicon-dark/* ./demos/ &> $FLASKLOG &
 
 ## webpack ##
 
+echo -ne '(##                            (10%)\r'
 
-# run primary webpack within its own process, really does takes while
+# run primary webpack within its own process, it really does takes while
 webpack --config webpack/es6.demo.config.ts &> $PACKLOG &
+
+echo -ne '(##                            (10%)\r'
 
 # relax, and watch this chintzy loading graphic load while webpack runs
 sleep 2
@@ -112,12 +114,12 @@ sleep 2
 echo -ne '(########                     (35%)\r'
 sleep 2
 echo -ne '(#########                    (40%)\r'
-sleep 1
+sleep 2
 echo -ne '(##########                   (45%)\r'
+sleep 2
+echo -ne '(###########                  (50%)\r'
 
 # wait for initial webpack to finish:
-
-echo -ne '(###########                  (50%)\r'
 
 wait
 
@@ -137,7 +139,11 @@ echo "development: ...packing photo annotator..."
 
 echo -ne '(##############                (65%)\r'
 
-# webpack --config webpack/webpack.annotator_photo.ts &> $PACKLOG &
+webpack --config webpack/webpack.annotator_photo.ts &> $PACKLOG &
+
+wait
+
+echo -ne '(##############                (65%)\r'
 
 echo -ne '(###############              (70%)\r'
 
@@ -145,7 +151,11 @@ echo "development: ...packing audio annotator..."
 
 echo -ne '(################             (75%)\r'
 
-# webpack --config webpack/webpack.annotator_audio.ts &> $PACKLOG &
+webpack --config webpack/webpack.annotator_audio.ts &> $PACKLOG &
+
+wait
+
+echo -ne '(################             (75%)\r'
 
 
 ## Flask ##
@@ -187,25 +197,31 @@ echo -ne '(##########################   (90%)\r'
 
 echo 'development: Launching...'
 
-echo -ne '(##########################   (95%)\r'
+echo -ne '(##########################   (90%)\r'
 
 if [[ "$OSTYPE" == "darwin"* ]] ; then
 
-  echo -ne '(######################### (100%)\r'
+  echo -ne '(########################## (100%)\r'
 
-  echo -e "\ndevelopment: Detected fruit-based operating system, using browser cli" $MACBROWSER "\n"
+  echo "
 
-  echo -ne '(######################### (100%)\r'
+  development: Detected fruit-based operating system, using browser cli $MACBROWSER
+  "
+
+  echo -ne '(########################## (100%)\r'
 
   BROWSER=$MACBROWSER
 
 else
 
-  echo -ne '(######################### (100%)\r'
+  echo -ne '(########################## (100%)\r'
 
-  echo -e "\n\ndevelopment: Detected penguin-based operating system, using browser cli " $DEBBROWSER "\n"
+  echo "
 
-  echo -ne '(######################### (100%)\r'
+  development: Detected  penguin-based operating system, using browser cli  $DEBBROWSER
+  "
+
+  echo -ne '(########################## (100%)\r'
 
   BROWSER=$DEBBROWSER
 
@@ -214,8 +230,22 @@ fi
 # just to make sure disk catches up to us:
 sleep 2
 
-# launches in browser:
-$BROWSER http://127.0.0.1:5000/
+
+## launch
+
+
+# best to use incognito to avoid cross domain CORS shenanigans ~/.config and ~/.cache
+#
+# vanilla chromium is usually better in this regard than google-chrome
+if [[ $INCOGNITO == TRUE ]] ; then
+
+    $BROWSER http://127.0.0.1:5000/ -incognito &> $FLASKLOG &
+
+else
+
+   $BROWSER http://127.0.0.1:5000/  &> $FLASKLOG &
+
+fi
 
 # check status like this:
 # ps aux | grep flask

@@ -4,7 +4,7 @@ import React from 'react';
  * Renders the image information that will show up under the Map
  * Stuff like image id, attribution, etc.
  */
-export class MLAudioInfo extends React.Component{
+export class MLAudioInfo extends React.Component {
 
     constructor(props) {
         super(props);

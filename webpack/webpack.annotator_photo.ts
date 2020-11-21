@@ -3,20 +3,20 @@ import * as path from 'path';
 module.exports = {
   node: {fs: 'empty'},
   resolve: {
-    extensions: ['.ts'],
+    extensions: ['.ts', '.js'],
   },
   devtool: 'inline-source-map',
   mode: 'development',
   entry:'./demos/annotator_photo.ts',
   output: {
-    filename: 'annotator_photo_bundle.js',
+    filename: 'annotator_audio_photo.js',
     path: path.resolve(__dirname, '../demos'),
   },
   module: {
     rules: [{
       test: /\.ts$/,
       exclude: /node_modules/,
-      use: {loader: 'ts-loader', options: {configFile: 'tsconfig.anno.json'}}
+      use: {loader: 'ts-loader', options: {configFile: 'tsconfig.es6.json'}}
     }],
   },
   devServer: {

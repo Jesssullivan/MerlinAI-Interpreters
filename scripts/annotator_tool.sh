@@ -1,6 +1,7 @@
 #!/bin/bash
 
-echo -e "\n ...development: packing leaflet annotator tool...\n"
+echo -e "\n ...development: (re)packing leaflet annotator tool...\n"
+
 webpack --config webpack/webpack.annotator_tool.js
 
 echo -e "development: packing done. \n "

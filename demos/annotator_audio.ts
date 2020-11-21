@@ -12,6 +12,7 @@
 
 // selector:
 const $ = require('jquery');
+// const React = require('react');
 
 // global variables:
 let annotatorRendered: any = null;

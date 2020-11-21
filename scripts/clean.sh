@@ -1,18 +1,5 @@
 #!/bin/bash
 
-
-if [[ $EUID -ne 0 ]]; then
-
-  echo -e "Warning:\n Clean All script removes:"
-  echo -e "\nopenssl stuff"
-  echo -e "\n.built/ type declarations"
-  echo -e "\nALL webpack bundles"
-  echo -e "\nALL html renders \n"
-  echo "If you are certain this is what you want to do, run the following sudo:"
-  echo -e "\nsudo ./scripts/clean_all.sh\n"
-  exit 0
-fi
-
 echo -e "\n...cleaning .built/ type declarations..."
 rm -rf .built/
 

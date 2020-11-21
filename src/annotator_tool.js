@@ -1466,9 +1466,56 @@ export class Annotator_tool extends React.Component {
 
             let center_x = pixel_center.x / this.specFactor;
 
+            console.log("Clicked Classify!")
+            // alert("Annotation Classify feature is not live on this Heroku web demo just yet")
+            let point1 = this.leafletMap.project(bounds.getNorthWest(), 0);
+            let point2 = this.leafletMap.project(bounds.getSouthEast(), 0);
+
+            console.log("point1: " + point1);
+            console.log("point2: " + point2);
+
+            var x1 = point1.x;
+            var y1 = point1.y;
+            var x2 = point2.x;
+            var y2 = point2.y;
+
+            [x1, y1] = this.restrictPointToImageBounds(x1, y1);
+            [x2, y2] = this.restrictPointToImageBounds(x2, y2);
+
+            let x = x1 / this.imageWidth;
+            let y = y1 / this.imageHeight;
+            let w = (x2 - x1) / this.imageWidth;
+            let h = (y2 - y1) / this.imageHeight;
+
+            let image_height = 300;
+            let timeScale = 1.0;
+            let targetSampleRate = 44100;
+            let stftWindowSeconds = 0.015;
+            let stftHopSeconds = 0.005;
+            let topDB = 80;
+
+            let pos1 = Math.round(x1);
+            let pos2 = Math.round(x2);
+
+            console.log("pos1:" + pos1);
+            console.log("pos2:" + pos2);
+
+            // Need to go from spectrogram position to waveform sample index
+            let hopLengthSamples = Math.round(targetSampleRate * stftHopSeconds);
+
+            console.log("hopLengthSamples: " + hopLengthSamples);
+
+            let samplePos1 = Math.round(pos1 * hopLengthSamples);
+            let samplePos2 = Math.round(pos2 * hopLengthSamples);
+
+            console.log("samplePos1: " + samplePos1);
+            console.log("samplePos2: " + samplePos2);
+            console.log("src: " + this.props.image.src.toString())
+            console.log("audio: " + this.props.image.audio.toString())
+            //const waveformSample = currentWaveform.slice(samplePos1, samplePos2);
+
         }
 
-        console.log("Clicked Classify!")
         alert("Annotation Classify feature is not live on this Heroku web demo just yet")
         // Rerender to update "hidden" tags
         this.setState(this.state);

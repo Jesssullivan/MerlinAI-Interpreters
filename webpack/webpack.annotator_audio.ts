@@ -3,7 +3,7 @@ import * as path from 'path';
 module.exports = {
   node: {fs: 'empty'},
   resolve: {
-    extensions: ['.ts'],
+    extensions: ['.ts', '.js'],
   },
   devtool: 'inline-source-map',
   mode: 'development',
@@ -16,7 +16,7 @@ module.exports = {
     rules: [{
       test: /\.ts$/,
       exclude: /node_modules/,
-      use: {loader: 'ts-loader', options: {configFile: 'tsconfig.anno.json'}}
+      use: {loader: 'ts-loader', options: {configFile: 'tsconfig.es6.json'}}
     }],
   },
   devServer: {
