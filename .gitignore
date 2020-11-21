@@ -2,13 +2,25 @@
 tmpui_venv
 merlinai_venv
 
+# ssl
+**/*.pem
+
 # bytecode
 **/__pycache__/
 **/*.pyc
 
-# OSX
-.DS_Store
+# build
+**/*.log
 
+# OSX
+**/.DS_Store
+
+# Bundle artifact
+*.jsbundle
+
+# CocoaPods
+**/Pods
+**/Podfile.lock
 # Xcode
 build/
 *.pbxuser
@@ -56,10 +68,3 @@ buck-out/
 */fastlane/report.xml
 */fastlane/Preview.html
 */fastlane/screenshots
-
-# Bundle artifact
-*.jsbundle
-*.log
-# CocoaPods
-**/Pods
-**/Podfile.lock
