@@ -113,12 +113,12 @@ prerender = True
   <thead>
     <tr>
       <th>
-        <a href="https://tmpui.herokuapp.com/leaflet_audio"><img src="./icons/Leaflet.annotation-favicon-dark/android-chrome-192x192.png" alt="demos"></a>
-        <br/> <em> Visit Leaflet.annotation demo </em>
+        <a href="https://tmpui.herokuapp.com/leaflet_audio"><img src="./icons/Leaflet.annotation-favicon-light/android-chrome-192x192.png" alt="demos"></a>
+        <br/><em> Visit Leaflet.annotation Audio demo </em>
       </th>
-      <th>
-        <a href="https://youtu.be/JkIgp_F_u64"><img src="./icons/Leaflet.annotation-favicon-light/android-chrome-192x192.png" alt="demos"></a>
-         <br/><em> Watch a 32 second demo here </em>
+        <th>
+        <a href="https://tmpui.herokuapp.com/leaflet_photo"><img src="./icons/Leaflet.annotation-favicon-dark/android-chrome-192x192.png" alt="demos"></a>
+        <br/><em> Visit Leaflet.annotation Photo demo </em>
       </th>
     </tr>
   </thead>
