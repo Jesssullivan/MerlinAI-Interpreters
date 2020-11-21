@@ -117,7 +117,7 @@ prerender = True
         <br/> <em> Visit Leaflet.annotation demo </em>
       </th>
       <th>
-        <a href="https://youtu.be/JkIgp_F_u64"><img src="https://img.youtube.com/vi/JkIgp_F_u64/default.jpg" alt="tests"></a>
+        <a href="https://youtu.be/JkIgp_F_u64"><img src="./icons/Leaflet.annotation-favicon-light/android-chrome-192x192.png" alt="demos"></a>
          <br/><em> Watch a 32 second demo here </em>
       </th>
     </tr>
