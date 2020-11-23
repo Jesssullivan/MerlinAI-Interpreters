@@ -6,13 +6,47 @@
 - ***[*Visit the web demos here*](https://tmpui.herokuapp.com/)***
 - ***[*readme @ github.io*](https://jesssullivan.github.io/tmpUI/)***
 
+- - -
+
+## Web:
+
+<table>
+  <thead>
+    <tr>
+      <th>
+        <a href="https://tmpui.herokuapp.com/"><img src="./icons/tmpUI.MerlinAI-favicon-dark/android-chrome-192x192.png" alt="demos"></a> <br/> <em> Visit audio  demos on Heroku </em>
+      </th>
+        <th>
+        <a href="https://tmpui.herokuapp.com/leaflet_audio"><img src="./icons/Leaflet.annotation-favicon-dark/android-chrome-192x192.png" alt="demos"></a> <br/> <em> Visit Leaflet.annotation demos on Heroku </em>
+      </th>
+      <th>
+        <a href="https://youtu.be/rKzl5aQmJ-Y"><img src="https://img.youtube.com/vi/rKzl5aQmJ-Y/default.jpg" alt="Leaflet.annotation"></a>
+         <br/><em> Watch Leaflet.annotation demo here </em>
+      </th>
+        <th>
+        <a href="https://youtu.be/TOQyuZDOrJA"><img src="https://img.youtube.com/vi/TOQyuZDOrJA/default.jpg" alt="setup prompt"></a>
+         <br/><em> Watch environment setup here </em>
+      </th>
+    </tr>
+
+  </thead>
+</table>
+
 
 
 ## **Hack upon these demos:**
 
 ```
 # Clone:
-git clone --branch=master --depth=1 https://github.com/Jesssullivan/tmpUI && cd tmpUI
+git clone --branch=master --depth=1 https://github.com/Jesssullivan/merlin_ai && cd merlin_ai/deploy/
+
+## Follow the prompts to setup node and python: ##
+npm run-script develop-web-demos
+
+```
+
+```
+## setup- ##
 
 # Node:
 npm install
@@ -26,44 +60,7 @@ pip3 install -r requirements.txt
 
 # Launch:
 npm run-script develop-web-demos
-```
 
-
-- - -
-
-### Web:
-
-<table>
-  <thead>
-    <tr>
-      <th>
-        <a href="https://tmpui.herokuapp.com/"><img src="./icons/tmpUI.MerlinAI-favicon-dark/android-chrome-192x192.png" alt="demos"></a> <br/> <em>MerlinAI Web Demos</em>
-      </th>
-      <th>
-        <a href="https://tmpui.herokuapp.com/"><img src="./etc/merlinaiscript.gif" alt="tests"></a>
-      </th>
-    </tr>
-  </thead>
-</table>
-
-
-*Hack on web demos:*
-```
-# Clone:
-git clone --branch=master --depth=2 https://github.com/Jesssullivan/merlin_ai && cd merlin_ai/deploy/
-
-# Node:
-npm install
-
-# Venv:
-python3 -m venv merlinai_venv
-source merlinai_venv/bin/activate
-
-# Python:
-pip3 install -r requirements.txt
-
-# Launch:
-npm run-script develop-web-demos
 ```
 
 
