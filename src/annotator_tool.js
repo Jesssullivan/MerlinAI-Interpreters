@@ -9,9 +9,28 @@ import {AnnotationSidebar} from "./annotation_sidebar.jsx";
 import {CategorySelection} from "./category_selection.jsx";
 import {ImageInfo} from "./image_info.jsx";
 import {MLAudioInfo} from "./macaulay_asset_info.jsx";
-
+import * as audio_loader from "./audio_loading_utils.js";
+import * as audio_model from "./audio_model.js";
 import "./Leaflet.annotation.css";
+let MODEL_URL = 'models/audio/model.json';
+let LABELS_URL = 'models/audio/labels.json';
 
+const merlinAudio = new audio_model.MerlinAudioModel(LABELS_URL, MODEL_URL);
+
+// TODO: switch to transpiled logging.ts instead of console.log()
+// TODO: add a "Classifying..." waitLoader wheel
+// TODO: make currentWaveform an annotator property instead of sticking it here lol
+let currentWaveform = [];
+
+// returned scores are currently displayed via alert() until someone thinks of slicker solution:
+async function handleClassifyWaveform(waveform : Float32Array) {
+
+    const result = await merlinAudio.averagePredictV3(waveform, 44100);
+    const labels = result[0]
+    const scores = result[1]
+    return [labels, scores];
+
+}
 
 // This is need to add call the init hooks to bring in the edit functionality
 // E.g. see https://github.com/Leaflet/Leaflet.draw/blob/develop/src/edit/handler/Edit.Rectangle.js#L117
@@ -86,7 +105,6 @@ let defaultOptions = {
     // Callback for after Leaflet has been rendered?
     // didMountLeafletCallback : null,
     // didFocusOnAnnotationCallback : null,
-    // didClassifyOnAnnotationCallback : null
 
 }
 
@@ -119,7 +137,6 @@ export class Annotator_tool extends React.Component {
             selectingCategory : false, // Should we show the category selection component?
             selectingCategoryForNewInstance : false // Is the category we are selecting for a new instance or an existing one?
         };
-
 
 
         /*
@@ -1453,9 +1470,8 @@ export class Annotator_tool extends React.Component {
 
             if (this.allowZoomWhenFocusing) {
                 this.leafletMap.fitBounds(bounds);
-            }
-            else {
-                this.leafletMap.fitBounds(bounds, {maxZoom : this.leafletMap.getZoom()});
+            } else {
+                this.leafletMap.fitBounds(bounds, {maxZoom: this.leafletMap.getZoom()});
             }
 
             // Let any listeners know that we moved the map to a specific location
@@ -1464,59 +1480,65 @@ export class Annotator_tool extends React.Component {
             let center = bounds.getCenter();
             let pixel_center = this.leafletMap.project(center, zoom);
 
-            let center_x = pixel_center.x / this.specFactor;
-
             console.log("Clicked Classify!")
-            // alert("Annotation Classify feature is not live on this Heroku web demo just yet")
+
             let point1 = this.leafletMap.project(bounds.getNorthWest(), 0);
             let point2 = this.leafletMap.project(bounds.getSouthEast(), 0);
+            // console.log("point1: " + point1);
+            // console.log("point2: " + point2);
 
-            console.log("point1: " + point1);
-            console.log("point2: " + point2);
-
+            // get annotation coords:
             var x1 = point1.x;
             var y1 = point1.y;
             var x2 = point2.x;
             var y2 = point2.y;
-
             [x1, y1] = this.restrictPointToImageBounds(x1, y1);
             [x2, y2] = this.restrictPointToImageBounds(x2, y2);
 
-            let x = x1 / this.imageWidth;
-            let y = y1 / this.imageHeight;
-            let w = (x2 - x1) / this.imageWidth;
-            let h = (y2 - y1) / this.imageHeight;
-
-            let image_height = 300;
-            let timeScale = 1.0;
             let targetSampleRate = 44100;
-            let stftWindowSeconds = 0.015;
             let stftHopSeconds = 0.005;
-            let topDB = 80;
 
             let pos1 = Math.round(x1);
             let pos2 = Math.round(x2);
 
-            console.log("pos1:" + pos1);
-            console.log("pos2:" + pos2);
-
             // Need to go from spectrogram position to waveform sample index
             let hopLengthSamples = Math.round(targetSampleRate * stftHopSeconds);
 
-            console.log("hopLengthSamples: " + hopLengthSamples);
+            var samplePos1 = Math.round(pos1 * hopLengthSamples);
+            var samplePos2 = Math.round(pos2 * hopLengthSamples);
 
-            let samplePos1 = Math.round(pos1 * hopLengthSamples);
-            let samplePos2 = Math.round(pos2 * hopLengthSamples);
-
-            console.log("samplePos1: " + samplePos1);
-            console.log("samplePos2: " + samplePos2);
             console.log("src: " + this.props.image.src.toString())
             console.log("audio: " + this.props.image.audio.toString())
-            //const waveformSample = currentWaveform.slice(samplePos1, samplePos2);
+            audio_loader.loadAudioFromURL(this.props.image.audio)
+                .then((audioBuffer) => audio_loader.resampleAndMakeMono(audioBuffer, targetSampleRate))
+                .then((audioWaveform) => {
+                    currentWaveform = audioWaveform;
+                    console.log("currentWaveform Type:" + typeof currentWaveform)
+                    console.log("currentWaveform :" + currentWaveform)
+                    let sampledWaveform = currentWaveform.slice(samplePos1, samplePos2);
+                    console.log(sampledWaveform)
+                    console.log("sampledWaveform bounds: " + sampledWaveform[0] +" & " + sampledWaveform[1])
+
+                    handleClassifyWaveform(sampledWaveform)
+                        .then(([labels, scores]) => {
+
+                        let resultStr = "Scores: \n";
+
+                        for (let i = 0; i < 10; i++) {
+                            console.log(labels[i] + ": " + scores[i])
+                            resultStr += labels[i] + ": " + scores[i] + " \n";
+                        }
+
+                        // use an alert to show classifications for now,
+                        // until someone thinks of a better way to display scores
+                        alert(resultStr)
+                        return resultStr;
+
+                    });
+                });
 
         }
 
-        alert("Annotation Classify feature is not live on this Heroku web demo just yet")
         // Rerender to update "hidden" tags
         this.setState(this.state);
     }

@@ -14,7 +14,7 @@
     "clean-web-bundles": "find demos/ -name \"*_bundle.js\" -print -delete",
     "clean-web-renders": "find demos/ -name \"*_render.html\" -print -delete",
     "clean-all": "chmod +x scripts/clean_all.sh && ./scripts/clean_all.sh",
-    "clean-quietly": "chmod +x scripts/clean.sh && ./scripts/clean.sh",
+    "clean-quietly": "chmod +x scripts/clean_quietly.sh && ./scripts/clean_quietly.sh",
     "ios-native": "react-native run-ios",
     "android-native": "react-native run-android",
     "test": "jest",

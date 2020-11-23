@@ -76,6 +76,7 @@ export class MerlinAudioModel {
             const scores = outputs.dataSync() as Float32Array;
             const maxIndexTensor = outputs.argMax(-1);
             const maxIndex = maxIndexTensor.dataSync()[0];
+            // @ts-ignore
             const maxScore = Math.max(...scores);
 
             batchResults.push([this.labels[maxIndex], maxScore, windowStart]);

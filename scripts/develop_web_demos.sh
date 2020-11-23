@@ -133,6 +133,10 @@ echo "development: ...packing leaflet annotator tool..."
 
 webpack --config webpack/webpack.annotator_tool.js &> $PACKLOG &
 
+echo -ne '(############                 (55%)\r'
+
+wait
+
 echo -ne '(#############                (60%)\r'
 
 echo "development: ...packing photo annotator..."
@@ -230,13 +234,10 @@ fi
 # just to make sure disk catches up to us:
 sleep 2
 
-
 ## launch
 
-
 # best to use incognito to avoid cross domain CORS shenanigans ~/.config and ~/.cache
-#
-# vanilla chromium is usually better in this regard than google-chrome
+
 if [[ $INCOGNITO == TRUE ]] ; then
 
     $BROWSER http://127.0.0.1:5000/ -incognito &> $FLASKLOG &

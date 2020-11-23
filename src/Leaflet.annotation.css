@@ -1,10 +1,10 @@
 
 .leaflet-annotation-container{
-    padding: 10px 10px 0;
-    margin: 10px;
-    border-radius: 10px 10px 10px 10px;
-    -moz-border-radius: 10px 10px 10px 10px;
-    -webkit-border-radius: 10px 10px 10px 10px;
+    padding: 0 0 0;
+    margin: 2px;
+    border-radius: 4px 4px 4px 4px;
+    -moz-border-radius: 4px 4px 4px 4px;
+    -webkit-border-radius: 4px 4px 4px 4px;
     border: 5px solid rgba(0, 0, 0, .1);
 }
 
@@ -56,7 +56,7 @@
     content: "\f105";
 }
 
-/* Add some space between the sidbar top button bar and the list of annotation instances */
+/* Add some space between the sidebar top button bar and the list of annotation instances */
 .annotation-sidebar-top{
     padding-bottom: 5px;
 }
