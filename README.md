@@ -38,7 +38,7 @@
 
 ```
 # Clone:
-git clone --branch=master --depth=1 https://github.com/Jesssullivan/merlin_ai && cd merlin_ai/deploy/
+git clone --branch=master --depth=1 https://github.com/Jesssullivan/tmpUI && cd tmpUI
 
 ## Follow the prompts to setup node and python: ##
 npm run-script develop-web-demos
