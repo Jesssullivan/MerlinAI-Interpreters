@@ -181,16 +181,9 @@ export class AnnotationInstance extends React.Component {
 
                 <div>
                     <div className="row">
-                        <div className="col">
-                            Segmentation:
-                        </div>
-                    </div>
-                    <div className="row">
-                        <div className="col">
-                            <button type="button" className="btn btn-outline-primary btn-sm" onClick={this.onEditSegment}>Edit Segmentation</button>
-                        </div>
-                        <div className="col">
+                        <div className="btn-group" role="group">
                             <button type="button" className="btn btn-outline-danger btn-sm" onClick={this.onDeleteSegment}>Delete Segmentation</button>
+                            <button type="button" className="btn btn-outline-primary btn-sm" onClick={this.onEditSegment}>Edit Segmentation</button>
                         </div>
                     </div>
                 </div>
@@ -203,9 +196,9 @@ export class AnnotationInstance extends React.Component {
                 <div className="card-body">
                     <br/>
                     <div className="row">
-                        <div className="col-1">{ colorBadgeEl }</div>
+                        <div className="col-2">{ colorBadgeEl }</div>
                         <div className="col-2">{ categoryEl }</div>
-                        <div className="col-2">{ supercategoryEl }</div>
+                        <div className="col-3">{ supercategoryEl }</div>
                     </div>
                     <br/>
                       <div className="row">
@@ -213,11 +206,16 @@ export class AnnotationInstance extends React.Component {
                             <button type="button" className="btn btn-sm btn-outline-danger" onClick={this.onDelete}>Delete   </button>
                             <button type="button" className="btn btn-sm btn-outline-secondary" onClick={this.onFocus}>Focus</button>
                             <button type="button" className="btn btn-sm btn-outline-secondary" onClick={this.onHideOthers}>Hide Others</button>
-                            <button type="button" className="btn btn-sm btn-outline-secondary" onClick={this.onClassify}>Classify</button>
+                            <button type="button" className="btn btn-sm btn-outline-success" onClick={this.onClassify}>Classify</button>
                         </div>
                     </div>
                     <div className="row">
                         {groupEl}
+                    </div>
+                    <div className="row">
+                        Segmentation:
+                    </div>
+                    <div>
                         {segmentationEl}
                     </div>
                 </div>
