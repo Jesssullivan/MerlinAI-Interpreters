@@ -155,6 +155,7 @@ npm run-script build-anno-photo
 |-----------|-------------|
 |  [deploy/demos/annotator_audio](demos/annotator_audio.ts) | Leaflet.annotator tool implementations for generating, labeling, exporting mel spectrogams as annotation data |
 |  [deploy/demos/annotator_photo](demos/annotator_photo.ts) | Leaflet.annotator tool implementations for labeling &  exporting photo annotations |
+|  [deploy/src/annotator_tool](src/annotator_tool.js) | epic `Annotator_tool` entrypoint, contains class handler functions |
 
 
 - - -
