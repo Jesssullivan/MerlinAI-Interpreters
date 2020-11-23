@@ -14,7 +14,7 @@ export class AnnotationSidebar extends React.Component {
         return(
             <div className="annotation-sidebar">
                 <div className="row justify-content-between annotation-sidebar-top">
-                    <div className="col-2">
+                    <div className="col-2" >
                         <button type="button" className="btn btn-outline-primary" onClick={this.props.onCreateNewInstance}>+</button>
                     </div>
                     <div className="col-auto">

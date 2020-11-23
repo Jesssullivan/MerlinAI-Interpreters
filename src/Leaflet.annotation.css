@@ -2,10 +2,7 @@
 .leaflet-annotation-container{
     padding: 0 0 0;
     margin: 2px;
-    border-radius: 4px 4px 4px 4px;
-    -moz-border-radius: 4px 4px 4px 4px;
-    -webkit-border-radius: 4px 4px 4px 4px;
-    border: 5px solid rgba(0, 0, 0, .1);
+    border: 5px solid rgba(0, 0, 0, .3);
 }
 
 /* The size of the Leaflet Map */
@@ -47,7 +44,7 @@
 
 /* Chevron icon for collapse "open" and "closed" */
 .annotation-collapse-arrow:after {
-    font-family: 'FontAwesome';
+    font-family: 'FontAwesome', monospace;
     content: "\f107";
     padding-left: 5px;
 }
@@ -58,7 +55,7 @@
 
 /* Add some space between the sidebar top button bar and the list of annotation instances */
 .annotation-sidebar-top{
-    padding-bottom: 5px;
+    padding-bottom: 10px;
 }
 
 .annotation-sidebar-annotation-instances{
@@ -67,6 +64,9 @@
 }
 
 /* Indent the collapsable card for an annotation instance (so that it doesn't line up with it's parent but instead looks like a child*/
+/* Hmm */
 .annotation-instance-collapse-content{
-    padding-left: 20px;
+    padding-left: 0;
 }
+
+

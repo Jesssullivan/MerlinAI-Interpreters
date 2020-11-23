@@ -81,8 +81,8 @@ export class AnnotationInstance extends React.Component {
 
     render(){
 
-        //let colapseID =  "AnnotationCollapse" + this.props.annotation.image_id + this.props.index;
-        let colapseID =  "AnnotationCollapse" + ~~(Math.random() * 1000000)
+        // let collapseID =  "AnnotationCollapse" + this.props.annotation.image_id + this.props.index;
+        let collapseID = "AnnotationCollapse" + ~~(Math.random() * 1000000)
         var colorBadgeEl = "";
 
         // Do we have a bounding box layer?
@@ -95,7 +95,7 @@ export class AnnotationInstance extends React.Component {
                 colorBadgeEl = <span className="badge badge-secondary">Hidden</span>;
             }
             else{
-                colorBadgeEl = <div className="btn btn-sm square-badge" style={{backgroundColor: annotation_color}}></div>;
+                colorBadgeEl = <div className="btn btn-md square-badge" style={{backgroundColor: annotation_color}}></div>;
             }
         }
 
@@ -110,7 +110,7 @@ export class AnnotationInstance extends React.Component {
 
         // Do we show the supercategory?
         var supercategoryEl = "";
-        if (this.props.showSupercategory && this.props.annotation.supercategory != 'undefined' &&  this.props.annotation.supercategory != null){
+        if (this.props.showSupercategory && this.props.annotation.supercategory !== 'undefined' &&  this.props.annotation.supercategory != null){
 
             if(this.props.allowSupercategoryEdit){
                 supercategoryEl = (
@@ -157,16 +157,16 @@ export class AnnotationInstance extends React.Component {
 
         // Do we show the group / crowd checkbox?
         var groupEl = "";
-        if (this.props.showGroupOption){
+        if (this.props.showGroupOption) {
 
-            let isGroup = this.props.annotation.iscrowd == true;
+            let isGroup = this.props.annotation.iscrowd === true;
             groupEl = (
                 <div>
                     <div className="dropdown-divider"></div>
                     <form className="px-4 py-3">
                         <div className="form-check">
                             <div className="row"><input type="checkbox" className="form-check-input" checked={isGroup} onChange={this.onGroupChange} /></div>
-                            <div className="row"><label className="form-check-label"> Is Group</label></div>
+                            <div className="row"><label className="form-check-label"> Is Group? </label></div>
                         </div>
                     </form>
                 </div>
@@ -182,7 +182,7 @@ export class AnnotationInstance extends React.Component {
                 <div>
                     <div className="row">
                         <div className="col">
-                            Segmentation Options
+                            Segmentation:
                         </div>
                     </div>
                     <div className="row">
@@ -201,34 +201,25 @@ export class AnnotationInstance extends React.Component {
             <div>
             <div className="card">
                 <div className="card-body">
+                    <br/>
                     <div className="row">
-                        <div className="col-1-auto">
-                            <button className="btn btn-sm btn-outline-secondary annotation-collapse-arrow collapsed" type="button" data-toggle="collapse" data-target={"#" + colapseID} aria-expanded="false" aria-controls={colapseID}>
-                                {this.state.list_pos}
-                            </button>
-                        </div>
-                        <div className="col-2">{ colorBadgeEl }</div>
+                        <div className="col-1">{ colorBadgeEl }</div>
+                        <div className="col-2">{ categoryEl }</div>
                         <div className="col-2">{ supercategoryEl }</div>
-                        <div className="col-4">{ categoryEl }</div>
-                        <div className="col-2">
-                            <button type="button" className="btn btn-sm btn-outline-danger" onClick={this.onDelete}>Delete</button>
+                    </div>
+                    <br/>
+                      <div className="row">
+                        <div className="btn-group" role="group">
+                            <button type="button" className="btn btn-sm btn-outline-danger" onClick={this.onDelete}>Delete   </button>
+                            <button type="button" className="btn btn-sm btn-outline-secondary" onClick={this.onFocus}>Focus</button>
+                            <button type="button" className="btn btn-sm btn-outline-secondary" onClick={this.onHideOthers}>Hide Others</button>
+                            <button type="button" className="btn btn-sm btn-outline-secondary" onClick={this.onClassify}>Classify</button>
                         </div>
                     </div>
-                </div>
-            </div>
-            <div className="collapse annotation-instance-collapse-content" id={colapseID}>
-                <div className="card card-body">
                     <div className="row">
-                        <div className="col-6">
-                            <div className="btn-group" role="group">
-                                <button type="button" className="btn btn-sm btn-outline-secondary" onClick={this.onFocus}>Focus</button>
-                                <button type="button" className="btn btn-sm btn-outline-secondary" onClick={this.onHideOthers}>Hide Others</button>
-                                <button type="button" className="btn btn-sm btn-outline-secondary" onClick={this.onClassify}>Classify</button>
-                            </div>
-                        </div>
+                        {groupEl}
+                        {segmentationEl}
                     </div>
-                    {groupEl}
-                    {segmentationEl}
                 </div>
             </div>
             </div>
