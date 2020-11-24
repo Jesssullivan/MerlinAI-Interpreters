@@ -3,7 +3,7 @@
 *Demos, interpreter implementations & data ingress tools for annotating, interpreting, and deploying trained models.*
 
 
-- ***[*Visit the web demos here*](https://tmpui.herokuapp.com/)***
+- ***[*Visit the web demos here*](https://merlinai.herokuapp.com/)***
 - ***[*readme @ github.io*](https://jesssullivan.github.io/tmpUI/)***
 
 - - -
@@ -14,10 +14,10 @@
   <thead>
     <tr>
       <th>
-        <a href="https://tmpui.herokuapp.com/"><img src="./icons/tmpUI.MerlinAI-favicon-dark/android-chrome-192x192.png" alt="demos"></a> <br/> <em> Visit audio  demos on Heroku </em>
+        <a href="https://merlinai.herokuapp.com/"><img src="./icons/tmpUI.MerlinAI-favicon-dark/android-chrome-192x192.png" alt="demos"></a> <br/> <em> Visit audio  demos on Heroku </em>
       </th>
         <th>
-        <a href="https://tmpui.herokuapp.com/leaflet_audio"><img src="./icons/Leaflet.annotation-favicon-dark/android-chrome-192x192.png" alt="demos"></a> <br/> <em> Visit Leaflet.annotation demos on Heroku </em>
+        <a href="https://merlinai.herokuapp.com/leaflet_audio"><img src="./icons/Leaflet.annotation-favicon-dark/android-chrome-192x192.png" alt="demos"></a> <br/> <em> Visit Leaflet.annotation demos on Heroku </em>
       </th>
       <th>
         <a href="https://youtu.be/rKzl5aQmJ-Y"><img src="https://img.youtube.com/vi/rKzl5aQmJ-Y/default.jpg" alt="Leaflet.annotation"></a>
@@ -110,11 +110,11 @@ prerender = True
   <thead>
     <tr>
       <th>
-        <a href="https://tmpui.herokuapp.com/leaflet_audio"><img src="./icons/tmpUI.MerlinAI-favicon-light/android-chrome-192x192.png" alt="demos"></a>
+        <a href="https://merlinai.herokuapp.com/leaflet_audio"><img src="./icons/tmpUI.MerlinAI-favicon-light/android-chrome-192x192.png" alt="demos"></a>
         <br/><em> Visit Leaflet.annotation Audio demo </em>
       </th>
         <th>
-        <a href="https://tmpui.herokuapp.com/leaflet_photo"><img src="./icons/Leaflet.annotation-favicon-dark/android-chrome-192x192.png" alt="demos"></a>
+        <a href="https://merlinai.herokuapp.com/leaflet_photo"><img src="./icons/Leaflet.annotation-favicon-dark/android-chrome-192x192.png" alt="demos"></a>
         <br/><em> Visit Leaflet.annotation Photo demo </em>
       </th>
     </tr>
