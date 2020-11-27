@@ -1,5 +1,6 @@
 
-# Demos with the Merlin Sound ID Project.
+# tmpUI: Merlin AI Experiments
+
 *Demos, interpreter implementations & data ingress tools for annotating, interpreting, and deploying trained models.*
 
 
@@ -45,8 +46,16 @@ npm run-script develop-web-demos
 
 ```
 
+| Demo | Description |
+|-----------|-------------|
+| [deploy/demos/spec_record_crop_dl](demos/spec_record_crop_dl.ts) <br/>  [deploy/demos/spec_record_crop_post](demos/spec_record_crop_post.ts) <br/>   | Experiments with record --> crop --> classify --> download; both client-side & server-side classifications methods |
+| [deploy/demos/load_audio](demos/load_audio.ts) <br/> [deploy/demos/spec_display](demos/spec_display.ts) <br/>   | Experiment with Macaulay audio sources --> spectrogram |
+| [deploy/demos/spec_record_crop_v3](demos/spec_record_crop_v3.ts) <br/> [deploy/demos/spec_record_v2](demos/spec_record_v2.ts) <br/> [deploy/demos/spec_record_v2](demos/spec_record_v2.ts) <br/> | Single page feature experiments |
+| [deploy/demos/webgl_init](demos/webgl_init.ts) <br/> [deploy/demos/deploy/demos/webgl_float_test](demos/webgl_float_test.ts) <br/> [deploy/demos/spec_record_v2](demos/spec_record_v2.ts) <br/> | Evaluate web client's capability for classification |
+
+
 ```
-## setup- ##
+## setup: ##
 
 # Node:
 npm install
@@ -62,14 +71,6 @@ pip3 install -r requirements.txt
 npm run-script develop-web-demos
 
 ```
-
-
-| Demo | Description |
-|-----------|-------------|
-| [deploy/demos/spec_record_crop_dl](demos/spec_record_crop_dl.ts) <br/>  [deploy/demos/spec_record_crop_post](demos/spec_record_crop_post.ts) <br/>   | Experiments with record --> crop --> classify --> download; both client-side & server-side classifications methods |
-| [deploy/demos/load_audio](demos/load_audio.ts) <br/> [deploy/demos/spec_display](demos/spec_display.ts) <br/>   | Experiment with Macaulay audio sources --> spectrogram |
-| [deploy/demos/spec_record_crop_v3](demos/spec_record_crop_v3.ts) <br/> [deploy/demos/spec_record_v2](demos/spec_record_v2.ts) <br/> [deploy/demos/spec_record_v2](demos/spec_record_v2.ts) <br/> | Single page feature experiments |
-| [deploy/demos/webgl_init](demos/webgl_init.ts) <br/> [deploy/demos/deploy/demos/webgl_float_test](demos/webgl_float_test.ts) <br/> [deploy/demos/spec_record_v2](demos/spec_record_v2.ts) <br/> | Evaluate web client's capability for classification |
 
 
 #### Notes:
@@ -121,9 +122,6 @@ prerender = True
   </thead>
 </table>
 
-
-
-- *(Jess is still typifying Annotator source, hang tight)*
 
 *Hack on Annotator:*
 ```
