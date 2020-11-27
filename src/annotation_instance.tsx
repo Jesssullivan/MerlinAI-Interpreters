@@ -1,18 +1,17 @@
-import React from 'react';
+const React = require('react');
 
 /**
  * This represents an annotation instance in the side bar next to the image.
-*/
+ */
 export class AnnotationInstance extends React.Component {
 
-    constructor(props) {
-        super(props);
+    constructor(props: any) {
 
+        super(props);
 
         this.state = {
             list_pos : this.props.list_pos
-        }
-
+        };
 
         this.onDelete = this.onDelete.bind(this);
         this.onFocus = this.onFocus.bind(this);
@@ -50,7 +49,6 @@ export class AnnotationInstance extends React.Component {
         this.props.handleClassify(this.props.index);
     }
 
-
     onHideOthers() {
         this.props.handleHideOthers(this.props.index);
     }
@@ -63,7 +61,7 @@ export class AnnotationInstance extends React.Component {
         this.props.handleSupercategoryChange(this.props.index);
     }
 
-    onGroupChange(e) {
+    onGroupChange(e: any) {
         this.props.handleGroupChange(this.props.index, e.target.checked);
     }
 
@@ -82,14 +80,14 @@ export class AnnotationInstance extends React.Component {
     render(){
 
         // let collapseID =  "AnnotationCollapse" + this.props.annotation.image_id + this.props.index;
-        let collapseID = "AnnotationCollapse" + ~~(Math.random() * 1000000)
-        var colorBadgeEl = "";
+        // let collapseID = "AnnotationCollapse" + ~~(Math.random() * 1000000)
+        let colorBadgeEl: JSX.Element;
 
         // Do we have a bounding box layer?
         if (this.props.hasBox){
 
             // Are we hidden?
-            let annotation_color = this.props.badgeColor;
+            const annotation_color = this.props.badgeColor;
 
             if(this.props.hidden){
                 colorBadgeEl = <span className="badge badge-secondary">Hidden</span>;
@@ -100,16 +98,16 @@ export class AnnotationInstance extends React.Component {
         }
 
         // We have no box, allow the user to annotate a box for this annotation
-        else{
+        else {
             colorBadgeEl = (
                 <button className="btn btn-sm btn-outline-danger" onClick={this.onAnnotateBox}>
                     Box N/A
                 </button>
-            )
+            );
         }
 
         // Do we show the supercategory?
-        var supercategoryEl = "";
+        let supercategoryEl: JSX.Element;
         if (this.props.showSupercategory && this.props.annotation.supercategory !== 'undefined' &&  this.props.annotation.supercategory != null){
 
             if(this.props.allowSupercategoryEdit){
@@ -119,18 +117,18 @@ export class AnnotationInstance extends React.Component {
                     </button>
                 );
             }
-            else{
+            else {
                 supercategoryEl = <span className="annotation-instance-supercategory-name">{this.props.annotation.supercategory}</span>;
             }
         }
 
         // Do we show the category?
-        var categoryEl = "";
+        let categoryEl: JSX.Element;
         if( this.props.showCategory ){
 
             if(this.props.allowCategoryEdit){
 
-                var categoryName = "";
+                // var categoryName = "";
                 if(this.props.category != null){
                     categoryEl = (
                         <button className="btn btn-sm btn-outline-primary" onClick={this.onCategoryChange}>
@@ -138,7 +136,7 @@ export class AnnotationInstance extends React.Component {
                         </button>
                     );
                 }
-                else{
+                else {
                     categoryEl = (
                         <button className="btn btn-sm btn-outline-danger" onClick={this.onCategoryChange}>
                             <span className="annotation-instance-category-name">N/A</span>
@@ -147,19 +145,19 @@ export class AnnotationInstance extends React.Component {
                 }
 
             }
-            else{
+            else {
                 categoryEl = <span>{this.props.category.name}</span>;
             }
         }
 
         // Do we show category tags?
-        var category_tags = "";
+        // var category_tags = "";
 
         // Do we show the group / crowd checkbox?
-        var groupEl = "";
+        let groupEl: JSX.Element;
         if (this.props.showGroupOption) {
 
-            let isGroup = this.props.annotation.iscrowd === true;
+            const isGroup = this.props.annotation.iscrowd === true;
             groupEl = (
                 <div>
                     <div className="dropdown-divider"></div>
@@ -175,7 +173,7 @@ export class AnnotationInstance extends React.Component {
         }
 
         // Do we allow segmentation?
-        var segmentationEl = "";
+        let segmentationEl: JSX.Element;
         if (this.props.showSegmentationOption){
             segmentationEl = (
 
@@ -187,7 +185,7 @@ export class AnnotationInstance extends React.Component {
                         </div>
                     </div>
                 </div>
-            )
+            );
         }
 
         return (

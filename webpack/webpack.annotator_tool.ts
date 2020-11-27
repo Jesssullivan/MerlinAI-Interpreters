@@ -3,21 +3,28 @@ import * as path from 'path';
 module.exports = {
   node: {fs: 'empty'},
   resolve: {
-    extensions: ['.ts', '.js'],
+    extensions: ['.ts', '.tsx', '.js', '.jsx'],
   },
   devtool: 'inline-source-map',
   mode: 'development',
-  entry:'./demos/annotator_photo.ts',
+  entry:'./src/annotator_tool.tsx',
   output: {
-    filename: 'annotator_photo_bundle.js',
+    filename: 'annotator_tool_bundle.js',
     path: path.resolve(__dirname, '../demos'),
   },
   module: {
     rules: [{
-      test: /\.ts$/,
+      test: /\.tsx?$/,
       exclude: /node_modules/,
       use: {loader: 'ts-loader', options: {configFile: 'tsconfig.es6.json'}}
-    }],
+    },
+      {
+        test: /\.css$/,
+        use: [
+          'style-loader',
+          'css-loader'
+        ]
+      }],
   },
   devServer: {
     contentBase: path.join(__dirname, '../demos'),

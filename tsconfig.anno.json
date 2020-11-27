@@ -20,7 +20,7 @@
     "skipLibCheck": true,
     "module": "commonjs",
     "target": "esnext",
-    "moduleResolution": "node",
+    "moduleResolution": "node"
   },
   "mode": "development",
   "include": [ "src/" ],

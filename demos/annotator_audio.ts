@@ -1,40 +1,34 @@
+import {audio_loader, audio_utils, spectrogram_utils} from "../src";
+
 /**
  *  annotator_audio.ts
  *
  * implementations of `annotator_tool` for annotating spectrograms.
  *
  * build only this file:
- * ` npm run-script build-audio `
+ * ` npm run-script build-anno-audio `
  *
  * build all files:
- * ` npm run-script develop `
+ * ` npm run-script develop-anno-demos `
  */
 
 // selector:
 const $ = require('jquery');
-// const React = require('react');
 
-// global variables:
+// variables to keep of things while we annotate:
 let annotatorRendered: any = null;
 let spectrogram_width: number = null;
 let spectrogram_height: number = null;
 let currentImageIndex: number = 0;
 
 /**
- * spectrogram_player.ts
- *
- *  class SpectrogramPlayer() provides access to variety of mel spectrogram-related methods,
+ * class SpectrogramPlayer() provides access to variety of mel spectrogram-related methods,
  * e.g. generating, annotating, audio / visual playback, etc
  *
  * each spectrogram is generated in the browser, using the audio url
  * specified in images.json at:
  * [image_info['audio']]
- *
- * make sure we can pass spectrogram size between
- * Spectrogram() and Audio(), so we can keep playback
- * rate in sync
  */
-import {audio_loader, audio_utils, spectrogram_utils} from "../src/index";
 
 /**
  * Audio Interface to keep track of mutable types
@@ -66,8 +60,6 @@ interface AudioInterface {
  * @Spacebar play / pause
  */
 class AudioPlayer implements AudioInterface {
-
-    annotatorRendered: any;
 
      // the interval that we should pan the spectrogram at:
     pan_interval_ms: number = 100;
@@ -278,6 +270,7 @@ export class SpectrogramPlayer extends AudioPlayer implements SpectrogramInterfa
  * @param config
  */
 function startAnnotating(images_data: any[], categories: any,
+
     annotations: Array<{ [x: string]: any; }>, config: {
         quickAccessCategoryIDs: any[];
         annotationFilePrefix: string; }) {
@@ -515,8 +508,7 @@ function startAnnotating(images_data: any[], categories: any,
 
     }
 
-    // todo: replace deprecated $(*).click() method with whatever replaced it
-    $("#nextImageButton").click(() => {
+    $("#nextImageButton").on('click', () => {
 
         saveCurrentAnnotations();
 
@@ -529,11 +521,11 @@ function startAnnotating(images_data: any[], categories: any,
 
     });
 
-    $("#previousImageButton").click(() => {
+    $("#previousImageButton").on('click', () =>{
 
         saveCurrentAnnotations();
 
-        if(currentImageIndex > 0){
+        if(currentImageIndex > 0) {
             currentImageIndex -= 1;
             annotateImage(currentImageIndex);
         }

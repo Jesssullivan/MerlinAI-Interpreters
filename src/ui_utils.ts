@@ -1,12 +1,9 @@
-
 // misc clientside functions.
 
-import {audio_utils, spectrogram_utils} from "./index";
-
-
+// audio stuff:
+import {audio_utils, spectrogram_utils} from "../src/index";
 
 export function MuiButton(titleName: string, holderName: string) {
-
     // MuiButton uses material-ui bootstrap:
     const MuiHolder = document.getElementById(holderName);
     const MuiBtn = document.createElement("button");

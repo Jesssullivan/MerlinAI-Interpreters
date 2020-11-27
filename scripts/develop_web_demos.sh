@@ -5,9 +5,26 @@
 # Includes launchers for both Debian & Mac OSX
 
 
-# stdout to these log files instead of to the console
-FLASKLOG=flask.log
-PACKLOG=pack.log
+# stdout to some log files here instead of to the console:
+LOGDIR="./.built_logs/"
+
+# demo server logs:
+FLASKFILE=flask_log.txt
+FLASKLOG=$LOGDIR$FLASKFILE
+
+# demos logs:
+DEMOFILE=demos_log.txt
+DEMOLOG=$LOGDIR$DEMOFILE
+
+# general webpack logs:
+ANNOTOOLFILE=anno_tool_log.txt
+TOOLLOG=$LOGDIR$ANNOTOOLFILE
+
+ANNOPHOTOFILE=anno_photo_log.txt
+PHOTOLOG=$LOGDIR$ANNOPHOTOFILE
+
+ANNOAUDIOFILE=anno_audio_log.txt
+AUDIOLOG=$LOGDIR$ANNOAUDIOFILE
 
 #  bash --> browser:
 DEBBROWSER=chromium
@@ -18,8 +35,23 @@ INCOGNITO=TRUE
 VENVPATH=$(which python3)
 
 
-## precheck ##
+## prechecks ##
 
+
+#  check log stuff:
+
+if [[ ! -d "$LOGDIR" ]]; then
+
+  mkdir $LOGDIR
+
+fi
+
+# initialize log files if they aren't already there:
+touch $FLASKLOG
+touch $DEMOLOG
+touch $TOOLLOG
+touch $PHOTOLOG
+touch $AUDIOLOG
 
 # check node modules:
 if [[ ! -d "./node_modules" ]] ; then
@@ -79,11 +111,6 @@ echo """
 
 echo "development: ...entering & packing demos, this could take a while..."
 
-
-# initialize log files if they aren't already there:
-touch $FLASKLOG
-touch $PACKLOG
-
 # copy web assets if they aren't already there:
 # cp -rf ./icons/tmpUI.MerlinAI-favicon-light/* ./demos/ &> $FLASKLOG &
 cp -rf ./icons/tmpUI.MerlinAI-favicon-dark/* ./demos/ &> $FLASKLOG &
@@ -94,8 +121,8 @@ cp -rf ./icons/tmpUI.MerlinAI-favicon-dark/* ./demos/ &> $FLASKLOG &
 
 echo -ne '(##                            (10%)\r'
 
-# run primary webpack within its own process, it really does takes while
-webpack --config webpack/es6.demo.config.ts &> $PACKLOG &
+# run primary webpack within its own process, it really does take a while
+webpack --config webpack/es6.demo.config.ts &> $DEMOLOG &
 
 echo -ne '(##                            (10%)\r'
 
@@ -131,7 +158,7 @@ echo -ne '(############                 (55%)\r'
 
 echo "development: ...packing leaflet annotator tool..."
 
-webpack --config webpack/webpack.annotator_tool.js &> $PACKLOG &
+npm run-script  build-anno-tool &> $TOOLLOG &
 
 echo -ne '(############                 (55%)\r'
 
@@ -143,7 +170,8 @@ echo "development: ...packing photo annotator..."
 
 echo -ne '(##############                (65%)\r'
 
-webpack --config webpack/webpack.annotator_photo.ts &> $PACKLOG &
+
+npm run-script  build-anno-photo &> $PHOTOLOG &
 
 wait
 
@@ -155,7 +183,7 @@ echo "development: ...packing audio annotator..."
 
 echo -ne '(################             (75%)\r'
 
-webpack --config webpack/webpack.annotator_audio.ts &> $PACKLOG &
+npm run-script  build-anno-audio &> $AUDIOLOG &
 
 wait
 
@@ -175,7 +203,7 @@ echo "development: ...(re)rendering html pages..."
 
 echo -ne '(##################           (80%)\r'
 
-find '.' -name "*_render.html" -delete &> $PACKLOG &
+find '.' -name "*_render.html" -delete &> $DEMOLOG &
 
 echo -ne '(###################          (85%)\r'
 
@@ -187,7 +215,7 @@ echo "development: setting up flask..."
 
 echo -ne '(###################          (85%)\r'
 
-rm -rf __pycache__/ &> flask.log &
+rm -rf __pycache__/ &> $FLASKLOG &
 
 
 ## launch ##
@@ -195,7 +223,7 @@ rm -rf __pycache__/ &> flask.log &
 
 echo -ne '(#####################        (90%)\r'
 
-flask run &> flask.log &
+flask run &> $FLASKLOG &
 
 echo -ne '(##########################   (90%)\r'
 

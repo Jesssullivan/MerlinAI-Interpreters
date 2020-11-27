@@ -1,4 +1,4 @@
-import React from 'react';
+const React = require('react');
 
 /**
  * Renders the image information that will show up under the Map
@@ -6,11 +6,11 @@ import React from 'react';
  */
 export class ImageInfo extends React.Component{
 
-    constructor(props) {
+    constructor(props: any) {
         super(props);
     }
 
-    render(){
+    render() {
         return (
             <div className="row">
                 <div className="col">

@@ -1,6 +1,6 @@
 
 // https://sashat.me/2017/01/11/list-of-20-simple-distinct-colors/
-let COLORS = [
+const COLORS = [
     "#e6194B", // Red
     "#3cb44b", // Green
     "#ffe119", // Yellow
@@ -23,14 +23,14 @@ let COLORS = [
     "#a9a9a9", // Grey
     //"#ffffff", // White
     "#000000" // Black
-]
+];
 
-let BOX_PATH_STYLE = {
+const BOX_PATH_STYLE = {
     'stroke' : true,
     'weight' : 4,
     'opacity' : 1,
     'fill' : false,
     'fillOpacity' : 0.2
-}
+};
 
 export {COLORS, BOX_PATH_STYLE};

@@ -1,4 +1,4 @@
-import React from 'react';
+const React = require('react');
 
 /**
  * This renders a modal for category selection. This is not the
@@ -6,15 +6,15 @@ import React from 'react';
  */
 export class CategorySelection extends React.Component {
 
-    constructor(props) {
+    constructor(props: any) {
         super(props);
 
         // want to add an index to the categories
-        var data = [];
-        var defaultFilteredData = [];
-        let quickAccessCategoryIDs = this.props.quickAccessCategoryIDs || [];
-        for(var i=0; i < this.props.categories.length; i++){
-            var cat = Object.assign({}, this.props.categories[i]);
+        const data = [];
+        const defaultFilteredData = [];
+        const quickAccessCategoryIDs = this.props.quickAccessCategoryIDs || [];
+        for(let i=0; i < this.props.categories.length; i++){
+            const cat = Object.assign({}, this.props.categories[i]);
             cat.idx = i;
             data.push(cat);
 
@@ -25,16 +25,16 @@ export class CategorySelection extends React.Component {
 
         // We want to sort defaultFilteredData to have the same order as quickAccessCategoryIDs
         if (quickAccessCategoryIDs.length > 0){
-            defaultFilteredData.sort(function(a, b){
-                let indxA = quickAccessCategoryIDs.indexOf(a.id);
-                let indxB = quickAccessCategoryIDs.indexOf(b.id);
-                return indxA - indxB
+            defaultFilteredData.sort((a: any, b: any) => {
+                const indxA = quickAccessCategoryIDs.indexOf(a.id);
+                const indxB = quickAccessCategoryIDs.indexOf(b.id);
+                return indxA - indxB;
             });
         }
         this.defaultFilteredData = defaultFilteredData;
 
         this.state = {
-            data: data,
+            data,
             filteredData : data,
             lastKey : null
         };
@@ -47,24 +47,23 @@ export class CategorySelection extends React.Component {
         this.onKeyDown = this.onKeyDown.bind(this);
     }
 
-    componentDidMount(){
+    componentDidMount() {
         this.filterInput.focus();
     }
 
-    componentWillUnmount(){
-
+    componentWillUnmount() {
     }
 
-    componentDidUpdate(prevProps, prevState, snapshot){
-
+    componentDidUpdate() {
     }
 
-    onCancel(){
+    onCancel() {
         this.props.onCancel();
     }
 
-    onSelect(e){
-        let idx = parseInt(e.target.dataset.idx);
+    onSelect(e: any){
+        // tslint:disable-next-line:radix
+        const idx = parseInt(e.target.dataset.idx);
         this.props.onSelect(idx);
     }
 
@@ -72,16 +71,16 @@ export class CategorySelection extends React.Component {
         this.props.onSelectNone();
     }
 
-    filterData(e){
+    filterData(e: any) {
         e.preventDefault();
-        let regex = new RegExp(e.target.value, 'i');
-        let filtered = this.state.data.filter((category) => {
+        const regex = new RegExp(e.target.value, 'i');
+        const filtered = this.state.data.filter((category: any) => {
           return category.name.search(regex) > -1;
-        }).sort((a, b) =>{
-            if (a.name.toLowerCase() == e.target.value){
+        }).sort((a: { name: string; }, b: { name: string; }) => {
+            if (a.name.toLowerCase() === e.target.value){
                 return -1;
             }
-            else if(b.name.toLowerCase() == e.target.value){
+            else if (b.name.toLowerCase() === e.target.value) {
                 return 1;
             }
             return a.name.localeCompare(b.name);
@@ -91,28 +90,29 @@ export class CategorySelection extends React.Component {
         });
     }
 
-    onKeyDown(e){
-        if (e.key === 'Enter'){
+    onKeyDown(e: { key: string; }) {
+        if (e.key === 'Enter') {
             this.setState({
                 lastKey : e.key
-            })
+            });
         }
         else{
-            if (this.state.lastKey === 'Enter'){
+            if (this.state.lastKey === 'Enter') {
                 this.setState({
                     lastKey : e.key
-                })
+                });
             }
         }
     }
 
-    render(){
+    render() {
 
-        let filteredCategories = this.state.filteredData;
-        var categoryEls = [];
-        if (this.state.lastKey === 'Enter'){
-            for(var i = 0; i < filteredCategories.length; i++){
-                let cat = filteredCategories[i];
+        const filteredCategories = this.state.filteredData;
+        const categoryEls = [];
+
+        if (this.state.lastKey === 'Enter') {
+            for(let i = 0; i < filteredCategories.length; i++) {
+                const cat = filteredCategories[i];
                 categoryEls.push((
                     <li className="list-group-item" key={cat.idx}>
                         <button data-idx={cat.idx} type="button" className="btn btn-outline-primary" onClick={this.onSelect}>{cat.name}</button>
@@ -121,11 +121,11 @@ export class CategorySelection extends React.Component {
             }
         }
 
-        else{
+        else {
 
-            if (this.defaultFilteredData.length > 0){
-                for(var i = 0; i < this.defaultFilteredData.length; i++){
-                    let cat = this.defaultFilteredData[i];
+            if (this.defaultFilteredData.length > 0) {
+                for(let i = 0; i < this.defaultFilteredData.length; i++) {
+                    const cat = this.defaultFilteredData[i];
                     categoryEls.push((
                         <li className="list-group-item" key={cat.idx}>
                             <button data-idx={cat.idx} type="button" className="btn btn-outline-primary" onClick={this.onSelect}>{cat.name}</button>
@@ -133,11 +133,11 @@ export class CategorySelection extends React.Component {
                     ));
                 }
             }
-            else{
+            else {
                 // Show the top X?
-                let lim = Math.min(filteredCategories.length, 20);
-                for(var i = 0; i < lim; i++){
-                    let cat = filteredCategories[i];
+                const lim = Math.min(filteredCategories.length, 20);
+                for(let i = 0; i < lim; i++){
+                    const cat = filteredCategories[i];
                     categoryEls.push((
                         <li className="list-group-item" key={cat.idx}>
                             <button data-idx={cat.idx} type="button" className="btn btn-outline-primary" onClick={this.onSelect}>{cat.name}</button>
@@ -147,8 +147,8 @@ export class CategorySelection extends React.Component {
             }
         }
 
-        var selectNoneEl = "";
-        if (this.props.allowSelectNone){
+        let selectNoneEl: JSX.Element;
+        if (this.props.allowSelectNone) {
             selectNoneEl = (
                 <div className="col-4">
                     <button type="button" className="btn btn-outline-primary" onClick={this.onSelectNone}>Select None</button>
@@ -172,8 +172,10 @@ export class CategorySelection extends React.Component {
                 <div className="row">
                     <div className="col">
                         <div className="form-group">
-                            <label></label>
-                            <input ref={(input) => {this.filterInput = input;}} type='text' className="form-control" onChange={this.filterData} onKeyDown={this.onKeyDown}></input>
+                            <label/>
+                            <input ref={(input) => {
+                                this.filterInput = input;
+                            }} type='text' className="form-control" onChange={this.filterData} onKeyDown={this.onKeyDown}/>
                             <small className="form-text text-muted">Type the category name, press enter, then choose from the list.</small>
                             { categoryEls.length > 0 && <ul className="list-group category-selection-filter-results">{categoryEls}</ul> }
                         </div>

@@ -85,7 +85,6 @@ function startAnnotating(images_data: any[], categories: any, annotations: Array
             }, null);
 
             // Render the annotator
-            // @ts-ignore
             const annotatorRendered = ReactDOM.render(annotator, annotation_holder);
 
             annotatorObjs.push(annotatorRendered);

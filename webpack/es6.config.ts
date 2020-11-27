@@ -38,7 +38,15 @@ module.exports = {
       test: /\.ts$/,
       exclude: /node_modules/,
       use: {loader: 'ts-loader', options: {configFile: 'tsconfig.es6.json'}}
-    }],
+    },
+    {
+      test: /\.css$/,
+      use: [
+        'style-loader',
+        'css-loader'
+      ]
+    }
+    ],
   },
   // Don't package these huge dependencies with the bundles, since we'd
   // be downloading duplicates.

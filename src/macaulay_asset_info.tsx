@@ -1,4 +1,4 @@
-import React from 'react';
+const React = require('react');
 
 /**
  * Renders the image information that will show up under the Map
@@ -6,13 +6,13 @@ import React from 'react';
  */
 export class MLAudioInfo extends React.Component {
 
-    constructor(props) {
+    constructor(props: any) {
         super(props);
     }
 
     render(){
 
-        let locationDateFields = [];
+        const locationDateFields = [];
         if('countryName' in this.props.image){
             locationDateFields.push((
                 <div className="col" key='countryName'>
@@ -37,7 +37,7 @@ export class MLAudioInfo extends React.Component {
             ));
         }
 
-        var commentsEl;
+        let commentsEl;
         if('comments' in this.props.image){
             commentsEl = (
                 <div className="row">
@@ -51,7 +51,7 @@ export class MLAudioInfo extends React.Component {
             commentsEl = "";
         }
 
-        var backgroundSpeciesEl;
+        let backgroundSpeciesEl;
         if('backgroundSubjectData' in this.props.image){
             backgroundSpeciesEl = (
                 <div className="row">
