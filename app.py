@@ -8,18 +8,8 @@ from config import *
 
 
 @app.route('/')
-def home():
-    return app.send_static_file('webgl_init.html' + ext)
-
-
-@app.route('/crop_dl')
-def crop_dl():
-    return app.send_static_file('spec_record_crop_dl.html' + ext)
-
-
-@app.route('/crop_post')
-def crop_post():
-    return app.send_static_file('spec_record_crop_post.html' + ext)
+def crop():
+    return app.send_static_file('spec_crop_interpreter.html' + ext)
 
 
 @app.route('/webgl')
@@ -69,26 +59,6 @@ def uploader_select():
     else:
         flash('waiting for POST!')
         return Classifier.send_static_html(std=False)
-
-
-@app.route('/crop_3')
-def crop_3():
-    return app.send_static_file('spec_record_crop_v3.html' + ext)
-
-
-@app.route('/display')
-def disp():
-    return app.send_static_file('spec_display.html' + ext)
-
-
-@app.route('/load')
-def load():
-    return app.send_static_file('load_audio.html' + ext)
-
-
-@app.route('/record_v2')
-def rec2():
-    return app.send_static_file('spec_record_v2.html' + ext)
 
 
 # start the garbage daemon:
