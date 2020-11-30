@@ -27,7 +27,7 @@
 
 ```
 # Clone:
-git clone --branch=master --depth=1 https://github.com/gvanhorn38/merlin_ai && cd merlin_ai/deploy/web
+git clone --branch=master --depth=1 https://github.com/jesssullivan/tmpUI && cd tmpUI
 
 Start the `Merlin` command line tool:
 ./Merlin
