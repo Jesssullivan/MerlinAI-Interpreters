@@ -1,4 +1,3 @@
-# tmpUI: Merlin AI Experiments
 
 *Demos, interpreter implementations & data ingress tools for annotating, interpreting, and deploying trained models.*
 
