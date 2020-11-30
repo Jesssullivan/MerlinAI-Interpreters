@@ -89,19 +89,9 @@ Serve?                : -s  | --serve         :  = false
 # display all arguments & their default state:
 ./Merlin
 ```
-
-<table>
-  <thead>
-    <tr>
-      <th>
-        <a href="https://merlinai.herokuapp.com/"><img src="./icons/tmpUI.MerlinAI-favicon-dark/android-chrome-192x192.png" alt="demos"></a> <br/> <em> Visit audio demos on Heroku </em>
-      </th>
-        <th>
-        <a href="https://merlinai.herokuapp.com/leaflet_audio"><img src="./icons/Leaflet.annotation-favicon-dark/android-chrome-192x192.png" alt="demos"></a> <br/> <em> Visit Leaflet.annotation demos on Heroku </em>
-  </thead>
-</table>
-
-
+    
+  
+  
 <table>
    <thead>
       <tr>
@@ -129,7 +119,7 @@ Serve?                : -s  | --serve         :  = false
    </tbody>
 </table>
 
-
+ 
 
 - - -
 
