@@ -3,6 +3,7 @@
   "version": "0.0.3",
   "scripts": {
     "Merlin": "chmod +x ./Merlin && ./Merlin",
+    "build-web-demos": "chmod +x scripts/pack_demos.sh && ./scripts/pack_demos.sh",
     "build-anno-tool": "chmod +x scripts/annotator_tool.sh && ./scripts/annotator_tool.sh",
     "build-anno-audio": "chmod +x scripts/annotator_audio.sh && ./scripts/annotator_audio.sh",
     "build-anno-photo": "chmod +x scripts/annotator_photo.sh && ./scripts/annotator_photo.sh",

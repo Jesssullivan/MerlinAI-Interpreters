@@ -341,7 +341,7 @@ if [ $BUILDDEMOS == true ] ; then
   echo "$CONSOLE ...entering & packing demos, this could take a while..."
 
   # run primary webpack within its own process, it really does take a while
-  webpack --config webpack/es6.demo.config.ts &> $DEMOLOG &
+  npm run-script build-web-demos &> $TOOLLOG &
 
   # relax, and watch this chintzy loading graphic load while webpack runs
   sleep 2
