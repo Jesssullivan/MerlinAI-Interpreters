@@ -1,7 +1,8 @@
-// spec_record_crop.ts v3
+// spec_crop_interpreter.ts
 
-import {audio_loader, audio_model, audio_utils, AudioRecorder, spectrogram_utils} from '../src/index';
+import {ui_utils, audio_loader, audio_utils, AudioRecorder, spectrogram_utils, audio_model} from '../src/index';
 const noUiSlider = require('./nouislider');
+import {tf} from '../src';
 
 window.MediaRecorder = AudioRecorder;
 
@@ -13,7 +14,11 @@ const mainSection = document.querySelector('.container-fluid') as HTMLDivElement
 /* tslint:disable:prefer-const */
 let imgCrop = document.createElement('img');
 let imgSpec = document.createElement('img');
+let audioURL: string | Blob;
 /* tslint:enable:prefer-const */
+
+const MODEL_URL = 'models/audio/model.json';
+const LABELS_URL = 'models/audio/labels.json';
 
 let recordedBlobs : Blob;
 let mediaRecorder : MediaRecorder;
@@ -23,6 +28,12 @@ let shouldDrawVisualization = false;
 const canvasCtx = canvas.getContext("2d");
 let chunks : Blob[] = [];
 let currentWaveform : Float32Array;
+let currentWaveformSample : Float32Array;
+let handlePositions: any;
+let classifyTextHeader: string = "";
+
+// we'll load up the model here, only if we need to:
+let merlinAudio: any = null;
 
 // Spectrogram Visualization Parameters
 const image_height = 300;
@@ -31,53 +42,139 @@ const targetSampleRate = 44100;
 const stftWindowSeconds = 0.015;
 const stftHopSeconds = 0.005;
 const topDB = 80;
+
 let slider : any = null;
 
-const MODEL_URL = 'models/audio/model.json';
-const LABELS_URL = 'models/audio/labels.json';
 const patchWindowSeconds = 1.0; // We'd like to process a minimum of 1 second of audio
 
-const merlinAudio = new audio_model.MerlinAudioModel(LABELS_URL, MODEL_URL);
+// evaluate browser's webgl capability from here, and set stuff up accordingly:
+function useBrowser() {
 
-function MuiButton(titleName: string, holderName: string) {
+    const capable = tf.ENV.getBool('WEBGL_RENDER_FLOAT32_CAPABLE');
 
-    const MuiHolder = document.getElementById(holderName);
-    const MuiBtn = document.createElement("button");
+    if (capable === true) {
+        merlinAudio = new audio_model.MerlinAudioModel(LABELS_URL, MODEL_URL);
+         return true;
+    }
+    else {
+        return false;
+    }
+}
 
-    MuiBtn.classList.add("mui-btn");
-    MuiBtn.classList.add("mui-btn--raised");
-    MuiBtn.textContent = titleName;
+const browserUse = useBrowser();
 
-    while (MuiHolder!.firstChild) {
-            MuiHolder!.removeChild(MuiHolder!.firstChild);
-        }
+if (browserUse === false) {
+    classifyTextHeader = "Classifications processed on server:";
+} else {
+    classifyTextHeader = "Classifications processed in browser:";
+}
 
-    MuiHolder!.appendChild(MuiBtn);
-    return(MuiBtn);
+async function handleClassifyWaveform() {
 
+    // update slider position:
+    updateVis();
+
+    // this is where we'll display the classification results:
+    const sampleHolderEl = document.getElementById('specSampleHolder');
+
+    while (sampleHolderEl!.firstChild) {
+        sampleHolderEl!.removeChild(sampleHolderEl!.firstChild);
+    }
+
+    // this is the list of resulting scores:
+    const resultEl = document.createElement('ul');
+
+    // start list by letting user know where data was just processed:
+    const scoreHeaderEl = document.createElement('li');
+    scoreHeaderEl.textContent = classifyTextHeader;
+    resultEl.appendChild(scoreHeaderEl);
+
+    if (browserUse === false) {
+
+        // file is wrapped in `formData` for POST:
+        const formData = new FormData();
+
+        // `name: 'file'` is the ID Flask will use to find and parse the POST's `snippet.wav`:
+        formData.append('file', recordedBlobs, 'snippet.wav');
+
+        // make the POST w/ fetch, no one should be using IE anyway xD:
+        fetch('/uploader_standard', {
+        method: 'POST',
+        body: formData
+        })
+        .then(response => {
+            response.json().then(data => {
+
+                console.log('received scores!');
+
+                // zing the received json Object into a sortable Array:
+                let i;
+                let results = [];
+                for (i in data) {
+                    results.push([i, data[i]]);
+                }
+
+                // sort the Array by descending value:
+                results = results.sort((a, b) =>  b[1] - a[1]);
+
+                // generate a html list to show the user:
+                for (i in results) {
+                    const scoreEl = document.createElement('li');
+                    scoreEl.textContent = ' ' + i + ' ' + results[i].join(" ");
+                    resultEl.appendChild(scoreEl);
+                    sampleHolderEl!.prepend(resultEl);
+                    console.log(i + ' ' + results[i]);
+                }
+            });
+        })
+        .catch(error => {
+            console.error(error);
+        });
+    }
+    else {
+        await merlinAudio.averagePredictV3(currentWaveformSample, targetSampleRate)
+            .then(([labels, scores]) => {
+
+                for (let i = 0; i < 10; i++) {
+                    const scoreEl = document.createElement('li');
+                    scoreEl.textContent = labels[i] + " " + scores[i];
+                    resultEl.appendChild(scoreEl);
+                    sampleHolderEl!.prepend(resultEl);
+                    console.log(labels[i] + ' ' + scores[i]);
+                }
+        });
+    }
 }
 
 function updateVis() {
 
-    const handlePositions = slider.noUiSlider.get();
+    handlePositions = slider.noUiSlider.get();
     let pos1 = Math.round(parseFloat(handlePositions[0]));
     let pos2 = Math.round(parseFloat(handlePositions[1]));
 
     // Take into account the offset of the image (by scrolling)
     const specImageHolderEl = document.getElementById('specImageHolder');
     const scrollOffset = specImageHolderEl!.scrollLeft;
+
     pos1 += scrollOffset;
     pos2 += scrollOffset;
 
+    console.log("pos1:" + pos1);
+    console.log("pos2:" + pos2);
+
     // Need to go from spectrogram position to waveform sample index
     const hopLengthSamples = Math.round(targetSampleRate * stftHopSeconds);
+
     const samplePos1 = pos1 * hopLengthSamples / timeScale;
     const samplePos2 = pos2 * hopLengthSamples / timeScale;
 
-    const waveformSample = currentWaveform.slice(samplePos1, samplePos2);
+    console.log("samplePos1:" + samplePos1);
+    console.log("samplePos2:" + samplePos2);
+
+    currentWaveformSample = currentWaveform.slice(samplePos1, samplePos2);
 
     // visualize the cropped sample
-    const dbSpec = generateSpectrogram(waveformSample); //audio_utils.dBSpectrogram(audioData.waveform, spec_params);
+    const dbSpec = generateSpectrogram(currentWaveformSample); //audio_utils.dBSpectrogram(audioData.waveform, spec_params);
     const cropped_imageURI = spectrogram_utils.dBSpectrogramToImage(dbSpec, topDB);
 
     // create / update cropped visualization
@@ -89,22 +186,14 @@ function updateVis() {
     imgCrop.width =  cropped_width;
 
     const specCropImage = document.getElementById('specCropHolder');
+
     while (specCropImage!.firstChild) {
         specCropImage!.removeChild(specCropImage!.firstChild);
     }
 
     specCropImage!.appendChild(imgCrop);
 
-    return waveformSample;
-
-}
-
-async function averageClassifyWaveform(waveform : Float32Array) {
-
-    const result = await merlinAudio.averagePredictV3(waveform, targetSampleRate);
-    const labels = result[0] as string[];
-    const scores = result[1] as Float32Array;
-    return [labels, scores];
+    return currentWaveformSample;
 
 }
 
@@ -170,9 +259,9 @@ function renderSpectrogram(imageURI : string, spectrogramLength: number) {
         }
     });
 
-    // create a Download button:
+    // create a Download Audio button:
     const dlHolder = 'downloadButtonHolder';
-    const dlButton = MuiButton('Download', dlHolder);
+    const dlButton = ui_utils.MuiButton('Download Audio', dlHolder);
 
     // wait for a click before downloading anything:
     dlButton.onclick = () => {
@@ -196,31 +285,39 @@ function renderSpectrogram(imageURI : string, spectrogramLength: number) {
         }, 100);
     };
 
-    // create a Classify button:
-    const analyzeHolder = 'specAnalyzeButtonHolder';
-    const analyzeBtn = MuiButton('Classify', analyzeHolder);
+    // create a Download Spectrogram button:
+    const dlSpecHolder = 'downloadSpecButtonHolder';
+    const dlSpecButton = ui_utils.MuiButton('Download Spectrogram', dlSpecHolder);
 
     // wait for a click:
-    analyzeBtn.onclick = () => {
+    dlSpecButton.onclick = () => {
 
-         // add a div to hold the Visualization of the sample
-        const sampleHolderEl = document.getElementById('specSampleHolder');
-        while (sampleHolderEl!.firstChild) {
-            sampleHolderEl!.removeChild(sampleHolderEl!.firstChild);
-        }
+        updateVis();
 
-        const waveformSample = updateVis();
+        const a = document.createElement('a');
+        a.style.display = 'none';
+        a.href = imageURI;
 
+        a.download = 'FullSpectrogram.png';
+        document.body.appendChild(a);
+        a.click();
+        setTimeout(() => {
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(imageURI);
+        }, 100);
+    };
+
+    // create a Classify button:
+    const analyzeHolder = 'specAnalyzeButtonHolder';
+    const analyzeBtn = ui_utils.MuiButton('Classify', analyzeHolder);
+
+    // wait for a click:
+    analyzeBtn.onclick = async () => {
+
+        //@ts-ignore
+        currentWaveformSample = updateVis();
         // YMMV, but YOLO:
-        averageClassifyWaveform(waveformSample).then(([labels, scores]) => {
-            const resultEl = document.createElement('ul');
-            for (let i = 0; i < 10; i++) {
-                const scoreEl = document.createElement('li');
-                scoreEl.textContent = labels[i] + " " + scores[i];
-                resultEl.appendChild(scoreEl);
-                sampleHolderEl!.prepend(resultEl);
-            }
-        });
+        await handleClassifyWaveform();
     };
 }
 
@@ -312,15 +409,15 @@ recordBtn.onclick = () => {
         recordBtn.setAttribute('disabled',  'disabled');
 
         mediaRecorder.addEventListener('stop', e => {
-            // console.log("data available after MediaRecorder.stop() called.");
 
             // we make us a `new Blob` before anything else happens, e.g. `Analyze` or `Download`:
             recordedBlobs = new Blob(chunks, { 'type' : 'audio/ogg; codecs=opus' }); // 'audio/ogg; codecs=opus'
             chunks = [];
-            const audioURL = window.URL.createObjectURL(recordedBlobs);
+            audioURL = window.URL.createObjectURL(recordedBlobs);
 
-            // console.log(audioURL);
-            // console.log("recorder stopped");
+            console.log(audioURL);
+            console.log("recorder stopped");
+
             audio_loader.loadAudioFromURL(audioURL)
                 .then((audioBuffer) => audio_loader.resampleAndMakeMono(audioBuffer, targetSampleRate))
                 .then((audioWaveform) => {
@@ -331,9 +428,6 @@ recordBtn.onclick = () => {
                 });
         });
 
-        // mediaRecorder.ondataavailable = function(e) {
-        //     chunks.push(e.data);
-        // }
         mediaRecorder.addEventListener('dataavailable', e => {
             chunks.push(e.data);
         });
@@ -341,10 +435,8 @@ recordBtn.onclick = () => {
     };
 
     const onError = (err : Error) => {
-        // console.log('The following error occured: ' + err);
         stopBtn.setAttribute('disabled',  'disabled');
         recordBtn.removeAttribute('disabled');
-
     };
 
     const constraints = { audio: true, video : false};
@@ -368,9 +460,17 @@ stopBtn.onclick = () => {
     });
 };
 
-// Make the canvas the full width
+// try to make the canvas the full width; catch silently
 window.addEventListener('resize', () => {
-    canvas.width = mainSection.offsetWidth;
+    try {
+        canvas.width = mainSection.offsetWidth;
+    } catch (err) {
+        // console.log("caught offsetWidth error, continuing..." + err);
+    }
 });
 
-window.dispatchEvent(new Event('resize'));
+try {
+    window.dispatchEvent(new Event('resize'));
+} catch (err) {
+    // console.log("caught resize error, continuing..." + err);
+}
