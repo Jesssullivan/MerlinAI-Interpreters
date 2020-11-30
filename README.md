@@ -102,13 +102,32 @@ Serve?                : -s  | --serve         :  = false
 </table>
 
 
-
-| Demo | Description |
-|-----------|-------------|
-| [demos/spec_crop_interpreter](./demos/)  | record, crop & interpret. automatically determines client-side or server-side classification method. |
-| [demos/webgl_init](./demos/) | Evaluate web client's capability for classification |
-|  [demos/annotator_audio](./demos/) | Leaflet.annotator tool implementations for generating, labeling, exporting mel spectrogams as annotation data |
-|  [demos/annotator_photo](./demos/) | Leaflet.annotator tool implementations for labeling &  exporting photo annotations |
+<table>
+<thead>
+<tr>
+<th>Demo</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="./demos/">demos/spec_crop_interpreter</a></td>
+<td>record, crop &amp; interpret. automatically determines client-side or server-side classification method.</td>
+</tr>
+<tr>
+<td><a href="./demos/">demos/webgl_init</a></td>
+<td>Evaluate web client&#39;s capability for classification</td>
+</tr>
+<tr>
+<td><a href="./demos/">demos/annotator_audio</a></td>
+<td>Leaflet.annotator tool implementations for generating, labeling, exporting mel spectrogams as annotation data</td>
+</tr>
+<tr>
+<td><a href="./demos/">demos/annotator_photo</a></td>
+<td>Leaflet.annotator tool implementations for labeling &amp;  exporting photo annotations</td>
+</tr>
+</tbody>
+</table>
 
 
 - - -
@@ -137,12 +156,28 @@ Serve?                : -s  | --serve         :  = false
 
 
 *Hack on Annotator:*
-
-| Demo | Description |
-|-----------|-------------|
-|  [deploy/demos/annotator_audio](demos/annotator_audio.ts) | Leaflet.annotator tool implementations for generating, labeling, exporting mel spectrogams as annotation data |
-|  [deploy/demos/annotator_photo](demos/annotator_photo.ts) | Leaflet.annotator tool implementations for labeling &  exporting photo annotations |
-|  [deploy/src/annotator_tool](src/annotator_tool.js) | epic `Annotator_tool` entrypoint, contains class handler functions |
+<table>
+<thead>
+<tr>
+<th>Demo</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="demos/annotator_audio.ts">deploy/demos/annotator_audio</a></td>
+<td>Leaflet.annotator tool implementations for generating, labeling, exporting mel spectrogams as annotation data</td>
+</tr>
+<tr>
+<td><a href="demos/annotator_photo.ts">deploy/demos/annotator_photo</a></td>
+<td>Leaflet.annotator tool implementations for labeling &amp;  exporting photo annotations</td>
+</tr>
+<tr>
+<td><a href="src/annotator_tool.js">deploy/src/annotator_tool</a></td>
+<td>epic <code>Annotator_tool</code> entrypoint, contains class handler functions</td>
+</tr>
+</tbody>
+</table>
 
 
 - - -
