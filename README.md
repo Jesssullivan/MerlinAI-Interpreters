@@ -38,6 +38,8 @@ source merlinai_venv/bin/activate
 pip3 install -r requirements.txt
 ```
 
+[![Watch 60 seconds of web features (12/01/20)](../etc/MerlinWeb12.01.20.gif)](https://www.youtube.com/watch?v=TKKjo1ypSPY&feature=youtu.be "Watch 60 seconds of web features (12/01/20)")
+
 ```
 
 ./Merlin
