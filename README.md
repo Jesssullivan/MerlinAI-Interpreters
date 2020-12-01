@@ -70,15 +70,14 @@ Serve?                 : -s  | --serve         :  = false
 
 #### *Build:*
 
-some example things you might do while hacking on deploy/web:
-- *Best to always use `-i  | --incognito` when testing locally to avoid CORS & credential cache headaches*  
+*some example things you might do while hacking on deploy/web:*
 
 ```
-# build & serve everything with flask:
+# build & serve everything with flask (--incognito argument only for GNU/Linux only for the time being)
 ./Merlin --demos --annotators --serve --flask --incognito
 # ...or like this: `./Merlin -d -a -s -f -i`
 
-# serve some html files using Node http-server:
+# serve a some html files using OpenSSL & Node http-server (only for GNU/Linux only for the time being also)
 ./Merlin -s --http-server ./demos/webgl_test.html -i
 
 # rebuild only the annotators:
@@ -90,7 +89,6 @@ some example things you might do while hacking on deploy/web:
 # display all arguments & their default state:
 ./Merlin
 ```
-
 
 <table>
    <thead>
