@@ -22,11 +22,11 @@
 
 
 
-### *Setup:*
+#### *Setup:*
 
 ```
 # Clone:
-git clone --branch=master --depth=1 https://github.com/jesssullivan/tmpUI && cd tmpUI
+git clone --branch=master --depth=1 https://github.com/gvanhorn38/merlin_ai && cd merlin_ai/deploy/web
 
 Start the `Merlin` command line tool:
 ./Merlin
@@ -50,17 +50,17 @@ pip3 install -r requirements.txt
    \_|  |_/\___|_|  |_|_|_| |_\_| |_\___/
 
 Utilities?
--- Cleanup Bundles?   : -cb | --clean-bundles :  = false
--- Cleanup Renders?   : -cr | --clean-renders :  = false
--- Cleanup compiled?  : -ca | --clean-all     :  = false
+ -- Cleanup Bundles?   : -cb | --clean-bundles :  = false
+ -- Cleanup Renders?   : -cr | --clean-renders :  = false
+ -- Cleanup compiled?  : -ca | --clean-all     :  = false
 Build?
-Pack Demos?:          : -d  | --demos         :  = false
-pack Annotators?:     : -a  | --annotators    :  = false
-Serve?                : -s  | --serve         :  = false
--- Flask Server?:     : -f  | --flask         :  = false
--- Node HTTP Server?  : -h  | --http-server   :  = false
--- Incognito?         : -i  | --incognito     :  = false
--- Browser CLI?       :   Detected Linux      :  = chromium
+Pack Demos?:           : -d  | --demos         :  = false
+pack Annotators?:      : -a  | --annotators    :  = false
+Serve?                 : -s  | --serve         :  = false
+ -- Flask Server?:     : -f  | --flask         :  = false
+ -- Node HTTP Server?  : -h  | --http-server   :  = none
+ -- Incognito?         : -i  | --incognito     :  = false
+ -- Browser CLI?       :   Detected Linux      :  = chromium
 ```
 
 - - -
@@ -68,16 +68,18 @@ Serve?                : -s  | --serve         :  = false
 <h4 id="build"> </h4>     
 
 
-### *Build:*
+#### *Build:*
+
+some example things you might do while hacking on deploy/web:
+- *Best to always use `-i  | --incognito` when testing locally to avoid CORS & credential cache headaches*  
 
 ```
-## some example things you might do:
-
-# build & serve everything:
-# like this:   
+# build & serve everything with flask:
 ./Merlin --demos --annotators --serve --flask --incognito
-# or like this:
-./Merlin -d -a -s -f -i
+# ...or like this: `./Merlin -d -a -s -f -i`
+
+# serve some html files using Node http-server:
+./Merlin -s --http-server ./demos/webgl_test.html -i
 
 # rebuild only the annotators:
 ./Merlin --annotators   
@@ -88,9 +90,8 @@ Serve?                : -s  | --serve         :  = false
 # display all arguments & their default state:
 ./Merlin
 ```
-    
-  
-  
+
+
 <table>
    <thead>
       <tr>
@@ -118,7 +119,7 @@ Serve?                : -s  | --serve         :  = false
    </tbody>
 </table>
 
- 
+
 
 - - -
 
@@ -147,7 +148,7 @@ Serve?                : -s  | --serve         :  = false
 
 *Hack on Annotator:*
 
- 
+
 <table>
    <thead>
       <tr>

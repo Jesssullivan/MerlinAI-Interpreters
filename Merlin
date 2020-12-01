@@ -6,20 +6,19 @@
 BUILDDEMOS=false
 BUILDANNOS=false
 USEFLASK=false
-USENODE=false
+USENODEFILE="none"
 INCOGNITO=false
 SERVE=false
-UTILS=false
 CLEANUPALL=false
 CLEANUPBUNDLES=false
 CLEANUPRENDERS=false
 
 #  bash --> browser:
-DEBBROWSER=chromium
-MACBROWSER=open
+DEBBROWSER="chromium http://127.0.0.1:5000/ "
+MACBROWSER="open "http:/\/127.0.0.1:5000/" --args "
 
 # ssl domain:
-DOMAIN=web_demos
+DOMAIN=./demos/web_demos
 
 ## logs ##
 
@@ -80,9 +79,7 @@ if [[ ! -d "./node_modules" ]] ; then
   echo -e "\n$CONSOLE ...did not find ./node_modules!
   please install node depends, e.g.
 
-
   npm install
-
 
   ...and try again. \n"
 
@@ -97,7 +94,7 @@ if [[ ! $VENVPATH == *_venv/bin/* ]] ; then
   echo -e "\n$CONSOLE  ...venv path not found!
   please create / source into venv and try again, e.g. \n
 
-    # create new venv:
+    # of needed, create new venv:
     python3 -m venv merlinai_venv
 
     # source:
@@ -163,7 +160,7 @@ while [[ $# -gt 0 ]] ; do
 
         -f | --flask)
 
-        if [[ $SERVE == true && $USEFLASK == false && $USENODE == false ]] ; then
+        if [[ $SERVE == true && $USEFLASK == false ]] ; then
           USEFLASK=true
         fi
 
@@ -172,13 +169,14 @@ while [[ $# -gt 0 ]] ; do
         ;;
 
 
-        -h | --http-node)
+        -h | --http-server)
 
-        if [[ $SERVE == true && $USEFLASK == false && $USENODE == false ]] ; then
-          USENODE=true
+        if [[ $SERVE == true && $USEFLASK == false ]] ; then
+          USENODEFILE="$2"
         fi
 
-       shift
+        shift # past argument
+        shift
 
         ;;
 
@@ -224,7 +222,7 @@ while [[ $# -gt 0 ]] ; do
 
         *) # unknown
 
-        echo -e "\n$CONSOLE Recived unknown argument!  Exiting....\n"
+        echo -e "\n$CONSOLE Received unknown argument!  Exiting....\n"
 
         POSITIONAL+=("$1")
 
@@ -260,8 +258,9 @@ echo "Pack Demos?:           : -d  | --demos         :  = ${BUILDDEMOS}"
 echo "pack Annotators?:      : -a  | --annotators    :  = ${BUILDANNOS}"
 echo "Serve?                 : -s  | --serve         :  = ${SERVE}"
 echo " -- Flask Server?:     : -f  | --flask         :  = ${USEFLASK}"
-echo " -- Node HTTP Server?  : -h  | --http-server   :  = ${USENODE}"
+echo " -- Node HTTP Server?  : -h  | --http-server   :  = ${USENODEFILE}"
 echo " -- Incognito?         : -i  | --incognito     :  = ${INCOGNITO}"
+
 
 if [[ "$OSTYPE" == "darwin"* ]] ; then
 
@@ -286,6 +285,13 @@ if [ $CLEANUPALL == true ] ; then
     CLEANUPBUNDLES=true
     CLEANUPRENDERS=true
 
+    rm -rf .built
+    rm -rf .built_logs
+    rm -rf __pycache__
+
+    echo -e "\n...cleaning ./src/*.js tsc output..."
+    rm ./src/*.js
+
     echo -e "\n...cleaning .built/ type declarations..."
     rm -rf .built/
 
@@ -293,6 +299,8 @@ if [ $CLEANUPALL == true ] ; then
     find demos/ -name "*.key" -print -delete
     find demos/ -name "*.pem" -print -delete
     find demos/ -name "*.crt" -print -delete
+    find demos/ -name "*.cert" -print -delete
+    find demos/ -name "*.csr" -print -delete
 
 
     echo -e "\ncleaning renders..."
@@ -421,58 +429,63 @@ fi
 
 ## launch
 
-if [ $SERVE == true ] ; then
+if [[ $SERVE == true && $USEFLASK == true ]] ; then
 
 
-  ## Flask ##
+  echo -ne '(##################           (80%)\r'
 
-  if [ $USEFLASK == true ] ; then
+  echo "$CONSOLE ...(re)rendering html pages..."
 
+  echo -ne '(##################           (80%)\r'
 
-    echo -ne '(##################           (80%)\r'
+  find '.' -name "*_render.html" -delete &> $DEMOLOG &
 
-    echo "$CONSOLE ...(re)rendering html pages..."
+  echo -ne '(###################          (85%)\r'
 
-    echo -ne '(##################           (80%)\r'
+  wait
 
-    find '.' -name "*_render.html" -delete &> $DEMOLOG &
+  echo -ne '(###################          (85%)\r'
 
-    echo -ne '(###################          (85%)\r'
+  echo "$CONSOLE setting up flask..."
 
-    wait
+  echo -ne '(###################          (85%)\r'
 
-    echo -ne '(###################          (85%)\r'
+  rm -rf __pycache__/ &> $FLASKLOG &
 
-    echo "$CONSOLE setting up flask..."
+  ## launch ##
 
-    echo -ne '(###################          (85%)\r'
+  echo -ne '(#####################        (90%)\r'
 
-    rm -rf __pycache__/ &> $FLASKLOG &
+  flask run &> $FLASKLOG &
 
-    ## launch ##
+  echo -ne '(##########################   (90%)\r'
 
-    echo -ne '(#####################        (90%)\r'
+fi
 
-    flask run &> $FLASKLOG &
+if [[ $SERVE == true && $USEFLASK == false ]] ; then
 
-    echo -ne '(##########################   (90%)\r'
+  if [[ $USENODEFILE != "none" ]] ; then
+
+    if [[ -f $USENODEFILE ]] ; then
+
+      npm run-script sslgen $DOMAIN
+
+      echo -e "$CONSOLE preparing node http-server..."
+
+      npx http-server -S -C ${DOMAIN}.cert -K ${DOMAIN}.key &> $FLASKLOG &
+
+    else
+
+      echo -e "$CONSOLE Can't find provided file: [ $USENODEFILE ]! Exiting..."
+      exit 0
+
+    fi
 
   fi
 
-  if [ $USENODE == true ] ; then
+fi
 
-    npm run-script sslgen $DOMAIN
-
-    echo -e "
-
-    $CONSOLE launch Node HTTP like so:
-
-    http-server -S -C ./demos/$DOMAIN.pem -K ./demos/${DOMAIN}_key.pem -o ./demos/<filetoserve>.html
-   "
-   sleep 1
-   exit 0
-
-  fi
+if [[ $SERVE == true && $USEFLASK == true || -f $USENODEFILE ]] ; then
 
   echo -e "$CONSOLE Launching..."
 
@@ -510,27 +523,46 @@ if [ $SERVE == true ] ; then
   sleep 2
 
   ## browser ##
+  # best to use incognito to avoid cross domain CORS shenanigans ~/.config and ~/.cache
+  if [[ $USEFLASK == true && $INCOGNITO == true ]] ; then
+    
+      $BROWSER --allow-insecure-localhost -incognito &> $FLASKLOG &
 
-  if  [ $USEFLASK == true ] ; then
+      wait
+      exit 0
 
-    # best to use incognito to avoid cross domain CORS shenanigans ~/.config and ~/.cache
-    if [ $INCOGNITO == true ] ; then
+  fi
 
-        $BROWSER http://127.0.0.1:5000/ -incognito &> $FLASKLOG &
+   if [[ $USEFLASK == true && $INCOGNITO == false ]] ; then
 
-    else
+      $BROWSER &> $FLASKLOG &
 
-       $BROWSER http://127.0.0.1:5000/  &> $FLASKLOG &
+      wait
+      exit 0
 
-    fi
+  fi
+
+  if [[ -f $USENODEFILE && $INCOGNITO == false ]] ; then
+
+      $BROWSER https://127.0.0.1:8080/$USENODEFILE &> $FLASKLOG &
+
+      wait
+      exit 0
+
+  fi
+
+  if [[ -f $USENODEFILE && $INCOGNITO == true ]] ; then
+
+      $BROWSER https://127.0.0.1:8080/$USENODEFILE --allow-insecure-localhost -incognito  &> $FLASKLOG &
+
+      wait
+      exit 0
 
   fi
 
   # check status like this:
   # ps aux | grep flask
   # echo -e "\nExiting Merlin AI Web Demos..."
-
-  wait
 
 fi
 
