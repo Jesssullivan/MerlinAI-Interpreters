@@ -422,9 +422,14 @@ python3 tone.py 2
 #### *demos, annotators ***Π*** competitiveness*
 
 a ***single annotation*** as first class entry in database:
+
+<br/>
+
 |id|category_id|supercategory|media_source|attribution|bbox|user_id|
 |---|---|---|---|---|---|---|
 | unique annotation identifier |species, etc  | family, genus, etc | url to media being annotated; for browser spectrogram demo, this is the `audio` field; otherwise linked via `image_id` needn't be Macaulay specific |attribution to media source; author; link to media's license| bounding array of annotation box |registered individual who made the annotation|
+
+<br/>
 
 - database of annotations may hold many entries describing the same media, by different users
 
