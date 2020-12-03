@@ -10,7 +10,7 @@
 - [**Swift UI**](#swift) <br>
 - [**React-Native**](#reactnative) <br>
 - [**Scripts**](#scripts) <br>
-- [**Todos**](#todos) <br>
+- [**Notes**](#notes) <br>
 - [**@ Heroku**](https://merlinai.herokuapp.com/)
 - [**@ github.io**](https://jesssullivan.github.io/tmpUI/)
 
@@ -414,11 +414,56 @@ python3 tone.py 2
 - - -
 
 
-<h4 id="todos"> </h4>     
+<h4 id="notes"> </h4>     
 
 
-### *todos:*
+### *Notes:*
 
+#### *demos, annotators ***Π*** competitiveness*
+
+a ***single annotation*** as first class entry in database:
+|id|category_id|supercategory|media_source|attribution|bbox|user_id|
+|---|---|---|---|---|---|---|
+| unique annotation identifier |species, etc  | family, genus, etc | url to media being annotated; for browser spectrogram demo, this is the `audio` field; otherwise linked via `image_id` needn't be Macaulay specific |attribution to media source; author; link to media's license| bounding array of annotation box |registered individual who made the annotation|
+
+- database of annotations may hold many entries describing the same media, by different users
+
+- unregistered users may annotate and play with tools as much as they want, cannot save / contribute their annotations
+
+- untrusted (new) registered users may save / contribute their annotations with a confidence level of 1
+
+- trusted registered users with more than 5 or more trust points may save / contribute their annotations with a confidence level of 1 or 2 (e.g. duplicate their annotation) (or 0 / just don't save that annotation)
+
+- a user may become trusted if 3 of their annotations contribute to completed annotations
+
+- to complete an annotation, entries of **X** media must be replicated **Y** times- e.g. identical `catagory`, `supercatagory`, `bbox` centroid is within **T** threshold of each other (`bbox` values can be averaged to single annotation)
+
+- users cannot modify existing annotations, that's cheating
+
+- [just began enumerating features here on Figma](https://www.figma.com/file/CgscKZmdW3WKN3JGkjQsU7/WebAnnotatorFeatureNotes12.03.20?node-id=7%3A5536)
+
+- - -
+
+
+- *an entry, interoperable w/ Lab of O:*
+```
+{'id': 'c466fac6-5c77-4725-9e1a-5627c190ce08',
+ 'bbox': [0.03729166507720947,
+  0.31716904264146634,
+  0.0096875,
+  0.3799303977272727],
+ 'user_id': '123abc',
+ 'image_id': 123456789,
+ 'username': 'abc123',
+ 'category_id': 'swaspa',
+ 'supercategory': 'Bird'
+}
+```
+
+
+*todo:*
+- what if a user is really untrustworthy?
+- send, share wireframe figma to slack people asap
 - bring all the cool new audio features added to Leaflet.annotation into record --> crop --> classify demo:
     - playback spectrogram with audio
     - scrubbing via keyboard / buttons
