@@ -11,8 +11,9 @@
 - [**React-Native**](#reactnative) <br>
 - [**Scripts**](#scripts) <br>
 - [**Notes**](#notes) <br>
-- [**@ Heroku**](https://merlinai.herokuapp.com/)
-- [**@ github.io**](https://jesssullivan.github.io/tmpUI/)
+- [**@ Heroku**](https://merlinai.herokuapp.com/)  <br>
+- [**@ github.io**](https://jesssullivan.github.io/tmpUI/) <br>
+- [**@ github repo**](https://github.com/Jesssullivan/tmpUI)
 
 
 - - -
