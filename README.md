@@ -25,44 +25,74 @@
 # Clone:
 git clone --branch=master --depth=1 https://github.com/jesssullivan/tmpUI && cd tmpUI
 
+# permiss:
+sudo chmod +x ./Merlin
+
 Start the `Merlin` command line tool:
 ./Merlin
+```
 
-# Tool will prompt to set up venv & node depends if it hasn't been done yet:
-npm install
-python3 -m venv merlinai_venv
-source merlinai_venv/bin/activate
-pip3 install -r requirements.txt
+*some example things you might do while hacking on deploy/web:*
+
+```
+# Auto setup:
+./Merlin --auto-setup
+
+# build & serve everything with flask (--incognito argument only for GNU/Linux for the time being)
+./Merlin --demos --annotators --serve --flask --incognito
+# ...or like this:
+./Merlin -d -a -s -f -i
+
+# serve some html using OpenSSL & Node http-server (only for GNU/Linux for the time being also)
+./Merlin -s --http-server ./demos/webgl_test.html -i
+
+# hack on MongoDB stuff:
+./Merlin -s -f -m
+
+# rebuild only the annotators:
+./Merlin --annotators   
+
+# cleanup rendered html pages:
+./Merlin --clean-renders
+
+# clean up all compiled:
+./Merlin -ca
+
+# display all arguments & their default state:
+./Merlin
 ```
 
 <h4 id="setup"> </h4>     
 
 
-[![Watch 60 seconds of web features (12/01/20)](./etc/MerlinWeb12.01.20.gif)](https://www.youtube.com/watch?v=TKKjo1ypSPY&feature=youtu.be "Watch 60 seconds of web features (12/01/20)")
+[![Watch 60 seconds of some web features (12/01/20)](./etc/MerlinWeb12.01.20.gif)](https://www.youtube.com/watch?v=TKKjo1ypSPY&feature=youtu.be "Watch 60 seconds of web features (12/01/20)")
 
 ```
-
 ./Merlin
+___  ___          _ _        ___ _____
+|  \/  |         | (_)      / _ |_   _|
+| .  . | ___ _ __| |_ _ __ / /_\ \| |
+| |\/| |/ _ | '__| | | '_ \|  _  || |
+| |  | |  __| |  | | | | | | | | _| |_
+\_|  |_/\___|_|  |_|_|_| |_\_| |_\___/
 
-   ___  ___          _ _        ___ _____
-   |  \/  |         | (_)      / _ |_   _|
-   | .  . | ___ _ __| |_ _ __ / /_\ \| |
-   | |\/| |/ _ | '__| | | '_ \|  _  || |
-   | |  | |  __| |  | | | | | | | | _| |_
-   \_|  |_/\___|_|  |_|_|_| |_\_| |_\___/
-
-Utilities?
- -- Cleanup Bundles?   : -cb | --clean-bundles :  = false
- -- Cleanup Renders?   : -cr | --clean-renders :  = false
- -- Cleanup compiled?  : -ca | --clean-all     :  = false
-Build?
-Pack Demos?:           : -d  | --demos         :  = false
-pack Annotators?:      : -a  | --annotators    :  = false
+Environment:
+-- Auto Setup?        : -as | --auto-setup    :  = false
+-- Check Node?        : -cn | --check-node    :  = true
+-- Check Venv?        : -cv | --check-venv    :  = true
+Utilities:
+-- Cleanup Bundles?   : -cb | --clean-bundles :  = false
+-- Cleanup Renders?   : -cr | --clean-renders :  = false
+-- Cleanup compiled?  : -ca | --clean-all     :  = false
+Build:
+Pack Demos?            : -d  | --demos         :  = false
+Pack Annotators?       : -a  | --annotators    :  = false
 Serve?                 : -s  | --serve         :  = false
- -- Flask Server?:     : -f  | --flask         :  = false
- -- Node HTTP Server?  : -h  | --http-server   :  = none
- -- Incognito?         : -i  | --incognito     :  = false
- -- Browser CLI?       :   Detected Linux      :  = chromium
+-- Flask Server?      : -f  | --flask         :  = false
+-- Node HTTP Server?  : -h  | --http-server   :  = none
+-- MongoDB Server?    : -m  | --mongo-db      :  = false
+-- Incognito?         : -i  | --incognito     :  = false
+-- Browser CLI?       :   Detected Linux      :  = chromium
 ```
 
 - - -
@@ -72,25 +102,15 @@ Serve?                 : -s  | --serve         :  = false
 
 #### *Build:*
 
-*some example things you might do while hacking on deploy/web:*
 
 ```
-# build & serve everything with flask (--incognito argument only for GNU/Linux only for the time being)
-./Merlin --demos --annotators --serve --flask --incognito
-# ...or like this: `./Merlin -d -a -s -f -i`
-
-# serve a some html files using OpenSSL & Node http-server (only for GNU/Linux only for the time being also)
-./Merlin -s --http-server ./demos/webgl_test.html -i
-
-# rebuild only the annotators:
-./Merlin --annotators   
-
-# cleanup rendered html pages:
-./Merlin --clean-renders
-
-# display all arguments & their default state:
-./Merlin
+# Tool will prompt to set up venv & node depends if it hasn't been done yet:
+npm install
+python3 -m venv merlinai_venv
+source merlinai_venv/bin/activate
+pip3 install -r requirements.txt
 ```
+
 
 <table>
    <thead>

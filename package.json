@@ -20,21 +20,21 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "fft.js": "^4.0.3",
+    "jquery": "^3.5.1",
+    "ndarray": "^1.0.19",
+    "ndarray-resample": "^1.0.1",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
+  },
+  "devDependencies": {
+    "typescript": "^4.0.5",
+    "@tensorflow/tfjs-converter": "^2.3.0",
     "@tensorflow/tfjs": "latest",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
-    "fft.js": "^4.0.3",
-    "react-dom": "^16.13.1",
-    "jquery": "^3.5.1",
-    "ndarray": "^1.0.19",
-    "ndarray-resample": "^1.0.1",
-    "react": "^16.13.1"
-  },
-  "devDependencies": {
     "@types/leaflet": "~1.5.19",
-    "typescript": "^4.0.5",
-    "@tensorflow/tfjs-converter": "^2.3.0",
     "@types/dom-mediacapture-record": "^1.0.7",
     "@types/minimist": "latest",
     "@types/ndarray": "^1.0.6",
@@ -68,6 +68,7 @@
     "webpack-cli": "~4.0.0",
     "webpack-dev-server": "latest"
   },
+  "proxy": "http://127.0.0.1:5000",
   "browserslist": {
     "production": [
       ">0.2%",

@@ -5,7 +5,8 @@ gunicorn
 
 # Flask 1.1.2 has been causing headaches w/ Heroku, Jess has no idea why
 Flask==1.1.1  # sticking with 1.1.1 for now :(
-
+flask_pymongo
+# bson
 # fix x-origin locally:
 flask-cors
 

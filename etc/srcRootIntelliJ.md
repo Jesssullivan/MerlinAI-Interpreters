@@ -5,5 +5,5 @@
  
 *:(*
 
-![](./etc/markAs.png)
+![](./markAs.png)
 

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+    <title>Hello World Python Flask</title>
+     <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+  <div class="container">
+      <h3 class="text-muted">Upload File</h3>
+      <form method="POST" action="upload" enctype="multipart/form-data">
+        <div class="form-group">
+          <label for="file">Input File</label>
+          <input type="file" name="file" class="form-control" multiple />
+        </div>
+        <button type="submit" class="btn btn-default">Submit</button>
+      </form>
+  </div>
+</body>
+</html>
