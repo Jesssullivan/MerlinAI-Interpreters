@@ -32,36 +32,6 @@ Start the `Merlin` command line tool:
 ./Merlin
 ```
 
-*some example things you might do while hacking on deploy/web:*
-
-```
-# Auto setup:
-./Merlin --auto-setup
-
-# build & serve everything with flask (--incognito argument only for GNU/Linux for the time being)
-./Merlin --demos --annotators --serve --flask --incognito
-# ...or like this:
-./Merlin -d -a -s -f -i
-
-# serve some html using OpenSSL & Node http-server (only for GNU/Linux for the time being also)
-./Merlin -s --http-server ./demos/webgl_test.html -i
-
-# hack on MongoDB stuff:
-./Merlin -s -f -m
-
-# rebuild only the annotators:
-./Merlin --annotators   
-
-# cleanup rendered html pages:
-./Merlin --clean-renders
-
-# clean up all compiled:
-./Merlin -ca
-
-# display all arguments & their default state:
-./Merlin
-```
-
 <h4 id="setup"> </h4>     
 
 
@@ -95,7 +65,38 @@ Serve?                 : -s  | --serve         :  = false
 -- Browser CLI?       :   Detected Linux      :  = chromium
 ```
 
+
+*some example things you might do while hacking on deploy/web:*
+
+```
+# build & serve everything with flask (--incognito argument only for GNU/Linux for the time being)
+./Merlin --demos --annotators --serve --flask --incognito
+
+# ^...or like this:
+./Merlin -d -a -s -f -i
+
+# serve some html using OpenSSL & Node http-server (only for GNU/Linux for the time being also)
+./Merlin -s --http-server ./demos/webgl_test.html -i
+
+# hack on MongoDB stuff:
+./Merlin -s -f -m
+
+# rebuild only the annotators:
+./Merlin --annotators   
+
+# cleanup rendered html pages:
+./Merlin --clean-renders
+
+# clean up all compiled:
+./Merlin -ca
+
+# display all arguments & their default state:
+./Merlin
+```
+
+
 - - -
+
 
 <h4 id="build"> </h4>     
 
