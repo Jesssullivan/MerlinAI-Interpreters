@@ -38,18 +38,6 @@ Start the `Merlin` command line tool:
 <h4 id="setup"> </h4>     
 
 
-```
-# MongoDB:
-# db lives here, launch as its own process...
-mongod --dbpath ./srv/mongodb/ --port 27017
-
-# ...add in some existing annotation event data (all json annotations as of 11/24/20):
-python3 etc/loader.py 
-
-# ...you could launch mongodb alongside other processes too using the -m / --mongo-db flag; 
-# something like:
-./Merlin -s -f -m  
-```
 
 ```
 ./Merlin
@@ -109,10 +97,26 @@ Serve?                 : -s  | --serve         :  = false
 ```
 
 
+```
+# MongoDB:
+# db lives here, launch as its own process...
+mongod --dbpath ./srv/mongodb/ --port 27017
+
+# ...add in some existing annotation event data (all json annotations as of 11/24/20):
+python3 etc/loader.py 
+
+# ...you could launch mongodb alongside other processes too using the -m / --mongo-db flag; 
+# something like:
+./Merlin -s -f -m  
+```
+
+
+
 - - -
 
 
 <h4 id="build"> </h4>     
+
 
 
 #### *Build:*
