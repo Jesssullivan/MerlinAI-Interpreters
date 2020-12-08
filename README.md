@@ -32,37 +32,51 @@ Start the `Merlin` command line tool:
 ./Merlin
 ```
 
+
+[![Watch 60 seconds of web features (12/01/20)](./etc/MerlinWeb12.01.20.gif)](https://www.youtube.com/watch?v=TKKjo1ypSPY&feature=youtu.be "Watch 60 seconds of web features (12/01/20)")
+
 <h4 id="setup"> </h4>     
 
 
-[![Watch 60 seconds of some web features (12/01/20)](./etc/MerlinWeb12.01.20.gif)](https://www.youtube.com/watch?v=TKKjo1ypSPY&feature=youtu.be "Watch 60 seconds of web features (12/01/20)")
+```
+# MongoDB:
+# db lives here, launch as its own process...
+mongod --dbpath ./srv/mongodb/ --port 27017
+
+# ...add in some existing annotation event data (all json annotations as of 11/24/20):
+python3 etc/loader.py 
+
+# ...you could launch mongodb alongside other processes too using the -m / --mongo-db flag; 
+# something like:
+./Merlin -s -f -m  
+```
 
 ```
 ./Merlin
-___  ___          _ _        ___ _____
-|  \/  |         | (_)      / _ |_   _|
-| .  . | ___ _ __| |_ _ __ / /_\ \| |
-| |\/| |/ _ | '__| | | '_ \|  _  || |
-| |  | |  __| |  | | | | | | | | _| |_
-\_|  |_/\___|_|  |_|_|_| |_\_| |_\___/
-
+      ___  ___          _ _        ___ _____
+      |  \/  |         | (_)      / _ |_   _|
+      | .  . | ___ _ __| |_ _ __ / /_\ \| |
+      | |\/| |/ _ | '__| | | '_ \|  _  || |
+      | |  | |  __| |  | | | | | | | | _| |_
+      \_|  |_/\___|_|  |_|_|_| |_\_| |_\___/
+     
 Environment:
--- Auto Setup?        : -as | --auto-setup    :  = false
--- Check Node?        : -cn | --check-node    :  = true
--- Check Venv?        : -cv | --check-venv    :  = true
+ -- Auto Setup?        :     | --auto-setup    :  = false
+ -- Check Node?        : -cn | --check-node    :  = true
+ -- Check Venv?        : -cv | --check-venv    :  = true
 Utilities:
--- Cleanup Bundles?   : -cb | --clean-bundles :  = false
--- Cleanup Renders?   : -cr | --clean-renders :  = false
--- Cleanup compiled?  : -ca | --clean-all     :  = false
+ -- Cleanup Bundles?   : -cb | --clean-bundles :  = false
+ -- Cleanup Renders?   : -cr | --clean-renders :  = false
+ -- Cleanup compiled?  : -ca | --clean-all     :  = false
 Build:
-Pack Demos?            : -d  | --demos         :  = false
-Pack Annotators?       : -a  | --annotators    :  = false
+Pack Demos?:           : -d  | --demos         :  = false
+pack Annotators?:      : -a  | --annotators    :  = false
 Serve?                 : -s  | --serve         :  = false
--- Flask Server?      : -f  | --flask         :  = false
--- Node HTTP Server?  : -h  | --http-server   :  = none
--- MongoDB Server?    : -m  | --mongo-db      :  = false
--- Incognito?         : -i  | --incognito     :  = false
--- Browser CLI?       :   Detected Linux      :  = chromium
+ -- Flask Server?:     : -f  | --flask         :  = false
+ -- Node HTTP Server?  : -h  | --http-server   :  = none
+ -- MongoDB Server?    : -m  | --mongo-db      :  = false
+ -- Incognito?         : -i  | --incognito     :  = false
+ -- Browser CLI?       :   Detected Linux      :  = chromium 
 ```
 
 
