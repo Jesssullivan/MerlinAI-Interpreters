@@ -5,11 +5,12 @@ Demos, interpreter implementations & data ingress experiments for birdsong ID.
 
 | Directory | Description |
 |-----------|-------------|
-| [tmpui_experiments](tmpui_experiments) | Miscellaneous interpreters, experiments, annotators, notes, etc   |
-| [web_experiments](web_experiments) | Web experiments with `tfjs`, `Flask Blueprints` & `MongoDB`  |
+| [root](tmpui_experiments) | Miscellaneous experiments & notes   |
+| [web_experiments](web_experiments) | Web-specific experiments |
 
 
 <br/>
+
 
 
 - - - 
@@ -85,7 +86,6 @@ Serve?                 : -s  | --serve         :  = false
 ```
 
 
-*some example things you might do while hacking on deploy/web:*
 
 ```
 # build & serve everything with flask (--incognito argument only for GNU/Linux for the time being)
@@ -115,7 +115,7 @@ Serve?                 : -s  | --serve         :  = false
 
 
 ```
-# MongoDB:
+# Experiments MongoDB:
 # db lives here, launch as its own process...
 mongod --dbpath ./srv/mongodb/ --port 27017
 
