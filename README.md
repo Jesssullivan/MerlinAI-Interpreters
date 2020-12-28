@@ -1,5 +1,4 @@
-# tmpUI
-Demos, interpreter implementations & data ingress experiments for birdsong ID. 
+## *Demos, interpreter implementations & data ingress experiments for birdsong ID*
 
 - - -
 
