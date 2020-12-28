@@ -1,0 +1,109 @@
+{
+  "name": "merlinai-web",
+  "version": "0.1.0",
+  "private": "true",
+  "scripts": {
+    "build-anno-tool": "chmod +x scripts/annotator_tool.sh && ./scripts/annotator_tool.sh",
+    "build-spec-web": "webpack --config webpack/webpack.spec_web.ts",
+    "build-test-web": "webpack --config webpack/webpack.webgl.ts",
+    "build-anno-photo": "webpack --config webpack/webpack.annotator_photo.ts",
+    "build-anno-audio": "webpack --config webpack/webpack.annotator_audio.ts",
+    "build-demo": "webpack --config webpack/es6.demo.config.ts",
+    "sslgen": "chmod +x scripts/sslgen.sh && ./scripts/sslgen.sh",
+    "run-api": "chmod +x scripts/run_api.sh && ./scripts/run_api.sh",
+    "setup-api": "chmod +x scripts/setup_api.sh && ./scripts/setup_api.sh",
+    "clean-all": "chmod +x scripts/clean-all.sh && ./scripts/clean-all.sh"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.8.4",
+    "@babel/preset-env": "^7.12.1",
+    "@babel/preset-react": "^7.12.5",
+    "@babel/runtime": "^7.8.4",
+    "@material-ui/core": "latest",
+    "@tensorflow/tfjs": "latest",
+    "@tensorflow/tfjs-converter": "^2.3.0",
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.5.0",
+    "@testing-library/user-event": "^7.2.1",
+    "@types/dom-mediacapture-record": "^1.0.7",
+    "@types/glob": "^7.1.3",
+    "@types/jquery": "^3.5.4",
+    "@types/leaflet": "~1.5.19",
+    "@types/minimist": "latest",
+    "@types/ndarray": "^1.0.6",
+    "@types/terser-webpack-plugin": "^4.1.0",
+    "@types/webgl2": "0.0.5",
+    "audio-recorder-polyfill": "latest",
+    "babel-loader": "~8.2.0",
+    "buffer": "~6.0.3",
+    "css-loader": "~5.0.1",
+    "eslint": "^6.5.1",
+    "fft.js": "^4.0.3",
+    "http-server": "~0.12.3",
+    "jquery": "^3.5.1",
+    "leaflet": "^1.6.0",
+    "leaflet-draw": "^1.0.4",
+    "metro-react-native-babel-preset": "~0.64.0",
+    "ndarray": "^1.0.19",
+    "ndarray-resample": "^1.0.1",
+    "node-gyp": "^7.1.0",
+    "polygon-clipping": "^0.14.3",
+    "react": "~16.13.1",
+    "react-dom": "~16.13.1",
+    "style-loader": "^1.1.0",
+    "terser-webpack-plugin": "latest",
+    "ts-loader": "^5.3.0",
+    "ts-node": "^5.0.1",
+    "tsify": "^3.0.4",
+    "tslint": "^5.9.1",
+    "typescript": "^4.1.3",
+    "url-loader": "^3.0.0",
+    "watch": "~1.0.2",
+    "webpack": "~4.44.1",
+    "webpack-cli": "~4.0.0"
+  },
+  "proxy": "http://127.0.0.1:5000",
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "jest": {
+    "preset": "react-native"
+  },
+  "babel": {
+    "presets": [
+      "@babel/preset-env",
+      "@babel/preset-react"
+    ],
+    "plugins": [
+      "@babel/plugin-proposal-class-properties",
+      "react-hot-loader/babel"
+    ]
+  },
+  "contributors": [
+    {
+      "name": "Grant Van Horn",
+      "url": "https://github.com/gvanhorn38"
+    },
+    {
+      "name": "Jess Sullivan",
+      "url": "https://github.com/jesssullivan"
+    },
+    {
+      "name": "Benjamin Hoffman",
+      "url": "https://github.com/benjaminsshoffman"
+    },
+    {
+      "name": "Visipedia et al.",
+      "url": "https://github.com/visipedia/"
+    }
+  ]
+}
