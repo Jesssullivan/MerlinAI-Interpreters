@@ -15,7 +15,8 @@ Demos, interpreter implementations & data ingress experiments for birdsong ID.
 - - - 
 
 
- 
+
+
 *Jump to:*
 - [**Setup**](#setup) <br>
 - [**Build**](#build) <br>
@@ -32,7 +33,10 @@ Demos, interpreter implementations & data ingress experiments for birdsong ID.
 - - -
 
 
-#### *Setup:*
+
+
+
+#### *Experiments Setup:*
 
 ```
 # Clone:
@@ -530,11 +534,3 @@ a ***single annotation*** as first class entry in database:
        use the same annotator bundle to handle all these functions.
      - fix crop behavior for serverside classification ^ this way, generate and POST new `snippet.wav` by `bbox`
        (instead of classify entire recording)
-
-
-
-*miscellaneous dregs, bits, bobs, demos on youtube:*
-- [mongodb, trust schema, drag & drop 12/7/20](https://youtu.be/5rsRts7-_Xs)
-- [web tools, bbox classify, ridiculous CLI 12/1/20](https://www.youtube.com/watch?v=TKKjo1ypSPY&feature=youtu.be)
-- [audio & photo annotators 11/23/20](https://youtu.be/rKzl5aQmJ-Y)
-- [what this swiftui thing 10/26/20](https://youtu.be/3btWzARKYKM)
