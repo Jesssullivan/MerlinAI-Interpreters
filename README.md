@@ -31,15 +31,6 @@
 git clone --branch=master --depth=1 https://github.com/jesssullivan/tmpUI && cd tmpUI
 ```
 
-*from `Merlin` command line tool:*
-```
-# permiss:
-sudo chmod +x ./Merlin
-
-# follow the prompts:
-./Merlin
-```
-
 
 <h4 id="build"> </h4>     
 
