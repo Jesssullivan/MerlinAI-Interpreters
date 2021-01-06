@@ -1,21 +1,5 @@
 ## *Demos, interpreter implementations & data ingress experiments for birdsong ID*
 
-- - -
-
-| Directory | Description |
-|-----------|-------------|
-| [root](tmpui_experiments) | Miscellaneous experiments & notes   |
-| [web_experiments](web_experiments) | Web-specific experiments |
-
-
-<br/>
-
-
-
-- - -
-
-
-
 
 *Jump to:*
 - [**Web: Setup**](#setup) <br>
