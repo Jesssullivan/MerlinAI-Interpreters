@@ -10,7 +10,7 @@
 - [**Leaflet.Annotation**](#leaflet) <br>
 - [**Swift UI**](#swift) <br>
 - [**React-Native**](#reactnative) <br>
-- [**Notes**](#notes) <br>
+- [**Notes**](#footnotes) <br>
 - [**@ github.io**](https://jesssullivan.github.io/tmpUI/) <br>
 - [**@ github repo**](https://github.com/Jesssullivan/tmpUI)
 - [**@ Heroku**](https://merlinai.herokuapp.com/)  <br>
@@ -594,10 +594,10 @@ a ***single annotation*** as first class entry in database:
      - ...from a single database with id events as first class objects
           - (^ Jess is starting here this week (1/05-1/12))
      - ...from equivalents to annotations, categories, config, images json files, selected by the "id" field
- - would be terrific to get the react stuff working at `>17.*` and `webpack-dev-server` or `react-scripts`, consolidate lint and tsconfig rules etc
+ - would be terrific to get the react stuff working at `>17.*`, add functioning `webpack-dev-server` or `react-scripts`, consolidate lint and tsconfig rules etc
 
 
-<h4 id="notes"> </h4>     
+<h4 id="footnotes"> </h4>     
 
 
 #### *^ Rolling notes and whatnot are appended above ^*
