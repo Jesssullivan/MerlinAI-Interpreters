@@ -280,10 +280,6 @@ python3 tone.py 2
 
 
 
-[![Watch 60 seconds of web features (12/01/20)](./etc/MerlinWeb12.01.20.gif)](https://www.youtube.com/watch?v=TKKjo1ypSPY&feature=youtu.be "Watch 60 seconds of web features (12/01/20)")
-
-
-
 - - -
 
 
@@ -297,11 +293,11 @@ python3 tone.py 2
   <thead>
     <tr>
       <th>
-        <a href="https://merlinai.herokuapp.com/leaflet_audio"><img src="./icons/tmpUI.MerlinAI-favicon-light/android-chrome-192x192.png" alt="demos"></a>
+        <a href="https://merlinai.herokuapp.com/leaflet_audio"><img src="./demos/icons/tmpUI.MerlinAI-favicon-light/android-chrome-192x192.png" alt="demos"></a>
         <br/><em> Visit Leaflet.annotation Audio demo </em>
       </th>
         <th>
-        <a href="https://merlinai.herokuapp.com/leaflet_photo"><img src="./icons/Leaflet.annotation-favicon-dark/android-chrome-192x192.png" alt="demos"></a>
+        <a href="https://merlinai.herokuapp.com/leaflet_photo"><img src="./demos/icons/Leaflet.annotation-favicon-dark/android-chrome-192x192.png" alt="demos"></a>
         <br/><em> Visit Leaflet.annotation Photo demo </em>
       </th>
     </tr>
