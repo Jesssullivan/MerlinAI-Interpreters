@@ -110,7 +110,7 @@ Serve?                 : -s  | --serve         :  = false
 # ^...or like this:
 ./Merlin -d -a -s -f
 
-# serve some html using OpenSSL & Node http-server (only for GNU/Linux for the time being also)
+# serve some html using OpenSSL & Node http-server (only for GNU/Linux for the time being)
 ./Merlin -s --http-server ./demos/webgl_test.html
 
 # rebuild only the annotators:
