@@ -1,5 +1,6 @@
 import * as glob from 'glob';
 import * as path from 'path';
+// @ts-ignore
 import Terser from 'terser-webpack-plugin';
 
 const src = path.resolve(__dirname, '../src');

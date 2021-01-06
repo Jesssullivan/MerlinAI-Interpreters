@@ -1,0 +1,74 @@
+if [[ $SERVE == true && $USEFLASK == true || -f $USENODEFILE ]] ; then
+
+  echo -e "$CONSOLE Launching..."
+
+  echo -ne '(##########################   (90%)\r'
+
+  if [[ "$OSTYPE" == "darwin"* ]] ; then
+
+    echo -ne '(########################## (100%)\r'
+
+    echo "
+
+    $CONSOLE Detected fruit-based operating system, using browser cli $MACBROWSER
+    "
+
+    echo -ne '(########################## (100%)\r'
+
+    BROWSER=$MACBROWSER
+
+  else
+
+    echo -ne '(########################## (100%)\r'
+
+    echo "
+
+    $CONSOLE Detected penguin-based operating system, using browser cli  $DEBBROWSER
+    "
+
+    echo -ne '(########################## (100%)\r'
+
+    BROWSER=$DEBBROWSER
+
+  fi
+
+  # just to make sure disk catches up to us:
+  sleep 2
+
+  ## browser ##
+  # best to use incognito to avoid cross domain CORS shenanigans ~/.config and ~/.cache
+  if [[ $USEFLASK == true && $INCOGNITO == true ]] ; then
+
+      $BROWSER http://127.0.0.1:5000 --allow-insecure-localhost -incognito &> $FLASKLOG &
+
+      wait
+      exit 0
+
+  fi
+
+   if [[ $USEFLASK == true && $INCOGNITO == false ]] ; then
+
+      $BROWSER http://127.0.0.1:5000 &> $FLASKLOG &
+
+      wait
+      exit 0
+
+  fi
+
+  if [[ -f $USENODEFILE && $INCOGNITO == false ]] ; then
+
+      $BROWSER https://127.0.0.1:5000/$USENODEFILE &> $FLASKLOG &
+
+      wait
+      exit 0
+
+  fi
+
+  if [[ -f $USENODEFILE && $INCOGNITO == true ]] ; then
+
+      $BROWSER https://127.0.0.1:5000/$USENODEFILE --allow-insecure-localhost -incognito  &> $FLASKLOG &
+
+      wait
+      exit 0
+
+  fi

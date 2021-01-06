@@ -69,7 +69,7 @@ const defaultOptions = {
 
     allowSupercategoryEdit : true, // Can the supercategory be edited? (This removes the category_id)
     allowSupercategoryRemoval : false, // Can the supercategory be removed? (Leaving neither category_id nor supercategory)
-
+    // @ts-ignore
     quickAccessCategoryIDs : [], // The category ids that should show up immediately when adding a new category. Note that this is not supercategories.
 
     // New Instance Config
@@ -552,7 +552,9 @@ export class Annotator_tool extends React.Component {
         // Store the layers for this annotation, this is the return value
         // This will eventually store keypoints, segmentations, etc.
         const layers = {
+            // @ts-ignore
           'bbox' : null,
+            // @ts-ignore
           'segmentation' : null,
         };
 
@@ -800,6 +802,7 @@ export class Annotator_tool extends React.Component {
      */
     annotateBBox({
         isNewInstance = false,
+         // @ts-ignore
         annotationIndex = null
     }={}) {
 
@@ -901,6 +904,7 @@ export class Annotator_tool extends React.Component {
         newAnnotation.id = uuidv4();
 
         const newAnnotationLayer = {
+            // @ts-ignore
             'bbox' : null
         };
         const newAnnotationIndex = this.state.annotations.length;
@@ -1134,8 +1138,11 @@ export class Annotator_tool extends React.Component {
                     image_id: this.props.image.id,
                     _modified : true,
                     _created : true,
+                    // @ts-ignore
                     bbox : null, // we don't need to fill this in just yet, it will be populated in `getAnnotations`
+                    // @ts-ignore
                     supercategory: undefined,
+                    // @ts-ignore
                     category_id: undefined
                 };
 
@@ -1391,7 +1398,7 @@ export class Annotator_tool extends React.Component {
         }
 
         // Update the annotations
-        this.setState((prevState) => {
+        this.setState((prevState: any) => {
 
             const annotations = prevState.annotations;
 
@@ -1468,11 +1475,6 @@ export class Annotator_tool extends React.Component {
             } else {
                 this.leafletMap.fitBounds(bounds, {maxZoom: this.leafletMap.getZoom()});
             }
-
-            // Let any listeners know that we moved the map to a specific location
-            // This is currently very specific to handling the panning of spectrograms.
-            const zoom = this.leafletMap.getZoom();
-            const center = bounds.getCenter();
 
             console.log("Clicked Classify!");
 
@@ -1680,7 +1682,6 @@ export class Annotator_tool extends React.Component {
 
     handleAnnotationDeleteSegmentation(annotationIndex: number) {
 
-        const annotation = this.state.annotations[annotationIndex];
         const annotation_layer = this.annotation_layers[annotationIndex];
 
         if (annotation_layer.segmentation !== undefined && annotation_layer.segmentation !== null) {

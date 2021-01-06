@@ -15,8 +15,8 @@ for (let i = 0; i < testWaveform.length; i++){
 /* tslint:disable:prefer-const */
 const webglButton = document.getElementById("webglButton") as HTMLButtonElement;
 const testButton = document.getElementById("testButton") as HTMLButtonElement;
-const canvas = document.querySelector('.visualizer') as HTMLCanvasElement;
-const mainSection = document.querySelector('.container-fluid') as HTMLDivElement;
+// const canvas = document.querySelector('.visualizer') as HTMLCanvasElement;
+// const mainSection = document.querySelector('.container-fluid') as HTMLDivElement;
 let imgCrop = document.createElement('img');
 /* tslint:enable:prefer-const */
 
@@ -127,7 +127,7 @@ testButton.onclick = () => {
 
 // Make the canvas the full width
 window.addEventListener('resize', () => {
-    canvas.width = mainSection.offsetWidth;
+    // canvas.width = mainSection.offsetWidth;
 });
 
 window.dispatchEvent(new Event('resize'));

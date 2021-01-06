@@ -46,6 +46,7 @@ export function generateSpectrogramToURI(waveform : Float32Array) {
 
 }
 
+/*
 const toasts = document.querySelectorAll(".toast");
 const toastTriggers = document.querySelectorAll(".toast__trigger");
 
@@ -81,3 +82,4 @@ export function reColor(btn: string, color: string = "lightcoral", defaultColor:
         clicked = false;
     }
 }
+**/

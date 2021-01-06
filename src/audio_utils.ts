@@ -1,3 +1,4 @@
+// @ts-ignore
 /**
  *
  *
@@ -82,6 +83,7 @@ export async function fetch_audio(audio_url : string, targetSampleRate : number)
             return audioContext.decodeAudioData(arrayBuffer);
           }
         })
+        // @ts-ignore
         .then((sourceAudioBuffer: AudioBuffer) => {
 
               const sourceSampleRate = sourceAudioBuffer.sampleRate;
@@ -114,7 +116,7 @@ function _powerToDb(spec : Float32Array[], amin = 1e-10, topDb = 80.0) : Float32
   for (let i = 0; i < width; i++) {
       logSpec[i] = new Float32Array(height);
   }
-
+  // @ts-ignore
   const refValue = Math.max.apply(null, spec.map(arr => Math.max.apply(null, arr)));
 
   for (let i = 0; i < width; i++) {
@@ -128,7 +130,7 @@ function _powerToDb(spec : Float32Array[], amin = 1e-10, topDb = 80.0) : Float32
       if (topDb < 0) {
           throw new Error(`topDb must be non-negative.`);
       }
-
+      // @ts-ignore
       const maxVal = Math.max.apply(null, logSpec.map(arr => Math.max.apply(null, arr)));
 
       for (let i = 0; i < width; i++) {
@@ -300,7 +302,9 @@ export async function resampleAndMakeMono(
     const originalAudio = getMonoAudio(audioBuffer);
     const resampledAudio = new Float32Array(lengthRes);
     resample(
+          // @ts-ignore
         ndarray(resampledAudio, [lengthRes]),
+          // @ts-ignore
         ndarray(originalAudio, [originalAudio.length]));
     return resampledAudio;
   }
@@ -350,6 +354,7 @@ export function stft(y: Float32Array, params: SpecParams): Float32Array[] {
   for (let i = 0; i < width; i++) {
     // Populate the STFT matrix.
     const winBuffer = applyWindow(yFrames[i], fftWindow);
+      // @ts-ignore
     const col = fft(winBuffer);
     stftMatrix[i].set(col.slice(0, height));
   }
@@ -383,6 +388,7 @@ function applyFilterbank(
     // power spectrum.
     const win = applyWindow(mags, filterbank[i]);
     // Then add up the coefficents.
+      // @ts-ignore
     out[i] = win.reduce((a, b) => a + b);
   }
   return out;
@@ -580,6 +586,7 @@ function outerSubtract(arr: Float32Array, arr2: Float32Array): Float32Array[] {
 }
 
 function pow(arr: Float32Array, power: number) {
+    // @ts-ignore
   return arr.map(v => Math.pow(v, power));
 }
 

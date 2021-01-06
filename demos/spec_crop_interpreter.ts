@@ -1,6 +1,6 @@
 // spec_crop_interpreter.ts
 
-import {ui_utils, audio_loader, audio_utils, AudioRecorder, spectrogram_utils, audio_model} from '../src/index';
+import {ui_utils, audio_loader, audio_utils, AudioRecorder, spectrogram_utils, audio_model} from "../src/index";
 const noUiSlider = require('./nouislider');
 import {tf} from '../src';
 
@@ -133,6 +133,7 @@ async function handleClassifyWaveform() {
     }
     else {
         await merlinAudio.averagePredictV3(currentWaveformSample, targetSampleRate)
+            // @ts-ignore
             .then(([labels, scores]) => {
 
                 for (let i = 0; i < 10; i++) {
@@ -386,7 +387,7 @@ function stop_visualize(){
     requestAnimationFrame(clearCanvas);
 }
 
-function clearCanvas(){
+function clearCanvas() {
     canvasCtx!.fillStyle = 'rgb(58,119,52)';
     canvasCtx!.fillRect(0, 0, canvas.width, canvas.height);
 }

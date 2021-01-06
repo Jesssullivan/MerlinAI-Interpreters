@@ -1,15 +1,16 @@
 # pip3 install -r requirements.txt
 
-### needed for deploy in Heroku: ###
+flask-cors
+pymongo
+python-jose
+passlib
+pytz
 gunicorn
 
 # Flask 1.1.2 has been causing headaches w/ Heroku, Jess has no idea why
 Flask==1.1.1  # sticking with 1.1.1 for now :(
-flask_pymongo
+# flask_pymongo
 # bson
-# fix x-origin locally:
-flask-cors
-
 # numpy 1.18.** is still reverse depend of tensorflow 2.3.**
 # numpy~=1.18.2
 # numpy~=1.19.2
@@ -24,10 +25,3 @@ tf-nightly
 librosa~=0.8.0
 cryptography~=3.1
 keyring~=18.0.1
-
-
-### local:
-#IPython
-#matplotlib
-#playsound
-#pyaudio

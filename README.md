@@ -12,22 +12,25 @@
 
 
 
-- - - 
+- - -
 
 
 
 
 *Jump to:*
-- [**Setup**](#setup) <br>
-- [**Build**](#build) <br>
+- [**Web: Setup**](#setup) <br>
+  - [**Setup: npm**](#build) <br>
+  - [**Setup: ./Merlin**](#merlin_build) <br>
+  - [**Scripts**](#scripts) <br>
+  - [**Flask Structure**](#structure) <br>
 - [**Leaflet.Annotation**](#leaflet) <br>
 - [**Swift UI**](#swift) <br>
 - [**React-Native**](#reactnative) <br>
-- [**Scripts**](#scripts) <br>
 - [**Notes**](#notes) <br>
-- [**@ Heroku**](https://merlinai.herokuapp.com/)  <br>
 - [**@ github.io**](https://jesssullivan.github.io/tmpUI/) <br>
 - [**@ github repo**](https://github.com/Jesssullivan/tmpUI)
+- [**@ Heroku**](https://merlinai.herokuapp.com/)  <br>
+
 
 
 - - -
@@ -36,23 +39,50 @@
 
 
 
-#### *Experiments Setup:*
+#### *Web Experiments Setup:*
+
 
 ```
 # Clone:
 git clone --branch=master --depth=1 https://github.com/jesssullivan/tmpUI && cd tmpUI
+```
 
+*from `Merlin` command line tool:*
+```
 # permiss:
 sudo chmod +x ./Merlin
 
-Start the `Merlin` command line tool:
+# follow the prompts:
 ./Merlin
 ```
 
 
-[![Watch 60 seconds of web features (12/01/20)](./etc/MerlinWeb12.01.20.gif)](https://www.youtube.com/watch?v=TKKjo1ypSPY&feature=youtu.be "Watch 60 seconds of web features (12/01/20)")
+<h4 id="build"> </h4>     
 
-<h4 id="setup"> </h4>     
+#### *...with npm:*
+```
+# node:
+npm install
+
+# venv:
+python3 -m venv merlinai_venv
+source merlinai_venv/bin/activate
+pip3 install -r requirements.txt
+
+# build all the things:
+npm run-script build-all
+
+# serve:
+npm run-script setup-api
+npm run-script run-api
+```
+
+
+
+<h4 id="merlin_build"> </h4>     
+
+
+#### *...with ./Merlin:*
 
 
 
@@ -64,40 +94,40 @@ Start the `Merlin` command line tool:
       | |\/| |/ _ | '__| | | '_ \|  _  || |
       | |  | |  __| |  | | | | | | | | _| |_
       \_|  |_/\___|_|  |_|_|_| |_\_| |_\___/
-     
+
 Environment:
- -- Auto Setup?        :     | --auto-setup    :  = false
+ -- Auto Setup?        : -as | --auto-setup    :  = false
  -- Check Node?        : -cn | --check-node    :  = true
  -- Check Venv?        : -cv | --check-venv    :  = true
 Utilities:
  -- Cleanup Bundles?   : -cb | --clean-bundles :  = false
  -- Cleanup Renders?   : -cr | --clean-renders :  = false
  -- Cleanup compiled?  : -ca | --clean-all     :  = false
+ -- Setup Flask?       : -sf | --setup-flask   :  = false
 Build:
-Pack Demos?:           : -d  | --demos         :  = false
-pack Annotators?:      : -a  | --annotators    :  = false
+Pack Demos?            : -d  | --demos         :  = false
+Pack Annotators?       : -a  | --annotators    :  = false
 Serve?                 : -s  | --serve         :  = false
- -- Flask Server?:     : -f  | --flask         :  = false
+ -- Flask Server?      : -f  | --flask         :  = false
  -- Node HTTP Server?  : -h  | --http-server   :  = none
- -- MongoDB Server?    : -m  | --mongo-db      :  = false
- -- Incognito?         : -i  | --incognito     :  = false
- -- Browser CLI?       :   Detected Linux      :  = chromium 
-```
+ -- Browser CLI?       :   Detected Linux      :  = chromium
 
+```
 
 
 ```
-# build & serve everything with flask (--incognito argument only for GNU/Linux for the time being)
-./Merlin --demos --annotators --serve --flask --incognito
-
+# setup a config.cfg file:
+./Merlin -sf
 # ^...or like this:
-./Merlin -d -a -s -f -i
+./Merlin --setup-flask
+
+# build & serve everything with flask:
+./Merlin --demos --annotators --serve --flask
+# ^...or like this:
+./Merlin -d -a -s -f
 
 # serve some html using OpenSSL & Node http-server (only for GNU/Linux for the time being also)
-./Merlin -s --http-server ./demos/webgl_test.html -i
-
-# hack on MongoDB stuff:
-./Merlin -s -f -m
+./Merlin -s --http-server ./demos/webgl_test.html
 
 # rebuild only the annotators:
 ./Merlin --annotators   
@@ -115,28 +145,10 @@ Serve?                 : -s  | --serve         :  = false
 
 ```
 # Experiments MongoDB:
-# db lives here, launch as its own process...
+# db lives here, launches as its own process...
 mongod --dbpath ./srv/mongodb/ --port 27017
 
-# ...add in some existing annotation event data (all json annotations as of 11/24/20):
-python3 etc/loader.py 
-
-# ...you could launch mongodb alongside other processes too using the -m / --mongo-db flag; 
-# something like:
-./Merlin -s -f -m  
 ```
-
-
-
-- - -
-
-
-<h4 id="build"> </h4>     
-
-
-
-#### *Build:*
-
 
 ```
 # Tool will prompt to set up venv & node depends if it hasn't been done yet:
@@ -145,6 +157,123 @@ python3 -m venv merlinai_venv
 source merlinai_venv/bin/activate
 pip3 install -r requirements.txt
 ```
+- - -
+
+
+<h4 id="scripts"> </h4>     
+
+
+
+#### *Scripts:*
+
+```
+# See ./package.json & ./scripts/ for additional scripts
+# Most things can be done with ./Merlin command line tool
+```
+
+
+*additional npm scripts:*
+```
+# build specific things:
+npm run-script build-spec-web
+npm run-script build-test-web
+
+## cleanup:
+npm run-script clean-all
+
+# ...or:
+npm run-script clean-bundles
+npm run-script clean-renders
+
+# print reference json strucures:
+npx ts-node etc/json_refs.ts
+```
+
+```
+# pack only tool definitions @ `./src/annotator_tool.js:
+npm run-script build-anno-tool
+
+# pack only implementations of audio annotator @ `./demos/annotator_audio.ts:
+npm run-script build-anno-audio
+
+# pack only implementations of photo annotator @ `./demos/annotator_photo.ts:
+npm run-script build-anno-photo
+```
+
+#### *local ssl:*
+```
+# Generates local ssl certs for testing w/ node http-server:
+npm run-script sslgen
+
+# you can also provide a $DOMAIN argument like so:
+npm run-script sslgen hiyori
+# ...returns key `hiyori_key.pem` & cert `hiyori.pem`
+
+# ...or:
+sudo chmod +x scripts/sslgen.sh && ./scripts/sslgen.sh
+# osx is a bit more finicky
+```
+
+#### *tone generator:*
+
+```
+### available from here:
+cp etc/tone.py .
+
+### generate some .wav files for testing fft things:
+python3 tone.py
+
+### ...you can also specify duration in seconds & frequency in Hz like so:
+python3 tone.py 5 440
+
+### ...or just duration:
+python3 tone.py 2
+```
+
+
+
+- - -
+
+
+
+<h4 id="structure"> </h4>     
+
+
+
+#### *Flask Structure:*
+
+
+
+```
+├── api
+  ├── main
+    ├── auth
+      └── token authentication methods
+    ├── client
+      └── blueprint for packed web demos
+    ├── config
+      └── the ./setup script populates a new config.cfg file for Flask,
+          using the ##FIELDS## provided in config.cfg.sample
+    ├── eventdb
+      └── blueprint for ID event database, see notes on ./etc/
+    ├── tfmodels
+      └── Tensorflow model class and whatnot
+    ├── tools
+      └── utilities for date/time, expression matching, the like
+    └── userdb
+      └── blueprint for user authentication database
+├── scripts
+  └── scripts run by package.json
+├── demos
+  └── client side pages, demos built w/ webpack
+├── src
+  └── source directory for client side demos
+├── srv
+  └── mongodb directory and logs are built here
+...
+
+```
+
 
 
 <table>
@@ -173,6 +302,10 @@ pip3 install -r requirements.txt
       </tr>
    </tbody>
 </table>
+
+
+
+[![Watch 60 seconds of web features (12/01/20)](./etc/MerlinWeb12.01.20.gif)](https://www.youtube.com/watch?v=TKKjo1ypSPY&feature=youtu.be "Watch 60 seconds of web features (12/01/20)")
 
 
 
@@ -342,66 +475,17 @@ cd ios && pod install && cd ..
 npm run-script ios-native
 ```
 
-- - -
-
-
-<h4 id="scripts"> </h4>     
-
-
-
-#### *Scripts:*
-
-```
-# See ./package.json & ./scripts/ for additional scripts
-# Most things can be done with ./Merlin command line tool
-```
-
-```
-# pack only tool definitions @ `./src/annotator_tool.js:
-npm run-script build-anno-tool
-
-# pack only implementations of audio annotator @ `./demos/annotator_audio.ts:
-npm run-script build-anno-audio
-
-# pack only implementations of photo annotator @ `./demos/annotator_photo.ts:
-npm run-script build-anno-photo
-```
-
-#### *local ssl:*
-```
-# Generates local ssl certs for testing w/ node http-server:
-npm run-script sslgen
-
-# you can also provide a $DOMAIN argument like so:
-npm run-script sslgen hiyori
-# ...returns key `hiyori_key.pem` & cert `hiyori.pem`
-
-# ...or:
-sudo chmod +x scripts/sslgen.sh && ./scripts/sslgen.sh
-# osx is a bit more finicky
-```
-
-#### *tone generator:*
-
-```
-### available from here:
-cp etc/tone.py .
-
-### generate some .wav files for testing fft things:
-python3 tone.py
-
-### ...you can also specify duration in seconds & frequency in Hz like so:
-python3 tone.py 5 440
-
-### ...or just duration:
-python3 tone.py 2
-```
-
 
 - - -
 
 
-#### *miscellaneous stuff:*
+
+# Notes:    
+
+
+***Rolling notes and whatnot are appended to bottom of readme***
+
+
 
 
 - `tmpui-testing` dyno used sporadically for debugging, keeping it @ maintenance mode atm
@@ -467,15 +551,8 @@ python3 tone.py 2
 - still want to eventually figure out TensorFlow with web assembly instead of webgl for mobile, perhaps later?  thoughts on this?
 
 
-- - -
 
-
-<h4 id="notes"> </h4>     
-
-
-### *Notes:*
-
-#### *demos, annotators ***Π*** competitiveness*
+*demos, annotators ***Π*** competitiveness*
 
 a ***single annotation*** as first class entry in database:
 
@@ -533,3 +610,23 @@ a ***single annotation*** as first class entry in database:
        use the same annotator bundle to handle all these functions.
      - fix crop behavior for serverside classification ^ this way, generate and POST new `snippet.wav` by `bbox`
        (instead of classify entire recording)
+
+
+
+
+ *todo:*
+ - Get queue working somewhere online;
+   - It'd be great to be able to use the current Cornell annotator infrastructure (eBird authentication, "to be annotated" list from ML, etc)
+ - create an interface to let users visualize the model (tsne)
+     - create an interface to let users make a queue, e.g. "wood warbler songs" or "high-confidence false IDs" or "new world sparrows"
+ - queued ID events served either:
+     - ...from a single database with id events as first class objects
+          - (^ Jess is starting here this week (1/05-1/12))
+     - ...from equivalents to annotations, categories, config, images json files, selected by the "id" field
+ - would be terrific to get the react stuff working at `>17.*` and `webpack-dev-server` or `react-scripts`, consolidate lint and tsconfig rules etc
+
+
+<h4 id="notes"> </h4>     
+
+
+#### *^ Rolling notes and whatnot are appended above ^*

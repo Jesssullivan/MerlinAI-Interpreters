@@ -23,12 +23,15 @@ CLEANUPRENDERS=false
 CHECKNODE=true
 CHECKVENV=true
 AUTOSETUP=false
+SETFLASK=false
+
 
 #  shell --> browser:
 # MERLINSSHELL=$(ps -o fname --no-headers $$)
 MERLINSSHELL="bash"
 DEBBROWSER=chromium
 MACBROWSER=open
+
 
 # ssl domain:
 DOMAIN=./demos/web_demos
@@ -239,12 +242,12 @@ while [[ $# -gt 0 ]] ; do
 
         ;;
 
-        -m | --mongo-db)
+        -sf | --setup-flask)
 
-        if [ $MONGODB == false ] ; then
-          MONGODB=true
+        if [ $SETFLASK == false ] ; then
+          SETFLASK=true
         else
-          MONGODB=false
+          SETFLASK=false
         fi
 
         shift
@@ -297,14 +300,15 @@ echo "Utilities:"
 echo " -- Cleanup Bundles?   : -cb | --clean-bundles :  = ${CLEANUPBUNDLES}"
 echo " -- Cleanup Renders?   : -cr | --clean-renders :  = ${CLEANUPRENDERS}"
 echo " -- Cleanup compiled?  : -ca | --clean-all     :  = ${CLEANUPALL}"
+echo " -- Setup Flask?       : -sf | --setup-flask   :  = ${SETFLASK}"
 echo "Build:"
 echo "Pack Demos?            : -d  | --demos         :  = ${BUILDDEMOS}"
 echo "Pack Annotators?       : -a  | --annotators    :  = ${BUILDANNOS}"
 echo "Serve?                 : -s  | --serve         :  = ${SERVE}"
 echo " -- Flask Server?      : -f  | --flask         :  = ${USEFLASK}"
 echo " -- Node HTTP Server?  : -h  | --http-server   :  = ${USENODEFILE}"
-echo " -- MongoDB Server?    : -m  | --mongo-db      :  = ${MONGODB}"
-echo " -- Incognito?         : -i  | --incognito     :  = ${INCOGNITO}"
+# echo " -- MongoDB Server?    : -m  | --mongo-db      :  = ${MONGODB}"
+# echo " -- Incognito?         : -i  | --incognito     :  = ${INCOGNITO}"
 
 if [[ "$OSTYPE" == "darwin"* ]] ; then
 
@@ -343,6 +347,13 @@ if [[ ${CHECKNODE} == true && ! -d "./node_modules" ]] ; then
 fi
 
 
+# setup flask:
+if [ ${SETFLASK} == true ] ; then
+    npm run-script setup-api
+fi
+
+
+
 # make sure we actually in the right venv:
 if [[ ${CHECKVENV} == true && ! $VENVPATH == *_venv/bin/* ]] ; then
   if [ ${AUTOSETUP} == true ] ; then
@@ -378,38 +389,7 @@ fi
 
 
 if [ $CLEANUPALL == true ] ; then
-
-    echo -e "\n$CONSOLE  ...Cleaning compiled..."
-
-    CLEANUPBUNDLES=true
-    CLEANUPRENDERS=true
-
-    rm -rf .built
-    rm -rf .built_logs
-    rm -rf __pycache__
-
-    echo -e "\n...cleaning ./src/*.js tsc output..."
-    rm ./src/*.js
-
-    echo -e "\n...cleaning .built/ type declarations..."
-    rm -rf .built/
-
-    echo -e "\n...cleaning openssl stuff..."
-    find demos/ -name "*.key" -print -delete
-    find demos/ -name "*.pem" -print -delete
-    find demos/ -name "*.crt" -print -delete
-    find demos/ -name "*.cert" -print -delete
-    find demos/ -name "*.csr" -print -delete
-
-
-    echo -e "\ncleaning renders..."
-    find '.' -name "*_render.html" -print -delete
-
-    echo -e "\ncleaning bundles..."
-    find '.' -name "*_bundle.js" -print -delete
-
-    echo -e "$CONSOLE  ...Done! :) \n"
-    exit 0
+  npm run-script clean-all
 fi
 
 if [ $CLEANUPBUNDLES == true ] ; then
@@ -443,34 +423,12 @@ cp -rf ./icons/tmpUI.MerlinAI-favicon-dark/* ./demos/ &> $FLASKLOG &
 
 if [ $BUILDDEMOS == true ] ; then
 
-  echo -ne '(##                            (10%)\r'
 
   echo "$CONSOLE ...entering & packing demos, this could take a while..."
 
   # run primary webpack within its own process, it really does take a while
-  npm run-script build-web-demos &> $TOOLLOG &
+  npm run-script build-all &> $TOOLLOG &
 
-  # relax, and watch this chintzy loading graphic load while webpack runs
-  sleep 2
-  echo -ne '(##                            (10%)\r'
-  sleep 2
-  echo -ne '(####                         (15%)\r'
-  sleep 2
-  echo -ne '(#####                        (20%)\r'
-  sleep 2
-  echo -ne '(######                       (25%)\r'
-  sleep 2
-  echo -ne '(#######                      (30%)\r'
-  sleep 2
-  echo -ne '(########                     (35%)\r'
-  sleep 2
-  echo -ne '(#########                    (40%)\r'
-  sleep 2
-  echo -ne '(##########                   (45%)\r'
-  sleep 2
-  echo -ne '(###########                  (50%)\r'
-
-  # wait for initial webpack to finish:
 
   wait
 
@@ -480,46 +438,27 @@ fi
 
 if [ $BUILDANNOS == true ] ; then
 
-  echo -ne '(###########                  (50%)\r'
-
   echo -e "$CONSOLE ...entering & packing annotators..."
-
-  echo -ne '(############                 (55%)\r'
 
   echo "$CONSOLE ...packing leaflet annotator tool..."
 
   npm run-script  build-anno-tool &> $TOOLLOG &
 
-  echo -ne '(############                 (55%)\r'
-
   wait
 
-  echo -ne '(#############                (60%)\r'
-
   echo "$CONSOLE ...packing photo annotator..."
-
-  echo -ne '(##############                (65%)\r'
 
 
   npm run-script  build-anno-photo &> $PHOTOLOG &
 
   wait
 
-  echo -ne '(##############                (65%)\r'
-
-  echo -ne '(###############              (70%)\r'
-
   echo "$CONSOLE ...packing audio annotator..."
 
-  echo -ne '(################             (75%)\r'
 
   npm run-script  build-anno-audio &> $AUDIOLOG &
 
   wait
-
-  echo -ne '(################             (75%)\r'
-
-  echo -ne '(#################            (80%)\r'
 
   echo "$CONSOLE Done packing annotator!"
 
@@ -529,45 +468,9 @@ fi
 
 ## launch ##
 
-if [[ $SERVE == true && $MONGODB == true ]] ; then
-
-  echo -e "$CONSOLE Starting MongoDB Server..."
-  exec $(mongod --dbpath ./srv/mongodb/ --port 27017 &> $MONGOLOG &)
-
-fi
-
 
 if [[ $SERVE == true && $USEFLASK == true ]] ; then
-
-
-  echo -ne '(##################           (80%)\r'
-
-  echo "$CONSOLE ...(re)rendering html pages..."
-
-  echo -ne '(##################           (80%)\r'
-
-  find '.' -name "*_render.html" -delete &> $DEMOLOG &
-
-  echo -ne '(###################          (85%)\r'
-
-  wait
-
-  echo -ne '(###################          (85%)\r'
-
-  echo "$CONSOLE setting up flask..."
-
-  echo -ne '(###################          (85%)\r'
-
-  rm -rf __pycache__/ &> $FLASKLOG &
-
-  ## launch ##
-
-  echo -ne '(#####################        (90%)\r'
-
-  flask run &> $FLASKLOG &
-
-  echo -ne '(##########################   (90%)\r'
-
+  npm run-script serve-api &> $FLASKLOG &
 fi
 
 if [[ $SERVE == true && $USEFLASK == false ]] ; then
@@ -580,7 +483,7 @@ if [[ $SERVE == true && $USEFLASK == false ]] ; then
 
       echo -e "$CONSOLE preparing node http-server..."
 
-      npx http-server -p 5000 -S -C ${DOMAIN}.cert -K ${DOMAIN}.key &> $FLASKLOG &
+      npx http-server -p 5000 -S -C ${DOMAIN}.cert -K ${DOMAIN}.key &
 
     else
 
@@ -668,12 +571,12 @@ if [[ $SERVE == true && $USEFLASK == true || -f $USENODEFILE ]] ; then
 
   fi
 
+fi
+
+
   # check status like this:
   # ps aux | grep flask
   # echo -e "\nExiting Merlin AI Web Demos..."
 
-fi
-
-echo -ne '(########################## (100%)\r'
 
 exit 0

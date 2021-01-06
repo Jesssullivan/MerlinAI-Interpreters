@@ -3,7 +3,7 @@ import * as path from 'path';
 module.exports = {
   node: {fs: 'empty'},
   resolve: {
-    extensions: ['.ts', '.tsx', '.js', '.jsx'],
+      extensions: ['.ts', '.tsx', '.js', '.jsx'],
   },
   devtool: 'inline-source-map',
   mode: 'development',
@@ -29,5 +29,5 @@ module.exports = {
   devServer: {
     contentBase: path.join(__dirname, '../demos'),
     port: 8080,
-  },
+  }
 };

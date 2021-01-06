@@ -143,6 +143,7 @@ export class MerlinAudioModel {
         }
 
         const tf_averageScores = tf.mean(tf.tensor(batchResults), 0);
+        tf_averageScores.print();
         const topk = tf.topk(tf_averageScores, this.labels.length, true);
 
         const scores = topk['values'].dataSync() as Float32Array;

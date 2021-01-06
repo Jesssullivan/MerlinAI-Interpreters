@@ -29,3 +29,6 @@ openssl req -new -newkey rsa:4096 -nodes \
 openssl req -new -newkey rsa:4096 -days 365 -nodes -x509 \
     -subj "/C=US/ST=Oregon/L=Portland/O=Company Name/OU=Org/CN=127.0.0.1" \
     -keyout ${DOMAIN}.key  -out ${DOMAIN}.cert
+
+# run, something like:
+#  npx http-server -p 5000 -S -C ${DOMAIN}.cert -K ${DOMAIN}.key
