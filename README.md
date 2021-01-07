@@ -49,23 +49,10 @@ npm run-script build-all
 
 # serve:
 npm run-script setup-api
-npm run-script run-api
+npm run-script serve-api
 ```
 
-```
-# Experiments MongoDB:
-# db lives here, launches as its own process...
-mongod --dbpath ./srv/mongodb/ --port 27017
 
-```
-
-```
-# Tool will prompt to set up venv & node depends if it hasn't been done yet:
-npm install
-python3 -m venv merlinai_venv
-source merlinai_venv/bin/activate
-pip3 install -r requirements.txt
-```
 - - -
 
 
@@ -82,21 +69,22 @@ pip3 install -r requirements.txt
 
 
 *additional npm scripts:*
+
+*additional scripts:*
 ```
-# build various things:
-"build-all": "chmod +x scripts/build_all.sh && ./scripts/build_all.sh",
-"build-spec-web": "webpack --config webpack/webpack.spec_web.ts",
-"build-webgl-web": "webpack --config webpack/webpack.webgl.ts",
-"build-anno-tool": "chmod +x scripts/annotator_tool.sh && ./scripts/annotator_tool.sh",
-"build-anno-photo": "webpack --config webpack/webpack.annotator_photo.ts",
-"build-anno-audio": "webpack --config webpack/webpack.annotator_audio.ts",
+# build specific things:
+npm run-script build-spec-web
+npm run-script build-webgl-web
+npm run-script build-anno-tool
+npm run-script build-anno-photo
+npm run-script build-anno-audio
 ```
 
 ```
-# Webpack with --watch running: 
-"watch-spec-web": "webpack --watch --config webpack/webpack.spec_web.ts",
-"watch-anno-photo": "webpack --watch --config webpack/webpack.annotator_photo.ts",
-"watch-anno-audio": "webpack --watch --config webpack/webpack.annotator_audio.ts",
+# Webpack with --watch running:
+npm run-script watch-spec-web
+npm run-script watch-anno-photo
+npm run-script watch-anno-audio
 ```
 
 ```
@@ -111,12 +99,6 @@ npm run-script serve-node
 npm run-script clean-bundles
 npm run-script clean-renders
 npm run-script clean-all
-```
-
-```
-# react-native stuff:
-npm run-script ios-native
-npm run-script android-native
 ```
 
 ```
@@ -607,9 +589,7 @@ a ***single annotation*** as first class entry in database:
  - queued ID events served either:
      - ...from a single database with id events as first class objects
           - (^ Jess is starting here this week (1/05-1/12))
-     - ...from equivalents to annotations, categories, config, images json files, selected by the "id" field
- - would be terrific to get the react stuff working at `>17.*`, add functioning `webpack-dev-server` or `react-scripts`, consolidate lint and tsconfig rules etc
-
+          
 
 <h4 id="footnotes"> </h4>     
 
