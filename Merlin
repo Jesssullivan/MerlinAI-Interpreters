@@ -25,7 +25,6 @@ CHECKVENV=true
 AUTOSETUP=false
 SETFLASK=false
 
-
 #  shell --> browser:
 # MERLINSSHELL=$(ps -o fname --no-headers $$)
 MERLINSSHELL="bash"
@@ -144,6 +143,15 @@ while [[ $# -gt 0 ]] ; do
 
         ;;
 
+        -w | --watch)
+
+        if [ $USEWATCH == false ] ; then
+          USEWATCH=true
+        fi
+
+        shift
+
+        ;;
         -f | --flask)
 
         if [[ $SERVE == true && $USEFLASK == false ]] ; then
@@ -301,18 +309,17 @@ echo " -- Cleanup Bundles?   : -cb | --clean-bundles :  = ${CLEANUPBUNDLES}"
 echo " -- Cleanup Renders?   : -cr | --clean-renders :  = ${CLEANUPRENDERS}"
 echo " -- Cleanup compiled?  : -ca | --clean-all     :  = ${CLEANUPALL}"
 echo " -- Setup Flask?       : -sf | --setup-flask   :  = ${SETFLASK}"
-echo "Build:"
+echo "Bundle:"
 echo "Pack Demos?            : -d  | --demos         :  = ${BUILDDEMOS}"
 echo "Pack Annotators?       : -a  | --annotators    :  = ${BUILDANNOS}"
 echo "Serve?                 : -s  | --serve         :  = ${SERVE}"
 echo " -- Flask Server?      : -f  | --flask         :  = ${USEFLASK}"
 echo " -- Node HTTP Server?  : -h  | --http-server   :  = ${USENODEFILE}"
-# echo " -- MongoDB Server?    : -m  | --mongo-db      :  = ${MONGODB}"
-# echo " -- Incognito?         : -i  | --incognito     :  = ${INCOGNITO}"
+echo " -- Incognito?         : -i  | --incognito     :  = ${INCOGNITO}"
 
 if [[ "$OSTYPE" == "darwin"* ]] ; then
 
-  # reset irrelavent args:
+  # reset irrelevant args:
   USENODEFILE="none"
   INCOGNITO=false
 
@@ -350,8 +357,9 @@ fi
 # setup flask:
 if [ ${SETFLASK} == true ] ; then
     npm run-script setup-api
+    wait
+    exit 0
 fi
-
 
 
 # make sure we actually in the right venv:
@@ -423,12 +431,10 @@ cp -rf ./icons/tmpUI.MerlinAI-favicon-dark/* ./demos/ &> $FLASKLOG &
 
 if [ $BUILDDEMOS == true ] ; then
 
-
   echo "$CONSOLE ...entering & packing demos, this could take a while..."
 
   # run primary webpack within its own process, it really does take a while
   npm run-script build-all &> $TOOLLOG &
-
 
   wait
 
@@ -454,8 +460,6 @@ if [ $BUILDANNOS == true ] ; then
   wait
 
   echo "$CONSOLE ...packing audio annotator..."
-
-
   npm run-script  build-anno-audio &> $AUDIOLOG &
 
   wait
@@ -500,31 +504,21 @@ if [[ $SERVE == true && $USEFLASK == true || -f $USENODEFILE ]] ; then
 
   echo -e "$CONSOLE Launching..."
 
-  echo -ne '(##########################   (90%)\r'
-
   if [[ "$OSTYPE" == "darwin"* ]] ; then
-
-    echo -ne '(########################## (100%)\r'
 
     echo "
 
     $CONSOLE Detected fruit-based operating system, using browser cli $MACBROWSER
     "
 
-    echo -ne '(########################## (100%)\r'
-
     BROWSER=$MACBROWSER
 
   else
-
-    echo -ne '(########################## (100%)\r'
 
     echo "
 
     $CONSOLE Detected penguin-based operating system, using browser cli  $DEBBROWSER
     "
-
-    echo -ne '(########################## (100%)\r'
 
     BROWSER=$DEBBROWSER
 

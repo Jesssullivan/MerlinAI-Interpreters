@@ -1,4 +1,4 @@
-/**
+/*
  *  annotator_photo.ts
  *
  * implementations of `annotator_tool` for annotating photos.
@@ -10,12 +10,12 @@
  * ` npm run-script build `
  */
 
-let annotatorRendered = null; // allows us to export annotations
-let currentImageIndex = 0; // keep track of which image we are working on.
+const annotatorRendered = null; // allows us to export annotations
+const currentImageIndex = 0; // keep track of which image we are working on.
 
-function startAnnotating(images_data: any[], categories: any, annotations: Array<{ [x: string]: any; }>, config: {
+const startAnnotating = (images_data: any[], categories: any, annotations: Array<{ [x: string]: any }>, config: {
         quickAccessCategoryIDs: any[];
-        annotationFilePrefix: string; }) {
+        annotationFilePrefix: string; }) => {
 
     const image_list_el = document.getElementById("imageList");
     const annotatorObjs: any[] = [];
@@ -85,6 +85,7 @@ function startAnnotating(images_data: any[], categories: any, annotations: Array
             }, null);
 
             // Render the annotator
+            // @ts-ignore
             const annotatorRendered = ReactDOM.render(annotator, annotation_holder);
 
             annotatorObjs.push(annotatorRendered);
@@ -121,10 +122,10 @@ function startAnnotating(images_data: any[], categories: any, annotations: Array
 
     });
 
-}
+};
 
 // Parse the category ids provided by the user.
-function getQuickAccessCategoryIDs(){
+const getQuickAccessCategoryIDs = () => {
 
     // @ts-ignore
     const rawCatIDs = $.trim(document.getElementById("easyAccessCategories").value);
@@ -151,16 +152,16 @@ function getQuickAccessCategoryIDs(){
 
     return cat_ids;
 
-}
+};
 
 /*  Allows the user to choose a directory.
  *
  */
-let i = document.querySelector('#customFile').addEventListener('change', (ev) => {
+const i = document.querySelector('#customFile').addEventListener('change', (ev) => {
 
     ev.preventDefault();
 
-    const local_image_data: Array<{ id: any; url: any; attribution: string; }> = [];
+    const local_image_data: Array<{ id: any; url: any; attribution: string }> = [];
 
     let image_json_promise = null;
     let category_json_promise = null;
@@ -230,7 +231,7 @@ let i = document.querySelector('#customFile').addEventListener('change', (ev) =>
                 image_data = local_image_data;
 
                 // If we loaded in images from the file system, then assume we should sort by filename
-                image_data.sort((a: { url: string; }, b: { url: string; }) => {
+                image_data.sort((a: { url: string }, b: { url: string }) => {
                     const nameA = a.url.toUpperCase(); // ignore upper and lowercase
                     const nameB = b.url.toUpperCase(); // ignore upper and lowercase
                     if (nameA < nameB) {

@@ -79,11 +79,6 @@ sed -i "s~##FLASK_DIRECTORY##~$FLASK_DIRECTORY~g" $CONFIG_FILE
 sed -i "s~##MONGO_HOSTNAME##~$MONGO_HOSTNAME~g" $CONFIG_FILE
 sed -i "s~##MONGO_APP_DATABASE##~$MONGO_APP_DATABASE~g" $CONFIG_FILE
 
-echo "${GREEN}Flask configuration saved!${NC}"
-echo
+echo "${GREEN}\nFlask configuration saved!\n${NC}"
 
-echo "Launch the App with:
-
-./run
-
-"
+exit 0

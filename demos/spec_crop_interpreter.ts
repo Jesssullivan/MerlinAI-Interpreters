@@ -1,21 +1,19 @@
 // spec_crop_interpreter.ts
 
-import {ui_utils, audio_loader, audio_utils, AudioRecorder, spectrogram_utils, audio_model} from "../src/index";
+import {ui_utils, audio_loader, audio_utils, spectrogram_utils, audio_model} from "../src/index";
 const noUiSlider = require('./nouislider');
 import {tf} from '../src';
 
-window.MediaRecorder = AudioRecorder;
+window.MediaRecorder = require('audio-recorder-polyfill');
 
 const recordBtn = document.getElementById("recordButton") as HTMLButtonElement;
 const stopBtn = document.getElementById("stopButton") as HTMLButtonElement;
 const canvas = document.querySelector('.visualizer') as HTMLCanvasElement;
 const mainSection = document.querySelector('.container-fluid') as HTMLDivElement;
 
-/* tslint:disable:prefer-const */
-let imgCrop = document.createElement('img');
+const imgCrop = document.createElement('img');
 let imgSpec = document.createElement('img');
 let audioURL: string | Blob;
-/* tslint:enable:prefer-const */
 
 const MODEL_URL = 'models/audio/model.json';
 const LABELS_URL = 'models/audio/labels.json';
@@ -48,7 +46,7 @@ let slider : any = null;
 const patchWindowSeconds = 1.0; // We'd like to process a minimum of 1 second of audio
 
 // evaluate browser's webgl capability from here, and set stuff up accordingly:
-function useBrowser() {
+const useBrowser = () => {
 
     const capable = tf.ENV.getBool('WEBGL_RENDER_FLOAT32_CAPABLE');
 
@@ -59,7 +57,7 @@ function useBrowser() {
     else {
         return false;
     }
-}
+};
 
 const browserUse = useBrowser();
 
@@ -69,7 +67,7 @@ if (browserUse === false) {
     classifyTextHeader = "Classifications processed in browser:";
 }
 
-async function handleClassifyWaveform() {
+const handleClassifyWaveform = async() => {
 
     // update slider position:
     updateVis();
@@ -145,9 +143,9 @@ async function handleClassifyWaveform() {
                 }
         });
     }
-}
+};
 
-function updateVis() {
+const updateVis = () => {
 
     handlePositions = slider.noUiSlider.get();
     let pos1 = Math.round(parseFloat(handlePositions[0]));
@@ -196,9 +194,9 @@ function updateVis() {
 
     return currentWaveformSample;
 
-}
+};
 
-function generateSpectrogram(waveform : Float32Array) : Float32Array[]{
+const generateSpectrogram = (waveform : Float32Array) : Float32Array[] => {
 
     const window_length_samples = Math.round(targetSampleRate * stftWindowSeconds);
     const hop_length_samples = Math.round(targetSampleRate * stftHopSeconds);
@@ -214,9 +212,9 @@ function generateSpectrogram(waveform : Float32Array) : Float32Array[]{
 
     return audio_utils.dBSpectrogram(waveform, spec_params);
 
-}
+};
 
-function renderSpectrogram(imageURI : string, spectrogramLength: number) {
+const renderSpectrogram = (imageURI : string, spectrogramLength: number) => {
 
     const image_width = Math.round(spectrogramLength * timeScale);
     imgSpec = document.createElement('img');
@@ -320,9 +318,9 @@ function renderSpectrogram(imageURI : string, spectrogramLength: number) {
         // YMMV, but YOLO:
         await handleClassifyWaveform();
     };
-}
+};
 
-function visualize(stream : MediaStream) {
+const visualize = (stream : MediaStream) => {
 
     if(!audioCtx) {
         //@ts-ignore
@@ -340,9 +338,9 @@ function visualize(stream : MediaStream) {
     source.connect(analyserNode);
 
     shouldDrawVisualization = true;
-    draw();
 
-    function draw() {
+    // todo: make draw() anonymous
+    const draw = () => {
         const WIDTH = canvas.width;
         const HEIGHT = canvas.height;
 
@@ -378,19 +376,22 @@ function visualize(stream : MediaStream) {
         canvasCtx!.lineTo(canvas.width, canvas.height/2);
         canvasCtx!.stroke();
 
-    }
-}
+    };
 
-function stop_visualize(){
+    draw();
+
+};
+
+const stop_visualize = () => {
     shouldDrawVisualization = false;
     analyserNode.disconnect();
     requestAnimationFrame(clearCanvas);
-}
+};
 
-function clearCanvas() {
+const clearCanvas = () => {
     canvasCtx!.fillStyle = 'rgb(58,119,52)';
     canvasCtx!.fillRect(0, 0, canvas.width, canvas.height);
-}
+};
 
 recordBtn.onclick = () => {
 
@@ -398,7 +399,8 @@ recordBtn.onclick = () => {
 
         // you could also do mime type as:
         //  mimeType = 'audio/webm';
-        mediaRecorder = new window.MediaRecorder(stream,{mimeType: 'audio/wav'});
+
+        mediaRecorder = new MediaRecorder(stream, {mimeType: 'audio/wav'});
 
         mediaRecorder.start();
         console.log(mediaRecorder.state);

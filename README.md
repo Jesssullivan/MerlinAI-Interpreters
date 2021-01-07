@@ -52,14 +52,117 @@ npm run-script setup-api
 npm run-script run-api
 ```
 
+```
+# Experiments MongoDB:
+# db lives here, launches as its own process...
+mongod --dbpath ./srv/mongodb/ --port 27017
+
+```
+
+```
+# Tool will prompt to set up venv & node depends if it hasn't been done yet:
+npm install
+python3 -m venv merlinai_venv
+source merlinai_venv/bin/activate
+pip3 install -r requirements.txt
+```
+- - -
+
+
+<h4 id="scripts"> </h4>     
+
+
+
+#### *Scripts:*
+
+```
+# See ./package.json & ./scripts/ for additional scripts
+# Most things can be done with ./Merlin command line tool
+```
+
+
+*additional npm scripts:*
+```
+# build various things:
+"build-all": "chmod +x scripts/build_all.sh && ./scripts/build_all.sh",
+"build-spec-web": "webpack --config webpack/webpack.spec_web.ts",
+"build-webgl-web": "webpack --config webpack/webpack.webgl.ts",
+"build-anno-tool": "chmod +x scripts/annotator_tool.sh && ./scripts/annotator_tool.sh",
+"build-anno-photo": "webpack --config webpack/webpack.annotator_photo.ts",
+"build-anno-audio": "webpack --config webpack/webpack.annotator_audio.ts",
+```
+
+```
+# Webpack with --watch running: 
+"watch-spec-web": "webpack --watch --config webpack/webpack.spec_web.ts",
+"watch-anno-photo": "webpack --watch --config webpack/webpack.annotator_photo.ts",
+"watch-anno-audio": "webpack --watch --config webpack/webpack.annotator_audio.ts",
+```
+
+```
+# serve things:
+npm run-script serve-api
+npm run-script setup-api
+npm run-script serve-node  
+```
+
+```
+# clean things:
+npm run-script clean-bundles
+npm run-script clean-renders
+npm run-script clean-all
+```
+
+```
+# react-native stuff:
+npm run-script ios-native
+npm run-script android-native
+```
+
+```
+# print reference json strucures:
+npx ts-node etc/json_refs.ts
+```
+
+#### *local ssl:*
+```
+# Generates local ssl certs for testing w/ node http-server:
+npm run-script sslgen
+
+# you can also provide a $DOMAIN argument like so:
+npm run-script sslgen hiyori
+# ...returns key `hiyori_key.pem` & cert `hiyori.pem`
+
+# ...or:
+sudo chmod +x scripts/sslgen.sh && ./scripts/sslgen.sh
+# osx is a bit more finicky
+```
+
+#### *tone generator:*
+
+```
+### available from here:
+cp etc/tone.py .
+
+### generate some .wav files for testing fft things:
+python3 tone.py
+
+### ...you can also specify duration in seconds & frequency in Hz like so:
+python3 tone.py 5 440
+
+### ...or just duration:
+python3 tone.py 2
+```
+
+
+- - - 
+
 
 
 <h4 id="merlin_build"> </h4>     
 
 
 #### *...with ./Merlin:*
-
-
 
 ```
 ./Merlin
@@ -116,95 +219,6 @@ Serve?                 : -s  | --serve         :  = false
 # display all arguments & their default state:
 ./Merlin
 ```
-
-
-```
-# Experiments MongoDB:
-# db lives here, launches as its own process...
-mongod --dbpath ./srv/mongodb/ --port 27017
-
-```
-
-```
-# Tool will prompt to set up venv & node depends if it hasn't been done yet:
-npm install
-python3 -m venv merlinai_venv
-source merlinai_venv/bin/activate
-pip3 install -r requirements.txt
-```
-- - -
-
-
-<h4 id="scripts"> </h4>     
-
-
-
-#### *Scripts:*
-
-```
-# See ./package.json & ./scripts/ for additional scripts
-# Most things can be done with ./Merlin command line tool
-```
-
-
-*additional npm scripts:*
-```
-# build specific things:
-npm run-script build-spec-web
-npm run-script build-test-web
-
-## cleanup:
-npm run-script clean-all
-
-# ...or:
-npm run-script clean-bundles
-npm run-script clean-renders
-
-# print reference json strucures:
-npx ts-node etc/json_refs.ts
-```
-
-```
-# pack only tool definitions @ `./src/annotator_tool.js:
-npm run-script build-anno-tool
-
-# pack only implementations of audio annotator @ `./demos/annotator_audio.ts:
-npm run-script build-anno-audio
-
-# pack only implementations of photo annotator @ `./demos/annotator_photo.ts:
-npm run-script build-anno-photo
-```
-
-#### *local ssl:*
-```
-# Generates local ssl certs for testing w/ node http-server:
-npm run-script sslgen
-
-# you can also provide a $DOMAIN argument like so:
-npm run-script sslgen hiyori
-# ...returns key `hiyori_key.pem` & cert `hiyori.pem`
-
-# ...or:
-sudo chmod +x scripts/sslgen.sh && ./scripts/sslgen.sh
-# osx is a bit more finicky
-```
-
-#### *tone generator:*
-
-```
-### available from here:
-cp etc/tone.py .
-
-### generate some .wav files for testing fft things:
-python3 tone.py
-
-### ...you can also specify duration in seconds & frequency in Hz like so:
-python3 tone.py 5 440
-
-### ...or just duration:
-python3 tone.py 2
-```
-
 
 
 - - -

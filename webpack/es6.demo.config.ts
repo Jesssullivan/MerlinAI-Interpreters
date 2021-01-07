@@ -13,12 +13,10 @@ const args =   (process.argv.slice(2));
 // @ts-ignore
 const specified: string[] = args.demos ? args.demos.split(',') : [];
 
-const getDemos = (source: fs.PathLike) => {
-  return fs.readdirSync(source)
+const getDemos = (source: fs.PathLike) => fs.readdirSync(source)
       .filter(name => path.extname(name) === '.ts')
       .map(name => path.basename(name, '.ts'))
       .filter(demo => specified.length ? specified.includes(demo) : true);
-};
 
 const entries = getDemos('./demos').reduce((obj, name) => {
   // @ts-ignore
