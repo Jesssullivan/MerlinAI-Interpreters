@@ -5,7 +5,7 @@ trap "kill 0" EXIT
 npm run-script build-spec-web
 
 wait
-npm run-script build-test-web
+npm run-script build-webgl-web
 
 wait
 npm run-script build-anno-tool
