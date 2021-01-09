@@ -3,8 +3,8 @@
 
 *Jump to:*
 - [**Web: Setup**](#setup) <br>
-  - [**Setup: npm**](#build) <br>
-  - [**Setup: ./Merlin**](#merlin_build) <br>
+  - [**...With npm**](#npm) <br>
+  - [**...With ./Merlin**](#merlin_build) <br>
   - [**Scripts**](#scripts) <br>
   - [**Flask Structure**](#structure) <br>
 - [**Leaflet.Annotation**](#leaflet) <br>
@@ -22,19 +22,23 @@
 
 
 
-
 #### *Web Experiments Setup:*
 
 
+*Quickstart:*
 ```
-# Clone:
-git clone --branch=master --depth=1 https://github.com/jesssullivan/tmpUI && cd tmpUI
+# ...Then follow the ./Merlin's prompts to setupp node & flask environemnt:
+git clone --branch=master --depth=1 https://github.com/jesssullivan/tmpUI && cd tmpUI \
+    chmod +x Merlin && ./Merlin
 ```
 
 
-<h4 id="build"> </h4>     
+<h4 id="npm"> </h4>     
+
+
 
 #### *...with npm:*
+
 ```
 # node:
 npm install
@@ -52,25 +56,8 @@ npm run-script setup-api
 npm run-script serve-api
 ```
 
-
-- - -
-
-
-<h4 id="scripts"> </h4>     
-
-
-
-#### *Scripts:*
-
-```
-# See ./package.json & ./scripts/ for additional scripts
-# Most things can be done with ./Merlin command line tool
-```
-
-
 *additional npm scripts:*
 
-*additional scripts:*
 ```
 # build specific things:
 npm run-script build-spec-web
@@ -101,50 +88,14 @@ npm run-script clean-renders
 npm run-script clean-all
 ```
 
-```
-# print reference json strucures:
-npx ts-node etc/json_refs.ts
-```
-
-#### *local ssl:*
-```
-# Generates local ssl certs for testing w/ node http-server:
-npm run-script sslgen
-
-# you can also provide a $DOMAIN argument like so:
-npm run-script sslgen hiyori
-# ...returns key `hiyori_key.pem` & cert `hiyori.pem`
-
-# ...or:
-sudo chmod +x scripts/sslgen.sh && ./scripts/sslgen.sh
-# osx is a bit more finicky
-```
-
-#### *tone generator:*
-
-```
-### available from here:
-cp etc/tone.py .
-
-### generate some .wav files for testing fft things:
-python3 tone.py
-
-### ...you can also specify duration in seconds & frequency in Hz like so:
-python3 tone.py 5 440
-
-### ...or just duration:
-python3 tone.py 2
-```
-
-
-- - - 
-
-
 
 <h4 id="merlin_build"> </h4>     
 
 
 #### *...with ./Merlin:*
+
+
+*Ridiculous & wonky ./Merlin script only checked w/ GNU utilities, YMMV on Mac or anything else*
 
 ```
 ./Merlin
@@ -164,43 +115,92 @@ Utilities:
  -- Cleanup Renders?   : -cr | --clean-renders :  = false
  -- Cleanup compiled?  : -ca | --clean-all     :  = false
  -- Setup Flask?       : -sf | --setup-flask   :  = false
-Build:
+Bundle:
 Pack Demos?            : -d  | --demos         :  = false
 Pack Annotators?       : -a  | --annotators    :  = false
 Serve?                 : -s  | --serve         :  = false
  -- Flask Server?      : -f  | --flask         :  = false
  -- Node HTTP Server?  : -h  | --http-server   :  = none
+ -- Incognito?         : -i  | --incognito     :  = false
  -- Browser CLI?       :   Detected Linux      :  = chromium
-
 ```
 
 
 ```
 # setup a config.cfg file:
-./Merlin -sf
-# ^...or like this:
 ./Merlin --setup-flask
+# ^...or like this:
+./Merlin -sf
 
 # build & serve everything with flask:
-./Merlin --demos --annotators --serve --flask
+./Merlin --demos --annotators --serve --flask --incognito
 # ^...or like this:
-./Merlin -d -a -s -f
+./Merlin -d -a -s -f -i
 
-# serve some html using OpenSSL & Node http-server (only for GNU/Linux for the time being)
-./Merlin -s --http-server ./demos/webgl_test.html
+# serve some html using OpenSSL & Node http-server:
+./Merlin -serve --http-server ./demos/webgl_test.html
+# ^...or like this:
+./Merlin -s -h ./demos/webgl_test.html
 
 # rebuild only the annotators:
 ./Merlin --annotators   
+# ^...or like this:
+./Merlin -a
 
 # cleanup rendered html pages:
 ./Merlin --clean-renders
+# ^...or like this:
+./Merlin -cr
 
 # clean up all compiled:
+./Merlin --clean-all
+# ^...or like this:
 ./Merlin -ca
 
 # display all arguments & their default state:
 ./Merlin
 ```
+
+
+#### *...additional scripts:*
+
+
+*local ssl:*
+```
+# Generates local ssl certs for testing w/ node http-server:
+npm run-script sslgen
+
+# you can also provide a $DOMAIN argument like so:
+npm run-script sslgen hiyori
+# ...returns key `hiyori_key.pem` & cert `hiyori.pem`
+
+# ...or:
+sudo chmod +x scripts/sslgen.sh && ./scripts/sslgen.sh
+# osx is a bit more finicky
+```
+
+*tone generator:*
+
+```
+### available from here:
+cp etc/tone.py .
+
+### generate some .wav files for testing fft things:
+python3 tone.py
+
+### ...you can also specify duration in seconds & frequency in Hz like so:
+python3 tone.py 5 440
+
+### ...or just duration:
+python3 tone.py 2
+```
+
+
+```
+# print reference json strucures:
+npx ts-node etc/json_refs.ts
+```
+
 
 
 - - -

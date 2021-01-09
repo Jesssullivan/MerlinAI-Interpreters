@@ -18,6 +18,19 @@ class Eventdb:
             "supercategory": ""
         }
 
+    # todo: switch to "id event" entry format instead of the ^ *_annotations.json format
+    """
+    def __init__(self):
+        self.defaults = {
+            "id": "",
+            "category": "",
+            "supercategory": "",
+            "bbox": [],
+            "media_source": "",
+            "username": "",
+        }
+    """
+
     @staticmethod
     def add_id_event():
 
