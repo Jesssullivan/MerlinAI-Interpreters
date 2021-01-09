@@ -27,7 +27,7 @@
 
 *Quickstart:*
 ```
-# ...Then follow ./Merlin's prompts to setupp node & flask environemnt:
+# ...Then follow the prompts to setup node & flask:
 git clone --branch=master --depth=1 https://github.com/jesssullivan/tmpUI && cd tmpUI && chmod +x Merlin && ./Merlin
 ```
 
