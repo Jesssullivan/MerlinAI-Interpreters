@@ -3,6 +3,7 @@ from .models import Eventdb
 from flask import current_app as app
 from ..auth.auth import token_required
 
+
 eventdb_blueprint = Blueprint("events", __name__)
 
 
@@ -26,7 +27,7 @@ def add_dummy():
     return Eventdb().add_dummy()
 
 
-@eventdb_blueprint.route('query_events_dummy',  methods=['GET','POST'])
+@eventdb_blueprint.route('query_events_dummy',  methods=['GET', 'POST'])
 def query_events_dummy():
     if request.method == 'POST':
         return Eventdb().query_events_dummy()

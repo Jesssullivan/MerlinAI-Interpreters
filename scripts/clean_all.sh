@@ -8,6 +8,7 @@ CLEANUPRENDERS=true
 rm -rf .built
 rm -rf .built_logs
 rm -rf __pycache__
+rm -rf srv/mongo*
 
 echo -e "\n...cleaning ./src/*.js tsc output..."
 rm ./src/*.js

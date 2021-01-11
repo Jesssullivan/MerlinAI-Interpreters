@@ -1,6 +1,7 @@
 # venv
 tmpui_venv
 merlinai_venv
+api/**/*.cfg
 
 # ssl
 **/*.pem
@@ -11,6 +12,7 @@ merlinai_venv
 
 # build
 **/*.log
+.buil*
 
 # OSX
 **/.DS_Store
@@ -21,6 +23,7 @@ merlinai_venv
 # CocoaPods
 **/Pods
 **/Podfile.lock
+
 # Xcode
 build/
 *.pbxuser

@@ -3,7 +3,7 @@
 // audio stuff:
 import {audio_utils, spectrogram_utils} from "../src/index";
 
-export function MuiButton(titleName: string, holderName: string) {
+export const MuiButton = (titleName: string, holderName: string) => {
     // MuiButton uses material-ui bootstrap:
     const MuiHolder = document.getElementById(holderName);
     const MuiBtn = document.createElement("button");
@@ -20,9 +20,9 @@ export function MuiButton(titleName: string, holderName: string) {
     MuiHolder!.appendChild(MuiBtn);
     return(MuiBtn);
 
-}
+};
 
-export function generateSpectrogramToURI(waveform : Float32Array) {
+export const generateSpectrogramToURI = (waveform : Float32Array) => {
 
     // Spectrogram Visualization Parameters
     const targetSampleRate = 44100;
@@ -44,42 +44,4 @@ export function generateSpectrogramToURI(waveform : Float32Array) {
     const dbSpec = audio_utils.dBSpectrogram(waveform, spec_params);
     return spectrogram_utils.dBSpectrogramToImage(dbSpec, topDB);
 
-}
-
-/*
-const toasts = document.querySelectorAll(".toast");
-const toastTriggers = document.querySelectorAll(".toast__trigger");
-
-let clicked: boolean = false;
-
-toastTriggers.forEach((trigger, index) => {
-  let toastTimeout;
-
-  trigger.addEventListener("click", () => {
-    if (clicked === true) {
-      toasts[index].classList.add("toast--active");
-      toastTimeout = setTimeout(() => {
-        toasts[index].classList.remove("toast--active");
-      }, 3500);
-    }
-  });
-
-  toasts[index].addEventListener("click", () => {
-    toasts[index].classList.remove("toast--active");
-    clearTimeout(toastTimeout);
-  });
-});
-
-export function reColor(btn: string, color: string = "lightcoral", defaultColor: string = "#7FAF41") {
-    const property = document.getElementById(btn);
-
-    if (clicked === false) {
-        property.style.backgroundColor = color;
-        clicked = true;
-    }
-    else {
-        property.style.backgroundColor = defaultColor;
-        clicked = false;
-    }
-}
-**/
+};

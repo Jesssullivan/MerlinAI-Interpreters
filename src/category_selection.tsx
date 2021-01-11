@@ -74,9 +74,7 @@ export class CategorySelection extends React.Component {
     filterData(e: any) {
         e.preventDefault();
         const regex = new RegExp(e.target.value, 'i');
-        const filtered = this.state.data.filter((category: any) => {
-          return category.name.search(regex) > -1;
-        }).sort((a: { name: string; }, b: { name: string; }) => {
+        const filtered = this.state.data.filter((category: any) => category.name.search(regex) > -1).sort((a: { name: string }, b: { name: string }) => {
             if (a.name.toLowerCase() === e.target.value){
                 return -1;
             }
@@ -90,7 +88,7 @@ export class CategorySelection extends React.Component {
         });
     }
 
-    onKeyDown(e: { key: string; }) {
+    onKeyDown(e: { key: string }) {
         if (e.key === 'Enter') {
             this.setState({
                 lastKey : e.key

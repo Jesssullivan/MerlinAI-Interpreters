@@ -3,6 +3,7 @@ from flask import current_app as app
 from flask import request, jsonify
 from ..tools import tools
 import json
+from datetime import datetime
 
 
 class Eventdb:
@@ -10,26 +11,14 @@ class Eventdb:
     def __init__(self):
         self.defaults = {
             "id": "",
-            "bbox": [],
-            "image_id": "",
-            "user_id": "",
+            "ML_id": "",
             "username": "",
-            "category_id": "",
-            "supercategory": ""
-        }
-
-    # todo: switch to "id event" entry format instead of the ^ *_annotations.json format
-    """
-    def __init__(self):
-        self.defaults = {
-            "id": "",
+            "media_source": "",
+            "bbox": [],
             "category": "",
             "supercategory": "",
-            "bbox": [],
-            "media_source": "",
-            "username": "",
+            "last_modified": ""
         }
-    """
 
     @staticmethod
     def add_id_event():
@@ -76,16 +65,15 @@ class Eventdb:
     @staticmethod
     def add_dummy():
 
-        _usr = tools.randUser()
-
         _event = {
             "id": tools.randID(),
+            "ML_id": tools.randStringNumbersOnly(8),
+            "username": tools.randUser(),
+            "media_source": 'https://example.com/wavfile.wav',
             "bbox": tools.randBbox(),
-            "image_id": tools.randStringNumbersOnly(8),
-            "user_id": _usr + "_id",
-            "username": _usr,
-            "category_id": tools.randSpecies(),
-            "supercategory": "Bird"
+            "category": tools.randSpecies(),
+            "supercategory": "Bird",
+            "last_modified": datetime.today().isoformat()
         }
 
         _data = app.db.eventdb.insert(_event)
@@ -102,7 +90,7 @@ class Eventdb:
         _value = _request['value']
 
         # query:
-        _output = app.db.eventdb.find({_key:_value})
+        _output = app.db.eventdb.find({_key: _value})
 
         _docs = list(_output)
 

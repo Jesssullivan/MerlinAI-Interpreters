@@ -1,6 +1,6 @@
 import {Greys} from './greys';
 
-function colorMapLookup(x : number) : number {
+const colorMapLookup = (x : number) : number => {
 
     let i = 1;
     while (Greys[i][0] < x) {
@@ -17,9 +17,9 @@ function colorMapLookup(x : number) : number {
     const color2 = Greys[i][1][0];
     return color1 + scaling_factor * (color1 - color2);
 
-}
+};
 
-export function dBSpectrogramToImage(spec : Float32Array[], topDB : number) : string {
+export const dBSpectrogramToImage = (spec : Float32Array[], topDB : number) : string => {
 
     const spec_width = spec.length;
     console.log(spec_width);
@@ -72,4 +72,4 @@ export function dBSpectrogramToImage(spec : Float32Array[], topDB : number) : st
      // produces a PNG file
     return canvas.toDataURL();
 
-}
+};

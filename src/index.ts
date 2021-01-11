@@ -3,6 +3,7 @@ import * as audio_utils from './audio_utils';
 import * as spectrogram_utils from './spectrogram_utils';
 import * as audio_model from './audio_model';
 import * as ui_utils from './ui_utils';
+import * as log from "./logging";
 
 //@ts-ignore
 const tf = require('@tensorflow/tfjs');
@@ -13,6 +14,7 @@ import AudioRecorder from 'audio-recorder-polyfill';
 export {AudioRecorder};
 
 export {
+    log,
     audio_model,
     audio_loader,
     audio_utils,

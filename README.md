@@ -51,8 +51,8 @@ pip3 install -r requirements.txt
 npm run-script build-all
 
 # serve:
-npm run-script setup-api
-npm run-script serve-api
+npm run-script setup-app
+npm run-script serve-app
 ```
 
 *additional npm scripts:*
@@ -75,8 +75,8 @@ npm run-script watch-anno-audio
 
 ```
 # serve things:
-npm run-script serve-api
-npm run-script setup-api
+npm run-script serve-app
+npm run-script setup-app
 npm run-script serve-node  
 ```
 
@@ -96,14 +96,16 @@ npm run-script clean-all
 
 *Ridiculous & wonky ./Merlin script only checked w/ GNU utilities, YMMV on Mac or anything else*
 
-```
+```shell
 ./Merlin
+
       ___  ___          _ _        ___ _____
       |  \/  |         | (_)      / _ |_   _|
       | .  . | ___ _ __| |_ _ __ / /_\ \| |
       | |\/| |/ _ | '__| | | '_ \|  _  || |
       | |  | |  __| |  | | | | | | | | _| |_
       \_|  |_/\___|_|  |_|_|_| |_\_| |_\___/
+      
 
 Environment:
  -- Auto Setup?        : -as | --auto-setup    :  = false
@@ -215,7 +217,7 @@ npx ts-node etc/json_refs.ts
 
 
 ```
-├── api
+├── app
   ├── main
     ├── auth
       └── token authentication methods

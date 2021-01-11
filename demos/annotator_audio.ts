@@ -1,7 +1,7 @@
-import {audio_loader, audio_utils, spectrogram_utils} from "../src";
+import {audio_loader, audio_utils, log, spectrogram_utils} from "../src";
+import {Level} from "../src/logging";
 
-/**
- *  annotator_audio.ts
+/* annotator_audio.ts
  *
  * implementations of `annotator_tool` for annotating spectrograms.
  *
@@ -9,8 +9,8 @@ import {audio_loader, audio_utils, spectrogram_utils} from "../src";
  * ` npm run-script build-anno-audio `
  *
  * build all files:
- * ` npm run-script develop-anno-demos `
- */
+ * ` npm run-script build-all `
+ **/
 
 // selector:
 const $ = require('jquery');
@@ -82,14 +82,14 @@ class AudioPlayer implements AudioInterface {
 
         this.current_offset = offset;
 
-    }
+    };
 
     audioEnded = (): void => {
 
         clearInterval(this.playing_audio_timing_id);
         this.playing_audio = false;
 
-    }
+    };
 
     startPlaying = (): void => {
 
@@ -108,7 +108,7 @@ class AudioPlayer implements AudioInterface {
             this.playing_audio = true;
 
         }
-    }
+    };
 
     stopPlaying = (): void => {
 
@@ -120,7 +120,7 @@ class AudioPlayer implements AudioInterface {
         }
 
         this.playing_audio = false;
-    }
+    };
 
     goForward = () => {
 
@@ -136,7 +136,7 @@ class AudioPlayer implements AudioInterface {
 
         annotatorRendered.panTo(this.current_offset);
 
-    }
+    };
 
     goBackward = () => {
 
@@ -150,7 +150,7 @@ class AudioPlayer implements AudioInterface {
 
         this.current_offset = Math.max(0, this.current_offset - 100);
         annotatorRendered.panTo(this.current_offset);
-    }
+    };
 
     handleKeyDown = (e:any): void => {
 
@@ -180,18 +180,17 @@ class AudioPlayer implements AudioInterface {
             this.goBackward();
             break;
         }
-
-    }
+    };
 
     enableAudioKeys = (): void => {
         // Register keypresses
         document.addEventListener("keydown", this.handleKeyDown);
-    }
+    };
 
     disableAudioKeys = (): void => {
         // Unregister keypresses
         document.removeEventListener("keydown", this.handleKeyDown);
-    }
+    };
 
 }
 
@@ -230,7 +229,7 @@ export class SpectrogramPlayer extends AudioPlayer implements SpectrogramInterfa
     hop_length_samples = Math.round(this.targetSampleRate * this.stftHopSeconds);
     fft_length = Math.pow(2, Math.ceil(Math.log(this.window_length_samples) / Math.log(2.0)));
 
-    generate = async(image_info: { [image_info: string]: any; }): Promise<HTMLImageElement> => {
+    generate = async(image_info: { [image_info: string]: any }): Promise<HTMLImageElement> => {
 
         const audioURL: string = [image_info['audio']].toString();
 
@@ -261,7 +260,7 @@ export class SpectrogramPlayer extends AudioPlayer implements SpectrogramInterfa
                 return imageEl;
 
             });
-    }
+    };
 }
 
 /**
@@ -272,11 +271,12 @@ export class SpectrogramPlayer extends AudioPlayer implements SpectrogramInterfa
  * @param annotations
  * @param config
  */
-function startAnnotating(images_data: any[], categories: any,
-
-    annotations: Array<{ [x: string]: any; }>, config: {
+const startAnnotating =
+    (images_data: any[], categories: any, annotations: Array<{ [x: string]: any }>,
+     config: {
         quickAccessCategoryIDs: any[];
-        annotationFilePrefix: string; }) {
+        annotationFilePrefix: string;
+    }) => {
 
     // Audio & Spectrogram functions:
     const spectrogram = new SpectrogramPlayer();
@@ -287,7 +287,8 @@ function startAnnotating(images_data: any[], categories: any,
     }
 
     // Parse the config dict
-    console.log(config);
+    log.log(config.toString(), 'annotator_audio.ts', Level.DEBUG);
+
     const quickAccessCatIDs = config.quickAccessCategoryIDs || [];
     const annotation_file_prefix = config.annotationFilePrefix || "";
 
@@ -297,7 +298,7 @@ function startAnnotating(images_data: any[], categories: any,
         image_id_to_annotations[image_info['id']] = [];
     });
 
-    annotations.forEach((anno: { [x: string]: any; }) => {
+    annotations.forEach((anno: { [x: string]: any }) => {
         const image_id = anno['image_id'];
         image_id_to_annotations[image_id].push(anno);
     });
@@ -309,7 +310,7 @@ function startAnnotating(images_data: any[], categories: any,
      *
      * @param imageIndex
      */
-    async function annotateImage(imageIndex: number) {
+    const annotateImage = async(imageIndex: number) => {
 
         const image_info = images_data[imageIndex];
 
@@ -357,11 +358,10 @@ function startAnnotating(images_data: any[], categories: any,
                 // remove loader:
                 document.getElementById("waitLoader").style.visibility = "hidden";
 
-                function addAudioFunctions(annotatorRendered: {
+                const addAudioFunctions =(annotatorRendered: {
                     renderForSpectrogram: (arg0: any) => void;
                     turnOffZoom: () => void;
-                    turnOffDrag: () => void; })
-                {
+                    turnOffDrag: () => void; }) => {
 
                     // Setup the view for the audio
                     annotatorRendered.renderForSpectrogram(spectrogram.targetSpectrogramHeight);
@@ -389,12 +389,16 @@ function startAnnotating(images_data: any[], categories: any,
 
                         spectrogram.pixels_per_ms = spectrogram.pixels_per_second / 1000.0;
 
-                        console.log("Spectrogram Height: " +  spectrogram_height);
-                        console.log("Spectrogram Width: " +  spectrogram_width);
-                        console.log("Duration " + duration.toString());
-                        console.log("Pixels / second : " + spectrogram.pixels_per_second);
-                        console.log("Pixels / millisecond : " + spectrogram.pixels_per_ms);
-                        console.log("Current Time " + spectrogram.audioElement.currentTime);
+                        const Spectrogram_Props = {
+                            "Spectrogram Height": spectrogram_height,
+                            "Spectrogram Width": spectrogram_width,
+                            "Duration": duration.toString(),
+                            "Pixels / second": spectrogram.pixels_per_second,
+                            "Current Time": spectrogram.audioElement.currentTime
+                        };
+
+                        log.log(Spectrogram_Props.toString(), 'annotator_audio.ts', Level.INFO);
+
 
                         spectrogram.enableAudioKeys();
 
@@ -410,16 +414,15 @@ function startAnnotating(images_data: any[], categories: any,
 
                     spectrogram.audioElement.load();
 
-                }
+                };
 
-                function delayAudioPrepTillRender(annotatorRendered: {
+                const delayAudioPrepTillRender = (annotatorRendered: {
                     renderForSpectrogram: (arg0: any) => void;
                     turnOffZoom: () => void;
-                    turnOffDrag: () => void; })
-                {
+                    turnOffDrag: () => void; }) => {
 
                     if (!('audio' in image_info)) {
-                        console.log("No audio url in image info");
+                        log.log("No audio url in image info", "annotator_audio.ts", Level.WARN);
                         return;
                     }
 
@@ -427,7 +430,7 @@ function startAnnotating(images_data: any[], categories: any,
                     // doing transformations
                     setTimeout(() => addAudioFunctions(annotatorRendered), 80);
 
-                }
+                };
 
                 /**
                  * Create the Leaflet.annotation element:
@@ -472,9 +475,10 @@ function startAnnotating(images_data: any[], categories: any,
                     }
                 }, null);
 
-                /**
+                /*
                  *  Render the annotator:
                  */
+
                 // @ts-ignore
                 annotatorRendered = ReactDOM.render(annotator, document.getElementById('annotationHolder'));
 
@@ -485,9 +489,9 @@ function startAnnotating(images_data: any[], categories: any,
 
             });
 
-    }
+    };
 
-    function saveCurrentAnnotations() {
+    const saveCurrentAnnotations = () => {
 
         // It could be the case that the image or audio failed to load, in which case we wouldn't have a `annotatorRendered`
         if (annotatorRendered != null) {
@@ -500,7 +504,7 @@ function startAnnotating(images_data: any[], categories: any,
             image_id_to_annotations[image_id] = annos;
         }
 
-    }
+    };
 
     $("#nextImageButton").on('click', () => {
 
@@ -528,7 +532,7 @@ function startAnnotating(images_data: any[], categories: any,
 
     });
 
-    function goToImage() {
+    const goToImage = () => {
 
         saveCurrentAnnotations();
 
@@ -547,7 +551,7 @@ function startAnnotating(images_data: any[], categories: any,
             currentImageIndex = index;
             annotateImage(currentImageIndex);
         }
-    }
+    };
 
     $("#goToImageButton").click(() => {
 
@@ -571,12 +575,11 @@ function startAnnotating(images_data: any[], categories: any,
 
         let annos: any[] = [];
 
-        images_data.forEach((image_info: { id: string | number; }) => {
+        images_data.forEach((image_info: { id: string | number }) => {
             annos = annos.concat(image_id_to_annotations[image_info.id]);
         });
 
-        console.log("Exporting " + annos.length + " annotations");
-        console.log(annos);
+        log.log("Exporting " + annos.length + " annotations!", 'annotator_audio.ts', Level.INFO);
 
         const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(annos));
         const downloadAnchorNode = document.createElement('a');
@@ -602,12 +605,11 @@ function startAnnotating(images_data: any[], categories: any,
 
         let annos: any[] = [];
 
-        images_data.forEach((image_info: { id: string | number; }) => {
+        images_data.forEach((image_info: { id: string | number }) => {
             annos = annos.concat(image_id_to_annotations[image_info.id]);
         });
 
-        console.log("POSTing " + annos.length + " annotations");
-        console.log(annos);
+        log.log("POSTing " + annos.length + " annotations...", 'annotator_tool.ts', Level.INFO);
 
         const test_user_annos: any[] = annos;
 
@@ -625,10 +627,10 @@ function startAnnotating(images_data: any[], categories: any,
             body: JSON.stringify(test_user_annos)
         });
 
-        const content = await rawResponse.json();
-        console.log(content);
+        await rawResponse.json().then((content) =>
+            log.log(content, 'annotator_tool.ts', Level.DEBUG));
 
-        alert("POSTed a total of " + annos.length + " annotations to " + POST_URL);
+        alert("Uploaded a total of " + annos.length + " annotations to " + POST_URL);
 
         document.getElementById("exportAnnos").blur();
 
@@ -646,87 +648,16 @@ function startAnnotating(images_data: any[], categories: any,
                 }
             }
         }
-        catch {
-            console.log('error with spacebar event listener, continuing...');
+        catch (e) {
+            log.log('error @ ' + e + '\n ...with spacebar event listener, continuing...', 'annotator_audio.ts', Level.WARN);
         }
     });
 
     // Kick everything off.
     annotateImage(currentImageIndex);
 
-}
-/*
-document.querySelector('#loadMongo').addEventListener('change', (ev)=> {
+};
 
-    ev.preventDefault();
-
-    const local_image_data: Array<{ id: any; url: any; attribution: string; }> = [];
-
-    let image_json_promise = null;
-    let category_json_promise = null;
-    let annotation_json_promise = null;
-    let config_json_promise = null;
-
-    // @ts-ignore
-    for(let i = 0; i < ev.target.files.length; i++){
-        // @ts-ignore
-        const item = ev.target.files[i];
-
-        // Is this an image?
-        if (item.type === "image/jpeg" || item.type === "image/png"){
-
-            const image_id = item.name.split('.')[0];
-
-            local_image_data.push({
-                id : image_id,
-                url: item.webkitRelativePath,
-                attribution : "N/A"
-            });
-
-        }
-
-        // Processing input files / annotation task directory:
-        // Is this a json file?
-        else if (item.type === "application/json") {
-
-            if (item.name === 'images.json') {
-                image_json_promise = item.text().then((text: string) => JSON.parse(text));
-            }
-
-            else if (item.name === 'categories.json') {
-
-                category_json_promise = item.text().then((text: string) => JSON.parse(text));
-
-            }
-
-            else if (item.name.includes('annotations.json')) {
-
-                annotation_json_promise = item.text().then((text: string) => JSON.parse(text));
-
-            }
-
-            else if (item.name === 'config.json') {
-
-                config_json_promise = item.text().then((text: string) =>JSON.parse(text) );
-
-            }
-
-            else {
-                console.log("Ignoring " + item.name + " (not sure what to do with it).");
-            }
-
-        }
-
-        else {
-            console.log("Ignoring " + item.name + " (not sure what to do with it).");
-        }
-
-        console.log(annotation_json_promise);
-
-    }
-
-});
-*/
 
 /**
  * Allows the user to choose a directory.
@@ -735,7 +666,7 @@ document.querySelector('#customFile').addEventListener('change', (ev)=> {
 
     ev.preventDefault();
 
-    const local_image_data: Array<{ id: any; url: any; attribution: string; }> = [];
+    const local_image_data: Array<{ id: any; url: any; attribution: string }> = [];
 
     let image_json_promise = null;
     let category_json_promise = null;
@@ -787,16 +718,16 @@ document.querySelector('#customFile').addEventListener('change', (ev)=> {
             }
 
             else {
-                console.log("Ignoring " + item.name + " (not sure what to do with it).");
+                log.log("Ignoring " + item.name + " (not sure what to do with it).", 'annotator_audio.ts', Level.WARN);
             }
 
         }
 
         else {
-            console.log("Ignoring " + item.name + " (not sure what to do with it).");
+            log.log("Ignoring " + item.name + " (not sure what to do with it).", 'annotator_audio.ts', Level.WARN);
         }
 
-        console.log(annotation_json_promise);
+        log.log(annotation_json_promise, 'annotator_audio.ts', Level.DEBUG);
 
     }
 
@@ -816,7 +747,7 @@ document.querySelector('#customFile').addEventListener('change', (ev)=> {
 
                 // If we loaded in images from the file system, then assume we should sort by filename
 
-                image_data.sort((a: { url: string; }, b: { url: string; }) => {
+                image_data.sort((a: { url: string }, b: { url: string }) => {
 
                     const nameA = a.url.toUpperCase(); // ignore upper and lowercase
                     const nameB = b.url.toUpperCase(); // ignore upper and lowercase

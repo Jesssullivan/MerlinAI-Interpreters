@@ -11,7 +11,6 @@ from .eventdb.routes import eventdb_blueprint
 # from .tfmodels.routes import tfmodels_blueprint
 
 
-
 def create_app():
 
     # Flask Config
@@ -41,15 +40,14 @@ def create_app():
     app.register_blueprint(client_blueprint, url_prefix="/client")
     app.register_blueprint(eventdb_blueprint, url_prefix="/events")
 
-    # Index Routes:
-    @app.route("/")
-    def index():
-        return redirect("/client", code=302)
-
-
     # fetch static:
     @client_blueprint.route("<file>", methods=["GET", "POST"])
     def filex(file):
         return app.send_static_file(file)
+
+    # Index Routes:
+    @app.route("/")
+    def index():
+        return redirect("/client", code=302)
 
     return app

@@ -25,7 +25,7 @@ const offlineCtx = isSafari ?
 /* Safari doesn't support the Promised format of `offlineCtx.decodeAudioData`
 So we'll wrap the callbacks in a Promise.
 */
-function decodeAudioData(arrayBuffer : ArrayBuffer){
+const decodeAudioData = (arrayBuffer : ArrayBuffer) => {
 
     if (isSafari){
         return new Promise(resolve => {
@@ -38,21 +38,20 @@ function decodeAudioData(arrayBuffer : ArrayBuffer){
         return offlineCtx.decodeAudioData(arrayBuffer);
     }
 
-}
+};
 
 /*
 Loads audio from a url.
 */
-export async function loadAudioFromURL(url: string) : Promise<AudioBuffer> {
-     return fetch(url)
+export const loadAudioFromURL = async(url: string) =>
+    fetch(url)
       .then(body => body.arrayBuffer())
       .then(buffer => decodeAudioData(buffer));
-}
 
 /*
 Loads audio from a file.
 */
-export async function loadAudioFromFile(blob: Blob) : Promise<AudioBuffer> {
+export const loadAudioFromFile = async(blob: Blob) : Promise<AudioBuffer> => {
 
   const fileReader = new FileReader();
   const loadFile: Promise<ArrayBuffer> = new Promise((resolve, reject) => {
@@ -60,25 +59,32 @@ export async function loadAudioFromFile(blob: Blob) : Promise<AudioBuffer> {
       fileReader.abort();
       reject(new DOMException('Something went wrong reading that file.'));
     };
+
     fileReader.onload = () => {
       resolve(fileReader.result as ArrayBuffer);
     };
+
     fileReader.readAsArrayBuffer(blob);
+
   });
+
   return loadFile.then(arrayBuffer => decodeAudioData(arrayBuffer));
 
-}
+};
 
 /* Returns a Float32Array
 */
-export function getMonoAudio(audioBuffer: AudioBuffer) {
+export const getMonoAudio = (audioBuffer: AudioBuffer) => {
+
     if (audioBuffer.numberOfChannels === 1) {
       return audioBuffer.getChannelData(0);
     }
+
     if (audioBuffer.numberOfChannels !== 2) {
       throw Error(
           `${audioBuffer.numberOfChannels} channel audio is not supported.`);
     }
+
     const ch0 = audioBuffer.getChannelData(0);
     const ch1 = audioBuffer.getChannelData(1);
 
@@ -86,19 +92,21 @@ export function getMonoAudio(audioBuffer: AudioBuffer) {
     for (let i = 0; i < audioBuffer.length; ++i) {
       mono[i] = (ch0[i] + ch1[i]) / 2;
     }
+
     return mono;
-  }
+};
 
 /* Returns a promised Float32Array
 */
-export async function resampleAndMakeMono(
-      audioBuffer: AudioBuffer, targetSr = SAMPLE_RATE) {
+export const resampleAndMakeMono = async(audioBuffer: AudioBuffer, targetSr = SAMPLE_RATE) => {
 
     if (audioBuffer.sampleRate === targetSr) {
       return getMonoAudio(audioBuffer);
     }
+
     const sourceSr = audioBuffer.sampleRate;
     const lengthRes = audioBuffer.length * targetSr / sourceSr;
+
     if (!isSafari) {
 
       const sourceSr = audioBuffer.sampleRate;
@@ -108,6 +116,7 @@ export async function resampleAndMakeMono(
       bufferSource.buffer = audioBuffer;
       bufferSource.connect(offlineCtx.destination);
       bufferSource.start();
+
       return offlineCtx.startRendering().then(
         (buffer: AudioBuffer) => buffer.getChannelData(0));
 
@@ -125,4 +134,4 @@ export async function resampleAndMakeMono(
         return resampledAudio;
 
     }
-}
+};

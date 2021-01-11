@@ -40,44 +40,43 @@ def webgl():
     return render_template("webgl_test.html")
 
 
-# fetch static:
-@client_blueprint.route("<file>", methods=["GET", "POST"])
-def filex(file):
-    return app.send_static_file(file)
-
-
 # static:
-@client_blueprint.route("/favicon.ico", methods=["GET", "POST"])
+@client_blueprint.route("favicon.ico", methods=["GET", "POST"])
 def cfavicon_ico():
     return app.send_static_file("icons/tmpUI.MerlinAI-favicon-dark/favicon.ico")
 
 
-@client_blueprint.route("/site.webmanifest", methods=["GET", "POST"])
+@client_blueprint.route("site.webmanifest", methods=["GET", "POST"])
 def cwebmanifest():
     return app.send_static_file("icons/tmpUI.MerlinAI-favicon-dark/site.webmanifest")
 
 
-@client_blueprint.route("/favicon-16x16.png", methods=["GET", "POST"])
+@client_blueprint.route("favicon-16x16.png", methods=["GET", "POST"])
 def cfavicon_ico16():
     return app.send_static_file("icons/tmpUI.MerlinAI-favicon-dark/favicon-16x16.png")
 
 
-@client_blueprint.route("/favicon-32x32.png", methods=["GET", "POST"])
+@client_blueprint.route("favicon-32x32.png", methods=["GET", "POST"])
 def cfavicon_ico32():
     return app.send_static_file("icons/tmpUI.MerlinAI-favicon-dark/favicon-32x32.png")
 
 
-@client_blueprint.route("/apple-touch-icon.png", methods=["GET", "POST"])
+@client_blueprint.route("apple-touch-icon.png", methods=["GET", "POST"])
 def capple_touch():
     return app.send_static_file("icons/tmpUI.MerlinAI-favicon-dark/apple-touch-icon.png")
 
 
-@client_blueprint.route("/android-chrome-192x192.png", methods=["GET", "POST"])
+@client_blueprint.route("android-chrome-192x192.png", methods=["GET", "POST"])
 def cdroid192():
     return app.send_static_file("icons/tmpUI.MerlinAI-favicon-dark/android-chrome-192x192.png")
 
 
-@client_blueprint.route("/android-chrome-512x512.png", methods=["GET", "POST"])
+@client_blueprint.route("android-chrome-512x512.png", methods=["GET", "POST"])
 def cdroid512():
     return app.send_static_file("icons/tmpUI.MerlinAI-favicon-dark/android-chrome-512x512.png")
 
+
+# fetch static:
+@client_blueprint.route("<file>", methods=["GET", "POST"])
+def filex(file):
+    return app.send_static_file(file)

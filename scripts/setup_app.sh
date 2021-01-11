@@ -19,10 +19,10 @@ echo
 # Defaults
 SECRET_KEY=`cat /dev/urandom | head -c 24 | base64`
 FLASK_PORT_DEFAULT=5000
-FLASK_DIRECTORY_DEFAULT="$(pwd)/api/"
+FLASK_DIRECTORY_DEFAULT="$(pwd)/app/"
 MONGO_HOSTNAME_DEFAULT="localhost"
 FRONTEND_DOMAIN_DEFAULT="http://localhost"
-MONGO_APP_DATABASE__DEFAULT="new-app"
+MONGO_APP_DATABASE__DEFAULT="app-db"
 
 # Domain the Flask app will be running on
 read -p "Flask API Directory [$FLASK_DIRECTORY_DEFAULT]: " FLASK_DIRECTORY
@@ -50,8 +50,8 @@ MONGO_APP_DATABASE=${MONGO_APP_DATABASE:-$MONGO_APP_DATABASE__DEFAULT}
 echo
 
 # Rename config.cfg.sample to config.cfg
-CONFIG_EXAMPLE_FILE=./api/main/config/config.cfg.sample
-CONFIG_FILE="./api/main/config/config.cfg"
+CONFIG_EXAMPLE_FILE=./app/main/config/config.cfg.sample
+CONFIG_FILE="./app/main/config/config.cfg"
 cp -R $CONFIG_EXAMPLE_FILE $CONFIG_FILE
 
 # Save configuration values to config.cfg

@@ -1,4 +1,4 @@
-/**
+/*
  * @license
  * Copyright 2018 Google Inc. All Rights Reserved.
  *
@@ -30,7 +30,7 @@ export enum Level {
 /**
  * The global verbosity level for Magenta.js.
  */
-export let verbosity: Level = Level.INFO;
+export const verbosity: Level = Level.INFO;
 
 /**
  * Logs a message at the given verbosity level.
@@ -43,15 +43,16 @@ export let verbosity: Level = Level.INFO;
  * @param level The verbosity level of the message. The message will not be
  * logged if this level is greater than the `verbosity` setting.
  */
-export function log(msg: string, prefix = 'Magenta.js', level = Level.INFO) {
+const log = (msg: string, prefix = 'Merlin', level = Level.INFO) => {
   if (level === Level.NONE) {
     throw Error('Logging level cannot be NONE.');
   }
   if (verbosity >= level) {
     const logMethod = (level === Level.WARN) ? console.warn : console.log;
-    logMethod(`%c ${prefix} `, 'background:magenta; color:white', msg);
+    logMethod(`%c Merlin `, 'background:green; color:white', msg);
+    // logMethod(`%c ${prefix} `, 'background:green; color:white', msg);
   }
-}
+};
 
 /**
  * Logs a message at the given verbosity level, with the duration.
@@ -65,8 +66,10 @@ export function log(msg: string, prefix = 'Magenta.js', level = Level.INFO) {
  * @param level The verbosity level of the message. The message will not be
  * logged if this level is greater than the `verbosity` setting.
  */
-// export function logWithDuration(
-//     msg: string, startTime: number, prefix = 'Magenta.js', level = Level.INFO) {
-//   const durationSeconds = (performance.now() - startTime) / 1000;
-//   log(`${msg} in ${durationSeconds.toPrecision(3)}s`, prefix, level);
-// }
+const logWithDuration = (
+     msg: string, startTime: number, prefix = 'Magenta.js', level = Level.INFO) => {
+   const durationSeconds = (performance.now() - startTime) / 1000;
+   log(`${msg} in ${durationSeconds.toPrecision(3)}s`, prefix, level);
+};
+
+export {log, logWithDuration};

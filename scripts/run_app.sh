@@ -4,7 +4,7 @@
 SRV='./srv'
 MONGODIR=${SRV}'/mongodb/'
 MONGOLOGS=${SRV}'/mongo_logs.txt'
-# FLASKLOGS='api/flask_logs.txt'
+# FLASKLOGS='app/flask_logs.txt'
 
 # make sure we exit flask & mongo as child processes:
 trap  "kill 0" EXIT
@@ -27,6 +27,6 @@ mongod --dbpath ./srv/mongodb/ --port 27017 &> ${MONGOLOGS} &
 #npm start &
 
 echo "starting Flask..."
-python3 api/run.py
+python3 app/run.py
 
 exit 0

@@ -4,14 +4,14 @@
  * implementations of `annotator_tool` for annotating photos.
  *
  * build only this file:
- * ` npm run-script build-photo `
+ * ` npm run-script build-anno-photo `
  *
  * build all files:
- * ` npm run-script build `
+ * ` npm run-script build-all `
  */
 
-const annotatorRendered = null; // allows us to export annotations
-const currentImageIndex = 0; // keep track of which image we are working on.
+const annotatorRendered: any = null; // allows us to export annotations
+const currentImageIndex: number = 0; // keep track of which image we are working on.
 
 const startAnnotating = (images_data: any[], categories: any, annotations: Array<{ [x: string]: any }>, config: {
         quickAccessCategoryIDs: any[];
@@ -22,6 +22,7 @@ const startAnnotating = (images_data: any[], categories: any, annotations: Array
 
     // Parse the config dict
     console.log(config);
+
     const quickAccessCatIDs = config.quickAccessCategoryIDs || [];
     const annotation_file_prefix = config.annotationFilePrefix || "";
 

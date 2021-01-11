@@ -1,7 +1,6 @@
- /* eslint-disable */
-
-// require('@tensorflow/tfjs-backend-wasm');
 import * as  tf from '@tensorflow/tfjs';
+import {log} from "./index";
+import {Level} from "./logging";
 
 export class MerlinAudioModel {
 
@@ -18,15 +17,15 @@ export class MerlinAudioModel {
     private labelsURL : string;
     private modelURL : string;
 
-    constructor(labelsURL : string, modelURL : string){
+    constructor(labelsURL : string, modelURL : string) {
 
         this.modelURL = modelURL;
         this.labelsURL = labelsURL;
 
     }
 
-    async ensureModelLoaded(){
-        if (this.model != null){
+    async ensureModelLoaded() {
+        if (this.model != null) {
             return;
         }
 
@@ -34,21 +33,23 @@ export class MerlinAudioModel {
 
         this.model = await tf.loadGraphModel(this.modelURL);
 
-        console.log('Loaded model!.');
+        log.log('Loaded model!.');
     }
 
-    async ensureLabelsLoaded(){
-        if (this.labels != null){
+    async ensureLabelsLoaded() {
+        if (this.labels != null) {
             return;
         }
 
         this.labels = await fetch(this.labelsURL)
             .then(response => response.json());
 
-        console.log('Loaded ' + this.labels.length + ' labels!.');
+        log.log('Loaded ' + this.labels.length + ' labels!.','audio_model.ts', Level.INFO);
+
     }
 
-    async predict(waveform : Float32Array){
+    async predict(waveform : Float32Array) {
+
         /* Return the highest score for each frame. */
         await this.ensureModelLoaded();
 
@@ -59,15 +60,17 @@ export class MerlinAudioModel {
 
         // Make sure we have enough samples to create one spectrogram patch
         if (tf_waveform.shape[0] < patchWindowLengthSamples) {
-            // console.log("Padding waveform with zeros");
             tf_waveform = tf_waveform.pad([[0, patchWindowLengthSamples - waveform.length]]);
         }
 
         // Frame up the waveform and process it sequentially
         const waveform_frames = tf.signal.frame(tf_waveform, patchWindowLengthSamples, patchHopLengthSamples) as tf.Tensor2D;
         const batchResults : Array<[string, number, number]> = [];
+
         let windowStart = this.patchWindowSeconds / 2.0;
+
         const batches = tf.data.array(waveform_frames.arraySync());
+
         await batches.forEachAsync((waveform_batch) => {
 
             const input_batch = tf.tensor(waveform_batch).expandDims(0);
@@ -81,6 +84,7 @@ export class MerlinAudioModel {
 
             batchResults.push([this.labels[maxIndex], maxScore, windowStart]);
             windowStart += this.patchHopSeconds;
+
         });
 
         tf.dispose([tf_waveform, waveform_frames]);
@@ -89,7 +93,8 @@ export class MerlinAudioModel {
 
     }
 
-    async averagePredictV3(waveform : Float32Array, sampleRate: number){
+    async averagePredictV3(waveform : Float32Array, sampleRate: number) {
+
         /* Return the average score across all frames. */
 
         await this.ensureModelLoaded();
@@ -104,23 +109,23 @@ export class MerlinAudioModel {
         const totalSamples = waveform.length;
 
         let numWindows = null;
-        if (ignorePartialLastWindow){
+        if (ignorePartialLastWindow) {
             numWindows = Math.floor(totalSamples / waveformWindowSizeSamples);
         }
-        else{
+        else {
             numWindows = Math.ceil(totalSamples / waveformWindowSizeSamples);
         }
+
         numWindows = Math.max(1, numWindows);
 
-        console.log("Extracting " + numWindows + " windows from audio waveform");
+        log.log("Extracting " + numWindows + " windows from audio waveform", "audio_model.ts", Level.INFO);
 
         let curSampleIndex = 0;
         const batchResults : Float32Array[] = [];
 
-        // tslint:disable-next-line:prefer-const
         let tf_waveform : tf.Tensor, input_waveform_batch : tf.Tensor, input_samplerate_batch : tf.Tensor, outputs : tf.Tensor;
 
-        for(let i = 0; i < numWindows; i++){
+        for (let i = 0; i < numWindows; i++) {
 
             const samplePos1 = curSampleIndex;
             const samplePos2 = samplePos1 + waveformWindowSizeSamples;
@@ -129,31 +134,35 @@ export class MerlinAudioModel {
 
             // Pad with zeros to ensure we have enough samples to create the spectrogram.
             if (tf_waveform.shape[0] < waveformWindowSizeSamples) {
-                console.log("Padding waveform with zeros");
+                log.log("Padding waveform with zeros", "audio_model.ts", Level.INFO);
                 tf_waveform = tf_waveform.pad([[0, waveformWindowSizeSamples - tf_waveform.shape[0]]]);
             }
 
             const input_waveform_batch = tf_waveform;//.expandDims(0);
             const input_samplerate_batch = tf.tensor1d([sampleRate], 'int32');
+
             outputs = await this.model!.executeAsync({'waveform' : input_waveform_batch, 'samplerate' : input_samplerate_batch}) as tf.Tensor;
 
             batchResults.push(outputs.dataSync() as Float32Array);
 
             curSampleIndex += waveformWindowHopSamples;
+
         }
 
         const tf_averageScores = tf.mean(tf.tensor(batchResults), 0);
+
         tf_averageScores.print();
+
         const topk = tf.topk(tf_averageScores, this.labels.length, true);
 
         const scores = topk['values'].dataSync() as Float32Array;
         const indices = topk['indices'].dataSync();
         const labels : string[] = [];
-        for(let i=0; i < this.labels.length; i++){
+
+        for (let i=0; i < this.labels.length; i++) {
             labels.push(this.labels[indices[i]]);
         }
 
-        // @ts-ignore
         tf.dispose([tf_waveform, input_waveform_batch, input_samplerate_batch, outputs, tf_averageScores, topk]);
 
         return [labels, scores];
