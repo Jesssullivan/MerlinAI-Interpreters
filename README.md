@@ -96,7 +96,7 @@ npm run-script clean-all
 
 *Ridiculous & wonky ./Merlin script only checked w/ GNU utilities, YMMV on Mac or anything else*
 
-```shell
+```
 ./Merlin
 
       ___  ___          _ _        ___ _____
@@ -105,7 +105,7 @@ npm run-script clean-all
       | |\/| |/ _ | '__| | | '_ \|  _  || |
       | |  | |  __| |  | | | | | | | | _| |_
       \_|  |_/\___|_|  |_|_|_| |_\_| |_\___/
-      
+
 
 Environment:
  -- Auto Setup?        : -as | --auto-setup    :  = false
@@ -590,7 +590,7 @@ a ***single annotation*** as first class entry in database:
  - queued ID events served either:
      - ...from a single database with id events as first class objects
           - (^ Jess is starting here this week (1/05-1/12))
-          
+
 
 <h4 id="footnotes"> </h4>     
 
