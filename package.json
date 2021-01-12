@@ -55,7 +55,7 @@
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-jsdoc": "^30.7.13",
     "eslint-plugin-prefer-arrow": "^1.2.2",
-    "fft.js": "^4.0.3",
+    "fft.js": "4.0.4",
     "http-server": "~0.12.3",
     "jquery": "^3.5.1",
     "leaflet": "^1.6.0",

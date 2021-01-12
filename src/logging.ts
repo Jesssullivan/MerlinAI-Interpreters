@@ -15,7 +15,8 @@
  * limitations under the License.
  */
 
-//import {performance} from '../core/compat/global';
+// todo: kinda more trouble than its worth, removes full stack trace & line number in exchange for colors
+//  - will probably rewrite logger w/ Chalk or something if we're into colory stuff
 
 /**
  * The different verbosity levels.

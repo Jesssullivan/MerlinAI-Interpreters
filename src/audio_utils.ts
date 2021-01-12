@@ -18,9 +18,15 @@
  * limitations under the License.
  */
 
+/* eslint-disable */
+// @ts-ignore
 import * as resample from 'ndarray-resample';
-import * as FFT from 'fft.js';
+// @ts-ignore
 import * as ndarray from 'ndarray';
+/* eslint-enable */
+
+const FFT = require('fft.js');
+
 import {log} from "./index";
 // Safari Webkit only supports 44.1kHz audio.
 const WEBKIT_SAMPLE_RATE = 44100;

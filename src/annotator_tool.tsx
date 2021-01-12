@@ -5,7 +5,6 @@ import {AnnotationSidebar} from './annotation_sidebar';
 import {CategorySelection} from './category_selection';
 import {ImageInfo} from './image_info';
 import {MLAudioInfo} from './macaulay_asset_info';
-import {log} from "./index";
 import * as audio_loader from "./audio_loading_utils.js";
 import * as audio_model from "./audio_model.js";
 import "./Leaflet.annotation.css";
@@ -314,7 +313,7 @@ export class Annotator_tool extends React.Component {
                 this.props.options.didMountLeafletCallback(this);
             }
         } catch (e: any) {
-            log.log('didMountLeafletCallback error @' + e + ' continuing...', 'annotator_tool.ts', Level.INFO);
+            console.log('didMountLeafletCallback error @' + e + ' continuing...');
         }
     }
 
@@ -1038,7 +1037,7 @@ export class Annotator_tool extends React.Component {
      */
     _drawStartEvent(e: { offsetY: string; offsetX: string }) {
 
-        log.log("draw start", 'annotator_tool.ts', Level.INFO);
+        console.log("draw start");
 
         // Add cross hairs for the box annotations.
         if (this.drawState.type === 'box') {
@@ -1075,7 +1074,7 @@ export class Annotator_tool extends React.Component {
      * Check to see if the user successfully created the annotation.
      */
     _drawStopEvent() {
-        log.log("draw stop", 'annotator_tool.ts', Level.INFO);
+        console.log("draw stop");
 
         if (this.drawState.type === 'box') {
 
@@ -1096,7 +1095,7 @@ export class Annotator_tool extends React.Component {
                         $(ch_horizontal).remove();
                         $(ch_vertical).remove();
                     } catch(err) {
-                        log.log("crosshair error @ " + err + "... \n ...continuing...", 'annotator_tool.ts', Level.INFO);
+                        console.log("crosshair error @ " + err + "... \n ...continuing...");
                     }
 
                     this.drawState.bbox_crosshairs = null;
@@ -1447,7 +1446,12 @@ export class Annotator_tool extends React.Component {
             const center_x = pixel_center.x / this.specFactor;
 
             if (this.props.options.didFocusOnAnnotationCallback !== null) {
-                this.props.options.didFocusOnAnnotationCallback(center_x);
+                try {
+                    this.props.options.didFocusOnAnnotationCallback(center_x);
+                }
+                catch (e) {
+                    console.warn('error @ didFocusOnAnnotationCallback; continuing... \n ' + e);
+                }
             }
 
         }
@@ -1479,7 +1483,7 @@ export class Annotator_tool extends React.Component {
                 this.leafletMap.fitBounds(bounds, {maxZoom: this.leafletMap.getZoom()});
             }
 
-            log.log("Clicked Classify!", 'annotator_tool.ts', Level.INFO);
+            console.log("Clicked Classify!");
 
             const point1 = this.leafletMap.project(bounds.getNorthWest(), 0);
             const point2 = this.leafletMap.project(bounds.getSouthEast(), 0);
@@ -1506,17 +1510,15 @@ export class Annotator_tool extends React.Component {
             const samplePos1 = Math.round(pos1 * hopLengthSamples);
             const samplePos2 = Math.round(pos2 * hopLengthSamples);
 
-            log.log("src: " + this.props.image.src.toString(), 'annotator_tool.ts', Level.INFO);
-            log.log("audio: " + this.props.image.audio.toString(), 'annotator_tool.ts', Level.INFO);
+            // log.log("src: " + this.props.image.src.toString(), 'annotator_tool.ts', Level.INFO);
+            console.log("audio: " + this.props.image.audio.toString(), 'annotator_tool.ts', Level.INFO);
             audio_loader.loadAudioFromURL(this.props.image.audio)
                 .then((audioBuffer) => audio_loader.resampleAndMakeMono(audioBuffer, targetSampleRate))
                 .then((audioWaveform) => {
-                    log.log("currentWaveform Type:" + typeof audioWaveform, 'annotator_tool.ts', Level.INFO);
-                    log.log("currentWaveform :" + audioWaveform, 'annotator_tool.ts', Level.INFO);
 
-                    const sampledWaveform = audioWaveform.slice(samplePos1, samplePos2);
+                    console.log("currentWaveform Type:" + typeof audioWaveform);
 
-                    log.log("sampledWaveform bounds: " + sampledWaveform[0] +" & " + sampledWaveform[1], 'annotator_tool.ts', Level.INFO);
+                    // const sampledWaveform = audioWaveform.slice(samplePos1, samplePos2);
 
                     handleClassifyWaveform(audioWaveform)
                         .then(([labels, scores]) => {
@@ -1524,7 +1526,7 @@ export class Annotator_tool extends React.Component {
                         let resultStr = "Scores: \n";
 
                         for (let i = 0; i < 10; i++) {
-                            log.log(labels[i] + ": " + scores[i], 'annotator_tool.ts', Level.INFO);
+                            console.log(labels[i] + ": " + scores[i]);
                             resultStr += labels[i] + ": " + scores[i] + " \n";
                         }
 
@@ -1897,7 +1899,7 @@ export class Annotator_tool extends React.Component {
 
     handleSegmentationFinished() {
 
-        log.log("Done with segmentation", 'annotator_tool.ts', Level.INFO);
+        console.log("Done with segmentation");
 
         // Get the polygons for the segmentation
         const segmentationLayer = this.drawState.drawer.getLayer();

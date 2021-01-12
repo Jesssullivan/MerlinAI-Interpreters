@@ -287,7 +287,7 @@ const startAnnotating =
     }
 
     // Parse the config dict
-    log.log(config.toString(), 'annotator_audio.ts', Level.DEBUG);
+    // log.log(config.toString(), 'annotator_audio.ts', Level.DEBUG);
 
     const quickAccessCatIDs = config.quickAccessCategoryIDs || [];
     const annotation_file_prefix = config.annotationFilePrefix || "";
@@ -471,7 +471,9 @@ const startAnnotating =
 
                         renderBoxes : true,
 
+                        // @ts-ignore
                         didMountLeafletCallback : delayAudioPrepTillRender
+
                     }
                 }, null);
 
@@ -554,9 +556,7 @@ const startAnnotating =
     };
 
     $("#goToImageButton").click(() => {
-
         document.getElementById("goToImageButton").blur();
-
         goToImage();
 
     });
@@ -609,7 +609,7 @@ const startAnnotating =
             annos = annos.concat(image_id_to_annotations[image_info.id]);
         });
 
-        log.log("POSTing " + annos.length + " annotations...", 'annotator_tool.ts', Level.INFO);
+        console.log("POSTing " + annos.length + " annotations...");
 
         const test_user_annos: any[] = annos;
 
@@ -621,14 +621,13 @@ const startAnnotating =
         const rawResponse = await fetch(POST_URL, {
             method: 'POST',
                 headers: {
-                'Accept': 'application/json',
+                    'Accept': 'application/json',
                     'Content-Type': 'application/json'
                 },
             body: JSON.stringify(test_user_annos)
         });
 
-        await rawResponse.json().then((content) =>
-            log.log(content, 'annotator_tool.ts', Level.DEBUG));
+        await rawResponse.json();
 
         alert("Uploaded a total of " + annos.length + " annotations to " + POST_URL);
 
@@ -649,7 +648,7 @@ const startAnnotating =
             }
         }
         catch (e) {
-            log.log('error @ ' + e + '\n ...with spacebar event listener, continuing...', 'annotator_audio.ts', Level.WARN);
+            console.log('error @ ' + e + '\n ...with spacebar event listener, continuing...');
         }
     });
 
@@ -727,7 +726,7 @@ document.querySelector('#customFile').addEventListener('change', (ev)=> {
             log.log("Ignoring " + item.name + " (not sure what to do with it).", 'annotator_audio.ts', Level.WARN);
         }
 
-        log.log(annotation_json_promise, 'annotator_audio.ts', Level.DEBUG);
+        // log.log(annotation_json_promise, 'annotator_audio.ts', Level.DEBUG);
 
     }
 
