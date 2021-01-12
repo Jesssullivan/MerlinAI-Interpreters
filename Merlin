@@ -2,6 +2,7 @@
 
 
 
+
 # if [ -z "$__zsh" ]; then
 #    __zsh=1 exec "$SHELL" "$0" "$@"
 # fi
@@ -283,8 +284,8 @@ echo " -- Cleanup Renders?   : -cr | --clean-renders :  = ${CLEANUPRENDERS}"
 echo " -- Cleanup compiled?  : -ca | --clean-all     :  = ${CLEANUPALL}"
 echo " -- Setup Flask?       : -sf | --setup-flask   :  = ${SETFLASK}"
 echo "Bundle:"
-echo "Pack Demos?            : -d  | --demos         :  = ${BUILDDEMOS}"
-echo "Pack Annotators?       : -a  | --annotators    :  = ${BUILDANNOS}"
+echo " -- Pack Demos?        : -d  | --demos         :  = ${BUILDDEMOS}"
+echo " -- Pack Annotators?   : -a  | --annotators    :  = ${BUILDANNOS}"
 echo "Serve?                 : -s  | --serve         :  = ${SERVE}"
 echo " -- Flask Server?      : -f  | --flask         :  = ${USEFLASK}"
 echo " -- Node HTTP Server?  : -h  | --http-server   :  = ${USENODEFILE}"
@@ -334,20 +335,20 @@ fi
 if [ $BUILDDEMOS == true ] ; then
   echo "$CONSOLE ..packing demos, this could take a while..."
   # run primary webpack within its own process, it really does take a while
-  npm run-script build-all &> $TOOLLOG &
+  npm run-script build-all # &> $TOOLLOG &
   wait
 fi
 
 if [ $BUILDANNOS == true ] ; then
   echo -e "$CONSOLE ...packing annotators..."
   echo "$CONSOLE ...packing leaflet annotator tool..."
-  npm run-script  build-anno-tool &> $TOOLLOG &
+  npm run-script  build-anno-tool # &> $TOOLLOG &
   wait
   echo "$CONSOLE ...packing photo annotator..."
-  npm run-script  build-anno-photo &> $PHOTOLOG &
+  npm run-script  build-anno-photo # &> $PHOTOLOG &
   wait
   echo "$CONSOLE ...packing audio annotator..."
-  npm run-script  build-anno-audio &> $AUDIOLOG &
+  npm run-script  build-anno-audio # &> $AUDIOLOG &
   wait
   echo "$CONSOLE Done packing annotator!"
 fi
@@ -357,7 +358,7 @@ fi
 
 
 if [[ $SERVE == true && $USEFLASK == true ]] ; then
-  npm run-script serve-app &> $FLASKLOG &
+  npm run-script serve-app  &> $FLASKLOG &
 fi
 
 if [[ $SERVE == true && $USEFLASK == false ]] ; then

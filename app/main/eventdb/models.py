@@ -23,17 +23,13 @@ class Eventdb:
     @staticmethod
     def add_id_event():
 
-        _add_json = {}
+        _add_json = []
 
         # load request:
         _request = request.json
 
-        for id_event in _request:
-            key = [id_event][0]['id']
-            _add_json.update({key: [id_event][0]})
-
         # insert event:
-        _ = app.db.eventdb.insert(_add_json)
+        _ = app.db.eventdb.insert(_request)
 
         return tools.JsonResp(_add_json, 200)
 
@@ -46,8 +42,7 @@ class Eventdb:
         _request = request.json
 
         for id_event in _request:
-            key = [id_event][0]['id']
-            _del_json.update({key: [id_event][0]})
+            _del_json.update(id_event)
 
         # delete events:
         _ = app.db.eventdb.delete_many(_del_json)
@@ -81,13 +76,14 @@ class Eventdb:
         return tools.JsonResp(_data, 200)
 
     @staticmethod
-    def query_events_dummy():
+    def query_events_dummy(req):
 
-        _request = request.form
+        _request = req.form
 
         # get key & value for query:
         _key = _request['key']
         _value = _request['value']
+
 
         # query:
         _output = app.db.eventdb.find({_key: _value})

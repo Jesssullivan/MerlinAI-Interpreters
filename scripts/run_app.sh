@@ -1,7 +1,7 @@
 #!/bin/bash
 
 
-SRV='./srv'
+SRV='./db'
 MONGODIR=${SRV}'/mongodb/'
 MONGOLOGS=${SRV}'/mongo_logs.txt'
 # FLASKLOGS='app/flask_logs.txt'
@@ -21,7 +21,7 @@ if ! [ -d $MONGODIR ]; then
 fi
 
 echo "starting MongoDB..."
-mongod --dbpath ./srv/mongodb/ --port 27017 &> ${MONGOLOGS} &
+mongod --dbpath ./db/mongodb/ --port 27017 &> ${MONGOLOGS} &
 
 #echo "starting react-scripts..."
 #npm start &

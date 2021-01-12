@@ -16,7 +16,7 @@ const React = require('react');
 const $ = require('jquery');
 const L = require('leaflet');
 const Draw = require('leaflet-draw');
-
+import { v4 as uuidv4 } from 'uuid';
 const MODEL_URL = 'models/audio/model.json';
 const LABELS_URL = 'models/audio/labels.json';
 
@@ -105,10 +105,6 @@ const defaultOptions = {
     // didFocusOnAnnotationCallback : null,
 
 };
-
-// @ts-ignore
-const uuidv4 = ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
-        (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16));
 
 // tslint:disable-next-line:class-name
 export class Annotator_tool extends React.Component {
@@ -1509,6 +1505,8 @@ export class Annotator_tool extends React.Component {
 
             const samplePos1 = Math.round(pos1 * hopLengthSamples);
             const samplePos2 = Math.round(pos2 * hopLengthSamples);
+
+            console.log("sample position 1: " + samplePos1, "\n sample posititon 2: " + samplePos2);
 
             // log.log("src: " + this.props.image.src.toString(), 'annotator_tool.ts', Level.INFO);
             console.log("audio: " + this.props.image.audio.toString(), 'annotator_tool.ts', Level.INFO);

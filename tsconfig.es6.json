@@ -2,7 +2,7 @@
   "compilerOptions": {
     "outDir": ".built/",
     "jsx": "react",
-    "noImplicitAny": true,
+    "noImplicitAny": false,
     "removeComments": false,
     "preserveConstEnums": true,
     "declaration": true,

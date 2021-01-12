@@ -94,7 +94,8 @@ npm run-script clean-all
 #### *...with ./Merlin:*
 
 
-*Ridiculous & wonky ./Merlin script only checked w/ GNU utilities, YMMV on Mac or anything else*
+
+*Ridiculous ./Merlin script only checked w/ GNU utilities, YMMV on anything else*
 
 ```
 ./Merlin
@@ -106,7 +107,6 @@ npm run-script clean-all
       | |  | |  __| |  | | | | | | | | _| |_
       \_|  |_/\___|_|  |_|_|_| |_\_| |_\___/
 
-
 Environment:
  -- Auto Setup?        : -as | --auto-setup    :  = false
  -- Check Node?        : -cn | --check-node    :  = true
@@ -117,8 +117,8 @@ Utilities:
  -- Cleanup compiled?  : -ca | --clean-all     :  = false
  -- Setup Flask?       : -sf | --setup-flask   :  = false
 Bundle:
-Pack Demos?            : -d  | --demos         :  = false
-Pack Annotators?       : -a  | --annotators    :  = false
+ -- Pack Demos?        : -d  | --demos         :  = false
+ -- Pack Annotators?   : -a  | --annotators    :  = false
 Serve?                 : -s  | --serve         :  = false
  -- Flask Server?      : -f  | --flask         :  = false
  -- Node HTTP Server?  : -h  | --http-server   :  = none
@@ -215,7 +215,10 @@ npx ts-node etc/json_refs.ts
 #### *Flask Structure:*
 
 
+#### *Structure:*
 
+
+*Flask:*
 ```
 ├── app
   ├── main
@@ -240,11 +243,21 @@ npx ts-node etc/json_refs.ts
   └── client side pages, demos built w/ webpack
 ├── src
   └── source directory for client side demos
-├── srv
+├── db
   └── mongodb directory and logs are built here
 ...
 
 ```
+
+
+*demos:*
+
+| Demo | Description |
+|-----------|-------------|
+| [demos/spec_crop_interpreter](./demos/)  | record, crop & interpret. automatically determines client-side or server-side classification method. |
+| [demos/webgl_init](./demos/) | Evaluate web client's capability for classification |
+|  [demos/annotator_audio](./demos/) | Leaflet.annotator tool implementations for generating, labeling, exporting mel spectrogams as annotation data |
+|  [demos/annotator_photo](./demos/) | Leaflet.annotator tool implementations for labeling &  exporting photo annotations |
 
 
 
@@ -566,8 +579,6 @@ a ***single annotation*** as first class entry in database:
 }
 ```
 
-
-*todo:*
 - what if a user is really untrustworthy?
 - send, share wireframe figma to slack people asap
 - bring all the cool new audio features added to Leaflet.annotation into record --> crop --> classify demo:
@@ -581,15 +592,14 @@ a ***single annotation*** as first class entry in database:
 
 
 
+- - -
 
  *todo:*
  - Get queue working somewhere online;
    - It'd be great to be able to use the current Cornell annotator infrastructure (eBird authentication, "to be annotated" list from ML, etc)
  - create an interface to let users visualize the model (tsne)
      - create an interface to let users make a queue, e.g. "wood warbler songs" or "high-confidence false IDs" or "new world sparrows"
- - queued ID events served either:
-     - ...from a single database with id events as first class objects
-          - (^ Jess is starting here this week (1/05-1/12))
+
 
 
 <h4 id="footnotes"> </h4>     

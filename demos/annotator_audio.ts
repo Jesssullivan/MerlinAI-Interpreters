@@ -603,33 +603,39 @@ const startAnnotating =
 
         saveCurrentAnnotations();
 
-        let annos: any[] = [];
+        // let entries = {};
+        const dtime = new Date();
+        let allAnnos = [];
 
-        images_data.forEach((image_info: { id: string | number }) => {
-            annos = annos.concat(image_id_to_annotations[image_info.id]);
+        images_data.forEach((image_info: { id: string | number}) => {
+            allAnnos = allAnnos.concat(image_id_to_annotations[image_info.id]);
         });
 
-        console.log("POSTing " + annos.length + " annotations...");
-
-        const test_user_annos: any[] = annos;
-
-        test_user_annos.forEach(anno => {
-            anno["username"] = "username";
-            anno["user_id"] = "user_id";
-        });
+        for (const entry in allAnnos) {
+            allAnnos[entry].ML_id = allAnnos[entry].image_id;
+            allAnnos[entry].username ="AdminYukiTheRoundestSeal";
+            for (const image in images_data) {
+                if (images_data[image].image_id === allAnnos[entry].image_id) {
+                    allAnnos[entry].media_source = images_data[image].audio;
+                }
+            }
+            allAnnos[entry].last_modified =  dtime.toISOString();
+            console.log(allAnnos[entry]);
+        }
 
         const rawResponse = await fetch(POST_URL, {
+
             method: 'POST',
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
                 },
-            body: JSON.stringify(test_user_annos)
+            body: JSON.stringify(allAnnos)
         });
 
         await rawResponse.json();
 
-        alert("Uploaded a total of " + annos.length + " annotations to " + POST_URL);
+        alert("Uploaded a total of " + allAnnos.length + " annotations to " + POST_URL);
 
         document.getElementById("exportAnnos").blur();
 

@@ -30,7 +30,7 @@ def add_dummy():
 @eventdb_blueprint.route('query_events_dummy',  methods=['GET', 'POST'])
 def query_events_dummy():
     if request.method == 'POST':
-        return Eventdb().query_events_dummy()
+        return Eventdb().query_events_dummy(request)
     elif request.method == 'GET':
         return app.send_static_file('get_annos.html')
 
