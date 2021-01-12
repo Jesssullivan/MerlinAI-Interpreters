@@ -250,17 +250,6 @@ npx ts-node etc/json_refs.ts
 ```
 
 
-*demos:*
-
-| Demo | Description |
-|-----------|-------------|
-| [demos/spec_crop_interpreter](./demos/)  | record, crop & interpret. automatically determines client-side or server-side classification method. |
-| [demos/webgl_init](./demos/) | Evaluate web client's capability for classification |
-|  [demos/annotator_audio](./demos/) | Leaflet.annotator tool implementations for generating, labeling, exporting mel spectrogams as annotation data |
-|  [demos/annotator_photo](./demos/) | Leaflet.annotator tool implementations for labeling &  exporting photo annotations |
-
-
-
 <table>
    <thead>
       <tr>
