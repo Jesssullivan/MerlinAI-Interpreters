@@ -29,7 +29,7 @@ SETFLASK=false
 #  shell --> browser:
 # MERLINSSHELL=$(ps -o fname --no-headers $$)
 MERLINSSHELL="bash"
-DEBBROWSER="chromium"
+DEBBROWSER="google-chrome"
 MACBROWSER=open
 
 # ssl domain:

@@ -29,55 +29,55 @@ export class AnnotationInstance extends React.Component {
 
     }
 
-    onMouseEnter() {
+    onMouseEnter = () => {
         // continue
-    }
+    };
 
-    onMouseLeave() {
+    onMouseLeave = () => {
         // continue
-    }
+    };
 
-    onDelete() {
+    onDelete = () => {
         this.props.handleDelete(this.props.index);
-    }
+    };
 
-    onFocus() {
+    onFocus = () => {
         this.props.handleFocus(this.props.index);
-    }
+    };
 
-    onClassify() {
+    onClassify = () => {
         this.props.handleClassify(this.props.index);
-    }
+    };
 
-    onHideOthers() {
+    onHideOthers = () => {
         this.props.handleHideOthers(this.props.index);
-    }
+    };
 
-    onCategoryChange() {
+    onCategoryChange = () => {
         this.props.handleCategoryChange(this.props.index);
-    }
+    };
 
-    onSupercategoryChange() {
+    onSupercategoryChange = () => {
         this.props.handleSupercategoryChange(this.props.index);
-    }
+    };
 
-    onGroupChange(e: any) {
+    onGroupChange = (e: any) => {
         this.props.handleGroupChange(this.props.index, e.target.checked);
-    }
+    };
 
-    onAnnotateBox(){
+    onAnnotateBox = () => {
         this.props.handleAnnotateBox(this.props.index);
-    }
+    };
 
-    onEditSegment(){
+    onEditSegment = () => {
         this.props.handleEditSegment(this.props.index);
-    }
+    };
 
-    onDeleteSegment(){
+    onDeleteSegment = () => {
         this.props.handleDeleteSegment(this.props.index);
-    }
+    };
 
-    render(){
+    render = () => {
 
         // let collapseID =  "AnnotationCollapse" + this.props.annotation.image_id + this.props.index;
         // let collapseID = "AnnotationCollapse" + ~~(Math.random() * 1000000)
@@ -221,6 +221,6 @@ export class AnnotationInstance extends React.Component {
             </div>
         );
 
-    }
+    };
 
-  }
+}

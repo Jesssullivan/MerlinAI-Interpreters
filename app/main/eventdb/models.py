@@ -22,7 +22,6 @@ class Eventdb:
 
     @staticmethod
     def add_id_event():
-
         _add_json = []
 
         # load request:
@@ -35,7 +34,6 @@ class Eventdb:
 
     @staticmethod
     def delete_id_event():
-
         _del_json = {}
 
         # load request:
@@ -51,7 +49,6 @@ class Eventdb:
 
     @staticmethod
     def list():
-
         _raw_data = app.db.eventdb.find()
         _docs = list(_raw_data)
 
@@ -59,7 +56,6 @@ class Eventdb:
 
     @staticmethod
     def add_dummy():
-
         _event = {
             "id": tools.randID(),
             "ML_id": tools.randStringNumbersOnly(8),
@@ -77,13 +73,11 @@ class Eventdb:
 
     @staticmethod
     def query_events_dummy(req):
-
         _request = req.form
 
         # get key & value for query:
         _key = _request['key']
         _value = _request['value']
-
 
         # query:
         _output = app.db.eventdb.find({_key: _value})

@@ -27,7 +27,6 @@ import * as ndarray from 'ndarray';
 
 const FFT = require('fft.js');
 
-import {log} from "./index";
 // Safari Webkit only supports 44.1kHz audio.
 const WEBKIT_SAMPLE_RATE = 44100;
 const SAMPLE_RATE = 22050;
@@ -55,7 +54,7 @@ const resampleWebAudio = (audioBuffer: AudioBuffer, targetSr: number): Promise<A
     const lengthRes = audioBuffer.length * targetSr / sourceSr;
     const offlineCtx = new OfflineAudioContext(1, lengthRes, targetSr);
 
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       const bufferSource = offlineCtx.createBufferSource();
       bufferSource.buffer = audioBuffer;
       offlineCtx.oncomplete = (event) => {
@@ -90,7 +89,7 @@ export const fetch_audio = async(audio_url : string, targetSampleRate : number) 
         .then((sourceAudioBuffer: AudioBuffer) => {
 
               const sourceSampleRate = sourceAudioBuffer.sampleRate;
-              log.log("Source Audio Sample Rate: " + sourceSampleRate);
+              console.log("Source Audio Sample Rate: " + sourceSampleRate);
 
               if (sourceAudioBuffer.sampleRate === targetSampleRate) {
                 return {
@@ -99,7 +98,7 @@ export const fetch_audio = async(audio_url : string, targetSampleRate : number) 
                 };
               }
 
-              log.log("Resampling Source Audio to: " + targetSampleRate);
+              console.log("Resampling Source Audio to: " + targetSampleRate);
 
               return resampleWebAudio(sourceAudioBuffer, targetSampleRate).then((resampledSourceAudioBuffer: AudioBuffer) => ({
                   waveform: resampledSourceAudioBuffer.getChannelData(0),
@@ -472,6 +471,7 @@ const padReflect = (data: Float32Array, padding: number) => {
 export const frame = (data: Float32Array, frameLength: number, hopLength: number): Float32Array[] => {
   const bufferCount = Math.floor((data.length - frameLength) / hopLength) + 1;
   const buffers = Array.from(
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       {length: bufferCount}, (x, i) => new Float32Array(frameLength));
   for (let i = 0; i < bufferCount; i++) {
 

@@ -68,8 +68,8 @@ module.exports = {
         "@typescript-eslint/no-namespace": "error",
         "@typescript-eslint/no-non-null-assertion": "off",
         "@typescript-eslint/no-require-imports": "off",
-        "@typescript-eslint/no-unused-expressions": "off",
-        "@typescript-eslint/no-unused-vars": "off",
+        "@typescript-eslint/no-unused-expressions": "error",
+        "@typescript-eslint/no-unused-vars": "warn",
         "@typescript-eslint/restrict-plus-operands": "off",
         "@typescript-eslint/semi": [
             "error",
@@ -96,7 +96,7 @@ module.exports = {
         "id-match": "off",
         "import/no-default-export": "error",
         "jsdoc/check-alignment": "error",
-        "jsdoc/check-indentation": "error",
+        "jsdoc/check-indentation": "off",
         "jsdoc/newline-after-description": "error",
         "max-len": [
             "error",
@@ -112,10 +112,10 @@ module.exports = {
         "no-throw-literal": "error",
         "no-underscore-dangle": "off",
         "no-unused-labels": "error",
-        "no-var": "error",
+        "no-var": "warn",
         "object-shorthand": "error",
         "prefer-arrow/prefer-arrow-functions": "error",
-        "prefer-const": "error",
+        "prefer-const": "warn",
         "radix": "off",
         "use-isnan": "error"
     }

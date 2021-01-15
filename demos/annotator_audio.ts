@@ -217,7 +217,7 @@ interface SpectrogramInterface {
  * @returns Image() Element; spectrogram png image to display @ `ImageEl.src`
  * @param image_info parsed image information from images.json
  */
-export class SpectrogramPlayer extends AudioPlayer implements SpectrogramInterface {
+class SpectrogramPlayer extends AudioPlayer implements SpectrogramInterface {
 
     // Spectrogram Visualization Parameters:
     targetSpectrogramHeight = 300;
@@ -871,3 +871,5 @@ isIEedge === false
 // not Google Chrome
     alert("This tool needs to be opened with Google Chrome.");
 }
+
+export {SpectrogramPlayer};
