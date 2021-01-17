@@ -1,5 +1,6 @@
 # pip3 install -r requirements.txt
 
+waitress
 flask-cors
 pymongo
 python-jose
@@ -16,10 +17,10 @@ Flask==1.1.1  # sticking with 1.1.1 for now :(
 # numpy~=1.19.2
 
 # tensorflow select ops seem to usually work better with the nightly builds
-tf-nightly
+# tf-nightly
 
 ### Using 2.3.0 cpu only for Heroku:
-# tensorflow-cpu==2.3.1
+tensorflow-cpu==2.4.0
 
 # audio etc, for both notebooks & web:
 librosa~=0.8.0
