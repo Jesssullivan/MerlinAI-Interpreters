@@ -13,7 +13,7 @@
 - [**Notes**](#footnotes) <br>
 - [**@ github.io**](https://jesssullivan.github.io/tmpUI/) <br>
 - [**@ github repo**](https://github.com/Jesssullivan/tmpUI)
-- [**@ Heroku**](https://merlinai.herokuapp.com/)  <br>
+- [**@ Heroku**](https://merlinai.herokuapp.com/client/)  <br>
 
 
 
