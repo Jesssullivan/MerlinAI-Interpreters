@@ -30,9 +30,9 @@ def anno_audio():
     return Response(response=render_template('otf_index.html'), status=200)
 
 
-@client_blueprint.route("/photo", methods=["GET"])
-def anno_photo():
-    return Response(response=render_template('annotator_photo.html'), status=200)
+@client_blueprint.route("/audio_ml", methods=["GET"])
+def anno_audio_ml():
+    return Response(response=render_template('remote_index.html'), status=200)
 
 
 @client_blueprint.route("/webgl", methods=["GET"])
