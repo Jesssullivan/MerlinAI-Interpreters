@@ -279,11 +279,11 @@ npx ts-node etc/json_refs.ts
   <thead>
     <tr>
       <th>
-        <a href="https://merlinai.herokuapp.com/audio"><img src="./demos/icons/tmpUI.MerlinAI-favicon-light/android-chrome-192x192.png" alt="demos"></a>
+        <a href="https://merlinai.herokuapp.com/client/audio"><img src="./demos/icons/tmpUI.MerlinAI-favicon-light/android-chrome-192x192.png" alt="demos"></a>
         <br/><em> On-The-Fly Spectrogram Annotator demo </em>
       </th>
         <th>
-        <a href="https://merlinai.herokuapp.com/audio_ml"><img src="./demos/icons/Leaflet.annotation-favicon-dark/android-chrome-192x192.png" alt="demos"></a>
+        <a href="https://merlinai.herokuapp.com/client/audio_ml"><img src="./demos/icons/Leaflet.annotation-favicon-dark/android-chrome-192x192.png" alt="demos"></a>
         <br/><em> Remote Spectrogram Annotator demo</em>
       </th>
     </tr>
