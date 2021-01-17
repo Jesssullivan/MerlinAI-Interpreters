@@ -13,11 +13,11 @@ export const MuiButton = (titleName: string, holderName: string) => {
     MuiBtn.textContent = titleName;
 
     // make sure all is updated in DOM
-    while (MuiHolder!.firstChild) {
-            MuiHolder!.removeChild(MuiHolder!.firstChild);
+    while (MuiHolder?.firstChild) {
+            MuiHolder?.removeChild(MuiHolder?.firstChild);
     }
 
-    MuiHolder!.appendChild(MuiBtn);
+    MuiHolder?.appendChild(MuiBtn);
     return(MuiBtn);
 
 };

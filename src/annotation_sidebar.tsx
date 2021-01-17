@@ -6,7 +6,7 @@ const React = require('react');
  */
 export class AnnotationSidebar extends React.Component {
 
-    constructor(props: any) {
+    constructor(props: null) {
         super(props);
     }
 

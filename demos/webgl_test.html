@@ -1,27 +1,124 @@
-<!doctype html>
-<html lang="en">
 <head>
-    <title>Precision Test</title>
+
+    <title>Merlin AI Demos</title>
+
+    <!-- meta -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-    <link href="//cdn.muicss.com/mui-latest/css/mui.min.css" rel="stylesheet" type="text/css" />
-    <link href="style.css" rel="stylesheet" type="text/css" />
+
+    <!-- MUI -->
     <script src="//cdn.muicss.com/mui-latest/js/mui.min.js"></script>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link href="//cdn.muicss.com/mui-latest/css/mui.min.css" rel="stylesheet" type="text/css" />
+
+    <!-- Style CSS -->
+    <link href="style.css" rel="stylesheet" type="text/css" />
+
+    <!-- No UI Slider CSS -->
     <link rel="stylesheet" href="nouislider.css">
+
+    <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.2.3/gh-fork-ribbon.min.css" />
-    <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png">
+
+    <!-- Bootstrap core CSS -->
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
     <link rel="manifest" href="site.webmanifest">
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+    <!-- Leaflet core CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ==" crossorigin=""/>
+
+    <!-- Leaflet Draw CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.3/leaflet.draw.css"/>
+
+    <script src="https://kit.fontawesome.com/73cd972fdf.js" crossorigin="anonymous"></script>
+
+    <style>
+
+        /*
+        * Make the leaflet holder long and narrow for the spectrogram.
+        */
+        .leaflet-image-holder {
+            height: 250px!important;
+            width: 1200px!important;
+        }
+
+        /*
+        * The vertical line for the audio position.
+        */
+        .leaflet-image-holder:before {
+            content:"";
+            width:3px;
+            height:100%;
+            display:block;
+            z-index: 1000;
+            left:50%;
+            position:absolute;
+            background-image: linear-gradient(rgb(179, 0, 0), rgb(179, 0, 0));
+            background-size: 3px 100%;
+            background-repeat: no-repeat;
+            background-position: center center;
+        }
+
+        /*
+        * The vertical 1 second lines. 240 here is an assumption that about 5 seconds of audio are visible in 1200 px (ie. 240 = 1200 / 5)
+        */
+        /*
+        .leaflet-image-holder:after {
+            content:"";
+            width:100%;
+            height:100%;
+            display:block;
+            z-index: 1000;
+            position:absolute;
+            background-image: repeating-linear-gradient(-90deg,
+            transparent 1px,
+            transparent 240px,
+            rgba(179, 0, 0, 0.308) 1px 241px);
+        }
+        */
+        /*
+        This version offsets the lines by 0.5 seconds so that they overlap with the audio position line.
+        NOTE: these have to be "under" the leaflet map so that they don't intercept mouse events.
+              so the zindex needs to be smaller than the leaflet map.
+        NOTE V2: This has been updated to add span elements after the creation of the leaflet map. See below.
+        */
+        /* .leaflet-image-holder:after {
+            content:"";
+            width:100%;
+            height:100%;
+            display:block;
+            z-index: 200;
+            position:absolute;
+            background-image: repeating-linear-gradient(
+                -90deg,
+                transparent,
+                transparent 120px,
+                #49505759 120px,
+                #49505759 121px,
+                transparent 122px ,
+                transparent 240px
+            )
+        } */
+
+
+        .annotation-instance-category-name{
+            font-size: small;
+        }
+
+        .annotation-instance-supercategory-name{
+            font-size: small;
+        }
+
+    </style>
+
 </head>
 
-            <canvas class="visualizer"  width="" height="60px"> visualizer </canvas>
+<canvas class="visualizer"  width="" height="60px"> visualizer </canvas>
 
 <header class="mui-appbar mui--z1"  style="background-color: rgb(58,119,52)">
     <a class="github-fork-ribbon" href="https://github.com/Jesssullivan/tmpui" data-ribbon="Contribute @ GitHub" title="Contribute @ GitHub...">Contribute</a>
@@ -30,18 +127,19 @@
             <canvas class="visualizer"  width="" height="60px"> visualizer </canvas>
         </td>
         <ul class="mui-list--inline mui--text-center">
-            <li><a href="/client"> [Web Interpreter: Home] </a><li>
+            <li><a href="/client"> [Web Interpreter] </a><li>
             <li><a href="/client/webgl"> [Precision Test] </a><li>
-            <li><a href="/client/audio"> [Spectrogram Annotator] </a><li>
-            <li><a href="/client/photo"> [Photo Annotator] </a><li>
+            <li><a href="/client/audio"> [Spectrogram Annotator: OTF] </a><li>
+            <li><a href="/client/audio"> [Spectrogram Annotator: ML] </a><li>
             <li><a href="https://jesssullivan.github.io/tmpUI/"> [Documentation] </a><li>
         </ul>
     </div>
 </header>
+
+
 <div id="content-wrapper" class="mui--text-center">
     <div class="mui--appbar-height"></div>
     <br>
-    <br/>
     <br/>
     <h5> Getting different results on different devices? </h5>
     <br/>

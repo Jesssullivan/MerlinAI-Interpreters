@@ -5,7 +5,7 @@ const React = require('react');
  */
 export class AnnotationInstance extends React.Component {
 
-    constructor(props: any) {
+    constructor(props: null) {
 
         super(props);
 
@@ -81,6 +81,8 @@ export class AnnotationInstance extends React.Component {
 
         // let collapseID =  "AnnotationCollapse" + this.props.annotation.image_id + this.props.index;
         // let collapseID = "AnnotationCollapse" + ~~(Math.random() * 1000000)
+
+        // @ts-ignore
         let colorBadgeEl: JSX.Element;
 
         // Do we have a bounding box layer?
@@ -107,7 +109,10 @@ export class AnnotationInstance extends React.Component {
         }
 
         // Do we show the supercategory?
+
+        // @ts-ignore
         let supercategoryEl: JSX.Element;
+
         if (this.props.showSupercategory && this.props.annotation.supercategory !== 'undefined' &&  this.props.annotation.supercategory != null){
 
             if(this.props.allowSupercategoryEdit){
@@ -123,7 +128,10 @@ export class AnnotationInstance extends React.Component {
         }
 
         // Do we show the category?
+
+        // @ts-ignore
         let categoryEl: JSX.Element;
+
         if( this.props.showCategory ){
 
             if(this.props.allowCategoryEdit){
@@ -154,7 +162,10 @@ export class AnnotationInstance extends React.Component {
         // var category_tags = "";
 
         // Do we show the group / crowd checkbox?
+
+        // @ts-ignore
         let groupEl: JSX.Element;
+
         if (this.props.showGroupOption) {
 
             const isGroup = this.props.annotation.iscrowd === true;
@@ -173,7 +184,10 @@ export class AnnotationInstance extends React.Component {
         }
 
         // Do we allow segmentation?
+
+        // @ts-ignore
         let segmentationEl: JSX.Element;
+
         if (this.props.showSegmentationOption){
             segmentationEl = (
 

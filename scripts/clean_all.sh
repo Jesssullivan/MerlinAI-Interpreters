@@ -23,6 +23,8 @@ find demos/ -name "*.crt" -print -delete
 find demos/ -name "*.cert" -print -delete
 find demos/ -name "*.csr" -print -delete
 
+find './demos/' -name "leaflet.annotation.j*" -print -delete
+
 
 echo -e "\ncleaning renders..."
 find '.' -name "*_render.html" -print -delete

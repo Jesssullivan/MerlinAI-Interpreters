@@ -6,7 +6,7 @@ const React = require('react');
  */
 export class CategorySelection extends React.Component {
 
-    constructor(props: any) {
+    constructor(props: null) {
         super(props);
 
         // want to add an index to the categories
@@ -25,7 +25,7 @@ export class CategorySelection extends React.Component {
 
         // We want to sort defaultFilteredData to have the same order as quickAccessCategoryIDs
         if (quickAccessCategoryIDs.length > 0){
-            defaultFilteredData.sort((a: any, b: any) => {
+            defaultFilteredData.sort((a, b) => {
                 const indxA = quickAccessCategoryIDs.indexOf(a.id);
                 const indxB = quickAccessCategoryIDs.indexOf(b.id);
                 return indxA - indxB;
@@ -61,7 +61,7 @@ export class CategorySelection extends React.Component {
         this.props.onCancel();
     }
 
-    onSelect(e: any){
+    onSelect(e: { target: { dataset: { idx: string } } }) {
         // tslint:disable-next-line:radix
         const idx = parseInt(e.target.dataset.idx);
         this.props.onSelect(idx);
@@ -71,10 +71,10 @@ export class CategorySelection extends React.Component {
         this.props.onSelectNone();
     }
 
-    filterData(e: any) {
+    filterData(e: { preventDefault: () => void; target: { value: string | RegExp } }) {
         e.preventDefault();
         const regex = new RegExp(e.target.value, 'i');
-        const filtered = this.state.data.filter((category: any) => category.name.search(regex) > -1).sort((a: { name: string }, b: { name: string }) => {
+        const filtered = this.state.data.filter((category: { name: string }) => category.name.search(regex) > -1).sort((a: { name: string }, b: { name: string }) => {
             if (a.name.toLowerCase() === e.target.value){
                 return -1;
             }
@@ -145,7 +145,9 @@ export class CategorySelection extends React.Component {
             }
         }
 
+        // @ts-ignore
         let selectNoneEl: JSX.Element;
+
         if (this.props.allowSelectNone) {
             selectNoneEl = (
                 <div className="col-4">

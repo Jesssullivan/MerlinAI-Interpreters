@@ -5,17 +5,18 @@
  * to something other than 44100, the operation will probably be slow.
  */
 
+// linters complain about webkit-
 /* eslint-disable */
+
 // @ts-ignore
 import * as ndarray from 'ndarray';
 // @ts-ignore
 import * as resample from 'ndarray-resample';
-/* eslint-enable */
 
 // Safari Webkit only supports 44.1kHz audio.
 const WEBKIT_SAMPLE_RATE = 44100;
 const SAMPLE_RATE = 44100;
-// tslint:disable-next-line:no-any
+// @ts-ignore
 const appeaseTsLintWindow = (window as any);
 const isSafari = appeaseTsLintWindow.webkitOfflineAudioContext as boolean;
 // tslint:disable-next-line:variable-name
@@ -23,6 +24,8 @@ const offlineCtx = isSafari ?
     new appeaseTsLintWindow.webkitOfflineAudioContext(
         1, WEBKIT_SAMPLE_RATE, WEBKIT_SAMPLE_RATE) :
     new appeaseTsLintWindow.OfflineAudioContext(1, SAMPLE_RATE, SAMPLE_RATE);
+
+/* eslint-enable */
 
 /* Safari doesn't support the Promised format of `offlineCtx.decodeAudioData`
 So we'll wrap the callbacks in a Promise.

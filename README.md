@@ -51,8 +51,8 @@ pip3 install -r requirements.txt
 npm run-script build-all
 
 # serve:
-npm run-script setup-app
-npm run-script serve-app
+npm run-script setup-app  # interactive Flask setup!
+npm run-script serve-app  # serve with Flask.
 ```
 
 *additional npm scripts:*
@@ -62,22 +62,25 @@ npm run-script serve-app
 npm run-script build-spec-web
 npm run-script build-webgl-web
 npm run-script build-anno-tool
-npm run-script build-anno-photo
 npm run-script build-anno-audio
+```
+
+*build some production binaries:*
+```
+npm run-script dist-anno-tool
+npm run-script dist-anno-audio
+```
+
+```
+# serve things:
+npm run-script setup-app   # interactive Flask setup
+npm run-script serve-app   # serve w/ flask
+npm run-script serve-node  # serve w/ local http-server + openssl
 ```
 
 ```
 # Webpack with --watch running:
 npm run-script watch-spec-web
-npm run-script watch-anno-photo
-npm run-script watch-anno-audio
-```
-
-```
-# serve things:
-npm run-script serve-app
-npm run-script setup-app
-npm run-script serve-node  
 ```
 
 ```
@@ -95,7 +98,7 @@ npm run-script clean-all
 
 
 
-*Ridiculous ./Merlin script only checked w/ GNU utilities, YMMV on anything else*
+*Ridiculous ./Merlin script only checked on Ubuntu w/ GNU utilities, YMMV on anything else*
 
 ```
 ./Merlin
@@ -303,35 +306,6 @@ npx ts-node etc/json_refs.ts
   </thead>
 </table>
 
-
-*Hack on Annotator:*
-
-
-<table>
-   <thead>
-      <tr>
-         <th>Demo</th>
-         <th>Description</th>
-      </tr>
-   </thead>
-   <tbody>
-      <tr>
-         <td><a href="demos/annotator_audio.ts">deploy/demos/annotator_audio</a></td>
-         <td>Leaflet.annotator tool implementations for generating, labeling, exporting mel spectrogams as annotation data</td>
-      </tr>
-      <tr>
-         <td><a href="demos/annotator_photo.ts">deploy/demos/annotator_photo</a></td>
-         <td>Leaflet.annotator tool implementations for labeling &amp;  exporting photo annotations</td>
-      </tr>
-      <tr>
-         <td><a href="src/annotator_tool.js">deploy/src/annotator_tool</a></td>
-         <td>epic <code>Annotator_tool</code> entrypoint, contains class handler functions</td>
-      </tr>
-   </tbody>
-</table>
-
-
-- - -
 
 
 <h4 id="swift"> </h4>     

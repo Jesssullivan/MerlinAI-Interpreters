@@ -27,7 +27,7 @@ def interpreter():
 
 @client_blueprint.route("/audio", methods=["GET"])
 def anno_audio():
-    return Response(response=render_template('annotator_audio.html'), status=200)
+    return Response(response=render_template('otf_index.html'), status=200)
 
 
 @client_blueprint.route("/photo", methods=["GET"])

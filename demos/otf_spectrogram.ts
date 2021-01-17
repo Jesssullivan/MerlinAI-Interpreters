@@ -1,28 +1,36 @@
-import {audio_loader, audio_utils, log, spectrogram_utils} from "../src";
-import {Level} from "../src/logging";
+/*
+ * `otf_spectrogram.ts` implements the Leaflet.annotation tool
+ *  for annotating spectrograms.
+ *
+ *  this demo generates and displays high-quality mel spectrograms
+ *  directly from the audio source "on the fly" in the browser.
+ *
+ *  to compile this demo:
+ *  ` npm run-script test `
+ *
+ * then open `otf_index.html` in a browser.
+ *
+ *  to (re)build the development tool:
+ *  ` npm run-script build `
+ *
+ */
 
-/* annotator_audio.ts
- *
- * implementations of `annotator_tool` for annotating spectrograms.
- *
- * build only this file:
- * ` npm run-script build-anno-audio `
- *
- * build all files:
- * ` npm run-script build-all `
- **/
+import {audio_loader, audio_utils, spectrogram_utils} from "../src";
+
+// react:
+const React = require('react');
 
 // selector:
 const $ = require('jquery');
 
 // variables to keep of things while we annotate:
-let annotatorRendered: any = null;
+let annotatorRendered = null;
 let spectrogram_width: number = null;
 let spectrogram_height: number = null;
-let currentImageIndex: number = 0;
+let currentImageIndex = 0;
 
 //  mongo endpoint to add annotations:
-const POST_URL = "http://127.0.0.1:5000/events/add";
+// const POST_URL = "http://127.0.0.1:5000/events/add";
 
 /**
  * class SpectrogramPlayer() provides access to variety of mel spectrogram-related methods,
@@ -65,12 +73,12 @@ interface AudioInterface {
 class AudioPlayer implements AudioInterface {
 
      // the interval that we should pan the spectrogram at:
-    pan_interval_ms: number = 100;
+    pan_interval_ms = 100;
     pixels_per_second: number = null;
     current_offset: number;
-    playing_audio: boolean = false;
-    playing_audio_timing_id: any = null;
-    audioElement: any;
+    playing_audio = false;
+    playing_audio_timing_id = null;
+    audioElement = null;
     pixels_per_ms: number;
 
     panSpectrogram = (): void => {
@@ -397,7 +405,7 @@ const startAnnotating =
                             "Current Time": spectrogram.audioElement.currentTime
                         };
 
-                        log.log(Spectrogram_Props.toString(), 'annotator_audio.ts', Level.INFO);
+                        console.log(Spectrogram_Props.toString(), 'annotator_audio.ts');
 
 
                         spectrogram.enableAudioKeys();
@@ -422,7 +430,7 @@ const startAnnotating =
                     turnOffDrag: () => void; }) => {
 
                     if (!('audio' in image_info)) {
-                        log.log("No audio url in image info", "annotator_audio.ts", Level.WARN);
+                        console.log("No audio url in image info", "annotator_audio.ts");
                         return;
                     }
 
@@ -579,7 +587,7 @@ const startAnnotating =
             annos = annos.concat(image_id_to_annotations[image_info.id]);
         });
 
-        log.log("Exporting " + annos.length + " annotations!", 'annotator_audio.ts', Level.INFO);
+        console.log("Exporting " + annos.length + " annotations!", 'annotator_audio.ts');
 
         const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(annos));
         const downloadAnchorNode = document.createElement('a');
@@ -598,7 +606,8 @@ const startAnnotating =
 
     });
 
-     // Allow the annotations to be sent as post request
+    /*
+    // Allow the annotations to be sent as post request
     $("#postAnnos").click(async () => {
 
         saveCurrentAnnotations();
@@ -640,6 +649,7 @@ const startAnnotating =
         document.getElementById("exportAnnos").blur();
 
     });
+    */
 
     // HACK: trying to make the spacebar play the audio after modifying an annotation
     // this seems to be working....
@@ -671,7 +681,7 @@ document.querySelector('#customFile').addEventListener('change', (ev)=> {
 
     ev.preventDefault();
 
-    const local_image_data: Array<{ id: any; url: any; attribution: string }> = [];
+    const local_image_data: Array<{ id: number; url: string; attribution: string }> = [];
 
     let image_json_promise = null;
     let category_json_promise = null;
@@ -723,13 +733,13 @@ document.querySelector('#customFile').addEventListener('change', (ev)=> {
             }
 
             else {
-                log.log("Ignoring " + item.name + " (not sure what to do with it).", 'annotator_audio.ts', Level.WARN);
+                console.log("Ignoring " + item.name + " (not sure what to do with it).", 'annotator_audio.ts');
             }
 
         }
 
         else {
-            log.log("Ignoring " + item.name + " (not sure what to do with it).", 'annotator_audio.ts', Level.WARN);
+            console.log("Ignoring " + item.name + " (not sure what to do with it).", 'annotator_audio.ts');
         }
 
         // log.log(annotation_json_promise, 'annotator_audio.ts', Level.DEBUG);
@@ -783,7 +793,7 @@ document.querySelector('#customFile').addEventListener('change', (ev)=> {
 
             // Did the user specify any quick access category ids?
             // const quickAccessCatIDs = getQuickAccessCategoryIDs();
-            const quickAccessCatIDs: any = null;
+            const quickAccessCatIDs: string | number = null;
 
             // Did we get a config file?
             const default_config = {

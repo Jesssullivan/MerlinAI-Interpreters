@@ -1,20 +1,29 @@
-
-<!doctype html>
-<html lang="en">
 <head>
+
     <title>Merlin AI Demos</title>
+
+    <!-- meta -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-    <link href="//cdn.muicss.com/mui-latest/css/mui.min.css" rel="stylesheet" type="text/css" />
-    <link href="style.css" rel="stylesheet" type="text/css" />
+
+    <!-- MUI -->
     <script src="//cdn.muicss.com/mui-latest/js/mui.min.js"></script>
+    <link href="//cdn.muicss.com/mui-latest/css/mui.min.css" rel="stylesheet" type="text/css" />
+
+    <!-- Style CSS -->
+    <link href="style.css" rel="stylesheet" type="text/css" />
+
+    <!-- No UI Slider CSS -->
     <link rel="stylesheet" href="nouislider.css">
+
+    <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.2.3/gh-fork-ribbon.min.css" />
-    <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png">
+
+    <!-- Bootstrap core CSS -->
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
     <link rel="manifest" href="site.webmanifest">
 
     <!-- Bootstrap core CSS -->
@@ -25,6 +34,87 @@
 
     <!-- Leaflet Draw CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.3/leaflet.draw.css"/>
+
+    <script src="https://kit.fontawesome.com/73cd972fdf.js" crossorigin="anonymous"></script>
+
+    <style>
+
+        /*
+        * Make the leaflet holder long and narrow for the spectrogram.
+        */
+        .leaflet-image-holder {
+            height: 340px!important;
+            width: 1200px!important;
+        }
+
+        /*
+        * The vertical line for the audio position.
+        */
+        .leaflet-image-holder:before {
+            content:"";
+            width:3px;
+            height:100%;
+            display:block;
+            z-index: 1000;
+            left:50%;
+            position:absolute;
+            background-image: linear-gradient(rgb(179, 0, 0), rgb(179, 0, 0));
+            background-size: 3px 100%;
+            background-repeat: no-repeat;
+            background-position: center center;
+        }
+
+        /*
+        * The vertical 1 second lines. 240 here is an assumption that about 5 seconds of audio are visible in 1200 px (ie. 240 = 1200 / 5)
+        */
+        /*
+        .leaflet-image-holder:after {
+            content:"";
+            width:100%;
+            height:100%;
+            display:block;
+            z-index: 1000;
+            position:absolute;
+            background-image: repeating-linear-gradient(-90deg,
+            transparent 1px,
+            transparent 240px,
+            rgba(179, 0, 0, 0.308) 1px 241px);
+        }
+        */
+        /*
+        This version offsets the lines by 0.5 seconds so that they overlap with the audio position line.
+        NOTE: these have to be "under" the leaflet map so that they don't intercept mouse events.
+              so the zindex needs to be smaller than the leaflet map.
+        NOTE V2: This has been updated to add span elements after the creation of the leaflet map. See below.
+        */
+        /* .leaflet-image-holder:after {
+            content:"";
+            width:100%;
+            height:100%;
+            display:block;
+            z-index: 200;
+            position:absolute;
+            background-image: repeating-linear-gradient(
+                -90deg,
+                transparent,
+                transparent 120px,
+                #49505759 120px,
+                #49505759 121px,
+                transparent 122px ,
+                transparent 240px
+            )
+        } */
+
+
+        .annotation-instance-category-name{
+            font-size: small;
+        }
+
+        .annotation-instance-supercategory-name{
+            font-size: small;
+        }
+
+    </style>
 
 </head>
 
@@ -37,73 +127,24 @@
             <canvas class="visualizer"  width="" height="60px"> visualizer </canvas>
         </td>
         <ul class="mui-list--inline mui--text-center">
-            <li><a href="/client"> [Web Interpreter: Home] </a><li>
+            <li><a href="/client"> [Web Interpreter] </a><li>
             <li><a href="/client/webgl"> [Precision Test] </a><li>
-            <li><a href="/client/audio"> [Spectrogram Annotator] </a><li>
-            <li><a href="/client/photo"> [Photo Annotator] </a><li>
+            <li><a href="/client/audio"> [Spectrogram Annotator: OTF] </a><li>
+            <li><a href="/client/audio"> [Spectrogram Annotator: ML] </a><li>
             <li><a href="https://jesssullivan.github.io/tmpUI/"> [Documentation] </a><li>
         </ul>
     </div>
 </header>
-<head>
-    <title class="center"> Leaflet Annotator Audio Demo </title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="//cdn.muicss.com/mui-latest/css/mui.min.css" rel="stylesheet" type="text/css" />
-    <link href="style.css" rel="stylesheet" type="text/css" />
-    <script src="//cdn.muicss.com/mui-latest/js/mui.min.js"></script>
-    <script src="https://kit.fontawesome.com/73cd972fdf.js" crossorigin="anonymous"></script>
 
-    <style>
-
-            /*
-            * Make the leaflet holder long and narrow for the spectrogram.
-            */
-            .leaflet-image-holder {
-                height: 320px!important;
-                width: 1200px!important;
-            }
-
-            /*
-            * The vertical line for the audio position.
-            */
-            .leaflet-image-holder:before {
-                content:"";
-                width:1px;
-                height:100%;
-                display:block;
-                z-index: 1000;
-                left:50%;
-                position:absolute;
-                background-image: linear-gradient(rgb(179, 0, 0), rgb(179, 0, 0));
-                background-size: 1px 100%;
-                background-repeat: no-repeat;
-                background-position: center center;
-            }
-
-            .annotation-instance-category-name{
-                font-size: xx-small;
-            }
-
-            .annotation-instance-supercategory-name{
-                font-size: xx-small;
-            }
-
-        </style>
-
-</head>
-
-<br/>
-<br/>
-<br/>
-<br/>
-
-<div class="container-fluid">
+<body>
+    <div class="container-fluid">
 
         <!-- Directory Chooser, Instructions, and Configurations -->
         <div id="dirChooser">
             <div class="row justify-content-md-center">
                 <div class="col-md-4">
-                    <h1> Quick Sound Annotator </h1>
+                    <h1> Quick Sound Annotator: </h1>
+                    <h4> Remote Spectrograms </h4>
                 </div>
             </div>
             <div class="row justify-content-md-center mb-5">
@@ -310,16 +351,13 @@
                 <div class="col-md-3">
                     <div class="input-group">
                         <div class="input-group-prepend">
-                            <button class="btn btn-outline-primary" type="button" id="goToImageButton">Go To Image</button>
+                            <button class="btn btn-outline-primary" type="button" id="goToImageButton">Go To File</button>
                         </div>
                         <input id="goToImageInput" type="text" class="form-control">
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <button id="exportAnnos" type="button" class="btn btn-primary">Save Annotations as File</button>
-                </div>
-                <div class="col-md-3">
-                    <button id="postAnnos" type="button" class="btn btn-primary">Export Annotations to Database</button>
+                    <button id="exportAnnos" type="button" class="btn btn-primary">Export Annotations</button>
                 </div>
             </div>
 
@@ -331,26 +369,6 @@
 
             <div id="annotationHolder"></div>
 
-            <!-- toggle waitLoader's hidden state while drawing spectrogram -->
-            <div id="waitLoader" class="loader benigncenter" title="Drawing Spectrogram..." >
-                <style>
-                    .loader {
-                        border-top: 44px solid lightyellow;
-                        border-right: 44px solid rgb(58,119,52);
-                        border-bottom: 44px solid lightyellow;
-                        border-left: 44px solid rgb(58,119,52);
-                        border-radius: 70%;
-                        width: 280px;
-                        height: 280px;
-                        animation: spin 3s linear infinite;
-                    }
-                    @keyframes spin {
-                        0% { transform: rotate(0deg); }
-                        100% { transform: rotate(360deg); }
-                    }
-                </style>
-            </div>
-
             <!-- <div class="row justify-content-md-center">
                 <div class="col-md-1"><p id="currentImageProgress">Image 0 / 0</p></div>
                 <div class="col-md-2">
@@ -361,10 +379,8 @@
             <div class="row justify-content-md-center">
                 <div class="col-md-1">
                     <div class="form-group">
-
                         <label for="goToImageInput">Go to image:</label>
                         <input id="goToImageInput" type="text" class="form-control form-control-sm">
-
                         <button id="goToImageButton" type="button" class="btn btn-primary">Go</button>
                     </div>
                 </div>
@@ -373,30 +389,49 @@
 
         </div>
 
-        <div class="row mt-5">
-            <div class="col-md-4">
-                <h6>Audio & Spectrogram Controls</h6>
+        <div class="row">
+            <div class="col-md-8">
+                <h5>Basic Instructions (Detailed Protocol <a target="_blank" href="https://docs.google.com/presentation/d/1oGLLsKCFEC1-SaoZhvWRLDR29Kt39d5obtVTtG3UGvo/edit#slide=id.p">Here</a>)</h5>
                 <ul class="list-group-flush">
-                    <li class="list-group-item">Space Bar: play and pause</li>
-                    <li class="list-group-item">Left Arrow: backwards</li>
-                    <li class="list-group-item">Right Arrow: forwards</li>
+                    <li class="list-group-item"><strong>Annotate 5-10 vocalizations</strong> of the target species per audio file. When possible, annotate diverse vocalizations (song variation, calls, overlaps with other acoustic events, etc.).</li>
+                    <li class="list-group-item"><strong>Annotate around each target.</strong> For each annotation of the target species, also annotate all other natural sounds visible in the editor when the target species vocalization is centered. Use the arrow keys (or Focus button) to center the target box at the dark red line in the middle of the spectrogram window. Then annotate all other vocalizations in the window.</li>
+                    <li class="list-group-item"><strong>Unknown birds</strong> - Use “Unknown Bird” if you are not sure of the identification, but try to identify the bird if you can! A labeled box is more valuable than “unknown.”</li>
+                    <li class="list-group-item"><strong>Mammal and amphibians</strong> - Also annotate mammals and amphibians when they are in the 5 second window of a target species annotation. Use “Unknown Animal” if you are not sure of the species, or if the species is not an option when you search.</li>
+                    <li class="list-group-item"><strong>Separate vocals with >1s of spacing.</strong> If there is at least one second of space between vocalizations, annotate them separately. The faint vertical lines are one second apart.</li>
+                    <li class="list-group-item"><strong>Frequency and time are both important</strong>, make the box tight to the vocalization (include harmonics).</li>
+                    <li class="list-group-item"><strong>Background Boxes</strong> - When possible, annotate a "Background No Bird" box that is at least one second long and doesn't contain any animal vocalizations. These boxes allow us to learn how to separate ambient background noise and animal vocalizations.</li>
+                    <li class="list-group-item"><strong>Annotations are saved when you click Next or Previous</strong> or use the Go To File option. You can close the window or reload if you want to revert any changes you made</li>
                 </ul>
             </div>
         </div>
+
+        <div class="row mt-5">
+            <div class="col-md-4">
+                <h5>Audio & Spectrogram Controls</h5>
+                <ul class="list-group-flush">
+                    <li class="list-group-item"><strong>Space Bar</strong>: play and pause</li>
+                    <li class="list-group-item"><strong>Left Arrow</strong>: move backward (hold the key to scroll backward)</li>
+                    <li class="list-group-item"><strong>Right Arrow</strong>: move forward (hold the key to scroll forward)</li>
+                    <li class="list-group-item"><strong>Right Click</strong> (or ctrl-Click):  create a new annotation at the cursor using the same species, frequency and time duration as the last annotation you made.</li>
+                </ul>
+            </div>
+        </div>
+
     </div>
 
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 
-<!-- jQuery first, then Popper.js, then Bootstrap JS -->
-<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <!-- Load React. -->
+    <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
 
-<!-- Load React. -->
-<script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
-<script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+    <!-- Our App javascript file -->
+    <script src="leaflet.annotation.js"></script>
 
-<!-- Our App javascript file -->
-<script src="annotator_tool_bundle.js"></script>
+    <!-- Our implementations file: -->
+    <script src="remote_spectrogram.js"></script>
 
-<!-- Out packed implementations file: -->
-<script src="annotator_audio_bundle.js"></script>
+</body>

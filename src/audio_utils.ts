@@ -1,5 +1,4 @@
 /*
- *
  * Refactored utilities for loading audio and computing mel spectrograms, based on
  * {@link https://github.com/google/web-audio-recognition/blob/librosa-compat}.
  *
@@ -30,8 +29,10 @@ const FFT = require('fft.js');
 // Safari Webkit only supports 44.1kHz audio.
 const WEBKIT_SAMPLE_RATE = 44100;
 const SAMPLE_RATE = 22050;
-// tslint:disable-next-line:no-any
+
+// @ts-ignore
 const appeaseTsLintWindow = (window as any);
+
 const isSafari = appeaseTsLintWindow.webkitOfflineAudioContext as boolean;
 // tslint:disable-next-line:variable-name
 const offlineCtx = isSafari ?
@@ -321,7 +322,9 @@ export const resampleAndMakeMono = async(audioBuffer: AudioBuffer, targetSr = SA
     const resampledAudio = new Float32Array(lengthRes);
 
     resample(
+        // @ts-ignore
         ndarray(resampledAudio, [lengthRes]),
+        // @ts-ignore
         ndarray(originalAudio, [originalAudio.length])
     );
 

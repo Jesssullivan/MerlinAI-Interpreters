@@ -19,8 +19,7 @@ module.exports = {
         "eslint-plugin-jsdoc",
         "eslint-plugin-import",
         "eslint-plugin-prefer-arrow",
-        "@typescript-eslint",
-        "@typescript-eslint/tslint"
+        "@typescript-eslint"
     ],
     "rules": {
         "@typescript-eslint/array-type": [
@@ -63,12 +62,12 @@ module.exports = {
             }
         ],
         "@typescript-eslint/naming-convention": "off",
-        "@typescript-eslint/no-explicit-any": "off",
-        "@typescript-eslint/no-inferrable-types": "off",
+        "@typescript-eslint/no-explicit-any": "warn",
+        "@typescript-eslint/no-inferrable-types": "warn",
         "@typescript-eslint/no-namespace": "error",
-        "@typescript-eslint/no-non-null-assertion": "off",
+        "@typescript-eslint/no-non-null-assertion": "warn",
         "@typescript-eslint/no-require-imports": "off",
-        "@typescript-eslint/no-unused-expressions": "error",
+        "@typescript-eslint/no-unused-expressions": "warn",
         "@typescript-eslint/no-unused-vars": "warn",
         "@typescript-eslint/restrict-plus-operands": "off",
         "@typescript-eslint/semi": [
@@ -76,14 +75,6 @@ module.exports = {
             "always"
         ],
         "@typescript-eslint/triple-slash-reference": "error",
-        "@typescript-eslint/tslint/config": [
-            "error",
-            {
-                "rules": {
-                    "ban": true
-                }
-            }
-        ],
         "arrow-body-style": "error",
         "curly": "error",
         "default-case": "error",
@@ -96,7 +87,7 @@ module.exports = {
         "id-match": "off",
         "import/no-default-export": "error",
         "jsdoc/check-alignment": "error",
-        "jsdoc/check-indentation": "off",
+        "jsdoc/check-indentation": "error",
         "jsdoc/newline-after-description": "error",
         "max-len": [
             "error",

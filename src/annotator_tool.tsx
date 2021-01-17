@@ -4,15 +4,26 @@ import {AnnotationSidebar} from './annotation_sidebar';
 import {CategorySelection} from './category_selection';
 import {ImageInfo} from './image_info';
 import {MLAudioInfo} from './macaulay_asset_info';
+import "./leaflet_annotation.css";
+import {v4 as uuidv4} from 'uuid';
+const React = require('react');
+const L = require('leaflet');
+
+// @ts-ignore
+export {L};
+
+// @ts-ignore
+import $ from 'jquery';
+
+// @ts-ignore
+const Draw = require('leaflet-draw');
+
+// @ts-ignore
+export {Draw};
+
 import * as audio_loader from "./audio_loading_utils";
 import * as audio_model from "./audio_model";
-import "./Leaflet.annotation.css";
-import {v4 as uuidv4} from 'uuid';
 
-const React = require('react');
-const $ = require('jquery');
-const L = require('leaflet');
-const Draw = require('leaflet-draw');
 const MODEL_URL = 'models/audio/model.json';
 const LABELS_URL = 'models/audio/labels.json';
 
@@ -27,7 +38,6 @@ const handleClassifyWaveform = async(waveform : Float32Array) => {
     return [labels, scores];
 
 };
-
 /**
  * Required Properties:
  * image : Object
@@ -38,7 +48,6 @@ const handleClassifyWaveform = async(waveform : Float32Array) => {
  * Not Required Properties:
  * options: {}
  */
-
 const defaultOptions = {
     enableEditingImmediately : false,
     enableHotKeysImmediately : false,
@@ -85,9 +94,10 @@ const defaultOptions = {
         duplicateY : true // should the y values be duplicated (for annotating a spectrogram)
     },
 
-    // Segmentation Config
-    enableSegmentationEdit : true,
-    renderSegmentations : true,
+    // Segmentation Config:
+    // Note- segmentation methods have been commented out.
+    enableSegmentationEdit : false,
+    renderSegmentations : false,
 
     // Image Information rendered under the Map
     imageInfoComponent : ImageInfo,
@@ -192,9 +202,9 @@ export class LeafletAnnotation extends React.Component {
         this.handleAnnotationIsCrowdChange = this.handleAnnotationIsCrowdChange.bind(this);
         this.handleAnnotationDrawBox = this.handleAnnotationDrawBox.bind(this);
 
-        this.handleAnnotationDoSegmentation = this.handleAnnotationDoSegmentation.bind(this);
-        this.handleAnnotationDeleteSegmentation = this.handleAnnotationDeleteSegmentation.bind(this);
-        this.handleSegmentationFinished = this.handleSegmentationFinished.bind(this);
+        // this.handleAnnotationDoSegmentation = this.handleAnnotationDoSegmentation.bind(this);
+        // this.handleAnnotationDeleteSegmentation = this.handleAnnotationDeleteSegmentation.bind(this);
+        // this.handleSegmentationFinished = this.handleSegmentationFinished.bind(this);
 
         this.handleClassify = this.handleClassify.bind(this);
 
@@ -314,7 +324,7 @@ export class LeafletAnnotation extends React.Component {
     /****************/
     /** Programmatic Map Move Events **/
 
-    /**
+    /*
      * Set up the interface for annotating a spectrogram.
      * We want to:
      *      1. Zoom the spectrogram so that it's height is `targetHeight`
@@ -591,7 +601,9 @@ export class LeafletAnnotation extends React.Component {
 
         }
 
+        /*
         if (options.renderSegmentations){
+
             if(annotation.segmentation !== undefined && annotation.segmentation !== null){
 
                 // A bit hacky... is there some transform class we can use?
@@ -638,6 +650,7 @@ export class LeafletAnnotation extends React.Component {
 
             }
         }
+        */
 
         return layers;
 
@@ -678,7 +691,8 @@ export class LeafletAnnotation extends React.Component {
      * We do this because editing segmentations requires the painting interface,
      * as opposed to the Leaflet.Draw interface.
      */
-    addSegmentationLayer = (layer) => {
+    /*
+     addSegmentationLayer = (layer) => {
         if(layer !== undefined && layer !== null){
             if(!this.leafletMap.hasLayer(layer)){
                 this.leafletMap.addLayer(layer);
@@ -690,6 +704,7 @@ export class LeafletAnnotation extends React.Component {
      * Segmentation layers are not currently part of this.annotationFeatures,
      * they are added directly to the map.
      */
+    /*
     removeSegmentationLayer = (layer) => {
         if(layer !== undefined && layer !== null){
             if(this.leafletMap.hasLayer(layer)){
@@ -697,6 +712,7 @@ export class LeafletAnnotation extends React.Component {
             }
         }
     };
+    */
 
     /**
      * Translate the point (if needed) so that it lies within the image bounds
@@ -770,10 +786,9 @@ export class LeafletAnnotation extends React.Component {
     /**
      * Show this annotation.
      *
-     * @param {*} annotation
      * @param {*} annotation_layer
      */
-    showAnnotation = (annotation, annotation_layer) => {
+    showAnnotation = (annotation_layer) => {
 
         // Show the bounding box
         if(annotation_layer['bbox'] !== 'undefined' && annotation_layer['bbox'] !== null){
@@ -781,11 +796,13 @@ export class LeafletAnnotation extends React.Component {
             this.addLayer(layer);
         }
 
+        /*
         // Show the segmentation
         if(annotation_layer.segmentation !== undefined && annotation_layer.segmentation !== null){
             const layer = annotation_layer.segmentation;
             this.addSegmentationLayer(layer);
         }
+        */
     };
 
     /**
@@ -793,13 +810,13 @@ export class LeafletAnnotation extends React.Component {
      *
      * @param {number} annotationIndex
      */
+
     handleClassify = (annotationIndex: number) => {
 
-        const annotation = this.state.annotations[annotationIndex];
         const annotation_layer = this.annotation_layers[annotationIndex];
 
         // lets show the annotations if they are not shown
-        this.showAnnotation(annotation, annotation_layer);
+        this.showAnnotation(annotation_layer);
 
         if (annotation_layer['bbox'] !== 'undefined' && annotation_layer['bbox'] !== null) {
             const layer = annotation_layer['bbox'];
@@ -877,10 +894,9 @@ export class LeafletAnnotation extends React.Component {
     /**
      * Hide this annotation.
      *
-     * @param {*} annotation
      * @param {*} annotation_layer
      */
-    hideAnnotation = (annotation, annotation_layer) => {
+    hideAnnotation = (annotation_layer) => {
 
         // Hide the bounding box for this annotation
         if(annotation_layer['bbox'] !== 'undefined' && annotation_layer['bbox'] !== null){
@@ -889,11 +905,12 @@ export class LeafletAnnotation extends React.Component {
         }
 
         // Hide the segmentation
+        /*
         if(annotation_layer.segmentation !== undefined && annotation_layer.segmentation !== null){
             const layer = annotation_layer.segmentation;
             this.removeSegmentationLayer(layer);
         }
-
+        */
     };
 
     /**
@@ -1426,7 +1443,7 @@ export class LeafletAnnotation extends React.Component {
             }
 
             const annotation_layer = this.annotation_layers[i];
-            this.hideAnnotation(annotation, annotation_layer);
+            this.hideAnnotation(annotation_layer);
 
         }
 
@@ -1445,7 +1462,7 @@ export class LeafletAnnotation extends React.Component {
 
             const annotation_layer = this.annotation_layers[i];
 
-            this.showAnnotation(annotation, annotation_layer);
+            this.showAnnotation(annotation_layer);
 
         }
 
@@ -1474,10 +1491,12 @@ export class LeafletAnnotation extends React.Component {
             this.removeLayer(layer);
         }
 
-        if(annotation_layer.segmentation !== undefined && annotation_layer.segmentation !== null){
+        /*
+        if (annotation_layer.segmentation !== undefined && annotation_layer.segmentation !== null){
             const layer = annotation_layer.segmentation;
             this.removeSegmentationLayer(layer);
         }
+        */
 
         // Update the annotations
         this.setState((prevState) => {
@@ -1507,7 +1526,7 @@ export class LeafletAnnotation extends React.Component {
         const annotation_layer = this.annotation_layers[annotationIndex];
 
         // lets show the annotations if they are not shown
-        this.showAnnotation(annotation, annotation_layer);
+        this.showAnnotation(annotation_layer);
 
         if(annotation_layer['bbox'] !== 'undefined' && annotation_layer['bbox'] !== null){
             const layer = annotation_layer['bbox'];
@@ -1563,11 +1582,11 @@ export class LeafletAnnotation extends React.Component {
 
             if (i === annotationIndex){
                 // make sure this annotation is shown
-                this.showAnnotation(annotation, annotation_layer);
+                this.showAnnotation(annotation_layer);
             }
             else{
                 // Hide the other annotations
-                this.hideAnnotation(annotation, annotation_layer);
+                this.hideAnnotation(annotation_layer);
             }
         }
 
@@ -1641,6 +1660,7 @@ export class LeafletAnnotation extends React.Component {
     };
 
     // Go into segmentation mode
+    /*
     handleAnnotationDoSegmentation = (annotationIndex) => {
 
         if (this.state.annotating){
@@ -1653,7 +1673,7 @@ export class LeafletAnnotation extends React.Component {
         const annotation_layer = this.annotation_layers[annotationIndex];
 
         // Make sure this annotation is visible
-        this.showAnnotation(annotation, annotation_layer);
+        this.showAnnotation(annotation_layer);
 
         const segmentationControl = L.control.paintPolygon({
             position: 'topleft',     // position of the control
@@ -1732,6 +1752,7 @@ export class LeafletAnnotation extends React.Component {
         }
 
     };
+    */
 
     /** End Annotation Sidebar Events **/
     /***********************************/
@@ -1907,6 +1928,7 @@ export class LeafletAnnotation extends React.Component {
     /***********************************/
     /** Segmentation Events **/
 
+    /*
     handleSegmentationFinished = () => {
 
         console.log("Done with segmentation.");
@@ -1946,6 +1968,7 @@ export class LeafletAnnotation extends React.Component {
         this.enableEditing();
 
     };
+    */
 
     /** End Segmentation Events **/
     /***********************************/
@@ -1978,7 +2001,7 @@ export class LeafletAnnotation extends React.Component {
 
     };
 
-
+    /*
     extractSegmentation = (layer) => {
 
         let features = layer.toGeoJSON();
@@ -2031,8 +2054,8 @@ export class LeafletAnnotation extends React.Component {
 
         return normalized_polygons;
 
-    };
-
+    }
+    */
 
     /**
      * Return the current state of the annotations
@@ -2083,11 +2106,13 @@ export class LeafletAnnotation extends React.Component {
                 new_annotation['bbox'] = this.extractBBox(layer);
             }
 
-            if(annotation_layer.segmentation !== null){
+            /*
+            if (annotation_layer.segmentation !== null){
                 const layer = annotation_layer['segmentation'];
                 new_annotation['segmentation'] = this.extractSegmentation(layer);
 
             }
+            */
 
             annotations_to_save.push(new_annotation);
         }
@@ -2333,8 +2358,6 @@ export class LeafletAnnotation extends React.Component {
 // @ts-ignore
 document.LeafletAnnotation = LeafletAnnotation;
 // And another hack, we are doing this so that we don't have to "compile" a react component in quick sound anno.
+
 // @ts-ignore
 document.MLAudioInfo = MLAudioInfo;
-// @ts-ignore
-export {Draw};
-

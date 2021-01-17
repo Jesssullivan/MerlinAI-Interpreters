@@ -3,13 +3,13 @@
     "outDir": ".built/",
     "jsx": "react",
     "noImplicitAny": false,
-    "removeComments": false,
+    "removeComments": true,
     "preserveConstEnums": true,
     "declaration": true,
     "allowJs": false,
     "sourceMap": true,
     "lib": ["es2015", "dom"],
-    "noUnusedLocals": true,
+    "noUnusedLocals": false,
     "noImplicitReturns": true,
     "noImplicitThis": true,
     "alwaysStrict": true,
@@ -21,9 +21,13 @@
     "skipLibCheck": true,
     "module": "commonjs",
     "target": "esnext",
-    "moduleResolution": "node"
+    "moduleResolution": "node",
+    "esModuleInterop": true
   },
   "mode": "development",
   "include": [ "./src/" ],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules",
+    "**/audio_utils.ts",
+  "**/annotation_instance.tsx",
+  "**/category_selection.tsx"]
 }

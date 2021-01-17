@@ -2,13 +2,13 @@ import * as path from 'path';
 
 module.exports = {
   resolve: {
-    extensions: ['.ts', '.js'],
+    extensions: ['.ts', '.tsx', '.js', '.jsx'],
   },
   devtool: 'inline-source-map',
   mode: 'development',
-  entry:'./demos/annotator_audio.ts',
+  entry:'./demos/otf_spectrogram.ts',
   output: {
-    filename: 'annotator_audio_bundle.js',
+    filename: 'otf_spectrogram_bundle.js',
     path: path.resolve(__dirname, '../demos'),
   },
   module: {

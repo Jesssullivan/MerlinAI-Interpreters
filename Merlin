@@ -59,9 +59,6 @@ DEMOLOG=$LOGDIR$DEMOFILE
 ANNOTOOLFILE=anno_tool_log.txt
 TOOLLOG=$LOGDIR$ANNOTOOLFILE
 
-ANNOPHOTOFILE=anno_photo_log.txt
-PHOTOLOG=$LOGDIR$ANNOPHOTOFILE
-
 ANNOAUDIOFILE=anno_audio_log.txt
 AUDIOLOG=$LOGDIR$ANNOAUDIOFILE
 
@@ -81,7 +78,6 @@ fi
 touch $FLASKLOG
 touch $DEMOLOG
 touch $TOOLLOG
-touch $PHOTOLOG
 touch $AUDIOLOG
 touch $SSLLOG
 touch $MONGOLOG
@@ -344,9 +340,6 @@ if [ $BUILDANNOS == true ] ; then
   echo "$CONSOLE ...packing leaflet annotator tool..."
   npm run-script  build-anno-tool # &> $TOOLLOG &
   wait
-  echo "$CONSOLE ...packing photo annotator..."
-  npm run-script  build-anno-photo # &> $PHOTOLOG &
-  wait
   echo "$CONSOLE ...packing audio annotator..."
   npm run-script  build-anno-audio # &> $AUDIOLOG &
   wait
@@ -394,7 +387,7 @@ if [[ $SERVE == true && $USEFLASK == true || -f $USENODEFILE ]] ; then
   ## browser ##
   # best to use incognito to avoid cross domain CORS shenanigans ~/.config and ~/.cache
   if [[ $USEFLASK == true && $INCOGNITO == true ]] ; then
-      $BROWSER http://127.0.0.1:5000 --auto-open-devtools-for-tabs --allow-insecure-localhost -incognito &> $FLASKLOG &
+      $BROWSER http://127.0.0.1:5000 --auto-open-devtools-for-tabs --allow-insecure-localhost --auto-open-devtools-for-tabs -incognito &> $FLASKLOG &
       wait
       exit 0
   fi
@@ -414,7 +407,7 @@ if [[ $SERVE == true && $USEFLASK == true || -f $USENODEFILE ]] ; then
   fi
 
   if [[ -f $USENODEFILE && $INCOGNITO == true ]] ; then
-      $BROWSER https://127.0.0.1:5000/$USENODEFILE --allow-insecure-localhost -incognito  &> $FLASKLOG &
+      $BROWSER https://127.0.0.1:5000/$USENODEFILE --allow-insecure-localhost --auto-open-devtools-for-tabs -incognito  &> $FLASKLOG &
       wait
       exit 0
   fi

@@ -6,7 +6,7 @@ const React = require('react');
  */
 export class ImageInfo extends React.Component{
 
-    constructor(props: any) {
+    constructor(props: null) {
         super(props);
     }
 

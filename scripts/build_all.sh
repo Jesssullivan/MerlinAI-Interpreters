@@ -9,7 +9,4 @@ wait
 npm run-script build-anno-tool
 
 wait
-npm run-script build-anno-photo
-
-wait
 npm run-script build-anno-audio
