@@ -266,35 +266,6 @@ npx ts-node etc/json_refs.ts
 ```
 
 
-<table>
-   <thead>
-      <tr>
-         <th>Demo</th>
-         <th>Description</th>
-      </tr>
-   </thead>
-   <tbody>
-      <tr>
-         <td><a href="./demos/">demos/spec_crop_interpreter</a></td>
-         <td>record, crop &amp; interpret. automatically determines client-side or server-side classification method.</td>
-      </tr>
-      <tr>
-         <td><a href="./demos/">demos/webgl_init</a></td>
-         <td>Evaluate web client&#39;s capability for classification</td>
-      </tr>
-      <tr>
-         <td><a href="./demos/">demos/annotator_audio</a></td>
-         <td>Leaflet.annotator tool implementations for generating, labeling, exporting mel spectrogams as annotation data</td>
-      </tr>
-      <tr>
-         <td><a href="./demos/">demos/annotator_photo</a></td>
-         <td>Leaflet.annotator tool implementations for labeling &amp;  exporting photo annotations</td>
-      </tr>
-   </tbody>
-</table>
-
-
-
 - - -
 
 
@@ -308,12 +279,12 @@ npx ts-node etc/json_refs.ts
   <thead>
     <tr>
       <th>
-        <a href="https://merlinai.herokuapp.com/leaflet_audio"><img src="./demos/icons/tmpUI.MerlinAI-favicon-light/android-chrome-192x192.png" alt="demos"></a>
-        <br/><em> Visit Leaflet.annotation Audio demo </em>
+        <a href="https://merlinai.herokuapp.com/audio"><img src="./demos/icons/tmpUI.MerlinAI-favicon-light/android-chrome-192x192.png" alt="demos"></a>
+        <br/><em> On-The-Fly Spectrogram Annotator demo </em>
       </th>
         <th>
-        <a href="https://merlinai.herokuapp.com/leaflet_photo"><img src="./demos/icons/Leaflet.annotation-favicon-dark/android-chrome-192x192.png" alt="demos"></a>
-        <br/><em> Visit Leaflet.annotation Photo demo </em>
+        <a href="https://merlinai.herokuapp.com/audio_ml"><img src="./demos/icons/Leaflet.annotation-favicon-dark/android-chrome-192x192.png" alt="demos"></a>
+        <br/><em> Remote Spectrogram Annotator demo</em>
       </th>
     </tr>
   </thead>
