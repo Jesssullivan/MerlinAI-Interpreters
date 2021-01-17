@@ -51,8 +51,8 @@ pip3 install -r requirements.txt
 npm run-script build-all
 
 # serve:
-npm run-script setup-app  # interactive Flask setup!
-npm run-script serve-app  # serve with Flask.
+npm run-script setup-app  # interactive config.cfg setup
+npm run-script serve-app  # serve with default Flask WSGI
 ```
 
 *additional npm scripts:*
@@ -168,6 +168,13 @@ Serve?                 : -s  | --serve         :  = false
 
 #### *...additional scripts:*
 
+*check on waitress config:*
+```
+# @Procfile:
+# Production WSGI sever is waitress;
+# check local config with:
+waitress-serve --call app:create_app
+```
 
 *local ssl:*
 ```
