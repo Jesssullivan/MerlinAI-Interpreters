@@ -23,6 +23,9 @@
 
 
 #### *Web Experiments Setup:*
+ 
+
+<h4 id="setup"> </h4>     
 
 
 *Quickstart:*
@@ -67,8 +70,11 @@ npm run-script build-anno-audio
 
 *build some production binaries:*
 ```
+npm run-script dist-all
 npm run-script dist-anno-tool
 npm run-script dist-anno-audio
+npm run-script dist-webgl-web
+npm run-script dist-spec-web
 ```
 
 ```
@@ -131,11 +137,6 @@ Serve?                 : -s  | --serve         :  = false
 
 
 ```
-# setup a config.cfg file:
-./Merlin --setup-flask
-# ^...or like this:
-./Merlin -sf
-
 # build & serve everything with flask:
 ./Merlin --demos --annotators --serve --flask --incognito
 # ^...or like this:
@@ -150,6 +151,11 @@ Serve?                 : -s  | --serve         :  = false
 ./Merlin --annotators   
 # ^...or like this:
 ./Merlin -a
+
+# setup a config.cfg file:
+./Merlin --setup-flask
+# ^...or like this:
+./Merlin -sf
 
 # cleanup rendered html pages:
 ./Merlin --clean-renders
