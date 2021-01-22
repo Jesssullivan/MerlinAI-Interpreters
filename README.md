@@ -1,19 +1,26 @@
-## *Demos, interpreter implementations & data ingress experiments for birdsong ID*
+*Experiments, interpreter implementations, demos, data ingress tangents for birdsong ID* 
 
 
-*Jump to:*
-- [**Web: Setup**](#setup) <br>
-  - [**...With npm**](#npm) <br>
-  - [**...With ./Merlin**](#merlin_build) <br>
-  - [**Scripts**](#scripts) <br>
-  - [**Flask Structure**](#structure) <br>
-- [**Leaflet.Annotation**](#leaflet) <br>
-- [**Swift UI**](#swift) <br>
-- [**React-Native**](#reactnative) <br>
-- [**Notes**](#footnotes) <br>
-- [**@ github.io**](https://jesssullivan.github.io/tmpUI/) <br>
-- [**@ github repo**](https://github.com/Jesssullivan/tmpUI)
-- [**@ Heroku**](https://merlinai.herokuapp.com/client/)  <br>
+- [**Web Interpreters & UI Experiments:**](https://github.com/Jesssullivan/tmpUI/tree/master#demos-interpreter-implementations--data-ingress-experiments-for-birdsong-id)
+  - [**@ Heroku: Interpreters & UI Demos**](https://tmpui.herokuapp.com/client/) <br>
+  - [**Web: Setup**](https://github.com/Jesssullivan/tmpUI/tree/master#web-experiments-setup) <br>
+    - [**...With npm**](https://github.com/Jesssullivan/tmpUI/tree/master#with-npm) <br>
+    - [**...With ./Merlin**](https://github.com/Jesssullivan/tmpUI/tree/master#with-merlin) <br>
+    - [**Scripts**](https://github.com/Jesssullivan/tmpUI/tree/master#additional-scripts) <br>
+    - [**Flask Structure**](https://github.com/Jesssullivan/tmpUI/tree/master#structure) <br>
+- [**Web Annotators & Leaflet UI**](https://github.com/Jesssullivan/tmpUI/tree/AudioTypeScript)  <br/>
+  - [**@ Heroku: Annotator Feature Demos**](https://merlinai.herokuapp.com/client/audio)   <br/>
+  - [**Annotator: Setup**](https://github.com/jesssullivan/tmpUI/tree/AudioTypeScript#setup) <br>
+    - [**...Dev Bundles**](https://github.com/jesssullivan/tmpUI/tree/AudioTypeScript#build-development-bundles) <br>
+    - [**...Production Bundles**](https://github.com/jesssullivan/tmpUI/tree/AudioTypeScript#build-development-bundles) <br>
+    - [**Test: With Flask**](https://github.com/jesssullivan/tmpUI/tree/AudioTypeScript#test-with-flask) <br>
+    - [**Test: Without Flask**](https://github.com/jesssullivan/tmpUI/tree/AudioTypeScript#test-without-flask) <br>
+    - [**Production: POSIX Timestamps & Checksums**](https://github.com/jesssullivan/tmpUI/tree/AudioTypeScript#test-without-flask) <br>
+    - [**Flask Structure**](https://github.com/Jesssullivan/tmpUI/tree/AudioTypeScript#structure) <br>
+- [**Native Interpreter Experiments**](https://github.com/Jesssullivan/tmpUI/tree/master#swift)  <br/>
+  - [**Swift UI**](https://github.com/Jesssullivan/tmpUI/tree/master#swift) <br>
+  - [**React-Native**](https://github.com/Jesssullivan/tmpUI/tree/master#reactnative) <br>
+- [**Notes!**](https://jesssullivan.github.io/tmpUI/) <br>
 
 
 
