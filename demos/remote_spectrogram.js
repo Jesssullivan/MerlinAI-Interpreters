@@ -324,7 +324,7 @@ function startAnnotating(images_data, categories, annotations, config) {
                 categories: categories,
                 options: {
                     enableEditingImmediately: true,
-
+                    enableClassify: false,
                     map: {
                         attributionControl: false,
                         zoomControl: false,
