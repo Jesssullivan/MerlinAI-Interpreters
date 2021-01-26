@@ -1,6 +1,4 @@
 
-## *ml-mlearning-leaflet*
-
 #### *Setup:*
 
 ```
