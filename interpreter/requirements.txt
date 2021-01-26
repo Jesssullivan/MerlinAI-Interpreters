@@ -1,0 +1,28 @@
+# pip3 install -r requirements.txt
+
+waitress
+flask-cors
+pymongo
+python-jose
+passlib
+pytz
+gunicorn
+
+# Flask 1.1.2 has been causing headaches w/ Heroku, Jess has no idea why
+Flask==1.1.1  # sticking with 1.1.1 for now :(
+# flask_pymongo
+# bson
+# numpy 1.18.** is still reverse depend of tensorflow 2.3.**
+# numpy~=1.18.2
+# numpy~=1.19.2
+
+# tensorflow select ops seem to usually work better with the nightly builds
+# tf-nightly
+
+### Using 2.3.0 cpu only for Heroku:
+tensorflow-cpu==2.4.0
+
+# audio etc, for both notebooks & web:
+librosa~=0.8.0
+cryptography~=3.1
+keyring~=18.0.1

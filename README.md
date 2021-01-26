@@ -1,4 +1,4 @@
-*Experiments, interpreter implementations, demos, data ingress tangents for birdsong ID* 
+*Experiments, interpreter implementations, demos, data ingress tangents for birdsong ID*
 
 
 - [**Web Interpreters & UI Experiments:**](https://github.com/Jesssullivan/tmpUI/tree/master#demos-interpreter-implementations--data-ingress-experiments-for-birdsong-id)
@@ -29,16 +29,16 @@
 
 
 
-#### *Web Experiments Setup:*
- 
+#### *Web Interpreter Setup:*
+
 
 <h4 id="setup"> </h4>     
 
 
 *Quickstart:*
 ```
-# ...Then follow the prompts to setup node & flask:
-git clone --branch=master --depth=1 https://github.com/jesssullivan/tmpUI && cd tmpUI && chmod +x Merlin && ./Merlin
+cd interpreter
+chmod +x Merlin && ./Merlin
 ```
 
 
@@ -71,15 +71,11 @@ npm run-script serve-app  # serve with default Flask WSGI
 # build specific things:
 npm run-script build-spec-web
 npm run-script build-webgl-web
-npm run-script build-anno-tool
-npm run-script build-anno-audio
 ```
 
 *build some production binaries:*
 ```
 npm run-script dist-all
-npm run-script dist-anno-tool
-npm run-script dist-anno-audio
 npm run-script dist-webgl-web
 npm run-script dist-spec-web
 ```
@@ -230,6 +226,178 @@ npx ts-node etc/json_refs.ts
 - - -
 
 
+<h4 id="leaflet"> </h4>     
+
+
+### *Leaflet Annotator:*  
+
+
+#### *Setup:*
+
+```
+cd annotator
+
+# node:
+npm install
+```
+```
+# If you're building on a Mac,
+# you'll need to manually install
+# GNU sed and md5sum utilities.
+# you could `brew` install them like this:
+brew install gsed md5sha1sum
+```
+
+
+
+#### *Build development bundles:*
+
+
+
+*includes source trees, dev tools*
+```
+# build tool:
+npm run-script build
+
+# build both on-the-fly browser spectrogram & remote spectrogram demos:
+npm run-script test
+
+# build all:
+npm run-script build-all
+```
+
+
+#### *Test with Flask:*
+
+```
+# venv:
+python3 -m venv merlinai_venv
+source merlinai_venv/bin/activate
+pip3 install -r requirements.txt
+```
+
+```
+# interactive config.cfg setup:
+npm run-script setup-app  
+
+# serve with dev WSGI:
+npm run-script serve-app  
+
+# serve with waitress WSGI:
+npm run-script eval-app  
+```
+
+
+#### *Test without Flask:*
+
+```
+# generates high quality spectrograms on the fly in browser:
+google-chrome ./demos/otf_index.html --allow-insecure-localhost --auto-open-devtools-for-tabs
+open ./demos/otf_index.html  # use mimetype on Mac
+
+# displays pre-generated spectrograms from ML:
+google-chrome ./demos/remote_index.html --allow-insecure-localhost --auto-open-devtools-for-tabs
+# open ./demos/remote_index.html # use mimetype on Mac
+```
+
+
+#### *Build production bundles:*
+
+```
+# build production tool:
+npm run-script dist  
+
+# you can also build a stripped down version of the browser spectrogram demo:
+npm run-script dist-otf
+
+```
+
+```
+# cleanup:
+npm run-script clean
+```
+
+
+#### *Verify versions & checksums:*
+
+
+Each `leaflet.annotation.js` production bundle is accompanied by a `leaflet.annotation.js.LICENSE.txt` file.
+
+Both these files are prepended with identical dates; one can evaluate when a bundle was built like this:
+
+```
+# bundle:
+head -c 42 ./demos/leaflet.annotation.js && echo " */"
+#> /* Packed: Tue 19 Jan 2021 09:26:24 PM EST */
+```
+```
+# license:
+head -c 42 ./demos/leaflet.annotation.js.LICENSE.txt && echo " */"
+#> /* Packed: Tue 19 Jan 2021 09:26:24 PM EST */
+```
+
+Furthermore, `leaflet.annotation.js.LICENSE.txt` is stamped with the md5 checksum of its `leaflet.annotation.js` twin; one might verify a bundles's checksum like this:
+```
+md5sum ./demos/leaflet.annotation.js
+#> 8fa701125c2b77cfb4c97b4dbaaae694
+```
+```
+head -c 120 ./demos/leaflet.annotation.js.LICENSE.txt | tail -c 42 && echo
+#> '8fa701125c2b77cfb4c97b4dbaaae694
+```
+
+#### *Directory Tree:*
+
+```
+├── app
+  ├── main
+    ├── client
+      └── blueprint routes for packed web demos;
+          `tfjs` blueprint class & subroutes are
+          registered here too
+    ├── config
+      └── setup-app script populates a new config.cfg file for Flask.
+    ├── tfmodels
+      └── `tfjs` model class & blueprint routes are in here
+    ├── tools
+      └── misc. functions for dates, expression matching, etc
+├── demos
+  ├── audio_example_task
+    └── example annotation task.
+  └── client side demos implementing leaflet.annotation.js.
+├── scripts
+  └── scripts run by package.json.
+├── src
+  └── annotator class is declared in `annotation_tool.tsx`;
+      named exports for client side spectrogram, tfjs, audio
+      methods & bundle's logger are declared in `index.ts`
+└── webpack
+  └── `*_dev.ts` modules exports bundles with dev tools, source map, etc
+      `*_dist.ts` builds production bundles- preforms Terser tree shaking, css minification, etc
+
+```
+
+
+<table>
+  <thead>
+    <tr>
+      <th>
+        <a href="https://merlinai.herokuapp.com/client/audio"><img src="./demos/icons/tmpUI.MerlinAI-favicon-light/android-chrome-192x192.png" alt="demos"></a>
+        <br/><em> On-The-Fly Spectrogram Annotator demo </em>
+      </th>
+        <th>
+        <a href="https://merlinai.herokuapp.com/client/audio_ml"><img src="./demos/icons/Leaflet.annotation-favicon-dark/android-chrome-192x192.png" alt="demos"></a>
+        <br/><em> Remote Spectrogram Annotator demo</em>
+      </th>
+    </tr>
+  </thead>
+</table>
+
+
+
+- - -
+
+
 
 <h4 id="structure"> </h4>     
 
@@ -271,32 +439,6 @@ npx ts-node etc/json_refs.ts
 ...
 
 ```
-
-
-- - -
-
-
-<h4 id="leaflet"> </h4>     
-
-
-### *Leaflet.annotation @ tmpUI:*  
-
-
-<table>
-  <thead>
-    <tr>
-      <th>
-        <a href="https://merlinai.herokuapp.com/client/audio"><img src="./demos/icons/tmpUI.MerlinAI-favicon-light/android-chrome-192x192.png" alt="demos"></a>
-        <br/><em> On-The-Fly Spectrogram Annotator demo </em>
-      </th>
-        <th>
-        <a href="https://merlinai.herokuapp.com/client/audio_ml"><img src="./demos/icons/Leaflet.annotation-favicon-dark/android-chrome-192x192.png" alt="demos"></a>
-        <br/><em> Remote Spectrogram Annotator demo</em>
-      </th>
-    </tr>
-  </thead>
-</table>
-
 
 
 <h4 id="swift"> </h4>     

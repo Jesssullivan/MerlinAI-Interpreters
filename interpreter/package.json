@@ -1,0 +1,125 @@
+{
+  "name": "merlinai-web",
+  "version": "0.1.0",
+  "private": "true",
+  "scripts": {
+    "build-all": "chmod +x scripts/build_all.sh && ./scripts/build_all.sh",
+    "build-spec-web": "webpack --config webpack/webpack.spec_web.ts",
+    "watch-spec-web": "webpack --watch --config webpack/webpack.spec_web.ts",
+    "build-webgl-web": "webpack --config webpack/webpack.webgl.ts",
+    "build-anno-tool": "chmod +x scripts/build_dev.sh && ./scripts/build_dev.sh",
+    "build-anno-audio": "chmod +x scripts/audio_dev.sh && ./scripts/audio_dev.sh",
+    "dist-all": "chmod +x scripts/dist_all.sh && ./scripts/dist_all.sh",
+    "dist-anno-tool": "chmod +x scripts/build_dist.sh && ./scripts/build_dist.sh",
+    "dist-anno-audio": "chmod +x scripts/audio_dist.sh && ./scripts/audio_dist.sh",
+    "dist-webgl-web": "webpack --config webpack/webpack.webgl_dist.ts",
+    "dist-spec-web": "webpack --config webpack/webpack.spec_web_dist.ts",
+    "serve-app": "chmod +x scripts/run_app.sh && ./scripts/run_app.sh",
+    "setup-app": "chmod +x scripts/setup_app.sh && ./scripts/setup_app.sh",
+    "serve-node": "http-server -S -C ./demos/demos.pem -K ./demos/key.pem -o ./demos/annotator_audio.html",
+    "clean-bundles": "find '.' -name \"*_bundle.js\" -print -delete",
+    "clean-renders": "find '.' -name \"*_render.html\" -print -delete",
+    "clean-all": "chmod +x scripts/clean_all.sh && ./scripts/clean_all.sh",
+    "sslgen": "chmod +x scripts/sslgen.sh && ./scripts/sslgen.sh",
+    "ios-native": "react-native run-ios",
+    "android-native": "react-native run-android"
+  },
+  "devDependencies": {
+    "@babel/core": "~7.12.10",
+    "@babel/preset-env": "~7.12.11",
+    "@babel/preset-react": "~7.12.10",
+    "@babel/runtime": "~7.12.5",
+    "@tensorflow/tfjs": "latest",
+    "@tensorflow/tfjs-converter": "latest",
+    "@types/dom-mediacapture-record": "^1.0.7",
+    "@types/glob": "latest",
+    "@types/jquery": "latest",
+    "@types/leaflet": "latest",
+    "@types/minimist": "latest",
+    "@types/ndarray": "latest",
+    "@types/node": "latest",
+    "@types/terser-webpack-plugin": "latest",
+    "@types/uuid": "~8.3.0",
+    "@types/webgl2": "0.0.5",
+    "@typescript-eslint/eslint-plugin": "latest",
+    "@typescript-eslint/eslint-plugin-tslint": "latest",
+    "@typescript-eslint/parser": "latest",
+    "audio-recorder-polyfill": "latest",
+    "babel-loader": "~8.2.0",
+    "buffer": "^6.0.3",
+    "css-loader": "~5.0.1",
+    "css-minimizer-webpack-plugin": "~1.1.5",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^7.1.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jsdoc": "^30.7.13",
+    "eslint-plugin-prefer-arrow": "^1.2.2",
+    "fft.js": "~4.0.4",
+    "http-server": "~0.12.3",
+    "jquery": "^3.5.1",
+    "leaflet": "latest",
+    "leaflet-draw": "latest",
+    "mini-css-extract-plugin": "^1.3.4",
+    "ndarray": "^1.0.19",
+    "ndarray-resample": "^1.0.1",
+    "node-gyp": "^7.1.0",
+    "polygon-clipping": "^0.14.3",
+    "react": "latest",
+    "react-dom": "latest",
+    "style-loader": "^1.1.0",
+    "terser-webpack-plugin": "~5.1.1",
+    "ts-loader": "^5.3.0",
+    "ts-node": "~9.1.1",
+    "tsify": "^3.0.4",
+    "typescript": "^4.1.3",
+    "url-loader": "^3.0.0",
+    "uuid": "^8.3.2",
+    "webpack": "~5.15.0",
+    "webpack-cli": "~4.3.1",
+    "webpack-dev-server": "~3.11.2"
+  },
+  "proxy": "http://127.0.0.1:5000",
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "jest": {
+    "preset": "react-native"
+  },
+  "babel": {
+    "presets": [
+      "@babel/preset-env",
+      "@babel/preset-react"
+    ],
+    "plugins": [
+      "@babel/plugin-proposal-class-properties",
+      "react-hot-loader/babel"
+    ]
+  },
+  "contributors": [
+    {
+      "name": "Grant Van Horn",
+      "url": "https://github.com/gvanhorn38"
+    },
+    {
+      "name": "Jess Sullivan",
+      "url": "https://github.com/jesssullivan"
+    },
+    {
+      "name": "Benjamin Hoffman",
+      "url": "https://github.com/benjaminsshoffman"
+    },
+    {
+      "name": "Visipedia et al.",
+      "url": "https://github.com/visipedia/"
+    }
+  ]
+}
