@@ -8,15 +8,15 @@
     - [**...With ./Merlin**](https://github.com/Jesssullivan/tmpUI/tree/master#with-merlin) <br>
     - [**Scripts**](https://github.com/Jesssullivan/tmpUI/tree/master#additional-scripts) <br>
     - [**Flask Structure**](https://github.com/Jesssullivan/tmpUI/tree/master#structure) <br>
-- [**Web Annotators & Leaflet UI**](https://github.com/Jesssullivan/tmpUI/tree/AudioTypeScript)  <br/>
+- [**Web Annotators & Leaflet UI**](https://github.com/Jesssullivan/tmpUI/tree/master#leaflet)  <br/>
   - [**@ Heroku: Annotator Feature Demos**](https://merlinai.herokuapp.com/client/audio)   <br/>
-  - [**Annotator: Setup**](https://github.com/jesssullivan/tmpUI/tree/AudioTypeScript#setup) <br>
-    - [**...Dev Bundles**](https://github.com/jesssullivan/tmpUI/tree/AudioTypeScript#build-development-bundles) <br>
-    - [**...Production Bundles**](https://github.com/jesssullivan/tmpUI/tree/AudioTypeScript#build-development-bundles) <br>
-    - [**Test: With Flask**](https://github.com/jesssullivan/tmpUI/tree/AudioTypeScript#test-with-flask) <br>
-    - [**Test: Without Flask**](https://github.com/jesssullivan/tmpUI/tree/AudioTypeScript#test-without-flask) <br>
-    - [**Production: POSIX Timestamps & Checksums**](https://github.com/jesssullivan/tmpUI/tree/AudioTypeScript#test-without-flask) <br>
-    - [**Flask Structure**](https://github.com/Jesssullivan/tmpUI/tree/AudioTypeScript#structure) <br>
+  - [**Annotator: Setup**](https://github.com/jesssullivan/tmpUI/tree/master#setup) <br>
+    - [**...Dev Bundles**](https://github.com/jesssullivan/tmpUI/tree/master#build-development-bundles) <br>
+    - [**...Production Bundles**](https://github.com/jesssullivan/tmpUI/tree/master#build-development-bundles) <br>
+    - [**Test: With Flask**](https://github.com/jesssullivan/tmpUI/tree/master#test-with-flask) <br>
+    - [**Test: Without Flask**](https://github.com/jesssullivan/tmpUI/tree/master#test-without-flask) <br>
+    - [**Production: POSIX Timestamps & Checksums**](https://github.com/jesssullivan/tmpUI/tree/master#test-without-flask) <br>
+    - [**Flask Structure**](https://github.com/Jesssullivan/tmpUI/tree/master#structure) <br>
 - [**Native Interpreter Experiments**](https://github.com/Jesssullivan/tmpUI/tree/master#swift)  <br/>
   - [**Swift UI**](https://github.com/Jesssullivan/tmpUI/tree/master#swift) <br>
   - [**React-Native**](https://github.com/Jesssullivan/tmpUI/tree/master#reactnative) <br>
