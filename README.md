@@ -16,7 +16,7 @@
     - [**Test: Without Flask**](#test-without-flask) <br>
     - [**Production: POSIX Timestamps & Checksums**](#checksum) <br>
     - [**Flask Structure**](#anno-structure) <br>
-    - [**LeafletSync Utility*](#chindogu) <br>
+    - [**LeafletSync Utility**](#chindogu) <br>
 - [**Native Interpreter Experiments**](#native)  <br/>
   - [**Swift UI**](#swift) <br>
   - [**React-Native**](#reactnative) <br>
@@ -117,12 +117,12 @@ npm run-script serve-app  # serve with default Flask WSGI
 
 ```
 
-- - - 
 
-
+<br/>
 
 <h4 id="additional-scripts> </h4>     
-
+  
+  
 
 #### *additional scripts:*
 
