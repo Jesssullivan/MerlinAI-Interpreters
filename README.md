@@ -1,9 +1,9 @@
 *Experiments, interpreter implementations, demos, data ingress tangents and lots of notes for birdsong ID*
 
 
-- [**Web Interpreters & UI Experiments:**](https://github.com/Jesssullivan/tmpUI/tree/master#demos-interpreter-implementations--data-ingress-experiments-for-birdsong-id)
+- [**Web Interpreters & UI Experiments:**](#demos-interpreter-implementations--data-ingress-experiments-for-birdsong-id)
   - [**@ Heroku: Interpreter Demo**](https://merlinai.herokuapp.com/classify/)   <br/>
-  - [**Web: Setup**](https://github.com/Jesssullivan/tmpUI/tree/master#web-experiments-setup) <br>
+  - [**Web: Setup**](#web-experiments-setup) <br>
     - [**...With npm**](https://github.com/Jesssullivan/tmpUI/tree/master#with-npm) <br>
     - [**Flask Structure**](https://github.com/Jesssullivan/tmpUI/tree/master#structure) <br>
     - [**Scripts**](https://github.com/Jesssullivan/tmpUI/tree/master#additional-scripts) <br>
