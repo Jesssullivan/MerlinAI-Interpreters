@@ -5,7 +5,6 @@
   - [**@ Heroku: Interpreter Demo**](https://merlinai.herokuapp.com/classify/)   <br/>
   - [**Web: Setup**](https://github.com/Jesssullivan/tmpUI/tree/master#web-experiments-setup) <br>
     - [**...With npm**](https://github.com/Jesssullivan/tmpUI/tree/master#with-npm) <br>
-    - [**...With ./Merlin**](https://github.com/Jesssullivan/tmpUI/tree/master#with-merlin) <br>
     - [**Scripts**](https://github.com/Jesssullivan/tmpUI/tree/master#additional-scripts) <br>
     - [**Flask Structure**](https://github.com/Jesssullivan/tmpUI/tree/master#structure) <br>
 - [**Web Annotators & Leaflet UI**](https://github.com/Jesssullivan/tmpUI/tree/master#leaflet)  <br/>
