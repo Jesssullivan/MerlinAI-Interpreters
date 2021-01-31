@@ -5,10 +5,10 @@
   - [**@ Heroku: Interpreter Demo**](https://merlinai.herokuapp.com/classify/)   <br/>
   - [**Web: Setup**](https://github.com/Jesssullivan/tmpUI/tree/master#web-experiments-setup) <br>
     - [**...With npm**](https://github.com/Jesssullivan/tmpUI/tree/master#with-npm) <br>
-    - [**Scripts**](https://github.com/Jesssullivan/tmpUI/tree/master#additional-scripts) <br>
     - [**Flask Structure**](https://github.com/Jesssullivan/tmpUI/tree/master#structure) <br>
+    - [**Scripts**](https://github.com/Jesssullivan/tmpUI/tree/master#additional-scripts) <br>
 - [**Web Annotators & Leaflet UI**](https://github.com/Jesssullivan/tmpUI/tree/master#leaflet)  <br/>
-  - [**@ Heroku: Annotator Feature Demos**](https://merlinai.herokuapp.com/client/audio)   <br/>
+  - [**@ Heroku: Annotator Feature Demos**](https://merlinai.herokuapp.com/annotator/audio)   <br/>
   - [**Annotator: Setup**](https://github.com/jesssullivan/tmpUI/tree/master#setup) <br>
     - [**...Dev Bundles**](https://github.com/jesssullivan/tmpUI/tree/master#build-development-bundles) <br>
     - [**...Production Bundles**](https://github.com/jesssullivan/tmpUI/tree/master#build-development-bundles) <br>
@@ -201,7 +201,7 @@ npx ts-node etc/json_refs.ts
 <h4 id="leaflet"> </h4>     
 
 
-### *Leaflet Annotator:*  
+#### *Leaflet Annotator:*  
 
 - - -
 
@@ -229,12 +229,9 @@ rm LeafletSync
 
 - - -
 
-#### *`./CornellLabofOrnithology-ml-mlearning-leaflet-0503b1fab111/`*
-
-# *ml-mlearning-leaflet:*
 
 
-## *Setup:*
+#### *Setup:*
 
 ```
 # node:
@@ -250,7 +247,7 @@ brew install gsed md5sha1sum
 
 
 
-## *Build development bundles:*
+#### *Build development bundles:*
 
 
 
@@ -267,7 +264,7 @@ npm run-script build-all
 ```
 
 
-## *Test with Flask:*
+#### *Test with Flask:*
 
 ```
 # venv:
@@ -288,7 +285,7 @@ npm run-script eval-app
 ```
 
 
-## *Test without Flask:*
+#### *Test without Flask:*
 
 ```
 # generates high quality spectrograms on the fly in browser:
@@ -301,7 +298,7 @@ google-chrome ./demos/remote_index.html --allow-insecure-localhost --auto-open-d
 ```
 
 
-## *Build production bundles:*
+#### *Build production bundles:*
 
 ```
 # build production tool:
@@ -318,7 +315,7 @@ npm run-script clean
 ```
 
 
-## *Verify versions & checksums:*
+#### *Verify versions & checksums:*
 
 
 Each `leaflet.annotation.js` production bundle is accompanied by a `leaflet.annotation.js.LICENSE.txt` file.
@@ -346,7 +343,7 @@ head -c 120 ./demos/leaflet.annotation.js.LICENSE.txt | tail -c 42 && echo
 #> '8fa701125c2b77cfb4c97b4dbaaae694
 ```
 
-## *Directory Tree:*
+#### *Directory Tree:*
 
 ```
 ├── app
@@ -386,11 +383,11 @@ head -c 120 ./demos/leaflet.annotation.js.LICENSE.txt | tail -c 42 && echo
   <thead>
     <tr>
       <th>
-        <a href="https://merlinai.herokuapp.com/client/audio"><img src="./interpreter/demos/icons/tmpUI.MerlinAI-favicon-light/android-chrome-192x192.png" alt="demos"></a>
+        <a href="https://merlinai.herokuapp.com/annotator/audio"><img src="./interpreter/demos/icons/tmpUI.MerlinAI-favicon-light/android-chrome-192x192.png" alt="demos"></a>
         <br/><em> On-The-Fly Spectrogram Annotator demo </em>
       </th>
         <th>
-        <a href="https://merlinai.herokuapp.com/client/audio_ml"><img src=".//interpreter/demos/icons/Leaflet.annotation-favicon-dark/android-chrome-192x192.png" alt="demos"></a>
+        <a href="https://merlinai.herokuapp.com/annotator/audio_ml"><img src="./interpreter/demos/icons/Leaflet.annotation-favicon-dark/android-chrome-192x192.png" alt="demos"></a>
         <br/><em> Remote Spectrogram Annotator demo</em>
       </th>
     </tr>
@@ -588,7 +585,7 @@ npm run-script ios-native
 
 
 
-# Notes:    
+## Notes:    
 
 
 ***Rolling notes and whatnot are appended to bottom of readme***
@@ -688,21 +685,12 @@ a ***single annotation*** as first class entry in database:
 
 - [just began enumerating features here on Figma](https://www.figma.com/file/CgscKZmdW3WKN3JGkjQsU7/WebAnnotatorFeatureNotes12.03.20?node-id=7%3A5536)
 
-- - -
-
-
 
 - what if a user is really untrustworthy?
 - send, share wireframe figma to slack people asap
 - bring all the cool new audio features added to Leaflet.annotation into record --> crop --> classify demo:
     - playback spectrogram with audio
     - scrubbing via keyboard / buttons
-    - cropping / bbox features-
-     - seems it'd be most efficient to just generate new local annotation in browser upon record,
-       use the same annotator bundle to handle all these functions.
-     - fix crop behavior for serverside classification ^ this way, generate and POST new `snippet.wav` by `bbox`
-       (instead of classify entire recording)
-
 
 
 - - -
@@ -718,4 +706,4 @@ a ***single annotation*** as first class entry in database:
 <h4 id="footnotes"> </h4>     
 
 
-#### *^ Rolling notes and whatnot are appended above ^*
+*^ Rolling notes and whatnot are appended above ^*
