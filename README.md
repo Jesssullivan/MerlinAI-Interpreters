@@ -32,16 +32,6 @@
 #### *Web Interpreter Setup:*
 
 
-<h4 id="web-experiments-setup"> </h4>     
-
-
-
-*Quickstart:*
-```
-cd interpreter
-chmod +x Merlin && ./Merlin
-```
-
 
 <h4 id="npm"> </h4>     
 
