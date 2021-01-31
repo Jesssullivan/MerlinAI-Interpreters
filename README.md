@@ -4,7 +4,7 @@
 - [**Web Interpreters & UI Experiments:**](#demos-interpreter-implementations--data-ingress-experiments-for-birdsong-id)
   - [**@ Heroku: Interpreter Demo**](https://merlinai.herokuapp.com/classify/)   <br/>
   - [**Web: Setup**](#web-experiments-setup) <br>
-    - [**...With npm**](https://github.com/Jesssullivan/tmpUI/tree/master#with-npm) <br>
+    - [**...With npm**](#npm) <br>
     - [**Flask Structure**](https://github.com/Jesssullivan/tmpUI/tree/master#structure) <br>
     - [**Scripts**](https://github.com/Jesssullivan/tmpUI/tree/master#additional-scripts) <br>
 - [**Web Annotators & Leaflet UI**](https://github.com/Jesssullivan/tmpUI/tree/master#leaflet)  <br/>
