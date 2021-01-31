@@ -9,8 +9,8 @@ window.MediaRecorder = require('audio-recorder-polyfill');
 
 // const webClassifyURL = "http://127.0.0.1:5000/classify/select"
 // const webClassifyURL = "http://127.0.0.1:5000/classify/standard"
-// const webClassifyURL = "https://merlinai.herokuapp.com/classify/select"
-const webClassifyURL = "https://merlinai.herokuapp.com/classify/standard"
+const webClassifyURL = "https://merlinai.herokuapp.com/classify/select"
+//const webClassifyURL = "https://merlinai.herokuapp.com/classify/standard";
 
 const recordBtn = document.getElementById("recordButton") as HTMLButtonElement;
 const stopBtn = document.getElementById("stopButton") as HTMLButtonElement;
@@ -59,6 +59,7 @@ const useBrowser = () => {
     if (capable === true) {
         merlinAudio = new audio_model.MerlinAudioModel(LABELS_URL, MODEL_URL);
         return true;
+        //return false;
     }
     else {
         return false;
@@ -143,7 +144,7 @@ const handleClassifyWaveform = async() => {
                 results = results.sort((a, b) =>  b[1] - a[1]);
 
                 // send resulting scores to user as an alert:
-                let resultStr = classifyTextHeader + "\n" + "Scores:";
+                let resultStr = classifyTextHeader + "\n" + "Scores:" + "\n";
 
                 // generate a html list to show the user scores too:
                 for (i in results) {
@@ -165,7 +166,7 @@ const handleClassifyWaveform = async() => {
         await merlinAudio.averagePredictV3(currentWaveformSample, targetSampleRate)
             // @ts-ignore
             .then(([labels, scores]) => {
-                let resultStr = classifyTextHeader + "\n" + "Scores:";
+                let resultStr = classifyTextHeader + "\n" + "Scores:" + "\n";
                 for (let i = 0; i < 10; i++) {
                     const scoreEl = document.createElement('li');
                     scoreEl.textContent = labels[i] + " " + scores[i];
@@ -180,6 +181,12 @@ const handleClassifyWaveform = async() => {
 };
 
 const updateVis = () => {
+
+    const specCropImage = document.getElementById('specCropHolder');
+
+    while (specCropImage.firstChild) {
+        specCropImage.removeChild(specCropImage.firstChild);
+    }
 
     handlePositions = slider.noUiSlider.get();
     let pos1 = Math.round(parseFloat(handlePositions[0]));
@@ -211,12 +218,6 @@ const updateVis = () => {
     imgCrop.src = cropped_imageURI;
     imgCrop.height = cropped_height;
     imgCrop.width =  cropped_width;
-
-    const specCropImage = document.getElementById('specCropHolder');
-
-    while (specCropImage.firstChild) {
-        specCropImage.removeChild(specCropImage.firstChild);
-    }
 
     specCropImage.appendChild(imgCrop);
 
@@ -350,11 +351,10 @@ const renderSpectrogram = (imageURI : string, spectrogramLength: number) => {
 
 const visualize = (stream : MediaStream) => {
 
-    if(!audioCtx) {
-        //@ts-ignore
-        const AudioContext = window.AudioContext || window.webkitAudioContext;
-        audioCtx = new AudioContext();
-    }
+    audioCtx = null;
+    //@ts-ignore
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    audioCtx = new AudioContext();
 
     const source = audioCtx.createMediaStreamSource(stream);
 
@@ -367,7 +367,6 @@ const visualize = (stream : MediaStream) => {
 
     shouldDrawVisualization = true;
 
-    // todo: make draw() anonymous
     const draw = () => {
         const WIDTH = canvas.width;
         const HEIGHT = canvas.height;
