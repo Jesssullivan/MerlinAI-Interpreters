@@ -46,10 +46,9 @@ chmod +x Merlin && ./Merlin
 
 
 
-#### *...with npm:*
+#### *node:*
 
 ```
-# node:
 npm install
 
 # venv:
@@ -57,21 +56,70 @@ python3 -m venv merlinai_venv
 source merlinai_venv/bin/activate
 pip3 install -r requirements.txt
 
-# build all the things:
-npm run-script build-all
+# build specific things:
+npm run-script build-spec-web
+npm run-script build-webgl-web
 
 # serve:
 npm run-script setup-app  # interactive config.cfg setup
 npm run-script serve-app  # serve with default Flask WSGI
 ```
 
-*additional npm scripts:*
+
+
+- - -
+
+
+
+<h4 id="structure"> </h4>     
+
+
+
+#### *Interpreter Flask Structure:*
+
 
 ```
-# build specific things:
-npm run-script build-spec-web
-npm run-script build-webgl-web
+├── app
+  ├── main
+    ├── annotator
+      └── /annotator/ blueprint routes
+    ├── auth
+      └── token authentication methods, a wip
+    ├── classify
+      └── config
+        └── TensorFlow configuration, POST upload methods, classify blueprint globals
+      └── models
+        └── classifier class, methods for both Select Ops & standard Ops on server
+      └── routes
+        └── /classify/ blueprint routes
+      └── trashd
+        └── garbage collection daemon
+    ├── config
+      └── use the setup script to populate a new config.cfg file
+    ├── eventdb
+      └── wip blueprint for ID event database, see notes on this
+    ├── tfmodels
+      └── Tensorflow model class, routes & whatnot
+    ├── tools
+      └── utilities for date/time, expression matching, the like
+    └── userdb
+      └── wip database for user token authentication
+├── scripts
+  └── scripts run by package.json
+├── demos
+  └── client side pages, demos built w/ webpack
+├── src
+  └── source directory for client side demos
+├── db
+  └── mongodb directory and logs are built here
+...
+
 ```
+
+
+
+#### *additional npm scripts:*
+
 
 *build some production binaries:*
 ```
@@ -81,7 +129,7 @@ npm run-script dist-spec-web
 ```
 
 ```
-# serve things:
+# serve more things:
 npm run-script setup-app   # interactive Flask setup
 npm run-script serve-app   # serve w/ flask
 npm run-script serve-node  # serve w/ local http-server + openssl
@@ -97,81 +145,6 @@ npm run-script watch-spec-web
 npm run-script clean-bundles
 npm run-script clean-renders
 npm run-script clean-all
-```
-
-
-<h4 id="merlin_build"> </h4>     
-
-
-#### *...with ./Merlin:*
-
-
-
-*Ridiculous ./Merlin script only checked on Ubuntu w/ GNU utilities, YMMV on anything else*
-
-```
-./Merlin
-
-      ___  ___          _ _        ___ _____
-      |  \/  |         | (_)      / _ |_   _|
-      | .  . | ___ _ __| |_ _ __ / /_\ \| |
-      | |\/| |/ _ | '__| | | '_ \|  _  || |
-      | |  | |  __| |  | | | | | | | | _| |_
-      \_|  |_/\___|_|  |_|_|_| |_\_| |_\___/
-
-Environment:
- -- Auto Setup?        : -as | --auto-setup    :  = false
- -- Check Node?        : -cn | --check-node    :  = true
- -- Check Venv?        : -cv | --check-venv    :  = true
-Utilities:
- -- Cleanup Bundles?   : -cb | --clean-bundles :  = false
- -- Cleanup Renders?   : -cr | --clean-renders :  = false
- -- Cleanup compiled?  : -ca | --clean-all     :  = false
- -- Setup Flask?       : -sf | --setup-flask   :  = false
-Bundle:
- -- Pack Demos?        : -d  | --demos         :  = false
- -- Pack Annotators?   : -a  | --annotators    :  = false
-Serve?                 : -s  | --serve         :  = false
- -- Flask Server?      : -f  | --flask         :  = false
- -- Node HTTP Server?  : -h  | --http-server   :  = none
- -- Incognito?         : -i  | --incognito     :  = false
- -- Browser CLI?       :   Detected Linux      :  = chromium
-```
-
-
-```
-# build & serve everything with flask:
-./Merlin --demos --annotators --serve --flask --incognito
-# ^...or like this:
-./Merlin -d -a -s -f -i
-
-# serve some html using OpenSSL & Node http-server:
-./Merlin -serve --http-server ./demos/webgl_test.html
-# ^...or like this:
-./Merlin -s -h ./demos/webgl_test.html
-
-# rebuild only the annotators:
-./Merlin --annotators   
-# ^...or like this:
-./Merlin -a
-
-# setup a config.cfg file:
-./Merlin --setup-flask
-# ^...or like this:
-./Merlin -sf
-
-# cleanup rendered html pages:
-./Merlin --clean-renders
-# ^...or like this:
-./Merlin -cr
-
-# clean up all compiled:
-./Merlin --clean-all
-# ^...or like this:
-./Merlin -ca
-
-# display all arguments & their default state:
-./Merlin
 ```
 
 
@@ -231,12 +204,40 @@ npx ts-node etc/json_refs.ts
 
 ### *Leaflet Annotator:*  
 
+- - -
 
-#### *Setup:*
+
+*To update the `leaflet.annotation.js` bundle from BitBucket:*
+
+- you must have access to the ml-mlearning-leaflet repo
+- follow the prompts; provide a git username / passphrase with access to *ml-mlearning-leaflet*
+- Env file is already appended, hit enter to skip first prompt to load new default values
+```
+# update:
+cd dist && curl https://raw.githubusercontent.com/Jesssullivan/LeafletSync/main/LeafletSync --output ./LeafletSync && chmod +x ./LeafletSync && ./LeafletSync -e UpdateBundleLeafletEnv
+# cleanup:
+rm LeafletSync && cd ..
+```
+
+*To fetch the latest typed leaflet audio annotator source from BitBucket:*
 
 ```
-cd annotator
+curl https://raw.githubusercontent.com/Jesssullivan/LeafletSync/main/LeafletSync --output ./LeafletSync && chmod +x ./LeafletSync && ./LeafletSync -e UpdateSourceLeafletEnv
+# cleanup:
+rm LeafletSync
+```
 
+
+- - -
+
+#### *`./CornellLabofOrnithology-ml-mlearning-leaflet-0503b1fab111/`*
+
+# *ml-mlearning-leaflet:*
+
+
+## *Setup:*
+
+```
 # node:
 npm install
 ```
@@ -250,7 +251,7 @@ brew install gsed md5sha1sum
 
 
 
-#### *Build development bundles:*
+## *Build development bundles:*
 
 
 
@@ -267,7 +268,7 @@ npm run-script build-all
 ```
 
 
-#### *Test with Flask:*
+## *Test with Flask:*
 
 ```
 # venv:
@@ -288,7 +289,7 @@ npm run-script eval-app
 ```
 
 
-#### *Test without Flask:*
+## *Test without Flask:*
 
 ```
 # generates high quality spectrograms on the fly in browser:
@@ -301,7 +302,7 @@ google-chrome ./demos/remote_index.html --allow-insecure-localhost --auto-open-d
 ```
 
 
-#### *Build production bundles:*
+## *Build production bundles:*
 
 ```
 # build production tool:
@@ -318,7 +319,7 @@ npm run-script clean
 ```
 
 
-#### *Verify versions & checksums:*
+## *Verify versions & checksums:*
 
 
 Each `leaflet.annotation.js` production bundle is accompanied by a `leaflet.annotation.js.LICENSE.txt` file.
@@ -346,7 +347,7 @@ head -c 120 ./demos/leaflet.annotation.js.LICENSE.txt | tail -c 42 && echo
 #> '8fa701125c2b77cfb4c97b4dbaaae694
 ```
 
-#### *Directory Tree:*
+## *Directory Tree:*
 
 ```
 ├── app
@@ -377,8 +378,34 @@ head -c 120 ./demos/leaflet.annotation.js.LICENSE.txt | tail -c 42 && echo
 
 ```
 
-#### *LeafletSync:*
 
+- - -
+
+
+
+<table>
+  <thead>
+    <tr>
+      <th>
+        <a href="https://merlinai.herokuapp.com/client/audio"><img src="./interpreter/demos/icons/tmpUI.MerlinAI-favicon-light/android-chrome-192x192.png" alt="demos"></a>
+        <br/><em> On-The-Fly Spectrogram Annotator demo </em>
+      </th>
+        <th>
+        <a href="https://merlinai.herokuapp.com/client/audio_ml"><img src=".//interpreter/demos/icons/Leaflet.annotation-favicon-dark/android-chrome-192x192.png" alt="demos"></a>
+        <br/><em> Remote Spectrogram Annotator demo</em>
+      </th>
+    </tr>
+  </thead>
+</table>
+
+
+
+- - -
+
+
+
+
+#### *LeafletSync:*
 
 *A ridiculous* [*Chindōgu*](https://en.wikipedia.org/wiki/Chind%C5%8Dgu) *utility prompt & CLI for* [*fetching private releases & files from GitHub & BitBucket*](https://github.com/Jesssullivan/LeafletSync)
 
@@ -441,64 +468,9 @@ Output to fetch (e.g. /dist/*): [<dist/>]:
 
 ```
 
-<table>
-  <thead>
-    <tr>
-      <th>
-        <a href="https://merlinai.herokuapp.com/client/audio"><img src="./interpreter/demos/icons/tmpUI.MerlinAI-favicon-light/android-chrome-192x192.png" alt="demos"></a>
-        <br/><em> On-The-Fly Spectrogram Annotator demo </em>
-      </th>
-        <th>
-        <a href="https://merlinai.herokuapp.com/client/audio_ml"><img src=".//interpreter/demos/icons/Leaflet.annotation-favicon-dark/android-chrome-192x192.png" alt="demos"></a>
-        <br/><em> Remote Spectrogram Annotator demo</em>
-      </th>
-    </tr>
-  </thead>
-</table>
-
 
 
 - - -
-
-
-
-<h4 id="structure"> </h4>     
-
-
-
-#### *Flask Structure:*
-
-
-*Flask:*
-```
-├── app
-  ├── main
-    ├── auth
-      └── token authentication methods
-    ├── client
-      └── blueprint for packed web demos
-    ├── config
-      └── the ./setup script populates a new config.cfg file for Flask,
-          using the ##FIELDS## provided in config.cfg.sample
-    ├── eventdb
-      └── blueprint for ID event database, see notes on ./etc/
-    ├── tfmodels
-      └── Tensorflow model class and whatnot
-    ├── tools
-      └── utilities for date/time, expression matching, the like
-    └── userdb
-      └── blueprint for user authentication database
-├── scripts
-  └── scripts run by package.json
-├── demos
-  └── client side pages, demos built w/ webpack
-├── src
-  └── source directory for client side demos
-├── db
-  └── mongodb directory and logs are built here
-...
-
-```
 
 
 <h4 id="swift"> </h4>     
@@ -720,20 +692,6 @@ a ***single annotation*** as first class entry in database:
 - - -
 
 
-- *an entry, interoperable w/ Lab of O:*
-```
-{'id': 'c466fac6-5c77-4725-9e1a-5627c190ce08',
- 'bbox': [0.03729166507720947,
-  0.31716904264146634,
-  0.0096875,
-  0.3799303977272727],
- 'user_id': '123abc',
- 'image_id': 123456789,
- 'username': 'abc123',
- 'category_id': 'swaspa',
- 'supercategory': 'Bird'
-}
-```
 
 - what if a user is really untrustworthy?
 - send, share wireframe figma to slack people asap

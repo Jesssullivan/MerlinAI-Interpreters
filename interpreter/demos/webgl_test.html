@@ -1,6 +1,6 @@
 <head>
 
-    <title>Merlin AI Demos</title>
+    <title>Merlin AI: WebGL Precision</title>
 
     <!-- meta -->
     <meta charset="utf-8">
@@ -17,10 +17,10 @@
     <!-- No UI Slider CSS -->
     <link rel="stylesheet" href="nouislider.css">
 
-    <!-- Bootstrap core CSS -->
+    <!-- Fork CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.2.3/gh-fork-ribbon.min.css" />
 
-    <!-- Bootstrap core CSS -->
+    <!-- icon -->
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
@@ -43,7 +43,7 @@
         * Make the leaflet holder long and narrow for the spectrogram.
         */
         .leaflet-image-holder {
-            height: 250px!important;
+            height: 210px!important;
             width: 1200px!important;
         }
 
@@ -118,29 +118,25 @@
 
 </head>
 
-<canvas class="visualizer"  width="" height="60px"> visualizer </canvas>
 
-<header class="mui-appbar mui--z1"  style="background-color: rgb(58,119,52)">
+
+<header>
     <a class="github-fork-ribbon" href="https://github.com/Jesssullivan/tmpui" data-ribbon="Contribute @ GitHub" title="Contribute @ GitHub...">Contribute</a>
-    <div class="mui-container ">
-        <td class="mui--text-title ">
-            <canvas class="visualizer"  width="" height="60px"> visualizer </canvas>
-        </td>
-        <ul class="mui-list--inline mui--text-center">
-            <li><a href="/client"> [Web Interpreter] </a><li>
-            <li><a href="/client/webgl"> [Precision Test] </a><li>
-            <li><a href="/client/audio"> [Spectrogram Annotator: OTF] </a><li>
-            <li><a href="/client/audio"> [Spectrogram Annotator: ML] </a><li>
-            <li><a href="https://jesssullivan.github.io/tmpUI/"> [Documentation] </a><li>
-        </ul>
-    </div>
+   <div class="topnav" >
+       <a class="active" href="/classify/">Interpreter</a>
+       <a href="/classify/webgl">Precision</a>
+       <a href="/classify/select">Select Ops</a>
+       <a href="/classify/standard">Standard Ops</a>
+       <a href="/annotator/audio">Annotator: OTF</a>
+       <a href="/annotator/audio_ml">Annotator: ML</a>
+      <a href="https://www.transscendsurvival.org/">α wιρ Σ ♥ @Jess</a>
+   </div>
 </header>
 
+<canvas class="visualizer"  width="1000" height="80px"> visualizer </canvas>
 
 <div id="content-wrapper" class="mui--text-center">
-    <div class="mui--appbar-height"></div>
     <br>
-    <br/>
     <h5> Getting different results on different devices? </h5>
     <br/>
     <h6> Check this device's WebGL precision: </h6>

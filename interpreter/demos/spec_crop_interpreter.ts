@@ -1,10 +1,16 @@
 // spec_crop_interpreter.ts
 
-import {ui_utils, audio_loader, audio_utils, spectrogram_utils, audio_model} from "../src/index";
-const noUiSlider = require('./nouislider');
+import {audio_loader, audio_model, audio_utils, spectrogram_utils, ui_utils, log} from "../src/index";
 import {tf} from '../src';
 
+const noUiSlider = require('./nouislider');
+
 window.MediaRecorder = require('audio-recorder-polyfill');
+
+// const webClassifyURL = "http://127.0.0.1:5000/classify/select"
+// const webClassifyURL = "http://127.0.0.1:5000/classify/standard"
+// const webClassifyURL = "https://merlinai.herokuapp.com/classify/select"
+const webClassifyURL = "https://merlinai.herokuapp.com/classify/standard"
 
 const recordBtn = document.getElementById("recordButton") as HTMLButtonElement;
 const stopBtn = document.getElementById("stopButton") as HTMLButtonElement;
@@ -27,11 +33,11 @@ const canvasCtx = canvas.getContext("2d");
 let chunks : Blob[] = [];
 let currentWaveform : Float32Array;
 let currentWaveformSample : Float32Array;
-let handlePositions: any;
-let classifyTextHeader: string = "";
+let handlePositions;
+let classifyTextHeader = "";
 
 // we'll load up the model here, only if we need to:
-let merlinAudio: any = null;
+let merlinAudio = null;
 
 // Spectrogram Visualization Parameters
 const image_height = 300;
@@ -41,7 +47,7 @@ const stftWindowSeconds = 0.015;
 const stftHopSeconds = 0.005;
 const topDB = 80;
 
-let slider : any = null;
+let slider = null;
 
 const patchWindowSeconds = 1.0; // We'd like to process a minimum of 1 second of audio
 
@@ -52,7 +58,7 @@ const useBrowser = () => {
 
     if (capable === true) {
         merlinAudio = new audio_model.MerlinAudioModel(LABELS_URL, MODEL_URL);
-         return true;
+        return true;
     }
     else {
         return false;
@@ -61,6 +67,7 @@ const useBrowser = () => {
 
 const browserUse = useBrowser();
 
+// set classifyTextHeader:
 if (browserUse === false) {
     classifyTextHeader = "Classifications processed on server:";
 } else {
@@ -75,8 +82,8 @@ const handleClassifyWaveform = async() => {
     // this is where we'll display the classification results:
     const sampleHolderEl = document.getElementById('specSampleHolder');
 
-    while (sampleHolderEl!.firstChild) {
-        sampleHolderEl!.removeChild(sampleHolderEl!.firstChild);
+    while (sampleHolderEl.firstChild) {
+        sampleHolderEl.removeChild(sampleHolderEl.firstChild);
     }
 
     // this is the list of resulting scores:
@@ -89,21 +96,41 @@ const handleClassifyWaveform = async() => {
 
     if (browserUse === false) {
 
+        // prepare audio snippet to send to server:
+
+        // start audio context;
+        // only for serverside processing
+        if(!audioCtx) {
+            //@ts-ignore
+            const AudioContext = window.AudioContext || window.webkitAudioContext;
+            audioCtx = new AudioContext();
+        }
+
+        // get slider bounds:
+        const snipArray = updateVis();
+
+        // create, fill buffer:
+        let snipBuffer = audioCtx.createBuffer(1, snipArray.length, targetSampleRate);
+        snipBuffer.copyToChannel(snipArray,0);
+
+        // convert to blob to send to server:
+        let snipBlob = new Blob([audio_utils.bufferToWave(snipBuffer, snipBuffer.length)], { 'type' : 'audio/ogg; codecs=opus' });
+        // name: 'file' is the ID Flask will use to find and parse the POST's `snippet.wav`:
+
         // file is wrapped in `formData` for POST:
         const formData = new FormData();
 
-        // `name: 'file'` is the ID Flask will use to find and parse the POST's `snippet.wav`:
-        formData.append('file', recordedBlobs, 'snippet.wav');
+        formData.append('file', snipBlob, 'snippet.wav');
 
-        // make the POST w/ fetch, no one should be using IE anyway xD:
-        fetch('/uploader_standard', {
+        // make the POST:
+        fetch(webClassifyURL, {
         method: 'POST',
         body: formData
         })
         .then(response => {
             response.json().then(data => {
 
-                console.log('received scores!');
+                log('received scores!');
 
                 // zing the received json Object into a sortable Array:
                 let i;
@@ -115,14 +142,19 @@ const handleClassifyWaveform = async() => {
                 // sort the Array by descending value:
                 results = results.sort((a, b) =>  b[1] - a[1]);
 
-                // generate a html list to show the user:
+                // send resulting scores to user as an alert:
+                let resultStr = classifyTextHeader + "\n" + "Scores:";
+
+                // generate a html list to show the user scores too:
                 for (i in results) {
                     const scoreEl = document.createElement('li');
-                    scoreEl.textContent = ' ' + i + ' ' + results[i].join(" ");
+                    scoreEl.textContent = ' ' + results[i].join(" ");
+                    resultStr += "\n" + results[i].join(" ");
                     resultEl.appendChild(scoreEl);
-                    sampleHolderEl!.prepend(resultEl);
-                    console.log(i + ' ' + results[i]);
+                    sampleHolderEl.prepend(resultEl);
+                    log(results[i].join(" "));
                 }
+                alert(resultStr);
             });
         })
         .catch(error => {
@@ -133,14 +165,16 @@ const handleClassifyWaveform = async() => {
         await merlinAudio.averagePredictV3(currentWaveformSample, targetSampleRate)
             // @ts-ignore
             .then(([labels, scores]) => {
-
+                let resultStr = classifyTextHeader + "\n" + "Scores:";
                 for (let i = 0; i < 10; i++) {
                     const scoreEl = document.createElement('li');
                     scoreEl.textContent = labels[i] + " " + scores[i];
                     resultEl.appendChild(scoreEl);
-                    sampleHolderEl!.prepend(resultEl);
-                    console.log(labels[i] + ' ' + scores[i]);
+                    sampleHolderEl.prepend(resultEl);
+                    resultStr += labels[i] + ": " + scores[i] + " \n";
+                    log(labels[i] + ": " + scores[i]);
                 }
+            alert(resultStr);
         });
     }
 };
@@ -153,22 +187,16 @@ const updateVis = () => {
 
     // Take into account the offset of the image (by scrolling)
     const specImageHolderEl = document.getElementById('specImageHolder');
-    const scrollOffset = specImageHolderEl!.scrollLeft;
+    const scrollOffset = specImageHolderEl.scrollLeft;
 
     pos1 += scrollOffset;
     pos2 += scrollOffset;
-
-    console.log("pos1:" + pos1);
-    console.log("pos2:" + pos2);
 
     // Need to go from spectrogram position to waveform sample index
     const hopLengthSamples = Math.round(targetSampleRate * stftHopSeconds);
 
     const samplePos1 = pos1 * hopLengthSamples / timeScale;
     const samplePos2 = pos2 * hopLengthSamples / timeScale;
-
-    console.log("samplePos1:" + samplePos1);
-    console.log("samplePos2:" + samplePos2);
 
     currentWaveformSample = currentWaveform.slice(samplePos1, samplePos2);
 
@@ -186,11 +214,11 @@ const updateVis = () => {
 
     const specCropImage = document.getElementById('specCropHolder');
 
-    while (specCropImage!.firstChild) {
-        specCropImage!.removeChild(specCropImage!.firstChild);
+    while (specCropImage.firstChild) {
+        specCropImage.removeChild(specCropImage.firstChild);
     }
 
-    specCropImage!.appendChild(imgCrop);
+    specCropImage.appendChild(imgCrop);
 
     return currentWaveformSample;
 
@@ -224,22 +252,22 @@ const renderSpectrogram = (imageURI : string, spectrogramLength: number) => {
 
     // Clear out previous images
     const specImageHolderEl = document.getElementById('specImageHolder');
-    while (specImageHolderEl!.firstChild) {
-        specImageHolderEl!.removeChild(specImageHolderEl!.firstChild);
+    while (specImageHolderEl.firstChild) {
+        specImageHolderEl.removeChild(specImageHolderEl.firstChild);
     }
 
     // Add the spectrogram
-    specImageHolderEl!.appendChild(imgSpec);
+    specImageHolderEl.appendChild(imgSpec);
 
     // Add the slider
     const specSliderHolderEl = document.getElementById('specSliderHolder');
-    while (specSliderHolderEl!.firstChild) {
-        specSliderHolderEl!.removeChild(specSliderHolderEl!.firstChild);
+    while (specSliderHolderEl.firstChild) {
+        specSliderHolderEl.removeChild(specSliderHolderEl.firstChild);
     }
 
     slider = document.createElement('div');
-    slider.style.width = "" + specImageHolderEl!.offsetWidth + "px";
-    specSliderHolderEl!.appendChild(slider);
+    slider.style.width = "" + specImageHolderEl.offsetWidth + "px";
+    specSliderHolderEl.appendChild(slider);
 
     const hop_length_samples = Math.round(targetSampleRate * stftHopSeconds);
     const spectrogram_sr = targetSampleRate / hop_length_samples;
@@ -254,7 +282,7 @@ const renderSpectrogram = (imageURI : string, spectrogramLength: number) => {
         margin,
         range: {
             'min': 0,
-            'max': specImageHolderEl!.offsetWidth
+            'max': specImageHolderEl.offsetWidth
         }
     });
 
@@ -350,11 +378,11 @@ const visualize = (stream : MediaStream) => {
 
         analyserNode.getByteTimeDomainData(dataArray);
 
-        canvasCtx!.fillStyle = 'rgb(58,119,52)';
-        canvasCtx!.fillRect(0, 0, WIDTH, HEIGHT);
-        canvasCtx!.lineWidth = 2;
-        canvasCtx!.strokeStyle = 'rgb(0, 0, 0)';
-        canvasCtx!.beginPath();
+        canvasCtx.fillStyle = 'rgb(255,255,255)';
+        canvasCtx.fillRect(0, 0, WIDTH, HEIGHT);
+        canvasCtx.lineWidth = 2;
+        canvasCtx.strokeStyle = 'rgb(0, 0, 0)';
+        canvasCtx.beginPath();
 
         const sliceWidth = WIDTH / bufferLength;
         let x = 0;
@@ -365,16 +393,16 @@ const visualize = (stream : MediaStream) => {
             const y = v * HEIGHT/2;
 
             if(i === 0) {
-                canvasCtx!.moveTo(x, y);
+                canvasCtx.moveTo(x, y);
             } else {
-                canvasCtx!.lineTo(x, y);
+                canvasCtx.lineTo(x, y);
             }
 
             x += sliceWidth;
         }
 
-        canvasCtx!.lineTo(canvas.width, canvas.height/2);
-        canvasCtx!.stroke();
+        canvasCtx.lineTo(canvas.width, canvas.height/2);
+        canvasCtx.stroke();
 
     };
 
@@ -389,8 +417,8 @@ const stop_visualize = () => {
 };
 
 const clearCanvas = () => {
-    canvasCtx!.fillStyle = 'rgb(58,119,52)';
-    canvasCtx!.fillRect(0, 0, canvas.width, canvas.height);
+    canvasCtx.fillStyle = 'rgb(255,255,255)';
+    canvasCtx.fillRect(0, 0, canvas.width, canvas.height);
 };
 
 recordBtn.onclick = () => {
@@ -403,8 +431,7 @@ recordBtn.onclick = () => {
         mediaRecorder = new MediaRecorder(stream, {mimeType: 'audio/wav'});
 
         mediaRecorder.start();
-        console.log(mediaRecorder.state);
-        console.log("recorder started");
+        log("recorder started");
 
         visualize(stream);
 
@@ -418,8 +445,7 @@ recordBtn.onclick = () => {
             chunks = [];
             audioURL = window.URL.createObjectURL(recordedBlobs);
 
-            console.log(audioURL);
-            console.log("recorder stopped");
+            log("recorder stopped");
 
             audio_loader.loadAudioFromURL(audioURL)
                 .then((audioBuffer) => audio_loader.resampleAndMakeMono(audioBuffer, targetSampleRate))
@@ -450,8 +476,7 @@ recordBtn.onclick = () => {
 stopBtn.onclick = () => {
 
     mediaRecorder.stop();
-    // console.log(mediaRecorder.state);
-    // console.log("recorder stopped");
+
     stop_visualize();
 
     stopBtn.setAttribute('disabled',  'disabled');

@@ -1,4 +1,8 @@
 from ..tools import tools
+import tensorflow as tf
+import librosa
+from ..config import *
+
 
 class TFModel:
 

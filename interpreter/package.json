@@ -3,26 +3,20 @@
   "version": "0.1.0",
   "private": "true",
   "scripts": {
-    "build-all": "chmod +x scripts/build_all.sh && ./scripts/build_all.sh",
     "build-spec-web": "webpack --config webpack/webpack.spec_web.ts",
     "watch-spec-web": "webpack --watch --config webpack/webpack.spec_web.ts",
-    "build-webgl-web": "webpack --config webpack/webpack.webgl.ts",
-    "build-anno-tool": "chmod +x scripts/build_dev.sh && ./scripts/build_dev.sh",
-    "build-anno-audio": "chmod +x scripts/audio_dev.sh && ./scripts/audio_dev.sh",
-    "dist-all": "chmod +x scripts/dist_all.sh && ./scripts/dist_all.sh",
-    "dist-anno-tool": "chmod +x scripts/build_dist.sh && ./scripts/build_dist.sh",
-    "dist-anno-audio": "chmod +x scripts/audio_dist.sh && ./scripts/audio_dist.sh",
-    "dist-webgl-web": "webpack --config webpack/webpack.webgl_dist.ts",
     "dist-spec-web": "webpack --config webpack/webpack.spec_web_dist.ts",
-    "serve-app": "chmod +x scripts/run_app.sh && ./scripts/run_app.sh",
+    "build-webgl-web": "webpack --config webpack/webpack.webgl.ts",
+    "dist-webgl-web": "webpack --config webpack/webpack.webgl_dist.ts",
+    "build-audio-web": "webpack --config webpack/webpack.audio_dev.ts",
+    "dist-audio-web": "webpack --config webpack/webpack.audio_dist.ts",
+    "serve-app": "chmod +x scripts/serve_app.sh && ./scripts/serve_app.sh",
     "setup-app": "chmod +x scripts/setup_app.sh && ./scripts/setup_app.sh",
     "serve-node": "http-server -S -C ./demos/demos.pem -K ./demos/key.pem -o ./demos/annotator_audio.html",
     "clean-bundles": "find '.' -name \"*_bundle.js\" -print -delete",
     "clean-renders": "find '.' -name \"*_render.html\" -print -delete",
     "clean-all": "chmod +x scripts/clean_all.sh && ./scripts/clean_all.sh",
-    "sslgen": "chmod +x scripts/sslgen.sh && ./scripts/sslgen.sh",
-    "ios-native": "react-native run-ios",
-    "android-native": "react-native run-android"
+    "sslgen": "chmod +x scripts/sslgen.sh && ./scripts/sslgen.sh"
   },
   "devDependencies": {
     "@babel/core": "~7.12.10",
@@ -106,16 +100,8 @@
   },
   "contributors": [
     {
-      "name": "Grant Van Horn",
-      "url": "https://github.com/gvanhorn38"
-    },
-    {
       "name": "Jess Sullivan",
       "url": "https://github.com/jesssullivan"
-    },
-    {
-      "name": "Benjamin Hoffman",
-      "url": "https://github.com/benjaminsshoffman"
     },
     {
       "name": "Visipedia et al.",

@@ -1,27 +1,12 @@
-import os
-import subprocess
-import threading
-import time
-
-COLLECT_INT = 30
-COLLECT_TRASH = 60
-
-# uploaded files are placed in temporary server side directories:
-live_app_list = {}
-start_time = time.time()
+from .config import *
 
 
-# serverside paths:
-rootpath = os.path.abspath(os.curdir)
-
-# temporary user directories go in here:
-inpath = os.path.join(rootpath, 'uploads')
-outpath = os.path.join(rootpath, 'downloads')
+# garbage collector for uploaded files to be classified.
 
 
 class Trash(object):
 
-    @staticmethod
+    @ staticmethod
     def _force_dir_rm(path):
         # checking and removing user dirs from OS-
         # assuming child threads may occasionally misbehave,
@@ -37,7 +22,7 @@ class Trash(object):
         while True:
 
             # most of the time, collector is idle:
-            time.sleep(COLLECT_INT)
+            time.sleep(collection_int)
 
             for usr in os.listdir(inpath):
 
@@ -47,7 +32,7 @@ class Trash(object):
                 if usr not in live_app_list.keys():
                     live_app_list[usr] = time.time()
 
-                if time.time() - live_app_list[usr] > COLLECT_TRASH:
+                if time.time() - live_app_list[usr] > collection_trash:
                     try:
                         print('removing expired usr directories...')
                         cls._force_dir_rm(os.path.join(inpath, usr))

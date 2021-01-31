@@ -1,21 +1,3 @@
-/*
- * Refactored utilities for loading audio and computing mel spectrograms, based on
- * {@link https://github.com/google/web-audio-recognition/blob/librosa-compat}.
- *
- * @license
- * Copyright 2018 Google Inc. All Rights Reserved.
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 
 /* eslint-disable */
 // @ts-ignore
@@ -618,3 +600,82 @@ const pow = (arr: Float32Array, power: number) => arr.map(v => Math.pow(v, power
 
 const max = (arr: Float32Array) => arr.reduce((a, b) => Math.max(a, b));
 
+
+export const bufferToWave = (buf: AudioBuffer, len: number) => {
+  let numOfChan = buf.numberOfChannels,
+      length = len * numOfChan * 2 + 44,
+      buffer = new ArrayBuffer(length),
+      view = new DataView(buffer),
+      channels = [], i, sample,
+      offset = 0,
+      pos = 0;
+
+  // write .wav header
+  setUint32(0x46464952);                         // "RIFF"
+  setUint32(length - 8);                         // file length - 8
+  setUint32(0x45564157);                         // "WAVE"
+
+  setUint32(0x20746d66);                         // "fmt " chunk
+  setUint32(16);                                 // length = 16
+  setUint16(1);                                  // PCM (uncompressed)
+  setUint16(numOfChan);
+  setUint32(buf.sampleRate);
+  setUint32(buf.sampleRate * 2 * numOfChan); // avg. bytes/sec
+  setUint16(numOfChan * 2);                      // block-align
+  setUint16(16);                                 // 16-bit (hardcoded in this demo)
+
+  setUint32(0x61746164);                         // "data" - chunk
+  setUint32(length - pos - 4);                   // chunk length
+
+  // write interleaved data
+  for (i = 0; i < buf.numberOfChannels; i++)
+    channels.push(buf.getChannelData(i));
+
+  while(pos < length) {
+    for(i = 0; i < numOfChan; i++) {             // interleave channels
+      sample = Math.max(-1, Math.min(1, channels[i][offset])); // clamp
+      sample = (0.5 + sample < 0 ? sample * 32768 : sample * 32767)|0; // scale to 16-bit signed int
+      view.setInt16(pos, sample, true);          // write 16-bit sample
+      pos += 2;
+    }
+    offset++                                     // next source sample
+  }
+
+  // create Blob
+  return new Blob([buffer], {type: "audio/wav"});
+
+  function setUint16(data) {
+    view.setUint16(pos, data, true);
+    pos += 2;
+  }
+
+  function setUint32(data) {
+    view.setUint32(pos, data, true);
+    pos += 4;
+  }
+}
+
+/**
+ *
+ * Refactored sources include:
+ * https://www.russellgood.com/how-to-convert-audiobuffer-to-audio-file/
+ *
+ * Refactored utilities for loading audio and computing mel spectrograms, based on
+ * {@link https://github.com/google/web-audio-recognition/blob/librosa-compat}.
+ *
+ * Refactored utilities for loading audio and computing mel spectrograms include
+ * code based on google audio code:
+ *
+ * Copyright 2018 Google Inc. All Rights Reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */

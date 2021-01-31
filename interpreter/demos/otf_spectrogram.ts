@@ -15,7 +15,7 @@
  *
  */
 
-import {audio_loader, audio_utils, spectrogram_utils} from "../src";
+import {audio_loader, audio_utils, spectrogram_utils, log} from "../src";
 
 // react:
 const React = require('react');
@@ -62,6 +62,7 @@ interface AudioInterface {
 
 }
 
+/**
 /**
  * AudioPlayer() implements various audio playback controls,
  * bound to the user's keyboard.
@@ -165,6 +166,7 @@ class AudioPlayer implements AudioInterface {
             const PLAY_PAUSE_KEY = 32;
             const RIGHT_ARROW_KEY = 39; // Forward
             const LEFT_ARROW_KEY = 37; // Backward
+            const T_KEY = 84; // new instance of duplicate props
 
             switch(e.keyCode) {
 
@@ -183,9 +185,10 @@ class AudioPlayer implements AudioInterface {
             case RIGHT_ARROW_KEY:
             this.goForward();
             break;
-
             case LEFT_ARROW_KEY:
             this.goBackward();
+            break;
+            case T_KEY:
             break;
         }
     };
@@ -293,9 +296,6 @@ const startAnnotating =
         alert("Error: No images?");
         return;
     }
-
-    // Parse the config dict
-    // log.log(config.toString(), 'annotator_audio.ts', Level.DEBUG);
 
     const quickAccessCatIDs = config.quickAccessCategoryIDs || [];
     const annotation_file_prefix = config.annotationFilePrefix || "";
@@ -405,9 +405,6 @@ const startAnnotating =
                             "Current Time": spectrogram.audioElement.currentTime
                         };
 
-                        console.log(Spectrogram_Props.toString(), 'annotator_audio.ts');
-
-
                         spectrogram.enableAudioKeys();
 
                         $("#currentAudioDuration").text('Dur: ' + duration.toFixed(2) + ' sec');
@@ -430,7 +427,7 @@ const startAnnotating =
                     turnOffDrag: () => void; }) => {
 
                     if (!('audio' in image_info)) {
-                        console.log("No audio url in image info", "annotator_audio.ts");
+                        log("No audio url in image info", "annotator_audio.ts");
                         return;
                     }
 
@@ -587,8 +584,6 @@ const startAnnotating =
             annos = annos.concat(image_id_to_annotations[image_info.id]);
         });
 
-        console.log("Exporting " + annos.length + " annotations!", 'annotator_audio.ts');
-
         const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(annos));
         const downloadAnchorNode = document.createElement('a');
 
@@ -629,7 +624,7 @@ const startAnnotating =
                 }
             }
             allAnnos[entry].last_modified =  dtime.toISOString();
-            console.log(allAnnos[entry]);
+            log(allAnnos[entry]);
         }
 
         const rawResponse = await fetch(POST_URL, {
@@ -664,7 +659,7 @@ const startAnnotating =
             }
         }
         catch (e) {
-            console.log('error @ ' + e + '\n ...with spacebar event listener, continuing...');
+            log('error @ ' + e + '\n ...with spacebar event listener, continuing...');
         }
     });
 
@@ -733,13 +728,13 @@ document.querySelector('#customFile').addEventListener('change', (ev)=> {
             }
 
             else {
-                console.log("Ignoring " + item.name + " (not sure what to do with it).", 'annotator_audio.ts');
+                log("Ignoring " + item.name + " (not sure what to do with it).", 'annotator_audio.ts');
             }
 
         }
 
         else {
-            console.log("Ignoring " + item.name + " (not sure what to do with it).", 'annotator_audio.ts');
+            log("Ignoring " + item.name + " (not sure what to do with it).", 'annotator_audio.ts');
         }
 
         // log.log(annotation_json_promise, 'annotator_audio.ts', Level.DEBUG);

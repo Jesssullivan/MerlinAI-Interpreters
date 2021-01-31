@@ -16,10 +16,8 @@
 
 /* eslint-disable */
 
-// global variables that we'll need access to in a few functions
 let annotatorRendered = null; // allows us to export annotations
 let currentImageIndex = 0; // keep track of which image we are working on.
-
 
 // Dimensions of the spectrogram
 let spectrogram_height = null;
@@ -55,8 +53,6 @@ function panSpectrogram() {
 
     let offset = pixels_per_second * currentTime;
 
-    //console.log(currentTime, offset);
-
     annotatorRendered.panTo(offset);
 
     current_offset = offset;
@@ -72,11 +68,7 @@ function startPlaying() {
 
     if (audioElement != null) {
 
-        let offset_in_seconds = current_offset / pixels_per_second;
-        audioElement.currentTime = offset_in_seconds;
-
-        //console.log(current_offset);
-        //console.log(offset_in_seconds);
+        audioElement.currentTime = current_offset / pixels_per_second;
 
         // If the user "focused" on an annotation, then our offset position that is rendered is off.
         // So make sure to "re-pan" the map to the current offset.
@@ -85,13 +77,8 @@ function startPlaying() {
         audioElement.onended = audioEnded;
         audioElement.play();
         playing_audio_timing_id = setInterval(panSpectrogram, pan_interval_ms);
-        //audioElement.ontimeupdate = (e) => { panSpectrogram() };
         playing_audio = true;
 
-        // audioElement.onplaying = (event) => {
-        //     console.log("onplaying");
-        //     playing_audio_timing_id = setInterval(panSpectrogram, pan_interval_ms);
-        // };
     }
 
 }
@@ -125,7 +112,7 @@ function goForward() {
 
 function goBackward() {
 
-    if (current_offset == 0) {
+    if (current_offset === 0) {
         return;
     }
 
@@ -148,9 +135,8 @@ function mapPannedTo(x_loc) {
     }
 
     // Convert the pixel location to time
-    let audio_pos = x_loc / pixels_per_second;
     // Set the playback position in the audio
-    audioElement.currentTime = audio_pos;
+    audioElement.currentTime = x_loc / pixels_per_second;
     // Set our current offset
     current_offset = x_loc;
 
@@ -158,14 +144,14 @@ function mapPannedTo(x_loc) {
 
 function handleKeyDown(e) {
 
-    let SPACE_KEY = 32;
-    let PLAY_PAUSE_KEY = SPACE_KEY;
+    let PLAY_PAUSE_KEY = 32;
     let RIGHT_ARROW_KEY = 39; // Forward
     let LEFT_ARROW_KEY = 37; // Backward
+    let T_KEY = 84; // new instance of duplicate props
 
     switch (e.keyCode) {
         case PLAY_PAUSE_KEY:
-            if (e.target == document.body) {
+            if (e.target === document.body) {
                 if (playing_audio) {
                     stopPlaying();
                 } else {
@@ -179,6 +165,8 @@ function handleKeyDown(e) {
             break;
         case LEFT_ARROW_KEY:
             goBackward()
+            break;
+        case T_KEY:
             break;
     }
 
@@ -195,21 +183,21 @@ function disableAudioKeys() {
 }
 
 
+
 function startAnnotating(images_data, categories, annotations, config) {
 
-    if (images_data.length == 0) {
+    if (images_data.length === 0) {
         alert("Error: No images?");
         return;
     }
 
     // Parse the config dict
-    console.log(config);
     let quickAccessCatIDs = config.quickAccessCategoryIDs || [];
     let annotation_file_prefix = config.annotationFilePrefix || "";
 
 
     // Group the annotations by image_id so that we can easily overwrite them with the new annotations
-    image_id_to_annotations = {};
+    var image_id_to_annotations = {};
     images_data.forEach(image_info => {
         image_id_to_annotations[image_info['id']] = [];
     })
@@ -235,13 +223,13 @@ function startAnnotating(images_data, categories, annotations, config) {
         }
         $("#currentImageProgress").text('Image ' + (imageIndex + 1) + ' / ' + images_data.length);
         $("#currentAudioDuration").text('Dur: ? sec');
-        if (imageIndex == 0) {
+        if (imageIndex === 0) {
             $("#previousImageButton").prop("disabled", true);
         } else {
             $("#previousImageButton").prop("disabled", false);
         }
 
-        if (imageIndex == images_data.length - 1) {
+        if (imageIndex === images_data.length - 1) {
             $("#nextImageButton").prop("disabled", true);
         } else {
             $("#nextImageButton").prop("disabled", false);
@@ -283,13 +271,6 @@ function startAnnotating(images_data, categories, annotations, config) {
                     pixels_per_second = 250.0; //spectrogram_width / duration;
 
                     pixels_per_ms = pixels_per_second / 1000.0;
-
-                    console.log("Spectrogram Height: " + spectrogram_height);
-                    console.log("Spectrogram Width: " + spectrogram_width);
-                    console.log("Duration " + duration);
-                    console.log("Pixels / second : " + pixels_per_second);
-                    console.log("Pixels / milisecond : " + pixels_per_ms);
-                    console.log("Current Time " + audioElement.currentTime);
 
                     enableAudioKeys();
 
@@ -468,7 +449,7 @@ function startAnnotating(images_data, categories, annotations, config) {
 
     });
     document.getElementById("goToImageInput").addEventListener('keyup', ({key}) => {
-        if (key == "Enter") {
+        if (key === "Enter") {
 
             document.getElementById("goToImageInput").blur();
             goToImage();
@@ -484,9 +465,6 @@ function startAnnotating(images_data, categories, annotations, config) {
         images_data.forEach(image_info => {
             annos = annos.concat(image_id_to_annotations[image_info.id]);
         });
-
-        console.log("Exporting " + annos.length + " annotations");
-        console.log(annos);
 
         var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(annos));
         var downloadAnchorNode = document.createElement('a');
@@ -506,7 +484,7 @@ function startAnnotating(images_data, categories, annotations, config) {
     // this seems to be working....
     document.addEventListener("mouseup", (e) => {
         if (document.activeElement) {
-            if (!(e.target.tagName.toUpperCase() == 'INPUT')) {
+            if (!(e.target.tagName.toUpperCase() === 'INPUT')) {
                 document.activeElement.blur();
             }
         }
@@ -522,8 +500,9 @@ function getQuickAccessCategoryIDs() {
 
     let rawCatIDs = $.trim(document.getElementById("easyAccessCategories").value);
     var cat_ids = []
-    if (rawCatIDs != "") {
-        str_cat_ids = rawCatIDs.split(/\r?\n/);
+
+    if (rawCatIDs !== "") {
+        var str_cat_ids = rawCatIDs.split(/\r?\n/);
 
         let usestrIDs = document.getElementById("categoryIDTypeRadioStr").checked;
         if (usestrIDs) {
@@ -559,7 +538,7 @@ let i = document.querySelector('#customFile').addEventListener('change', (ev) =>
         let item = ev.target.files[i];
 
         // Is this an image?
-        if (item.type == "image/jpeg" || item.type == "image/png") {
+        if (item.type === "image/jpeg" || item.type === "image/png") {
 
             let image_id = item.name.split('.')[0];
 
@@ -572,14 +551,14 @@ let i = document.querySelector('#customFile').addEventListener('change', (ev) =>
         }
 
         // Is this a json file?
-        else if (item.type == "application/json") {
+        else if (item.type === "application/json") {
 
 
-            if (item.name == 'images.json') {
+            if (item.name === 'images.json') {
                 image_json_promise = item.text().then(text => {
                     return JSON.parse(text)
                 });
-            } else if (item.name == 'categories.json') {
+            } else if (item.name === 'categories.json') {
 
                 category_json_promise = item.text().then(text => {
                     return JSON.parse(text)

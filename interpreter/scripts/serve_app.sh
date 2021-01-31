@@ -27,6 +27,6 @@ mongod --dbpath ./db/mongodb/ --port 27017 &> ${MONGOLOGS} &
 #npm start &
 
 echo "starting Flask..."
-python3 app/run.py
+flask run
 
 exit 0

@@ -20,7 +20,7 @@ Flask==1.1.1  # sticking with 1.1.1 for now :(
 # tf-nightly
 
 ### Using 2.3.0 cpu only for Heroku:
-tensorflow-cpu==2.4.0
+tensorflow-cpu==2.4.1
 
 # audio etc, for both notebooks & web:
 librosa~=0.8.0
