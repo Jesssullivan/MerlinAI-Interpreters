@@ -1,25 +1,26 @@
 *Experiments, interpreter implementations, demos, data ingress tangents and lots of notes for birdsong ID*
 
 
-- [**Web Interpreters & UI Experiments:**](#demos-interpreter-implementations--data-ingress-experiments-for-birdsong-id)
+- [**Web Interpreters & UI Experiments:**](https://jesssullivan.github.io/tmpUI/)
   - [**@ Heroku: Interpreter Demo**](https://merlinai.herokuapp.com/classify/)   <br/>
   - [**Web: Setup**](#web-experiments-setup) <br>
     - [**...With npm**](#npm) <br>
-    - [**Flask Structure**](https://github.com/Jesssullivan/tmpUI/tree/master#structure) <br>
-    - [**Scripts**](https://github.com/Jesssullivan/tmpUI/tree/master#additional-scripts) <br>
-- [**Web Annotators & Leaflet UI**](https://github.com/Jesssullivan/tmpUI/tree/master#leaflet)  <br/>
+    - [**Flask Structure**](#interp-structure) <br>
+    - [**Scripts**](#additional-scripts) <br>
+- [**Web Annotators & Leaflet UI**](#leaflet)  <br/>
   - [**@ Heroku: Annotator Feature Demos**](https://merlinai.herokuapp.com/annotator/audio)   <br/>
-  - [**Annotator: Setup**](https://github.com/jesssullivan/tmpUI/tree/master#setup) <br>
-    - [**...Dev Bundles**](https://github.com/jesssullivan/tmpUI/tree/master#build-development-bundles) <br>
-    - [**...Production Bundles**](https://github.com/jesssullivan/tmpUI/tree/master#build-development-bundles) <br>
-    - [**Test: With Flask**](https://github.com/jesssullivan/tmpUI/tree/master#test-with-flask) <br>
-    - [**Test: Without Flask**](https://github.com/jesssullivan/tmpUI/tree/master#test-without-flask) <br>
-    - [**Production: POSIX Timestamps & Checksums**](https://github.com/jesssullivan/tmpUI/tree/master#test-without-flask) <br>
-    - [**Flask Structure**](https://github.com/Jesssullivan/tmpUI/tree/master#structure) <br>
-- [**Native Interpreter Experiments**](https://github.com/Jesssullivan/tmpUI/tree/master#swift)  <br/>
-  - [**Swift UI**](https://github.com/Jesssullivan/tmpUI/tree/master#swift) <br>
-  - [**React-Native**](https://github.com/Jesssullivan/tmpUI/tree/master#reactnative) <br>
-- [**Notes!**](https://jesssullivan.github.io/tmpUI/) <br>
+  - [**Annotator: Setup**](#annotator-setup) <br>
+    - [**...Dev Bundles**](#build-development-bundles) <br>
+    - [**...Production Bundles**](#build-production-bundles) <br>
+    - [**Test: With Flask**](#test-with-flask) <br>
+    - [**Test: Without Flask**](#test-without-flask) <br>
+    - [**Production: POSIX Timestamps & Checksums**](#checksum) <br>
+    - [**Flask Structure**](#anno-structure) <br>
+    - [**LeafletSync Utility*](#chindogu) <br>
+- [**Native Interpreter Experiments**](#native)  <br/>
+  - [**Swift UI**](#swift) <br>
+  - [**React-Native**](#reactnative) <br>
+- [**Notes!**](#notes) <br>
 
 
 
@@ -31,7 +32,8 @@
 #### *Web Interpreter Setup:*
 
 
-<h4 id="setup"> </h4>     
+<h4 id="web-experiments-setup"> </h4>     
+
 
 
 *Quickstart:*
@@ -70,7 +72,7 @@ npm run-script serve-app  # serve with default Flask WSGI
 
 
 
-<h4 id="structure"> </h4>     
+<h4 id="interp-structure"> </h4>     
 
 
 
@@ -115,9 +117,14 @@ npm run-script serve-app  # serve with default Flask WSGI
 
 ```
 
+- - - 
 
 
-#### *additional npm scripts:*
+
+<h4 id="additional-scripts> </h4>     
+
+
+#### *additional scripts:*
 
 
 *build some production binaries:*
@@ -127,27 +134,26 @@ npm run-script dist-webgl-web
 npm run-script dist-spec-web
 ```
 
+*serve more things:*
 ```
-# serve more things:
 npm run-script setup-app   # interactive Flask setup
 npm run-script serve-app   # serve w/ flask
 npm run-script serve-node  # serve w/ local http-server + openssl
 ```
 
+*--watch:*
 ```
 # Webpack with --watch running:
 npm run-script watch-spec-web
 ```
 
+*clean things:*
 ```
-# clean things:
 npm run-script clean-bundles
 npm run-script clean-renders
 npm run-script clean-all
 ```
 
-
-#### *...additional scripts:*
 
 *check on waitress config:*
 ```
@@ -172,7 +178,6 @@ sudo chmod +x scripts/sslgen.sh && ./scripts/sslgen.sh
 ```
 
 *tone generator:*
-
 ```
 ### available from here:
 cp etc/tone.py .
@@ -227,8 +232,7 @@ rm LeafletSync
 ```
 
 
-- - -
-
+<h4 id="annotator-setup"> </h4>     
 
 
 #### *Setup:*
@@ -246,6 +250,8 @@ brew install gsed md5sha1sum
 ```
 
 
+<h4 id="build-development-bundles"> </h4>     
+
 
 #### *Build development bundles:*
 
@@ -262,6 +268,9 @@ npm run-script test
 # build all:
 npm run-script build-all
 ```
+
+
+<h4 id="test-with-flask"> </h4>     
 
 
 #### *Test with Flask:*
@@ -285,6 +294,9 @@ npm run-script eval-app
 ```
 
 
+<h4 id="test-with-flask"> </h4>     
+
+
 #### *Test without Flask:*
 
 ```
@@ -296,6 +308,9 @@ open ./demos/otf_index.html  # use mimetype on Mac
 google-chrome ./demos/remote_index.html --allow-insecure-localhost --auto-open-devtools-for-tabs
 # open ./demos/remote_index.html # use mimetype on Mac
 ```
+
+
+<h4 id="build-production-bundles"> </h4>     
 
 
 #### *Build production bundles:*
@@ -313,6 +328,8 @@ npm run-script dist-otf
 # cleanup:
 npm run-script clean
 ```
+
+<h4 id="checksum"> </h4>     
 
 
 #### *Verify versions & checksums:*
@@ -342,6 +359,9 @@ md5sum ./demos/leaflet.annotation.js
 head -c 120 ./demos/leaflet.annotation.js.LICENSE.txt | tail -c 42 && echo
 #> '8fa701125c2b77cfb4c97b4dbaaae694
 ```
+
+<h4 id="anno-structure"> </h4>     
+
 
 #### *Directory Tree:*
 
@@ -399,6 +419,7 @@ head -c 120 ./demos/leaflet.annotation.js.LICENSE.txt | tail -c 42 && echo
 - - -
 
 
+<h4 id="chindogu"> </h4>     
 
 
 #### *LeafletSync:*
@@ -582,6 +603,10 @@ npm run-script ios-native
 
 
 - - -
+
+
+
+<h4 id="notes"> </h4>     
 
 
 
