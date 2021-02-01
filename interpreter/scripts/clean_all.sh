@@ -2,9 +2,6 @@
 
 echo -e "...Cleaning compiled..."
 
-CLEANUPBUNDLES=true
-CLEANUPRENDERS=true
-
 rm -rf .built
 rm -rf .built_logs
 rm -rf __pycache__
@@ -30,7 +27,8 @@ echo -e "\ncleaning renders..."
 find '.' -name "*_render.html" -print -delete
 
 echo -e "\ncleaning bundles..."
-find '.' -name "*_bundle.js" -print -delete
+find '.' -name "*_bundle.js*" -print -delete
 
 echo -e " ...Done! :) \n"
+
 exit 0

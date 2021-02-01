@@ -7,15 +7,17 @@ const noUiSlider = require('./nouislider');
 
 window.MediaRecorder = require('audio-recorder-polyfill');
 
+
+// absolute urls:
 // const webClassifyURL = "http://127.0.0.1:5000/classify/select"
 // const webClassifyURL = "http://127.0.0.1:5000/classify/standard"
 const webClassifyURL = "https://merlinai.herokuapp.com/classify/select"
-//const webClassifyURL = "https://merlinai.herokuapp.com/classify/standard";
+// const webClassifyURL = "https://merlinai.herokuapp.com/classify/standard";
+// const webClassifyURL = "/classify/select"
 
 const recordBtn = document.getElementById("recordButton") as HTMLButtonElement;
 const stopBtn = document.getElementById("stopButton") as HTMLButtonElement;
 const canvas = document.querySelector('.visualizer') as HTMLCanvasElement;
-const mainSection = document.querySelector('.container-fluid') as HTMLDivElement;
 
 const imgCrop = document.createElement('img');
 let imgSpec = document.createElement('img');
@@ -52,7 +54,11 @@ let slider = null;
 const patchWindowSeconds = 1.0; // We'd like to process a minimum of 1 second of audio
 
 // evaluate browser's webgl capability from here, and set stuff up accordingly:
-const useBrowser = () => {
+const useBrowser = (_force=false, _force_val=false) => {
+
+    if (_force) {
+        return _force_val;
+    }
 
     const capable = tf.ENV.getBool('WEBGL_RENDER_FLOAT32_CAPABLE');
 
@@ -422,6 +428,31 @@ const clearCanvas = () => {
 
 recordBtn.onclick = () => {
 
+    // Clear prior audio vars if any
+    recordedBlobs = new Blob;
+    chunks = [];
+    currentWaveform = new Float32Array;
+    currentWaveformSample = new Float32Array;
+
+    // Clear prior slider if any
+    const specSliderHolderEl = document.getElementById('specSliderHolder');
+    while (specSliderHolderEl.firstChild) {
+        specSliderHolderEl.removeChild(specSliderHolderEl.firstChild);
+    }
+
+    // Clear prior spectrogram if any
+    const specImageHolderEl = document.getElementById('specImageHolder');
+    while (specImageHolderEl.firstChild) {
+        specImageHolderEl.removeChild(specImageHolderEl.firstChild);
+    }
+
+    // Clear prior results if any
+    const sampleHolderEl = document.getElementById('specSampleHolder');
+    while (sampleHolderEl.firstChild) {
+        sampleHolderEl.removeChild(sampleHolderEl.firstChild);
+    }
+
+
     const onSuccess = (stream : MediaStream) => {
 
         // you could also do mime type as:
@@ -486,18 +517,3 @@ stopBtn.onclick = () => {
         }
     });
 };
-
-// try to make the canvas the full width; catch silently
-window.addEventListener('resize', () => {
-    try {
-        canvas.width = mainSection.offsetWidth;
-    } catch (err) {
-        // console.log("caught offsetWidth error, continuing..." + err);
-    }
-});
-
-try {
-    window.dispatchEvent(new Event('resize'));
-} catch (err) {
-    // console.log("caught resize error, continuing..." + err);
-}
