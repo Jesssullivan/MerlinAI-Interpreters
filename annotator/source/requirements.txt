@@ -1,7 +1,0 @@
-# pip3 install -r requirements.txt
-pytz
-bson
-waitress
-flask-cors
-gunicorn
-Flask==1.1.1  # sticking with 1.1.1 for now :(
