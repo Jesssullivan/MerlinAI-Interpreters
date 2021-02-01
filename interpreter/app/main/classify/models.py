@@ -22,8 +22,8 @@ class Classifier(object):
         # Get input and output tensors.
         input_details = interpreter.get_input_details()
         output_details = interpreter.get_output_details()
-        print("Spectrogram Input Shape: %s" % input_details[0]['shape'])
-        print("Output shape: %s" % output_details[0]['shape'])
+        vprint("Spectrogram Input Shape: %s" % input_details[0]['shape'])
+        vprint("Output shape: %s" % output_details[0]['shape'])
 
         # Load in an audio file
         audio_fp = glob.glob(usr_dir + '/*.wav')[0]
@@ -109,12 +109,12 @@ class Classifier(object):
 
         res = {}
 
-        print("Class Predictions:")
+        vprint("Class Predictions:")
         for i in range(10):
             label = label_predictions[i]
             score = scores[label]
             species_code = label_map[label]
-            print("\t%7s %0.3f" % (species_code, score))
+            vprint("\t%7s %0.3f" % (species_code, score))
             res[str(species_code)] = str(score)
 
         # return results:
@@ -185,3 +185,17 @@ class Classifier(object):
 
         # return results:
         return res
+
+    @staticmethod
+    def uploader(usrpath):
+        if request.method == 'POST':
+            if 'file' not in request.files:
+                flash('No file')
+                return redirect(request.url)
+            file = request.files['file']
+            if file.filename == '':
+                flash('No selected file')
+                return redirect(request.url)
+            if file:
+                f = request.files['file']
+                f.save(os.path.join(usrpath, usrfile))

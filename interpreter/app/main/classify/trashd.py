@@ -34,7 +34,7 @@ class Trash(object):
 
                 if time.time() - live_app_list[usr] > collection_trash:
                     try:
-                        print('removing expired usr directories...')
+                        vprint('removing expired usr directories...')
                         cls._force_dir_rm(os.path.join(inpath, usr))
                         live_app_list.pop(usr)
 

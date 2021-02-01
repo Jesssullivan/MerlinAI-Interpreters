@@ -15,8 +15,7 @@ lite_std_ops_model = TFModel(dir_name="liteStdOps", model="model.tflite", labels
 @tfmodels_blueprint.route(audio_model.all_models_dir_name + "/" +
                           audio_model.dir_name + "/<file>", methods=["GET", "POST"])
 def model_route(file):
-    print(audio_model.all_models_dir_name + "/" +
-          audio_model.dir_name + "/" + file)
+    #print(audio_model.all_models_dir_name + "/" + audio_model.dir_name + "/" + file)
     return app.send_static_file(audio_model.all_models_dir_name + "/" +
                                 audio_model.dir_name + "/" + file)
 

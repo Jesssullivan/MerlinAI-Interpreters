@@ -3,7 +3,6 @@ from .config import *
 from flask import Blueprint
 from flask import current_app as app
 from ..tfmodels.models import TFModel
-
 audio_model = TFModel(dir_name="audio")
 
 classify_blueprint = Blueprint("classify", __name__)
@@ -17,7 +16,7 @@ classify_blueprint = Blueprint("classify", __name__)
                           audio_model.dir_name + "/<file>",
                           methods=["GET", "POST"])
 def audio_labels(file):
-    print(audio_model.all_models_dir_name + "/" +
+    vprint(audio_model.all_models_dir_name + "/" +
           audio_model.dir_name + "/" + file)
     return app.send_static_file(audio_model.all_models_dir_name + "/" +
                                 audio_model.dir_name + "/" + file)
@@ -31,13 +30,13 @@ def bcrop():
 @classify_blueprint.route('/standard', methods=['GET', 'POST'])
 def uploader_std():
     if request.method == 'POST':
-        print('received POST')
+        vprint('received POST')
         usr_id = new_client()
         usr_dir = new_client_dir(usr_id)
-        print('created usr dir: ' + usr_dir)
-        uploader(usr_dir)
+        vprint('created usr dir: ' + usr_dir)
+        Classifier.uploader(usr_dir)
         results = Classifier.classify_proc_std(usr_dir)
-        print(results)
+        vprint(results)
         return jsonify(results)
     else:
         return app.send_static_file('uploaderStandardOps.html')
@@ -46,13 +45,13 @@ def uploader_std():
 @classify_blueprint.route('/select', methods=['GET', 'POST'])
 def uploader_select():
     if request.method == 'POST':
-        print('received POST')
+        vprint('received POST')
         usr_id = new_client()
         usr_dir = new_client_dir(usr_id)
-        print('created usr dir: ' + usr_dir)
-        uploader(usr_dir)
+        vprint('created usr dir: ' + usr_dir)
+        Classifier.uploader(usr_dir)
         results = Classifier.classify_proc_select(usr_dir)
-        print(results)
+        vprint(results)
         return jsonify(results)
     else:
         return app.send_static_file('uploaderSelectOps.html')
@@ -105,3 +104,4 @@ def clcdroid512():
 @classify_blueprint.route("<file>", methods=["GET", "POST"])
 def clfilex(file):
     return app.send_static_file(file)
+

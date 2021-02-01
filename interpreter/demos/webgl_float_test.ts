@@ -12,13 +12,10 @@ for (let i = 0; i < testWaveform.length; i++){
     test_array[i] = testWaveform[i];
 }
 
-/* tslint:disable:prefer-const */
 const webglButton = document.getElementById("webglButton") as HTMLButtonElement;
 const testButton = document.getElementById("testButton") as HTMLButtonElement;
-// const canvas = document.querySelector('.visualizer') as HTMLCanvasElement;
-// const mainSection = document.querySelector('.container-fluid') as HTMLDivElement;
+
 let imgCrop = document.createElement('img');
-/* tslint:enable:prefer-const */
 
 // Spectrogram Visualization Parameters
 const targetSampleRate = 22050;
@@ -95,9 +92,10 @@ webglButton.onclick = () => {
     const capable = tf.ENV.getBool('WEBGL_RENDER_FLOAT32_CAPABLE');
 
     if (capable) {
-        glSupportHolderEl!.prepend("WebGL mediump float: Terrific! These demos are supported on your device.");
+        glSupportHolderEl!.prepend("WebGL mediump float: Terrific! This device can accurately interpret the audio classification model from within this browser.");
     } else {
-        glSupportHolderEl!.prepend("WebGL mediump float: Hmm, these demos are not supported on this device.  Come build an awesome native version with us @ https://github.com/JessSullivan/tmpUI");
+        glSupportHolderEl!.prepend("WebGL mediump float:  Hmm, while this device cannot accurately interpret the audio classification model locally from within the browser," +
+            " your classification tasks will be automatically processed by one this server's classification endpoints.");
     }
 };
 
@@ -124,10 +122,3 @@ testButton.onclick = () => {
 
     });
 };
-
-// Make the canvas the full width
-window.addEventListener('resize', () => {
-    // canvas.width = mainSection.offsetWidth;
-});
-
-window.dispatchEvent(new Event('resize'));

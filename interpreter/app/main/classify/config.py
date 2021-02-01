@@ -13,9 +13,10 @@ import librosa
 
 
 # set `devel = False` for deployment
-devel = True
+devel = False
 devport = 5000
 devhost = '127.0.0.1'
+verbose = False
 
 # rendered html extension:
 ext = '_render.html'
@@ -78,15 +79,6 @@ def new_client_dir(usrid):
     return usr_dir
 
 
-def uploader(usrpath):
-    if request.method == 'POST':
-        if 'file' not in request.files:
-            flash('No file')
-            return redirect(request.url)
-        file = request.files['file']
-        if file.filename == '':
-            flash('No selected file')
-            return redirect(request.url)
-        if file:
-            f = request.files['file']
-            f.save(os.path.join(usrpath, usrfile))
+def vprint(text):
+    if verbose:
+        print(text)
