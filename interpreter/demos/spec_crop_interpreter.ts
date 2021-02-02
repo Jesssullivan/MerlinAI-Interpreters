@@ -73,7 +73,7 @@ const useBrowser = (_force=false, _force_val=false) => {
     }
 };
 
-const browserUse = false // useBrowser();
+const browserUse = useBrowser();
 
 // set classifyTextHeader:
 if (browserUse === false) {

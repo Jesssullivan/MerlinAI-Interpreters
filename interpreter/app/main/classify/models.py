@@ -29,6 +29,9 @@ class Classifier(object):
         input_details = interpreter.get_input_details()
         output_details = interpreter.get_output_details()
 
+        print("Waveform Input Shape: %s" % input_details[0]['shape'])
+        print("Output shape: %s" % output_details[0]['shape'])
+
         # Load in an audio file
         audio_fp = glob.glob(dir + '/*.wav')[0]
         samples_raw, sr = librosa.load(audio_fp, sr=44100, mono=True)
@@ -42,6 +45,7 @@ class Classifier(object):
         if samples.shape[0] > MODEL_INPUT_SAMPLE_COUNT:
             samples = samples[:MODEL_INPUT_SAMPLE_COUNT]
 
+        print(samples.shape[0])
         # How many windows do we have for this sample?
         num_windows = abs((samples.shape[0] - MODEL_INPUT_SAMPLE_COUNT) // WINDOW_STEP_SAMPLE_COUNT + 1)
         # We'll aggregate the outputs from each window in this list
@@ -54,6 +58,7 @@ class Classifier(object):
             end_idx = start_idx + MODEL_INPUT_SAMPLE_COUNT
             window_samples = samples[start_idx:end_idx]
 
+            print('window_samples: \n '+ str(window_samples) + " \n ... ")
             # Classify the window
 
             interpreter.set_tensor(input_details[0]['index'], window_samples)
@@ -78,7 +83,7 @@ class Classifier(object):
             label = label_predictions[i]
             score = average_scores[label]
             species_code = label_map[label]
-            # print("\t%7s %0.3f" % (species_code, score))
+            print("\t%7s %0.3f" % (species_code, score))
             res[str(species_code)] = str(score)
 
         # return results:
@@ -98,6 +103,8 @@ class Classifier(object):
         # Get input and output tensors.
         input_details = interpreter.get_input_details()
         output_details = interpreter.get_output_details()
+        vprint("Spectrogram Input Shape: %s" % input_details[0]['shape'])
+        vprint("Output shape: %s" % output_details[0]['shape'])
 
         # Load in an audio file
         audio_fp = glob.glob(usr_dir + '/*.wav')[0]
@@ -181,11 +188,12 @@ class Classifier(object):
 
         res = {}
 
+        vprint("Class Predictions:")
         for i in range(10):
             label = label_predictions[i]
             score = scores[label]
             species_code = label_map[label]
-            # vprint("\t%7s %0.3f" % (species_code, score))
+            vprint("\t%7s %0.3f" % (species_code, score))
             res[str(species_code)] = str(score)
 
         # return results:
