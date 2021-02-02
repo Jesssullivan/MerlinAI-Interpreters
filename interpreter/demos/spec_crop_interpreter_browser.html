@@ -1,6 +1,6 @@
 <head>
 
-    <title>Merlin AI Demos</title>
+    <title>Browser Check Interpreter</title>
 
     <!-- meta -->
     <meta charset="utf-8">
@@ -122,7 +122,8 @@
 <header>
     <a class="github-fork-ribbon" href="https://github.com/Jesssullivan/tmpui" data-ribbon="Contribute @ GitHub" title="Contribute @ GitHub...">Contribute</a>
    <div class="topnav" >
-       <a class="active" href="/classify/">Interpreter</a>
+       <a href="/classify/server">Server</a>
+       <a class="active"  href="/classify/browser">Browser</a>
        <a href="/classify/webgl">Precision</a>
        <a href="/classify/select">Select Ops</a>
        <a href="/classify/standard">Standard Ops</a>
@@ -144,14 +145,14 @@
                navigator.userAgent &&
                navigator.userAgent.indexOf('CriOS') == -1 &&
                navigator.userAgent.indexOf('FxiOS') == -1;
-        
+
                console.log(isSafari)
         if (isSafari === true) {
             alert("Hey!  When you want to start a new recording on this 🍎 device, please first tap the green `interpreter` button or reload the page.  Thx! -Jess")
         }
     }
     </script>
-    
+
     <style>
             /*
             * Make the leaflet holder long and narrow for the spectrogram.
@@ -191,6 +192,7 @@
     <h4 class="benigncenter"> Merlin AI Web: Record, Crop & Classify </h4 >
 
     <br/>
+    <h6 class="benigncenter">Browser Check Enabled </h6 >
 
     <br/>
     <div class="benigncenter">
@@ -216,7 +218,6 @@
     <br/>
     <div id="specCropHolder" class="benigncenter" hidden></div>
     <br>
-    <script src="./spec_crop_interpreter_bundle.js"></script>
+    <script src="./spec_crop_interpreter_browser_bundle.js"></script>
     </div>
 <br>
-

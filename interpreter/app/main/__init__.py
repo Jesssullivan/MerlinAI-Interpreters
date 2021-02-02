@@ -13,7 +13,6 @@ from .classify.routes import classify_blueprint
 
 
 def create_app():
-
     # Flask Config
     app = Flask(__name__)
     app.config.from_pyfile("config/config.cfg")
@@ -45,55 +44,43 @@ def create_app():
     # start garbage collection daemon:
     Trash.truck()
 
-    
     # fetch static:
 
-    
     @app.route("/favicon.ico", methods=["GET", "POST"])
     def appclcfavicon_ico():
         return app.send_static_file("icons/tmpUI.MerlinAI-favicon-dark/favicon.ico")
-
 
     @app.route("/site.webmanifest", methods=["GET", "POST"])
     def appclcwebmanifest():
         return app.send_static_file("icons/tmpUI.MerlinAI-favicon-dark/site.webmanifest")
 
-
     @app.route("/favicon-16x16.png", methods=["GET", "POST"])
     def appclcfavicon_ico16():
         return app.send_static_file("icons/tmpUI.MerlinAI-favicon-dark/favicon-16x16.png")
-
 
     @app.route("/favicon-32x32.png", methods=["GET", "POST"])
     def appclcfavicon_ico32():
         return app.send_static_file("icons/tmpUI.MerlinAI-favicon-dark/favicon-32x32.png")
 
-
     @app.route("/apple-touch-icon.png", methods=["GET", "POST"])
     def appclcapple_touch():
         return app.send_static_file("icons/tmpUI.MerlinAI-favicon-dark/apple-touch-icon.png")
-
 
     @app.route("/android-chrome-192x192.png", methods=["GET", "POST"])
     def appclcdroid192():
         return app.send_static_file("icons/tmpUI.MerlinAI-favicon-dark/android-chrome-192x192.png")
 
-
     @app.route("/android-chrome-512x512.png", methods=["GET", "POST"])
     def appclcdroid512():
         return app.send_static_file("icons/tmpUI.MerlinAI-favicon-dark/android-chrome-512x512.png")
 
-
-    
     @app.route("/<file>/", methods=["GET", "POST"])
     def appfilex(file):
         return app.send_static_file(file)
 
-    
     # Index Routes:
     @app.route("/")
     def index():
-        return redirect("/classify", code=302)
+        return redirect("/classify/server", code=302)
 
-    
     return app

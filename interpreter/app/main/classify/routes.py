@@ -22,9 +22,20 @@ def audio_labels(file):
                                 audio_model.dir_name + "/" + file)
 
 
-@classify_blueprint.route('/', methods=['GET'])
-def bcrop():
-    return app.send_static_file('spec_crop_interpreter.html')
+# Index Routes:
+@classify_blueprint.route("/")
+def bindex():
+    return redirect("/classify/server", code=302)
+
+
+@classify_blueprint.route('/server', methods=['GET'])
+def sbcrop():
+    return app.send_static_file('spec_crop_interpreter_server.html')
+
+
+@classify_blueprint.route('/browser', methods=['GET'])
+def bbcrop():
+    return app.send_static_file('spec_crop_interpreter_browser.html')
 
 
 @classify_blueprint.route('/standard', methods=['GET', 'POST'])
