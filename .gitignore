@@ -1,6 +1,6 @@
-node_modules
+**/node_modules
 merlinai_venv
 **/.idea
 **/*.pyc
 **/__pycache__
-.DS_Store
+**/.DS_Store

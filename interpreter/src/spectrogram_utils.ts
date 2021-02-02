@@ -1,5 +1,5 @@
 import {Greys} from './greys';
-import {log} from "./index";
+//import {log} from "./index";
 const FFT = require('fft.js');
 
 const pow = (arr: Float32Array, power: number) => arr.map(v => Math.pow(v, power));
@@ -103,8 +103,6 @@ export const frame = (data: Float32Array, frameLength: number, hopLength: number
 export const applyWindow = (buffer: Float32Array, win: Float32Array) => {
 
   if (buffer.length !== win.length) {
-    log(
-        `Buffer length ${buffer.length} != window length ${win.length}.`);
     return null;
   }
 
@@ -189,13 +187,13 @@ const colorMapLookup = (x : number) : number => {
 export const dBSpectrogramToImage = (spec : Float32Array[], topDB : number) : string => {
 
     const spec_width = spec.length;
-    log(spec_width.toString());
+    //log(spec_width.toString());
 
     const spec_height_at_zero = spec[0].length;
-    log('@ 0 :'  + spec_height_at_zero.toString());
+   // log('@ 0 :'  + spec_height_at_zero.toString());
 
     const spec_height = spec[1].length;
-    log('@ 1 :' + spec_height.toString());
+    //log('@ 1 :' + spec_height.toString());
 
     const image_buffer = new Uint8ClampedArray(spec_width * spec_height * 4); // enough bytes for RGBA
 

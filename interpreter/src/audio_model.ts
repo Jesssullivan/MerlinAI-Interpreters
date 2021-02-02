@@ -1,5 +1,5 @@
 import * as  tf from '@tensorflow/tfjs';
-import {log} from './index';
+//import {log} from './index';
 
 export class MerlinAudioModel {
 
@@ -32,7 +32,7 @@ export class MerlinAudioModel {
 
         this.model = await tf.loadGraphModel(this.modelURL);
 
-        log('Loaded model!.');
+        //log('Loaded model!.');
     }
 
     async ensureLabelsLoaded() {
@@ -43,7 +43,7 @@ export class MerlinAudioModel {
         this.labels = await fetch(this.labelsURL)
             .then(response => response.json());
 
-        log('Loaded ' + this.labels.length + ' labels!.','audio_model.ts');
+        //log('Loaded ' + this.labels.length + ' labels!.','audio_model.ts');
 
     }
 
@@ -117,7 +117,7 @@ export class MerlinAudioModel {
 
         numWindows = Math.max(1, numWindows);
 
-        log("Extracting " + numWindows + " windows from audio waveform", "audio_model.ts");
+        // log("Extracting " + numWindows + " windows from audio waveform", "audio_model.ts");
 
         let curSampleIndex = 0;
         const batchResults : Float32Array[] = [];
@@ -133,7 +133,7 @@ export class MerlinAudioModel {
 
             // Pad with zeros to ensure we have enough samples to create the spectrogram.
             if (tf_waveform.shape[0] < waveformWindowSizeSamples) {
-                log("Padding waveform with zeros", "audio_model.ts");
+                // log("Padding waveform with zeros", "audio_model.ts");
                 tf_waveform = tf_waveform.pad([[0, waveformWindowSizeSamples - tf_waveform.shape[0]]]);
             }
 

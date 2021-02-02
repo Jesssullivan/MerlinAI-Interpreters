@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+
+        <!-- meta -->
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale = 1.0, maximum-scale=1.0, user-scalable=no" />
+
+        <!-- Cordova -->
+        <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *; img-src 'self' data: content:;">
+        <meta name="format-detection" content="telephone=no">
+        <meta name="msapplication-tap-highlight" content="no">
+        <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover">
+        <meta name="color-scheme" content="light dark">
+
+        <!-- MUI -->
+        <script src="./js/mui.min.js"></script>
+        <link href="./css/mui.min.css" rel="stylesheet" type="text/css" />
+
+        <!-- Style CSS -->
+        <link href="./css/style.css" rel="stylesheet" type="text/css" />
+
+        <!-- No UI Slider CSS -->
+        <link rel="stylesheet" href="./css/nouislider.css">
+
+        <!-- Fork CSS -->
+        <link rel="stylesheet" href="./css/gh-fork-ribbon.min.css" />
+
+        <!-- Bootstrap core CSS -->
+        <link rel="stylesheet" href="./css/bootstrap.min.css">
+
+        <!-- Leaflet core CSS -->
+        <link rel="stylesheet" href="./css/leaflet.css"/>
+
+        <!-- Leaflet Draw CSS -->
+        <link rel="stylesheet" href="./css/leaflet.draw.css"/>
+
+        <script src="./js/73cd972fdf.js" crossorigin="anonymous"></script>
+
+        <style>
+
+            /*
+            * Make the leaflet holder long and narrow for the spectrogram.
+            */
+            .leaflet-image-holder {
+                height: 210px!important;
+                width: 1200px!important;
+            }
+
+            /*
+            * The vertical line for the audio position.
+            */
+            .leaflet-image-holder:before {
+                content:"";
+                width:3px;
+                height:100%;
+                display:block;
+                z-index: 1000;
+                left:50%;
+                position:absolute;
+                background-image: linear-gradient(rgb(179, 0, 0), rgb(179, 0, 0));
+                background-size: 3px 100%;
+                background-repeat: no-repeat;
+                background-position: center center;
+            }
+
+            .annotation-instance-category-name{
+                font-size: small;
+            }
+
+            .annotation-instance-supercategory-name{
+                font-size: small;
+            }
+
+        </style>
+    </head>
+
+    <br/>
+    <br/>
+    <canvas class="visualizer"  width="1200" height="100px"> visualizer </canvas>
+    <br/>
+    <body>
+        <div class="app">
+            <div id="content-wrapper" >
+
+        <h3 class="benigncenter">Record, Crop & Classify</h3 >
+
+        <br/>
+        <div class="benigncenter">
+            <button id="recordButton" class="mui-btn mui-btn--raised">Record Song</button>
+        </div>
+        <br/>
+        <br/>
+        <div class="benigncenter">
+        <button id="stopButton" class="mui-btn mui-btn--raised" disabled="" title="Stop">Stop</button>
+        </div>
+        <br/>
+        <br/>
+        <br/>
+        <div id="specImageHolder"></div>
+        <br/>
+        <div id="specSliderHolder"></div>
+        <br/>
+        <div id="specAnalyzeButtonHolder" class="benigncenter"></div>
+        <div id="downloadButtonHolder" class="benigncenter"></div>
+        <div id="downloadSpecButtonHolder" class="benigncenter"></div>
+        <br/>
+        <div id="specSampleHolder" class="benigncenter"></div>
+        <br/>
+        <div id="specCropHolder" class="benigncenter" hidden></div>
+        <br>
+        </div>
+        </div>
+        <script src="./js/spec_crop_interpreter_bundle.js"></script>
+    </body>
+</html>

@@ -5,7 +5,7 @@ import * as resample from 'ndarray-resample';
 // @ts-ignore
 import * as ndarray from 'ndarray';
 /* eslint-enable */
-import {log} from './index';
+//import {log} from './index';
 const FFT = require('fft.js');
 
 // Safari Webkit only supports 44.1kHz audio.
@@ -72,7 +72,7 @@ export const fetch_audio = async(audio_url : string, targetSampleRate : number) 
         .then((sourceAudioBuffer: AudioBuffer) => {
 
               const sourceSampleRate = sourceAudioBuffer.sampleRate;
-              log("Source Audio Sample Rate: " + sourceSampleRate);
+              //log("Source Audio Sample Rate: " + sourceSampleRate);
 
               if (sourceAudioBuffer.sampleRate === targetSampleRate) {
                 return {
@@ -81,7 +81,7 @@ export const fetch_audio = async(audio_url : string, targetSampleRate : number) 
                 };
               }
 
-              log("Resampling Source Audio to: " + targetSampleRate);
+             // log("Resampling Source Audio to: " + targetSampleRate);
 
               return resampleWebAudio(sourceAudioBuffer, targetSampleRate).then((resampledSourceAudioBuffer: AudioBuffer) => ({
                   waveform: resampledSourceAudioBuffer.getChannelData(0),
@@ -403,8 +403,6 @@ const applyFilterbank = (mags: Float32Array, filterbank: Float32Array[]): Float3
 export const applyWindow = (buffer: Float32Array, win: Float32Array) => {
 
   if (buffer.length !== win.length) {
-    log(
-        `Buffer length ${buffer.length} != window length ${win.length}.`);
     return null;
   }
 

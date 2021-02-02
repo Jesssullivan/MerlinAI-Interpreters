@@ -1,6 +1,6 @@
 // spec_crop_interpreter.ts
 
-import {audio_loader, audio_model, audio_utils, spectrogram_utils, ui_utils, log} from "../src/index";
+import {audio_loader, audio_model, audio_utils, spectrogram_utils, ui_utils} from "../src/index";
 import {tf} from '../src';
 
 const noUiSlider = require('./nouislider');
@@ -64,8 +64,8 @@ const useBrowser = (_force=false, _force_val=false) => {
 
     if (capable === true) {
         merlinAudio = new audio_model.MerlinAudioModel(LABELS_URL, MODEL_URL);
-        return true;
-        //return false;
+        //return true;
+        return false;
     }
     else {
         return false;
@@ -137,7 +137,7 @@ const handleClassifyWaveform = async() => {
         .then(response => {
             response.json().then(data => {
 
-                log('received scores!');
+               //log('received scores!');
 
                 // zing the received json Object into a sortable Array:
                 let i;
@@ -159,7 +159,7 @@ const handleClassifyWaveform = async() => {
                     resultStr += "\n" + results[i].join(" ");
                     resultEl.appendChild(scoreEl);
                     sampleHolderEl.prepend(resultEl);
-                    log(results[i].join(" "));
+                    //log(results[i].join(" "));
                 }
                 alert(resultStr);
             });
@@ -179,7 +179,7 @@ const handleClassifyWaveform = async() => {
                     resultEl.appendChild(scoreEl);
                     sampleHolderEl.prepend(resultEl);
                     resultStr += labels[i] + ": " + scores[i] + " \n";
-                    log(labels[i] + ": " + scores[i]);
+                    //log(labels[i] + ": " + scores[i]);
                 }
             alert(resultStr);
         });
@@ -430,7 +430,6 @@ recordBtn.onclick = () => {
 
     // Clear prior audio vars if any
     recordedBlobs = new Blob;
-    chunks = [];
     currentWaveform = new Float32Array;
     currentWaveformSample = new Float32Array;
 
@@ -461,7 +460,7 @@ recordBtn.onclick = () => {
         mediaRecorder = new MediaRecorder(stream, {mimeType: 'audio/wav'});
 
         mediaRecorder.start();
-        log("recorder started");
+        //log("recorder started");
 
         visualize(stream);
 
@@ -475,7 +474,7 @@ recordBtn.onclick = () => {
             chunks = [];
             audioURL = window.URL.createObjectURL(recordedBlobs);
 
-            log("recorder stopped");
+            //log("recorder stopped");
 
             audio_loader.loadAudioFromURL(audioURL)
                 .then((audioBuffer) => audio_loader.resampleAndMakeMono(audioBuffer, targetSampleRate))

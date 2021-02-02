@@ -1,0 +1,113 @@
+{
+  "name": "merlinai-columbarius",
+  "displayName": "Columbarius",
+  "version": "0.0.1",
+  "main": "index.js",
+  "author": "Jess Sullivan",
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/core": "~7.12.10",
+    "@babel/preset-env": "~7.12.11",
+    "@babel/preset-react": "~7.12.10",
+    "@babel/runtime": "~7.12.5",
+    "@tensorflow/tfjs": "latest",
+    "@tensorflow/tfjs-converter": "latest",
+    "@types/dom-mediacapture-record": "^1.0.7",
+    "@types/glob": "latest",
+    "@types/jquery": "latest",
+    "@types/leaflet": "latest",
+    "@types/minimist": "latest",
+    "@types/ndarray": "latest",
+    "@types/node": "latest",
+    "@types/terser-webpack-plugin": "latest",
+    "@types/uuid": "~8.3.0",
+    "@types/webgl2": "0.0.5",
+    "@typescript-eslint/eslint-plugin": "latest",
+    "@typescript-eslint/eslint-plugin-tslint": "latest",
+    "@typescript-eslint/parser": "latest",
+    "audio-recorder-polyfill": "latest",
+    "babel-loader": "~8.2.0",
+    "buffer": "^6.0.3",
+    "cordova-android": "^9.0.0",
+    "cordova-ios": "^6.1.1",
+    "cordova-plugin-whitelist": "^1.3.4",
+    "css-loader": "~5.0.1",
+    "css-minimizer-webpack-plugin": "~1.1.5",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^7.1.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jsdoc": "^30.7.13",
+    "eslint-plugin-prefer-arrow": "^1.2.2",
+    "fft.js": "~4.0.4",
+    "http-server": "~0.12.3",
+    "jquery": "^3.5.1",
+    "leaflet": "latest",
+    "leaflet-draw": "latest",
+    "mini-css-extract-plugin": "^1.3.4",
+    "ndarray": "^1.0.19",
+    "ndarray-resample": "^1.0.1",
+    "node-gyp": "^7.1.0",
+    "polygon-clipping": "^0.14.3",
+    "react": "latest",
+    "react-dom": "latest",
+    "style-loader": "^1.1.0",
+    "terser-webpack-plugin": "~5.1.1",
+    "ts-loader": "^5.3.0",
+    "ts-node": "~9.1.1",
+    "tsify": "^3.0.4",
+    "typescript": "^4.1.3",
+    "url-loader": "^3.0.0",
+    "uuid": "^8.3.2",
+    "webpack": "~5.15.0",
+    "webpack-cli": "~4.3.1",
+    "webpack-dev-server": "~3.11.2"
+  },
+  "cordova": {
+    "plugins": {
+      "cordova-plugin-whitelist": {}
+    },
+    "platforms": [
+      "ios",
+      "android"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "jest": {
+    "preset": "react-native"
+  },
+  "babel": {
+    "presets": [
+      "@babel/preset-env",
+      "@babel/preset-react"
+    ],
+    "plugins": [
+      "@babel/plugin-proposal-class-properties",
+      "react-hot-loader/babel"
+    ]
+  },
+  "contributors": [
+    {
+      "name": "Jess Sullivan",
+      "url": "https://github.com/jesssullivan"
+    },
+    {
+      "name": "Grant Van Horn",
+      "url": "https://github.com/gvanhorn38"
+    },
+    {
+      "name": "Visipedia et al.",
+      "url": "https://github.com/visipedia/"
+    }
+  ]
+}
