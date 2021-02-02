@@ -52,7 +52,7 @@ const topDB = 80;
 
 let slider = null;
 
-const patchWindowSeconds = 3.0; // We'd like to process a minimum of 3 seconds of audio
+const patchWindowSeconds = 1.2;
 
 // evaluate browser's webgl capability from here, and set stuff up accordingly:
 const useBrowser = (_force=false, _force_val=false) => {
