@@ -1,19 +1,20 @@
 // spec_crop_interpreter.ts
 
-import {audio_loader, audio_model, audio_utils, spectrogram_utils, ui_utils} from "../src/index";
+import {log, audio_loader, audio_model, audio_utils, spectrogram_utils, ui_utils} from "../src/index";
 import {tf} from '../src';
 
 const noUiSlider = require('./nouislider');
 
 window.MediaRecorder = require('audio-recorder-polyfill');
 
+const webClassifyURL = "/classify/select"
 
-// absolute urls:
+// absolute urls
 // const webClassifyURL = "http://127.0.0.1:5000/classify/select"
 // const webClassifyURL = "http://127.0.0.1:5000/classify/standard"
-const webClassifyURL = "https://merlinai.herokuapp.com/classify/select"
+// const webClassifyURL = "https://merlinai.herokuapp.com/classify/select"
 // const webClassifyURL = "https://merlinai.herokuapp.com/classify/standard";
-// const webClassifyURL = "/classify/select"
+
 
 const recordBtn = document.getElementById("recordButton") as HTMLButtonElement;
 const stopBtn = document.getElementById("stopButton") as HTMLButtonElement;
@@ -51,7 +52,7 @@ const topDB = 80;
 
 let slider = null;
 
-const patchWindowSeconds = 1.0; // We'd like to process a minimum of 1 second of audio
+const patchWindowSeconds = 3.0; // We'd like to process a minimum of 3 seconds of audio
 
 // evaluate browser's webgl capability from here, and set stuff up accordingly:
 const useBrowser = (_force=false, _force_val=false) => {
@@ -64,8 +65,8 @@ const useBrowser = (_force=false, _force_val=false) => {
 
     if (capable === true) {
         merlinAudio = new audio_model.MerlinAudioModel(LABELS_URL, MODEL_URL);
-        //return true;
-        return false;
+        return true;
+        // return false;
     }
     else {
         return false;
@@ -80,6 +81,44 @@ if (browserUse === false) {
 } else {
     classifyTextHeader = "Classifications processed in browser:";
 }
+
+
+const updateVis = () => {
+
+    handlePositions = slider.noUiSlider.get();
+    let pos1 = Math.round(parseFloat(handlePositions[0]));
+    let pos2 = Math.round(parseFloat(handlePositions[1]));
+
+    // Take into account the offset of the image (by scrolling)
+    const specImageHolderEl = document.getElementById('specImageHolder');
+    const scrollOffset = specImageHolderEl.scrollLeft;
+
+    pos1 += scrollOffset;
+    pos2 += scrollOffset;
+
+    // Need to go from spectrogram position to waveform sample index
+    const hopLengthSamples = Math.round(targetSampleRate * stftHopSeconds);
+
+    const samplePos1 = pos1 * hopLengthSamples / timeScale;
+    const samplePos2 = pos2 * hopLengthSamples / timeScale;
+
+    currentWaveformSample = currentWaveform.slice(samplePos1, samplePos2);
+
+    // visualize the cropped sample
+    const dbSpec = generateSpectrogram(currentWaveformSample); //audio_utils.dBSpectrogram(audioData.waveform, spec_params);
+    const cropped_imageURI = spectrogram_utils.dBSpectrogramToImage(dbSpec, topDB);
+
+    // create / update cropped visualization
+    const cropped_height = 300;
+    const cropped_width = Math.round(dbSpec.length);
+
+    imgCrop.src = cropped_imageURI;
+    imgCrop.height = cropped_height;
+    imgCrop.width =  cropped_width;
+
+    return currentWaveformSample;
+
+};
 
 const handleClassifyWaveform = async() => {
 
@@ -137,7 +176,7 @@ const handleClassifyWaveform = async() => {
         .then(response => {
             response.json().then(data => {
 
-               //log('received scores!');
+               log('received scores!');
 
                 // zing the received json Object into a sortable Array:
                 let i;
@@ -159,7 +198,7 @@ const handleClassifyWaveform = async() => {
                     resultStr += "\n" + results[i].join(" ");
                     resultEl.appendChild(scoreEl);
                     sampleHolderEl.prepend(resultEl);
-                    //log(results[i].join(" "));
+                    log(results[i].join(" "));
                 }
                 alert(resultStr);
             });
@@ -179,56 +218,11 @@ const handleClassifyWaveform = async() => {
                     resultEl.appendChild(scoreEl);
                     sampleHolderEl.prepend(resultEl);
                     resultStr += labels[i] + ": " + scores[i] + " \n";
-                    //log(labels[i] + ": " + scores[i]);
+                    log(labels[i] + ": " + scores[i]);
                 }
             alert(resultStr);
         });
     }
-};
-
-const updateVis = () => {
-
-    const specCropImage = document.getElementById('specCropHolder');
-
-    while (specCropImage.firstChild) {
-        specCropImage.removeChild(specCropImage.firstChild);
-    }
-
-    handlePositions = slider.noUiSlider.get();
-    let pos1 = Math.round(parseFloat(handlePositions[0]));
-    let pos2 = Math.round(parseFloat(handlePositions[1]));
-
-    // Take into account the offset of the image (by scrolling)
-    const specImageHolderEl = document.getElementById('specImageHolder');
-    const scrollOffset = specImageHolderEl.scrollLeft;
-
-    pos1 += scrollOffset;
-    pos2 += scrollOffset;
-
-    // Need to go from spectrogram position to waveform sample index
-    const hopLengthSamples = Math.round(targetSampleRate * stftHopSeconds);
-
-    const samplePos1 = pos1 * hopLengthSamples / timeScale;
-    const samplePos2 = pos2 * hopLengthSamples / timeScale;
-
-    currentWaveformSample = currentWaveform.slice(samplePos1, samplePos2);
-
-    // visualize the cropped sample
-    const dbSpec = generateSpectrogram(currentWaveformSample); //audio_utils.dBSpectrogram(audioData.waveform, spec_params);
-    const cropped_imageURI = spectrogram_utils.dBSpectrogramToImage(dbSpec, topDB);
-
-    // create / update cropped visualization
-    const cropped_height = 300;
-    const cropped_width = Math.round(dbSpec.length);
-
-    imgCrop.src = cropped_imageURI;
-    imgCrop.height = cropped_height;
-    imgCrop.width =  cropped_width;
-
-    specCropImage.appendChild(imgCrop);
-
-    return currentWaveformSample;
-
 };
 
 const generateSpectrogram = (waveform : Float32Array) : Float32Array[] => {
@@ -460,7 +454,7 @@ recordBtn.onclick = () => {
         mediaRecorder = new MediaRecorder(stream, {mimeType: 'audio/wav'});
 
         mediaRecorder.start();
-        //log("recorder started");
+        log("recorder started");
 
         visualize(stream);
 
@@ -474,7 +468,7 @@ recordBtn.onclick = () => {
             chunks = [];
             audioURL = window.URL.createObjectURL(recordedBlobs);
 
-            //log("recorder stopped");
+            log("recorder stopped");
 
             audio_loader.loadAudioFromURL(audioURL)
                 .then((audioBuffer) => audio_loader.resampleAndMakeMono(audioBuffer, targetSampleRate))

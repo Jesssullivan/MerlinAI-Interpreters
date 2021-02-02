@@ -178,13 +178,16 @@
     <h4 class="benigncenter"> Merlin AI Web: Record, Crop & Classify </h4 >
 
     <br/>
+
+    <div id="isSafariBlerb" class="benigncenter" title="Hey! On this device, please reload or tap the green `interpreter` button when you want to start a new recording."></div>
+    <br/>
     <div class="benigncenter">
         <button id="recordButton" class="mui-btn mui-btn--raised">Record Song</button>
     </div>
     <br/>
     <br/>
     <div class="benigncenter">
-    <button id="stopButton" class="mui-btn mui-btn--raised" disabled="" title="Stop">Stop</button>
+        <button id="stopButton" class="mui-btn mui-btn--raised" disabled="" title="Stop">Stop</button>
     </div>
     <br/>
     <br/>
@@ -204,3 +207,26 @@
     <script src="./spec_crop_interpreter_bundle.js"></script>
     </div>
 <br>
+
+<script>
+
+    // Get the user-agent string
+    let userAgentString = navigator.userAgent;
+
+    // Detect Chrome
+    let chromeAgent = userAgentString.indexOf("Chrome") > -1;
+
+    // Detect Firefox
+    let firefoxAgent = userAgentString.indexOf("Firefox") > -1;
+
+    // Detect Safari
+    let safariAgent = userAgentString.indexOf("Safari") > -1;
+
+    // Discard Safari since it also matches Chrome
+    if ((chromeAgent) && (safariAgent))
+        safariAgent = false;
+
+    if (safariAgent !== true) {
+        document.getElementById("isSafariBlerb").style.visibility = "hidden";
+    }
+</script>

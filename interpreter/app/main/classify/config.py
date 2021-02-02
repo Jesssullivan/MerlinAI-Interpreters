@@ -38,9 +38,10 @@ live_app_list = {}
 start_time = time.time()
 
 # recording sample values for tf model:
-SAMPLE_RATE = 44100
-MODEL_INPUT_SAMPLE_COUNT = 44100
+MODEL_SAMPLE_RATE = 22050
+MODEL_INPUT_SAMPLE_COUNT = 22050 * 3
 WINDOW_STEP_SAMPLE_COUNT = 22050
+
 
 
 # how often should the garbage collector remove old directories?

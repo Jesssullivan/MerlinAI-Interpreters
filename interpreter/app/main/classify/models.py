@@ -1,6 +1,10 @@
 import tensorflow as tf
 import librosa
 from .config import *
+import tensorflow_io as tfio
+from scipy.signal import decimate
+import json
+import numpy as np
 
 
 """ serverside classification """
@@ -8,9 +12,100 @@ from .config import *
 
 class Classifier(object):
 
-    # classification method using model built with select ops-
+    @staticmethod
+    def classify_proc_select(dir=''):
+
+        # Load in the map from integer id to species code
+        with open(labels_fp_select) as f:
+            label_map = json.load(f)
+
+        # Load TFLite model and allocate tensors.
+        interpreter = tf.lite.Interpreter(model_path=tflite_model_fp_select)
+        interpreter.allocate_tensors()
+
+        # Get input and output tensors.
+        input_details = interpreter.get_input_details()
+        output_details = interpreter.get_output_details()
+
+        vprint("Waveform Input Shape: %s" % input_details[0]['shape'])
+        vprint("Output shape: %s" % output_details[0]['shape'])
+
+        # Load in an audio file
+        audio_fp = glob.glob(dir + '/*.wav')[0]
+        audio_tensor = tfio.audio.AudioIOTensor(audio_fp)
+        audio_tensor.shape[0].numpy()
+        samplerate = audio_tensor.rate.numpy()
+
+        # Load in the samples (Take the first channel)
+        samples = audio_tensor[:].numpy()
+        samples = samples[:, 0].ravel()
+
+        if samplerate == 44100:
+            samples = decimate(samples, q=2)
+            samplerate = 22050
+        else:
+            assert samplerate == 22050
+
+        assert MODEL_SAMPLE_RATE == samplerate
+
+        # Do we need to pad with zeros?
+        if samples.shape[0] < MODEL_INPUT_SAMPLE_COUNT:
+            samples = np.concatenate(
+                [samples, np.zeros([MODEL_INPUT_SAMPLE_COUNT - samples.shape[0]], dtype=np.float32)])
+        else:
+            # Here we could just take the first 3 seconds, or some other random slice
+            # samples = samples[:MODEL_INPUT_SAMPLE_COUNT]
+            pass
+
+        samples = samples.astype(np.float32)
+
+        # How many windows do we have for this sample?
+        num_windows = (samples.shape[0] - MODEL_INPUT_SAMPLE_COUNT) // WINDOW_STEP_SAMPLE_COUNT + 1
+
+        # We'll aggregate the outputs from each window in this list
+        window_outputs = []
+
+        # Pass each window
+        for window_idx in range(num_windows):
+            # Construct the window
+            start_idx = window_idx * WINDOW_STEP_SAMPLE_COUNT
+            end_idx = start_idx + MODEL_INPUT_SAMPLE_COUNT
+            window_samples = samples[start_idx:end_idx]
+
+            # Classify the window
+            interpreter.set_tensor(input_details[0]['index'], window_samples)
+            interpreter.invoke()
+            output_data = interpreter.get_tensor(output_details[0]['index'])[0]
+
+            # Save off the classification scores
+            window_outputs.append(output_data)
+
+        window_outputs = np.array(window_outputs)
+
+        # Take an average over all the windows
+        average_scores = window_outputs.mean(axis=0)
+
+        # Print the predictions
+        scores = np.argsort(average_scores)[::-1]
+
+        label_predictions = np.argsort(scores)[::-1]
+
+        res = {}
+
+        vprint("Class Predictions:")
+        for i in range(10):
+            label = label_predictions[i]
+            score = scores[label]
+            species_code = label_map[label]
+            vprint("\t%7s %0.3f" % (species_code, score))
+            res[str(species_code)] = str(score)
+
+        # return results:
+        return res
+
     @staticmethod
     def classify_proc_std(usr_dir):  # thanks to Grant!!!  xD
+
         # Load in the map from integer id to species code
         with open(labels_fp_std) as f:
             label_map = json.load(f)
@@ -115,72 +210,6 @@ class Classifier(object):
             score = scores[label]
             species_code = label_map[label]
             vprint("\t%7s %0.3f" % (species_code, score))
-            res[str(species_code)] = str(score)
-
-        # return results:
-        return res
-
-    @staticmethod
-    def classify_proc_select(dir=''):
-        # thanks Grant!
-        # Load in the map from integer id to species code
-        with open(labels_fp_select) as f:
-            label_map = json.load(f)
-
-        # Load TFLite model and allocate tensors.
-        interpreter = tf.lite.Interpreter(model_path=tflite_model_fp_select)
-        interpreter.allocate_tensors()
-
-        # Get input and output tensors.
-        input_details = interpreter.get_input_details()
-        output_details = interpreter.get_output_details()
-
-        # Load in an audio file
-        audio_fp = glob.glob(dir + '/*.wav')[0]
-
-        samples, _ = librosa.load(audio_fp, sr=SAMPLE_RATE, mono=True)
-
-        # Do we need to pad with zeros?
-        if samples.shape[0] < MODEL_INPUT_SAMPLE_COUNT:
-            samples = np.concatenate(
-                [samples, np.zeros([MODEL_INPUT_SAMPLE_COUNT - samples.shape[0]], dtype=np.float32)])
-
-        # How many windows do we have for this sample?
-        num_windows = (samples.shape[0] - MODEL_INPUT_SAMPLE_COUNT) // WINDOW_STEP_SAMPLE_COUNT + 1
-
-        # We'll aggregate the outputs from each window in this list
-        window_outputs = list()
-
-        # Pass each window
-        for window_idx in range(num_windows):
-            # Construct the window
-            start_idx = window_idx * WINDOW_STEP_SAMPLE_COUNT
-            end_idx = start_idx + MODEL_INPUT_SAMPLE_COUNT
-            window_samples = samples[start_idx:end_idx]
-
-            # Classify the window
-            interpreter.set_tensor(input_details[0]['index'], window_samples)
-            interpreter.set_tensor(input_details[1]['index'], tf.constant(SAMPLE_RATE, dtype=tf.float32))
-            interpreter.invoke()
-            output_data = interpreter.get_tensor(output_details[0]['index'])[0]
-
-            # Save off the classification scores
-            window_outputs.append(output_data)
-
-        window_outputs = np.array(window_outputs)
-
-        # Take an average over all the windows
-        average_scores = window_outputs.mean(axis=0)
-
-        # Print the predictions
-        label_predictions = np.argsort(average_scores)[::-1]
-
-        res = {}
-
-        for i in range(10):
-            label = label_predictions[i]
-            score = average_scores[label]
-            species_code = label_map[label]
             res[str(species_code)] = str(score)
 
         # return results:
