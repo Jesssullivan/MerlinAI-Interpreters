@@ -1,7 +1,6 @@
 import tensorflow as tf
 import librosa
 from .config import *
-import tensorflow_io as tfio
 from scipy.signal import decimate
 import json
 import numpy as np
@@ -32,38 +31,20 @@ class Classifier(object):
 
         # Load in an audio file
         audio_fp = glob.glob(dir + '/*.wav')[0]
-        audio_tensor = tfio.audio.AudioIOTensor(audio_fp)
-        audio_tensor.shape[0].numpy()
-        samplerate = audio_tensor.rate.numpy()
+        samples_raw, sr = librosa.load(audio_fp, sr=44100, mono=True)
 
-        # Load in the samples (Take the first channel)
-        samples = audio_tensor[:].numpy()
-        samples = samples[:, 0].ravel()
-
-        if samplerate == 44100:
-            samples = decimate(samples, q=2)
-            samplerate = 22050
-        else:
-            assert samplerate == 22050
-
-        assert MODEL_SAMPLE_RATE == samplerate
+        samples = decimate(samples_raw, q=2)
 
         # Do we need to pad with zeros?
         if samples.shape[0] < MODEL_INPUT_SAMPLE_COUNT:
             samples = np.concatenate(
                 [samples, np.zeros([MODEL_INPUT_SAMPLE_COUNT - samples.shape[0]], dtype=np.float32)])
-        else:
-            # Here we could just take the first 3 seconds, or some other random slice
-            # samples = samples[:MODEL_INPUT_SAMPLE_COUNT]
-            pass
-
-        samples = samples.astype(np.float32)
 
         # How many windows do we have for this sample?
         num_windows = (samples.shape[0] - MODEL_INPUT_SAMPLE_COUNT) // WINDOW_STEP_SAMPLE_COUNT + 1
 
         # We'll aggregate the outputs from each window in this list
-        window_outputs = []
+        window_outputs = list()
 
         # Pass each window
         for window_idx in range(num_windows):
@@ -86,16 +67,13 @@ class Classifier(object):
         average_scores = window_outputs.mean(axis=0)
 
         # Print the predictions
-        scores = np.argsort(average_scores)[::-1]
-
-        label_predictions = np.argsort(scores)[::-1]
+        label_predictions = np.argsort(average_scores)[::-1]
 
         res = {}
 
-        vprint("Class Predictions:")
         for i in range(10):
             label = label_predictions[i]
-            score = scores[label]
+            score = average_scores[label]
             species_code = label_map[label]
             vprint("\t%7s %0.3f" % (species_code, score))
             res[str(species_code)] = str(score)
@@ -122,12 +100,10 @@ class Classifier(object):
 
         # Load in an audio file
         audio_fp = glob.glob(usr_dir + '/*.wav')[0]
-        samples, sr = librosa.load(audio_fp, sr=SAMPLE_RATE, mono=True)
-
-        assert sr == SAMPLE_RATE, "The preprocessing code assumes a sample rate of %d" % SAMPLE_RATE
+        samples, sr = librosa.load(audio_fp, sr=44100, mono=True)
 
         waveform = samples
-        samplerate = SAMPLE_RATE
+        samplerate = 44100
 
         # Need to convert the audio waveform to a spectrogram
 

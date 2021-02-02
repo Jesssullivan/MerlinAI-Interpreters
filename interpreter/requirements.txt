@@ -1,7 +1,6 @@
 # pip3 install -r requirements.txt
 
 waitress
-tensorflow_io
 flask-cors
 pymongo
 python-jose

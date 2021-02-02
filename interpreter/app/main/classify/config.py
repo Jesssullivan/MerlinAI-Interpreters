@@ -11,7 +11,6 @@ from flask_cors import CORS, cross_origin
 import tensorflow as tf
 import librosa
 
-
 # set `devel = False` for deployment
 devel = False
 devport = 5000
@@ -40,9 +39,7 @@ start_time = time.time()
 # recording sample values for tf model:
 MODEL_SAMPLE_RATE = 22050
 MODEL_INPUT_SAMPLE_COUNT = 22050 * 3
-WINDOW_STEP_SAMPLE_COUNT = 22050
-
-
+WINDOW_STEP_SAMPLE_COUNT = 44100
 
 # how often should the garbage collector remove old directories?
 collection_int = 60  # secs

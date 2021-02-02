@@ -138,7 +138,20 @@
 <canvas class="visualizer"  width="1200" height="100px"> visualizer </canvas>
 
 <div id="content-wrapper" >
-
+    <script>
+        {
+        var isSafari = navigator.vendor && navigator.vendor.indexOf('Apple') > -1 &&
+               navigator.userAgent &&
+               navigator.userAgent.indexOf('CriOS') == -1 &&
+               navigator.userAgent.indexOf('FxiOS') == -1;
+        
+               console.log(isSafari)
+        if (isSafari === true) {
+            alert("Hey!  When you want to start a new recording on this 🍎 device, please first tap the green `interpreter` button or reload the page.  Thx! -Jess")
+        }
+    }
+    </script>
+    
     <style>
             /*
             * Make the leaflet holder long and narrow for the spectrogram.
@@ -179,7 +192,6 @@
 
     <br/>
 
-    <div id="isSafariBlerb" class="benigncenter" title="Hey! On this device, please reload or tap the green `interpreter` button when you want to start a new recording."></div>
     <br/>
     <div class="benigncenter">
         <button id="recordButton" class="mui-btn mui-btn--raised">Record Song</button>
@@ -208,25 +220,3 @@
     </div>
 <br>
 
-<script>
-
-    // Get the user-agent string
-    let userAgentString = navigator.userAgent;
-
-    // Detect Chrome
-    let chromeAgent = userAgentString.indexOf("Chrome") > -1;
-
-    // Detect Firefox
-    let firefoxAgent = userAgentString.indexOf("Firefox") > -1;
-
-    // Detect Safari
-    let safariAgent = userAgentString.indexOf("Safari") > -1;
-
-    // Discard Safari since it also matches Chrome
-    if ((chromeAgent) && (safariAgent))
-        safariAgent = false;
-
-    if (safariAgent !== true) {
-        document.getElementById("isSafariBlerb").style.visibility = "hidden";
-    }
-</script>
