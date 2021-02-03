@@ -56,7 +56,6 @@ outpath = os.path.join(rootpath, 'downloads')
 # file uploads:
 
 # placeholders for usr hash:
-usrfile = 'snippet.wav'
 usr_id = ''
 
 

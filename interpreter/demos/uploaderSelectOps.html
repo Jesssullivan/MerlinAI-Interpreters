@@ -139,7 +139,7 @@
   <br/>
     <h4>Server Side, "Select" TensorFlow Operations:</h4>
     <h5>This endpoint classifies audio using the Tensorflow "Select Ops" Library.</h5>
-    <h5>...Upload a .wav file:</h5>
+    <h5>...Upload a <pre>.wav</pre> or <pre>.mp3</pre> audio file:</h5>
   <form method="POST" action="" enctype="multipart/form-data">
     <p><input type="file" name="file"></p>
     <p><input type="submit" value="Submit"></p>
@@ -149,6 +149,17 @@
 
 <h6>Example POST usage:</h6>
 <br/>
-<pre>curl -F "file=@YourAudioFile.wav" https://merlinai.herokuapp.com/classify/select
+<pre>
+
+  $ curl -F "file=@303438381_blue_jay.mp3" https://ai.columbari.us/classify/select
+
+  #> {
+      "amecro": "0.006793206",
+      "blksco2": "0.0011590665",
+      "blujay": "0.9603704",
+      "comrav": "0.0023919304",
+      "nswowl": "0.0014328683"
+     }
+
 </pre>
 </div>
