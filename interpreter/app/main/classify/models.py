@@ -5,6 +5,7 @@ from scipy.signal import decimate
 import json
 import numpy as np
 import pydub
+import os
 
 
 MODEL_INPUT_SAMPLE_COUNT = 22050 * 3
@@ -38,6 +39,23 @@ class Classifier(object):
             sound.export(dir + "/snippet.wav", format="wav")
         except:
             print('no *.mp3 to convert, continuing...')
+            pass
+
+        # rename if suffix is malformed
+        try:
+
+            if glob.glob(dir + '/*.WAV')[0]:
+                rename_fp_raw = glob.glob(dir + '/*.WAV')[0]
+
+            elif glob.glob(dir + '/*.wave')[0]:
+                rename_fp_raw = glob.glob(dir + '/*.wave')[0]
+
+            elif glob.glob(dir + '/*.WAVE')[0]:
+                rename_fp_raw = glob.glob(dir + '/*.WAVE')[0]
+
+            os.rename(rename_fp_raw, dir + '/snippet.wav')
+
+        except:
             pass
 
         # Load in an audio file
