@@ -1,3 +1,5 @@
+import collections
+
 import tensorflow as tf
 import librosa
 from .config import *
@@ -6,7 +8,7 @@ import json
 import numpy as np
 import pydub
 import os
-
+import sndhdr
 
 MODEL_INPUT_SAMPLE_COUNT = 22050 * 3
 WINDOW_STEP_SAMPLE_COUNT = 44100
@@ -39,23 +41,6 @@ class Classifier(object):
             sound.export(dir + "/snippet.wav", format="wav")
         except:
             print('no *.mp3 to convert, continuing...')
-            pass
-
-        # rename if suffix is malformed
-        try:
-
-            if glob.glob(dir + '/*.WAV')[0]:
-                rename_fp_raw = glob.glob(dir + '/*.WAV')[0]
-
-            elif glob.glob(dir + '/*.wave')[0]:
-                rename_fp_raw = glob.glob(dir + '/*.wave')[0]
-
-            elif glob.glob(dir + '/*.WAVE')[0]:
-                rename_fp_raw = glob.glob(dir + '/*.WAVE')[0]
-
-            os.rename(rename_fp_raw, dir + '/snippet.wav')
-
-        except:
             pass
 
         # Load in an audio file
@@ -103,7 +88,7 @@ class Classifier(object):
         average_scores = window_outputs.mean(axis=0)
         # Print the predictions
         label_predictions = np.argsort(average_scores)[::-1]
-        res = {}
+        res = dict()
         for i in range(10):
             label = label_predictions[i]
             try:
@@ -117,8 +102,9 @@ class Classifier(object):
             species_code = label_map[label]
             res[str(species_code)] = str(score)
 
-            # return results:
-        return res
+        for x in res:
+            flash(x + ": " + res[x])
+        return jsonify(res)
 
     @staticmethod
     def classify_proc_std(usr_dir):  # thanks to Grant!!!  xD
@@ -224,14 +210,13 @@ class Classifier(object):
             label = label_predictions[i]
             score = scores[label]
             species_code = label_map[label]
-            vprint("\t%7s %0.3f" % (species_code, score))
+            print("\t%7s %0.3f" % (species_code, score))
             res[str(species_code)] = str(score)
 
-        # return results:
-        return res
+        return collections.OrderedDict(sorted(res))
 
     @staticmethod
-    def uploader(usrpath):
+    def uploader_old(usrpath):
         if request.method == 'POST':
             if 'file' not in request.files:
                 flash('No file')

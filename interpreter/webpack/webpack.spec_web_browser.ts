@@ -6,7 +6,7 @@ module.exports = {
   },
   devtool: 'inline-source-map',
   mode: 'development',
-  entry:'./demos/spec_crop_interpreter.ts',
+  entry:'./demos/spec_crop_interpreter_browser.ts',
   output: {
     filename: 'spec_crop_interpreter_bundle.js',
     path: path.resolve(__dirname, '../demos'),

@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": "true",
   "scripts": {
-    "build-spec-web": "webpack --config webpack/webpack.spec_web.ts",
+    "build-spec-web": "chmod +x scripts/spec_interpreters_dev.sh && ./scripts/spec_interpreters_dev.sh",
+    "dist-spec-web": "chmod +x scripts/spec_interpreters_dist.sh && ./scripts/spec_interpreters_dist.sh",
     "watch-spec-web": "webpack --watch --config webpack/webpack.spec_web.ts",
-    "dist-spec-web": "webpack --config webpack/webpack.spec_web_dist.ts",
     "build-webgl-web": "webpack --config webpack/webpack.webgl.ts",
     "dist-webgl-web": "webpack --config webpack/webpack.webgl_dist.ts",
     "build-audio-web": "webpack --config webpack/webpack.audio_dev.ts",
@@ -43,6 +43,7 @@
     "buffer": "^6.0.3",
     "css-loader": "~5.0.1",
     "css-minimizer-webpack-plugin": "~1.1.5",
+    "dropzone": "^5.7.5",
     "eslint": "^6.8.0",
     "eslint-config-prettier": "^7.1.0",
     "eslint-plugin-import": "^2.22.1",
@@ -115,5 +116,8 @@
       "name": "Visipedia et al.",
       "url": "https://github.com/visipedia/"
     }
-  ]
+  ],
+  "dependencies": {
+    "@types/dropzone": "^5.7.3"
+  }
 }

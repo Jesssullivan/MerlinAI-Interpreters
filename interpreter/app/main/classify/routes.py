@@ -1,11 +1,19 @@
+from flask_toastr import Toastr
 from .models import Classifier
 from .config import *
-from flask import Blueprint
+from flask import Blueprint, url_for
 from flask import current_app as app
 from ..tfmodels.models import TFModel
+import os
+from flask import render_template, request, redirect, send_from_directory, send_file
+from werkzeug.utils import secure_filename
+from time import sleep
 audio_model = TFModel(dir_name="audio")
 
 classify_blueprint = Blueprint("classify", __name__)
+classify_blueprint.static_folder = "../../demos/"
+
+from flask_toastr import Toastr
 
 
 """ routing """
@@ -38,42 +46,59 @@ def bbcrop():
     return app.send_static_file('spec_crop_interpreter_browser.html')
 
 
-@classify_blueprint.route('/standard', methods=['GET', 'POST'])
-def uploader_std():
-    if request.method == 'POST':
-        vprint('received POST')
-        usr_id = new_client()
-        usr_dir = new_client_dir(usr_id)
-        vprint('created usr dir: ' + usr_dir)
-        Classifier.uploader(usr_dir)
-        results = Classifier.classify_proc_std(usr_dir)
-        vprint(results)
-        return jsonify(results)
-    else:
-        return app.send_static_file('uploaderStandardOps.html')
-
-
-@classify_blueprint.route('/select', methods=['GET', 'POST'])
-def uploader_select():
-    if request.method == 'POST':
-        vprint('received POST')
-        usr_id = new_client()
-        usr_dir = new_client_dir(usr_id)
-        vprint('created usr dir: ' + usr_dir)
-        Classifier.uploader(usr_dir)
-        results = Classifier.classify_proc_select(usr_dir)
-        vprint(results)
-        return jsonify(results)
-    else:
-        return app.send_static_file('uploaderSelectOps.html')
-
-
 @classify_blueprint.route("/webgl", methods=["GET"])
 def clwebgl():
     return app.send_static_file("webgl_test.html")
 
 
-""" static """
+""" upload """
+
+
+@classify_blueprint.errorhandler(413)
+def xl_error():
+    return "File is too big!", 413
+
+
+@classify_blueprint.route('/select', methods=['POST'])
+def pupload_files():
+    results=None
+    # create a temporary directory for this user:
+    usr_id = new_client()
+    usr_dir = new_client_dir(usr_id)
+    vprint('created usr dir: ' + usr_dir)
+
+    if request.method == 'POST':
+
+        vprint('received POST')
+
+        uploaded_file = request.files['file']
+        filename = secure_filename(uploaded_file.filename)
+
+        if filename != '':
+            # we received a file:
+            _ext = os.path.splitext(filename)[1]
+            """
+                   # make sure we can handle this file:
+            if _ext not in app.config['UPLOAD_EXTENSIONS']:
+                return "Cannot classify this audio file! \nThis route handles the following extensions:" +\
+                       app.config['UPLOAD_EXTENSIONS'], 400
+
+            """
+
+            # all seems well, save the file:
+            uploaded_file.save(os.path.join(usr_dir, filename))
+
+        # classify the audio:
+        results = Classifier.classify_proc_select(usr_dir)
+        return render_template("uploaderSelectOps.html")
+
+
+@classify_blueprint.route('/select', methods=['GET'])
+def gupload_files():
+        return render_template("uploaderSelectOps.html")
+
+
+""" route static """
 
 
 @classify_blueprint.route("favicon.ico", methods=["GET", "POST"])
@@ -111,8 +136,15 @@ def clcdroid512():
     return app.send_static_file("icons/tmpUI.MerlinAI-favicon-dark/android-chrome-512x512.png")
 
 
-# fetch static:
+""" fetch static """
+
+
 @classify_blueprint.route("<file>", methods=["GET", "POST"])
 def clfilex(file):
     return app.send_static_file(file)
+
+
+@classify_blueprint.route("/select/classify", methods=["GET"])
+def toastReq():
+    return app.send_static_file('uploaderSelectOps.html')
 
