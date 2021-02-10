@@ -1,4 +1,3 @@
-from flask_toastr import Toastr
 from .models import Classifier
 from .config import *
 from flask import Blueprint, url_for
@@ -7,13 +6,13 @@ from ..tfmodels.models import TFModel
 import os
 from flask import render_template, request, redirect, send_from_directory, send_file
 from werkzeug.utils import secure_filename
-from time import sleep
+
+
 audio_model = TFModel(dir_name="audio")
 
 classify_blueprint = Blueprint("classify", __name__)
-classify_blueprint.static_folder = "../../demos/"
 
-from flask_toastr import Toastr
+classify_blueprint.static_folder = "../../demos/"
 
 
 """ routing """
@@ -51,7 +50,30 @@ def clwebgl():
     return app.send_static_file("webgl_test.html")
 
 
-""" upload """
+""" upload routes """
+
+
+def upload():
+
+    # create a temporary directory for this user:
+    usr_id = new_client()
+    usr_dir = new_client_dir(usr_id)
+
+    uploaded_file = request.files['file']
+    filename = secure_filename(uploaded_file.filename)
+
+    if filename != '':
+        # we received a file:
+        _ext = os.path.splitext(filename)[1]
+               # make sure we can handle this file:
+        if _ext not in app.config['UPLOAD_EXTENSIONS']:
+            return "Cannot classify this audio file! \nThis route handles the following extensions:" +\
+                   app.config['UPLOAD_EXTENSIONS'], 400
+
+        # all seems well, save the file:
+        uploaded_file.save(os.path.join(usr_dir, filename))
+
+    return usr_dir
 
 
 @classify_blueprint.errorhandler(413)
@@ -61,41 +83,40 @@ def xl_error():
 
 @classify_blueprint.route('/select', methods=['POST'])
 def pupload_files():
-    results=None
-    # create a temporary directory for this user:
-    usr_id = new_client()
-    usr_dir = new_client_dir(usr_id)
-    vprint('created usr dir: ' + usr_dir)
-
-    if request.method == 'POST':
-
-        vprint('received POST')
-
-        uploaded_file = request.files['file']
-        filename = secure_filename(uploaded_file.filename)
-
-        if filename != '':
-            # we received a file:
-            _ext = os.path.splitext(filename)[1]
-            """
-                   # make sure we can handle this file:
-            if _ext not in app.config['UPLOAD_EXTENSIONS']:
-                return "Cannot classify this audio file! \nThis route handles the following extensions:" +\
-                       app.config['UPLOAD_EXTENSIONS'], 400
-
-            """
-
-            # all seems well, save the file:
-            uploaded_file.save(os.path.join(usr_dir, filename))
-
-        # classify the audio:
-        results = Classifier.classify_proc_select(usr_dir)
-        return render_template("uploaderSelectOps.html")
+    usr_dir = upload()
+    Classifier.classify_proc_select(usr_dir)
+    return render_template("uploaderSelectOps.html")
 
 
 @classify_blueprint.route('/select', methods=['GET'])
 def gupload_files():
-        return render_template("uploaderSelectOps.html")
+    return render_template("uploaderSelectOps.html")
+
+
+@classify_blueprint.route('/api/select', methods=['POST'])
+def api_pupload_files():
+    usr_dir = upload()
+    res = Classifier.classify_proc_select(usr_dir)
+    return jsonify(res)
+
+
+@classify_blueprint.route('/standard', methods=['GET'])
+def gupload_filesstandard():
+    return render_template("uploaderStandardOps.html")
+
+
+@classify_blueprint.route('/standard', methods=['POST'])
+def pupload_filesstandard():
+    usr_dir = upload()
+    Classifier.classify_proc_std(usr_dir)
+    return render_template("uploaderStandardOps.html")
+
+
+@classify_blueprint.route('/api/standard', methods=['POST'])
+def api_pupload_filesstandard():
+    usr_dir = upload()
+    res = Classifier.classify_proc_std(usr_dir)
+    return jsonify(res)
 
 
 """ route static """
@@ -147,4 +168,3 @@ def clfilex(file):
 @classify_blueprint.route("/select/classify", methods=["GET"])
 def toastReq():
     return app.send_static_file('uploaderSelectOps.html')
-

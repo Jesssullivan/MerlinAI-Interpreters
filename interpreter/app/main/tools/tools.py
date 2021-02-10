@@ -2,7 +2,6 @@ import datetime
 import random
 import uuid
 from pytz import timezone, UTC
-import bson
 
 
 def nowDatetimeUserTimezone(user_timezone):
@@ -18,8 +17,9 @@ def nowDatetimeUTC():
 
 def JsonResp(data, status):
     from flask import Response
+    from bson import json_util
     import json
-    return Response(json.dumps(data), mimetype="application/json", status=status)
+    return Response(json.dumps(data, default=json_util.default), mimetype="application/json", status=status)
 
 
 def randID():

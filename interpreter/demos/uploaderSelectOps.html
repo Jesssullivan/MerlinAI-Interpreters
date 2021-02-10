@@ -13,10 +13,6 @@
     <!-- Style CSS -->
     <link href="style.css" rel="stylesheet" type="text/css" />
 
-    <!-- Dropzone -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.7.1/min/dropzone.min.css">
-    <script src="./dropzone.min.js"></script>
-
     <!-- jQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
@@ -65,20 +61,20 @@
 <body>
     <div class="row">
     <div class="column">
+      <br/>
         <div id="content-wrapper" class="mui--text-center">
             <form action="" method="POST" enctype="multipart/form-data">
-                <h4>Server Side, "Select" TensorFlow Operations:</h4>
-                <br/>
+              <h4>Server Side, "Select" TensorFlow Operations:</h4>
+              <br/>
                 <p><input type="file" name="file"></p>
-                <h6>This page classifies audio using the Tensorflow "Select Ops" Library.</h6>
-                <h6>...Drag and drop a <pre>.mp3</pre> or a <pre>.wav / .WAV</pre> to classify:</h6>
                 <br/>
-                <br/>
-                <p><input type="submit" value="Classify!"></p>
+                  <h6>This page classifies audio using the Tensorflow "Select Ops" Library.</h6>
+                  <h6>...Upload a <pre>.mp3</pre> or a <pre>.wav / .WAV</pre> to classify:</h6>
+                  <br/>
+                  <p><input type="submit" value="Classify!"></p>
             </form>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.7.1/min/dropzone.min.js"></script>
-        </div>
-    </div>
+            </div>
+     </div>
     <div class="column">
         {% with messages = get_flashed_messages() %}
             {% if messages %}
@@ -90,5 +86,23 @@
             {% endif %}
         {% endwith %}
     </div>
-</div>
+  </div>
 </body>
+
+<div class="benigncenter">
+<br/>
+<br/>
+<pre>
+  <br/>
+  <h6>Example POST usage:</h6>
+$ curl -F "file=@YourWavFile.wav" https://ai.columbari.us/classify/api/select
+
+#> {
+    "amecro": "0.006793206",
+    "blksco2": "0.0011590665",
+    "blujay": "0.9603704",
+    "comrav": "0.0023919304",
+    "nswowl": "0.0014328683"
+   }
+</pre>
+</div>

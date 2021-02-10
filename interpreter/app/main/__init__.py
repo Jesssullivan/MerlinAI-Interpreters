@@ -1,15 +1,13 @@
 from flask import Flask, redirect
+import os
 from .tools.tools import JsonResp
 from .classify.trashd import Trash
 
 # Import Routes
-from .userdb.routes import user_blueprint
+#from .userdb.routes import user_blueprint
 from .annotator.routes import anno_blueprint
 from .tfmodels.routes import tfmodels_blueprint
 from .classify.routes import classify_blueprint
-
-import os
-from flask_toastr import Toastr
 
 
 def create_app():
@@ -34,9 +32,6 @@ def create_app():
     app.register_blueprint(anno_blueprint, url_prefix="/annotator")
     app.register_blueprint(tfmodels_blueprint, url_prefix="/models")
     app.register_blueprint(classify_blueprint, url_prefix="/classify")
-
-    toastr = Toastr()
-    toastr.init_app(app)
 
     # start garbage collection daemon:
     Trash.truck()
@@ -78,11 +73,6 @@ def create_app():
     # Index Routes:
     @app.route("/")
     def index():
-        return redirect("/classify/server", code=302)
-
-    # toast Routes:
-    @app.route("/")
-    def indesx():
         return redirect("/classify/server", code=302)
 
     return app

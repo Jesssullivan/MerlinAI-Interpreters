@@ -1,5 +1,5 @@
 <head>
-    <title>Merlin AI: Standard Ops Classification</title>
+    <title>Merlin AI: Web Classification</title>
     <!-- meta -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -13,8 +13,8 @@
     <!-- Style CSS -->
     <link href="style.css" rel="stylesheet" type="text/css" />
 
-    <!-- No UI Slider CSS -->
-    <link rel="stylesheet" href="nouislider.css">
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
     <!-- Fork CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.2.3/gh-fork-ribbon.min.css" />
@@ -36,129 +36,73 @@
 
     <script src="https://kit.fontawesome.com/73cd972fdf.js" crossorigin="anonymous"></script>
 
-    <style>
-
-        /*
-        * Make the leaflet holder long and narrow for the spectrogram.
-        */
-        .leaflet-image-holder {
-            height: 210px!important;
-            width: 1200px!important;
-        }
-
-        /*
-        * The vertical line for the audio position.
-        */
-        .leaflet-image-holder:before {
-            content:"";
-            width:3px;
-            height:100%;
-            display:block;
-            z-index: 1000;
-            left:50%;
-            position:absolute;
-            background-image: linear-gradient(rgb(179, 0, 0), rgb(179, 0, 0));
-            background-size: 3px 100%;
-            background-repeat: no-repeat;
-            background-position: center center;
-        }
-
-        /*
-        * The vertical 1 second lines. 240 here is an assumption that about 5 seconds of audio are visible in 1200 px (ie. 240 = 1200 / 5)
-        */
-        /*
-        .leaflet-image-holder:after {
-            content:"";
-            width:100%;
-            height:100%;
-            display:block;
-            z-index: 1000;
-            position:absolute;
-            background-image: repeating-linear-gradient(-90deg,
-            transparent 1px,
-            transparent 240px,
-            rgba(179, 0, 0, 0.308) 1px 241px);
-        }
-        */
-        /*
-        This version offsets the lines by 0.5 seconds so that they overlap with the audio position line.
-        NOTE: these have to be "under" the leaflet map so that they don't intercept mouse events.
-              so the zindex needs to be smaller than the leaflet map.
-        NOTE V2: This has been updated to add span elements after the creation of the leaflet map. See below.
-        */
-        /* .leaflet-image-holder:after {
-            content:"";
-            width:100%;
-            height:100%;
-            display:block;
-            z-index: 200;
-            position:absolute;
-            background-image: repeating-linear-gradient(
-                -90deg,
-                transparent,
-                transparent 120px,
-                #49505759 120px,
-                #49505759 121px,
-                transparent 122px ,
-                transparent 240px
-            )
-        } */
-
-
-        .annotation-instance-category-name{
-            font-size: small;
-        }
-
-        .annotation-instance-supercategory-name{
-            font-size: small;
-        }
-
-    </style>
 </head>
 
 
 <header>
     <a class="github-fork-ribbon" href="https://github.com/Jesssullivan/tmpui" data-ribbon="Contribute @ GitHub" title="Contribute @ GitHub...">Contribute</a>
-   <div class="topnav" >
-       <a href="/classify/server">Server</a>
-       <a href="/classify/browser">Browser</a>
-       <a href="/classify/webgl">Precision</a>
-       <a href="/classify/select">Select Ops</a>
-       <a class="active" href="/classify/standard">Standard Ops</a>
-       <a href="/annotator/audio">Annotate: OTF</a>
-       <a href="/annotator/audio_ml">Annotate: ML</a>
-       <a href="https://jesssullivan.github.io/tmpUI/">Docs</a>
-       <a href="https://www.transscendsurvival.org/">α wιρ Σ ♥</a>
-   </div>
+    <div class="topnav" >
+        <a href="/classify/server">Server</a>
+        <a href="/classify/browser">Browser</a>
+        <a href="/classify/webgl">Precision</a>
+        <a href="/classify/select">Select Ops</a>
+        <a class="active" href="/classify/standard">Standard Ops</a>
+        <a href="/annotator/audio">Annotate: OTF</a>
+        <a href="/annotator/audio_ml">Annotate: ML</a>
+        <a href="https://jesssullivan.github.io/tmpUI/">Docs</a>
+        <a href="https://www.transscendsurvival.org/">α wιρ Σ ♥</a>
+    </div>
 </header>
 
 <canvas class="visualizer"  width="900" height="80px"> visualizer </canvas>
 
-<div id="content-wrapper" class="mui--text-center">
-  <br/>
-    <h4>Server Side, Standard TensorFlow Operations:</h4>
-    <h5>This endpoint classifies audio without the Tensorflow "Select Ops" Library.</h5>
-    <h6>...Upload a <pre>.wav</pre> file:</h6>
-  <form method="POST" action="" enctype="multipart/form-data">
-    <p><input type="file" name="file"></p>
-    <p><input type="submit" value="Submit"></p>
-  </form>
-  <br/>
 <br/>
 
-<h6>Example POST usage:</h6>
+<body>
+    <div class="row">
+    <div class="column">
+      <br/>
+        <div id="content-wrapper" class="mui--text-center">
+            <form action="" method="POST" enctype="multipart/form-data">
+              <h4>Server Side, "Standard" TensorFlow Operations:</h4>
+              <br/>
+                <p><input type="file" name="file"></p>
+                <br/>
+                  <h6>This page classifies using standard TensorFlow operations.</h6>
+                  <h6>...Upload a <pre> .wav </pre> to classify:</h6>
+                  <br/>
+                  <p><input type="submit" value="Classify!"></p>
+            </form>
+            </div>
+     </div>
+    <div class="column">
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <ul class=flashes>
+                    {% for message in messages %}
+                       <li ><h6>{{ message }}</h6></li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+    </div>
+  </div>
+</body>
+
+<div class="benigncenter">
+<br/>
 <br/>
 <pre>
+  <br/>
+  <h6>Example POST usage:</h6>
+$ curl -F "file=@YourWavFile.wav" https://ai.columbari.us/classify/api/standard
 
-  $ curl -F "file=@303438381_blue_jay.wav" https://ai.columbari.us/classify/select
-
-  #> {
-      "amecro": "0.006793206",
-      "blksco2": "0.0011590665",
-      "blujay": "0.9603704",
-      "comrav": "0.0023919304",
-      "nswowl": "0.0014328683"
-     }
-
+#> {
+    "amecro": "0.006793206",
+    "blksco2": "0.0011590665",
+    "blujay": "0.9603704",
+    "comrav": "0.0023919304",
+    "nswowl": "0.0014328683"
+   }
 </pre>
 </div>
