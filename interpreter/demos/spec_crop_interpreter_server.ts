@@ -7,7 +7,7 @@ const noUiSlider = require('./nouislider');
 
 window.MediaRecorder = require('audio-recorder-polyfill');
 
-const webClassifyURL = "/classify/select"
+const webClassifyURL = "/classify/api/select"
 
 // absolute urls
 // const webClassifyURL = "http://127.0.0.1:5000/classify/select"
