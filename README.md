@@ -2,13 +2,13 @@
 
 
 - [**Web Interpreters & UI Experiments:**](https://jesssullivan.github.io/tmpUI/)
-  - [**@ Interpreter Demo**](https://ai.columbari.us/classify/server)   <br/>
+  - [**@ Interpreter Demo**](https://ffmpeg.columbari.us/classify/server)   <br/>
   - [**Web: Setup**](#web-experiments-setup) <br>
     - [**...With npm**](#npm) <br>
     - [**Flask Structure**](#interp-structure) <br>
     - [**Scripts**](#additional-scripts) <br>
 - [**Web Annotators & Leaflet UI**](#leaflet)  <br/>
-  - [**@ Annotator Feature Demos**](https://ai.columbari.us/annotator/audio)   <br/>
+  - [**@ Annotator Feature Demos**](https://ffmpeg.columbari.us/annotator/audio)   <br/>
   - [**Annotator: Setup**](#annotator-setup) <br>
     - [**...Dev Bundles**](#build-development-bundles) <br>
     - [**...Production Bundles**](#build-production-bundles) <br>
