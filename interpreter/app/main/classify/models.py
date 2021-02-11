@@ -43,6 +43,7 @@ class Classifier(object):
 
         # rename if suffix is malformed
         try:
+            rename_fp_raw=None
 
             if glob.glob(dir + '/*.WAV')[0]:
                 rename_fp_raw = glob.glob(dir + '/*.WAV')[0]
@@ -63,7 +64,6 @@ class Classifier(object):
         samples_raw, sr = librosa.load(audio_fp, sr=44100, mono=True)
 
         samples = decimate(samples_raw, q=2)
-        print(str(samples))
 
         # Do we need to pad with zeros?
         if samples.shape[0] < MODEL_INPUT_SAMPLE_COUNT:
@@ -98,7 +98,6 @@ class Classifier(object):
             # Save off the classification scores
             window_outputs.append(output_data)
 
-
         window_outputs = np.array(window_outputs)
         # Take an average over all the windows
         average_scores = window_outputs.mean(axis=0)
@@ -118,12 +117,7 @@ class Classifier(object):
             species_code = label_map[label]
             res[str(species_code)] = str(score)
 
-        for x in res:
-            print(x + ": " + res[x])
-            flash(x + ": " + res[x])
-
         return res
-
 
     @staticmethod
     def classify_proc_std(usr_dir):  # thanks to Grant!!!  xD
