@@ -12,8 +12,6 @@ audio_model = TFModel(dir_name="audio")
 
 classify_blueprint = Blueprint("classify", __name__)
 
-classify_blueprint.static_folder = "../../demos/"
-
 
 """ routing """
 
@@ -53,7 +51,8 @@ def clwebgl():
 """ upload routes """
 
 
-def upload():
+@classify_blueprint.route('/select', methods=['POST'])
+def pupload_files():
 
     # create a temporary directory for this user:
     usr_id = new_client()
@@ -63,28 +62,15 @@ def upload():
     filename = secure_filename(uploaded_file.filename)
 
     if filename != '':
-        # we received a file:
-        _ext = os.path.splitext(filename)[1]
-               # make sure we can handle this file:
-        if _ext not in app.config['UPLOAD_EXTENSIONS']:
-            return "Cannot classify this audio file! \nThis route handles the following extensions:" +\
-                   app.config['UPLOAD_EXTENSIONS'], 400
-
         # all seems well, save the file:
         uploaded_file.save(os.path.join(usr_dir, filename))
 
-    return usr_dir
+    res = Classifier.classify_proc_select(usr_dir)
 
+    for x in res:
+        print(x + ": " + res[x])
+        flash(x + ": " + res[x])
 
-@classify_blueprint.errorhandler(413)
-def xl_error():
-    return "File is too big!", 413
-
-
-@classify_blueprint.route('/select', methods=['POST'])
-def pupload_files():
-    usr_dir = upload()
-    Classifier.classify_proc_select(usr_dir)
     return render_template("uploaderSelectOps.html")
 
 
@@ -95,7 +81,18 @@ def gupload_files():
 
 @classify_blueprint.route('/api/select', methods=['POST'])
 def api_pupload_files():
-    usr_dir = upload()
+
+    # create a temporary directory for this user:
+    usr_id = new_client()
+    usr_dir = new_client_dir(usr_id)
+
+    uploaded_file = request.files['file']
+    filename = secure_filename(uploaded_file.filename)
+
+    if filename != '':
+        # all seems well, save the file:
+        uploaded_file.save(os.path.join(usr_dir, filename))
+
     res = Classifier.classify_proc_select(usr_dir)
     return jsonify(res)
 
@@ -107,14 +104,41 @@ def gupload_filesstandard():
 
 @classify_blueprint.route('/standard', methods=['POST'])
 def pupload_filesstandard():
-    usr_dir = upload()
-    Classifier.classify_proc_std(usr_dir)
+
+    # create a temporary directory for this user:
+    usr_id = new_client()
+    usr_dir = new_client_dir(usr_id)
+
+    uploaded_file = request.files['file']
+    filename = secure_filename(uploaded_file.filename)
+
+    if filename != '':
+        # all seems well, save the file:
+        uploaded_file.save(os.path.join(usr_dir, filename))
+
+    res = Classifier.classify_proc_select(usr_dir)
+
+    for x in res:
+        print(x + ": " + res[x])
+        flash(x + ": " + res[x])
+
     return render_template("uploaderStandardOps.html")
 
 
 @classify_blueprint.route('/api/standard', methods=['POST'])
 def api_pupload_filesstandard():
-    usr_dir = upload()
+
+    # create a temporary directory for this user:
+    usr_id = new_client()
+    usr_dir = new_client_dir(usr_id)
+
+    uploaded_file = request.files['file']
+    filename = secure_filename(uploaded_file.filename)
+
+    if filename != '':
+        # all seems well, save the file:
+        uploaded_file.save(os.path.join(usr_dir, filename))
+
     res = Classifier.classify_proc_std(usr_dir)
     return jsonify(res)
 
@@ -168,3 +192,4 @@ def clfilex(file):
 @classify_blueprint.route("/select/classify", methods=["GET"])
 def toastReq():
     return app.send_static_file('uploaderSelectOps.html')
+  
