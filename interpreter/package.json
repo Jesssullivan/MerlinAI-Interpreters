@@ -3,12 +3,9 @@
   "version": "0.1.0",
   "private": "true",
   "scripts": {
-    "build-spec-web": "webpack --config webpack/webpack.spec_web.ts",
+    "build-spec-web": "webpack --config webpack/webpack.spec_web_dev.ts",
+    "dist-spec-web": "webpack --config webpack/webpack.spec_web_dist.ts",
     "watch-spec-web": "webpack --watch --config webpack/webpack.spec_web.ts",
-    "build-spec-web-browser": "webpack --config webpack/webpack.spec_web_browser.ts",
-    "build-spec-web-server": "webpack --config webpack/webpack.spec_web_server.ts",
-    "dist-spec-web-browser": "webpack --config webpack/webpack.spec_web_dist_browser.ts",
-    "dist-spec-web-server": "webpack --config webpack/webpack.spec_web_dist_server.ts",
     "build-webgl-web": "webpack --config webpack/webpack.webgl.ts",
     "dist-webgl-web": "webpack --config webpack/webpack.webgl_dist.ts",
     "build-audio-web": "webpack --config webpack/webpack.audio_dev.ts",
@@ -118,5 +115,8 @@
       "name": "Visipedia et al.",
       "url": "https://github.com/visipedia/"
     }
-  ]
+  ],
+  "dependencies": {
+    "react-dropzone-uploader": "^2.11.0"
+  }
 }

@@ -1,7 +1,8 @@
 // misc clientside functions.
 
 // audio stuff:
-import {audio_utils, spectrogram_utils} from "../src/index";
+import * as spectrogram_utils from "../src/spectrogram_utils";
+import * as audio_utils from "../src/audio_utils";
 
 export const MuiButton = (titleName: string, holderName: string) => {
     // MuiButton uses material-ui bootstrap:

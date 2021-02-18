@@ -1,6 +1,6 @@
 <head>
 
-    <title>Browser Check Interpreter</title>
+    <title>Merlin AI Web Interpreter</title>
 
     <!-- meta -->
     <meta charset="utf-8">
@@ -122,8 +122,7 @@
 <header>
     <a class="github-fork-ribbon" href="https://github.com/Jesssullivan/tmpui" data-ribbon="Contribute @ GitHub" title="Contribute @ GitHub...">Contribute</a>
    <div class="topnav" >
-       <a href="/classify/server">Server</a>
-       <a class="active"  href="/classify/browser">Browser</a>
+       <a class="active" href="/classify/server">Interpreter</a>
        <a href="/classify/webgl">Precision</a>
        <a href="/classify/select">Select Ops</a>
        <a href="/classify/standard">Standard Ops</a>
@@ -133,7 +132,6 @@
        <a href="https://www.transscendsurvival.org/">α wιρ Σ ♥</a>
    </div>
 </header>
-
 <br/>
 <br/>
 <canvas class="visualizer"  width="1200" height="100px"> visualizer </canvas>
@@ -192,13 +190,15 @@
     <h4 class="benigncenter"> Merlin AI Web: Record, Crop & Classify </h4 >
 
     <br/>
-    <h6 class="benigncenter">Browser Check Enabled </h6 >
-
+    <h6 class="benigncenter">Browser Check Disabled </h6 >
     <br/>
     <div class="benigncenter">
         <button id="recordButton" class="mui-btn mui-btn--raised">Record Song</button>
     </div>
     <br/>
+      <div class="benigncenter">
+        <button id="fileSelectorButton" class="mui-btn mui-btn--raised">Select Audio File</button>
+    </div>
     <br/>
     <div class="benigncenter">
         <button id="stopButton" class="mui-btn mui-btn--raised" disabled="" title="Stop">Stop</button>
@@ -218,6 +218,6 @@
     <br/>
     <div id="specCropHolder" class="benigncenter" hidden></div>
     <br>
-    <script src="./spec_crop_interpreter_browser_bundle.js"></script>
+    <script src="./spec_crop_interpreter_bundle.js"></script>
     </div>
 <br>

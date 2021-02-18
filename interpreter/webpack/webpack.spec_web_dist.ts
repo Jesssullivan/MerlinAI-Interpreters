@@ -10,13 +10,13 @@ module.exports = {
       extensions: ['.ts', '.tsx', '.js', '.jsx'],
   },
   entry: {
-    import: './demos/spec_crop_interpreter_browser.ts',
+    import: './demos/spec_crop_interpreter.ts',
   },
   mode: 'production',
   output: {
     path: path.resolve(__dirname, '../demos'),
     chunkFilename: '[id].[hash:16].js',
-    filename: 'spec_crop_interpreter_browser_bundle.js'
+    filename: 'spec_crop_interpreter_bundle.js'
   },
   module: {
     rules: [{

@@ -1,5 +1,8 @@
 // webgl_float_test.ts
-import {audio_model, audio_utils, spectrogram_utils, tf} from '../src/index';
+import * as audio_model from '../src/audio_model';
+import * as audio_utils from '../src/audio_utils';
+import * as spectrogram_utils from '../src/spectrogram_utils';
+import * as tf from '@tensorflow/tfjs';
 
 // a default, hardcoded waveform snippet to try from different devices:
 const testWaveform = require('./test_waveform.json');

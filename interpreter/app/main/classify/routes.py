@@ -35,12 +35,7 @@ def bindex():
 
 @classify_blueprint.route('/server', methods=['GET'])
 def sbcrop():
-    return app.send_static_file('spec_crop_interpreter_server.html')
-
-
-@classify_blueprint.route('/browser', methods=['GET'])
-def bbcrop():
-    return app.send_static_file('spec_crop_interpreter_browser.html')
+    return app.send_static_file('spec_crop_interpreter.html')
 
 
 @classify_blueprint.route("/webgl", methods=["GET"])

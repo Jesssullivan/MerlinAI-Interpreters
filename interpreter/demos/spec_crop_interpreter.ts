@@ -1,13 +1,18 @@
 // spec_crop_interpreter.ts
 
-import {log, audio_loader, audio_model, audio_utils, spectrogram_utils, ui_utils} from "../src/index";
-import {tf} from '../src';
+import * as ui_utils from "../src/ui_utils";
+import * as audio_utils from "../src/audio_utils";
+import * as spectrogram_utils from "../src/spectrogram_utils";
+import * as audio_loader from "../src/audio_loading_utils";
+import * as audio_model from "../src/audio_model";
+import {log} from "../src";
+import * as tf from '@tensorflow/tfjs';
 
 const noUiSlider = require('./nouislider');
 
 window.MediaRecorder = require('audio-recorder-polyfill');
 
-const webClassifyURL = "/classify/select"
+const webClassifyURL = "/classify/api/select"
 
 // absolute urls
 // const webClassifyURL = "http://127.0.0.1:5000/classify/select"
@@ -17,6 +22,8 @@ const webClassifyURL = "/classify/select"
 
 
 const recordBtn = document.getElementById("recordButton") as HTMLButtonElement;
+const fileSelectorBtn = document.getElementById("fileSelectorButton") as HTMLButtonElement;
+
 const stopBtn = document.getElementById("stopButton") as HTMLButtonElement;
 const canvas = document.querySelector('.visualizer') as HTMLCanvasElement;
 
@@ -73,7 +80,7 @@ const useBrowser = (_force=false, _force_val=false) => {
     }
 };
 
-const browserUse = useBrowser();
+const browserUse = false;  // useBrowser();
 
 // set classifyTextHeader:
 if (browserUse === false) {
@@ -81,7 +88,6 @@ if (browserUse === false) {
 } else {
     classifyTextHeader = "Classifications processed in browser:";
 }
-
 
 const updateVis = () => {
 
@@ -420,6 +426,63 @@ const clearCanvas = () => {
     canvasCtx.fillRect(0, 0, canvas.width, canvas.height);
 };
 
+const clearSamples = () => {
+    // Clear prior slider if any
+    const specSliderHolderEl = document.getElementById('specSliderHolder');
+    while (specSliderHolderEl.firstChild) {
+        specSliderHolderEl.removeChild(specSliderHolderEl.firstChild);
+    }
+    // Clear prior spectrogram if any
+    const specImageHolderEl = document.getElementById('specImageHolder');
+    while (specImageHolderEl.firstChild) {
+        specImageHolderEl.removeChild(specImageHolderEl.firstChild);
+    }
+    // Clear prior results if any
+    const sampleHolderEl = document.getElementById('specSampleHolder');
+    while (sampleHolderEl.firstChild) {
+        sampleHolderEl.removeChild(sampleHolderEl.firstChild);
+    }
+}
+
+fileSelectorBtn.onclick = () => {
+
+    currentWaveform = new Float32Array;
+    currentWaveformSample = new Float32Array;
+    clearSamples();
+
+    const onSuccess = () => {
+
+        let input = document.createElement('input');
+        input.type = 'file';
+        input.click();
+        input.onchange = e => {
+            // @ts-ignore
+            let audioFile = e.target.files[0];
+
+            chunks = [];
+            audioURL = window.URL.createObjectURL(audioFile);
+
+            audio_loader.loadAudioFromURL(audioURL)
+                .then((audioBuffer) => audio_loader.resampleAndMakeMono(audioBuffer, targetSampleRate))
+                .then((audioWaveform) => {
+                    currentWaveform = audioWaveform;
+                    const dbSpec = generateSpectrogram(audioWaveform);
+                    const imageURI = spectrogram_utils.dBSpectrogramToImage(dbSpec, topDB);
+                    renderSpectrogram(imageURI, dbSpec.length);
+                });
+        }
+    };
+
+    const onError = () => {
+        stopBtn.setAttribute('disabled',  'disabled');
+        recordBtn.removeAttribute('disabled');
+    };
+
+    const constraints = { audio: true, video : false};
+    navigator.mediaDevices.getUserMedia(constraints).then(onSuccess, onError);
+
+}
+
 recordBtn.onclick = () => {
 
     // Clear prior audio vars if any
@@ -427,24 +490,7 @@ recordBtn.onclick = () => {
     currentWaveform = new Float32Array;
     currentWaveformSample = new Float32Array;
 
-    // Clear prior slider if any
-    const specSliderHolderEl = document.getElementById('specSliderHolder');
-    while (specSliderHolderEl.firstChild) {
-        specSliderHolderEl.removeChild(specSliderHolderEl.firstChild);
-    }
-
-    // Clear prior spectrogram if any
-    const specImageHolderEl = document.getElementById('specImageHolder');
-    while (specImageHolderEl.firstChild) {
-        specImageHolderEl.removeChild(specImageHolderEl.firstChild);
-    }
-
-    // Clear prior results if any
-    const sampleHolderEl = document.getElementById('specSampleHolder');
-    while (sampleHolderEl.firstChild) {
-        sampleHolderEl.removeChild(sampleHolderEl.firstChild);
-    }
-
+    clearSamples();
 
     const onSuccess = (stream : MediaStream) => {
 
@@ -486,7 +532,7 @@ recordBtn.onclick = () => {
 
     };
 
-    const onError = (err : Error) => {
+    const onError = () => {
         stopBtn.setAttribute('disabled',  'disabled');
         recordBtn.removeAttribute('disabled');
     };

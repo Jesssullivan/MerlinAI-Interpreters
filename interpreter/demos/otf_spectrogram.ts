@@ -15,7 +15,10 @@
  *
  */
 
-import {audio_loader, audio_utils, spectrogram_utils, log} from "../src";
+import * as audio_loader from "../src/audio_loading_utils";
+import * as audio_utils from "../src/audio_utils";
+import * as spectrogram_utils from "../src/spectrogram_utils";
+import {log} from "../src";
 
 // react:
 const React = require('react');
