@@ -5,3 +5,4 @@ merlinai_venv
 **/__pycache__
 **/.DS_Store
 **/models.tar.gz
+**/tsne_*

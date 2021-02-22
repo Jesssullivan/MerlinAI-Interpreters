@@ -41,6 +41,9 @@
 #### *node:*
 
 ```
+cd interpreter
+
+# node:
 npm install
 
 # venv:
@@ -51,6 +54,7 @@ pip3 install -r requirements.txt
 # build specific things:
 npm run-script build-spec-web
 npm run-script build-webgl-web
+npm run-script dist-annotator
 
 # serve:
 npm run-script setup-app  # interactive config.cfg setup
@@ -112,17 +116,18 @@ npm run-script serve-app  # serve with default Flask WSGI
 <br/>
 
 <h4 id="additional-scripts> </h4>     
-  
-  
+
+
 
 #### *additional scripts:*
 
 
 *build some production binaries:*
 ```
-npm run-script dist-all
+npm run-script dist-annotator
 npm run-script dist-webgl-web
 npm run-script dist-spec-web
+npm run-script dist-all
 ```
 
 *serve more things:*

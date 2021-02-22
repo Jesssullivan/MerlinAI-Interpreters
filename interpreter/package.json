@@ -5,6 +5,8 @@
   "scripts": {
     "build-spec-web": "webpack --config webpack/webpack.spec_web_dev.ts",
     "dist-spec-web": "webpack --config webpack/webpack.spec_web_dist.ts",
+    "build-annotator": "chmod +x scripts/build_dev.sh && ./scripts/build_dev.sh",
+    "dist-annotator": "chmod +x scripts/build_dist.sh && ./scripts/build_dist.sh",
     "watch-spec-web": "webpack --watch --config webpack/webpack.spec_web.ts",
     "build-webgl-web": "webpack --config webpack/webpack.webgl.ts",
     "dist-webgl-web": "webpack --config webpack/webpack.webgl_dist.ts",
