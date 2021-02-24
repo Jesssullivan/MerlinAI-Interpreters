@@ -6,3 +6,4 @@ merlinai_venv
 **/.DS_Store
 **/models.tar.gz
 **/tsne_*
+**/*.mp3
