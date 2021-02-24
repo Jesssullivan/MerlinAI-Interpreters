@@ -1,0 +1,222 @@
+<head>
+
+    <title>Server-side Interpreter</title>
+
+    <!-- meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale = 1.0, maximum-scale=1.0, user-scalable=no" />
+
+    <!-- MUI -->
+    <script src="//cdn.muicss.com/mui-latest/js/mui.min.js"></script>
+    <link href="//cdn.muicss.com/mui-latest/css/mui.min.css" rel="stylesheet" type="text/css" />
+
+    <!-- Style CSS -->
+    <link href="style.css" rel="stylesheet" type="text/css" />
+
+    <!-- No UI Slider CSS -->
+    <link rel="stylesheet" href="nouislider.css">
+
+    <!-- Fork CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.2.3/gh-fork-ribbon.min.css" />
+
+    <!-- icon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="manifest" href="site.webmanifest">
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+    <!-- Leaflet core CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ==" crossorigin=""/>
+
+    <!-- Leaflet Draw CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.3/leaflet.draw.css"/>
+
+    <script src="https://kit.fontawesome.com/73cd972fdf.js" crossorigin="anonymous"></script>
+
+    <style>
+
+        /*
+        * Make the leaflet holder long and narrow for the spectrogram.
+        */
+        .leaflet-image-holder {
+            height: 210px!important;
+            width: 1200px!important;
+        }
+
+        /*
+        * The vertical line for the audio position.
+        */
+        .leaflet-image-holder:before {
+            content:"";
+            width:3px;
+            height:100%;
+            display:block;
+            z-index: 1000;
+            left:50%;
+            position:absolute;
+            background-image: linear-gradient(rgb(179, 0, 0), rgb(179, 0, 0));
+            background-size: 3px 100%;
+            background-repeat: no-repeat;
+            background-position: center center;
+        }
+
+        /*
+        * The vertical 1 second lines. 240 here is an assumption that about 5 seconds of audio are visible in 1200 px (ie. 240 = 1200 / 5)
+        */
+        /*
+        .leaflet-image-holder:after {
+            content:"";
+            width:100%;
+            height:100%;
+            display:block;
+            z-index: 1000;
+            position:absolute;
+            background-image: repeating-linear-gradient(-90deg,
+            transparent 1px,
+            transparent 240px,
+            rgba(179, 0, 0, 0.308) 1px 241px);
+        }
+        */
+        /*
+        This version offsets the lines by 0.5 seconds so that they overlap with the audio position line.
+        NOTE: these have to be "under" the leaflet map so that they don't intercept mouse events.
+              so the zindex needs to be smaller than the leaflet map.
+        NOTE V2: This has been updated to add span elements after the creation of the leaflet map. See below.
+        */
+        /* .leaflet-image-holder:after {
+            content:"";
+            width:100%;
+            height:100%;
+            display:block;
+            z-index: 200;
+            position:absolute;
+            background-image: repeating-linear-gradient(
+                -90deg,
+                transparent,
+                transparent 120px,
+                #49505759 120px,
+                #49505759 121px,
+                transparent 122px ,
+                transparent 240px
+            )
+        } */
+
+
+        .annotation-instance-category-name{
+            font-size: small;
+        }
+
+        .annotation-instance-supercategory-name{
+            font-size: small;
+        }
+
+    </style>
+
+</head>
+
+
+<header>
+    <a class="github-fork-ribbon" href="https://github.com/Jesssullivan/tmpui" data-ribbon="Contribute @ GitHub" title="Contribute @ GitHub...">Contribute</a>
+   <div class="topnav" >
+       <a class="active" href="/classify/server">Server</a>
+       <a href="/classify/browser">Browser</a>
+       <a href="/classify/webgl">Precision</a>
+       <a href="/classify/select">Select Ops</a>
+       <a href="/classify/standard">Standard Ops</a>
+       <a href="/annotator/audio">Annotate: OTF</a>
+       <a href="/annotator/audio_ml">Annotate: ML</a>
+       <a href="https://jesssullivan.github.io/tmpUI/">Docs</a>
+       <a href="https://www.transscendsurvival.org/">α wιρ Σ ♥</a>
+   </div>
+</header>
+<br/>
+<br/>
+<canvas class="visualizer"  width="1200" height="100px"> visualizer </canvas>
+
+<div id="content-wrapper" >
+    <script>
+        {
+        var isSafari = navigator.vendor && navigator.vendor.indexOf('Apple') > -1 &&
+               navigator.userAgent &&
+               navigator.userAgent.indexOf('CriOS') == -1 &&
+               navigator.userAgent.indexOf('FxiOS') == -1;
+
+               console.log(isSafari)
+        if (isSafari === true) {
+            alert("Hey!  When you want to start a new recording on this 🍎 device, please first tap the green `interpreter` button or reload the page.  Thx! -Jess")
+        }
+    }
+    </script>
+
+    <style>
+            /*
+            * Make the leaflet holder long and narrow for the spectrogram.
+            */
+            .leaflet-image-holder{
+                height: 320px!important;
+                width: 1200px!important;
+            }
+
+            /*
+            * The vertical line for the audio position.
+            */
+            .leaflet-image-holder:before {
+                content:"";
+                width:1px;
+                height:100%;
+                display:block;
+                z-index: 1000;
+                left:50%;
+                position:absolute;
+                background-image: linear-gradient(rgb(179, 0, 0), rgb(179, 0, 0));
+                background-size: 1px 100%;
+                background-repeat: no-repeat;
+                background-position: center center;
+            }
+
+            .annotation-instance-category-name{
+                font-size: xx-small;
+            }
+
+            .annotation-instance-supercategory-name{
+                font-size: xx-small;
+            }
+
+        </style>
+
+    <h4 class="benigncenter"> Merlin AI Web: Record, Crop & Classify </h4 >
+
+    <br/>
+    <h6 class="benigncenter">Browser Check Disabled </h6 >
+
+    <br/>
+    <div class="benigncenter">
+        <button id="recordButton" class="mui-btn mui-btn--raised">Record Song</button>
+    </div>
+    <br/>
+    <br/>
+    <div class="benigncenter">
+        <button id="stopButton" class="mui-btn mui-btn--raised" disabled="" title="Stop">Stop</button>
+    </div>
+    <br/>
+    <br/>
+    <br/>
+    <div id="specImageHolder"></div>
+    <br/>
+    <div id="specSliderHolder"></div>
+    <br/>
+    <div id="specAnalyzeButtonHolder" class="benigncenter"></div>
+    <div id="downloadButtonHolder" class="benigncenter"></div>
+    <div id="downloadSpecButtonHolder" class="benigncenter"></div>
+    <br/>
+    <div id="specSampleHolder" class="benigncenter"></div>
+    <br/>
+    <div id="specCropHolder" class="benigncenter" hidden></div>
+    <br>
+    <script src="./spec_crop_interpreter_server_bundle.js"></script>
+    </div>
+<br>
