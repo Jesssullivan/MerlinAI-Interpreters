@@ -6,13 +6,10 @@
  *  directly from the audio source "on the fly" in the browser.
  *
  *  to compile this demo:
- *  ` npm run-script test `
+ *  ` npm run-script build-audio-web `
  *
- * then open `otf_index.html` in a browser.
- *
- *  to (re)build the development tool:
- *  ` npm run-script build `
- *
+ *  ...or:
+ * ` npm run-script dist-audio-web `
  */
 
 import * as audio_loader from "../src/audio_loading_utils";
