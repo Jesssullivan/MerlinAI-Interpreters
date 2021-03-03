@@ -7,6 +7,8 @@
     "watch-spec-web": "webpack --watch --config webpack/webpack.spec_web.ts",
     "dist-spec-web": "webpack --config webpack/webpack.spec_web_dist.ts",
     "build-webgl-web": "webpack --config webpack/webpack.webgl.ts",
+    "dist-anno-web": "webpack --config webpack/webpack.annotator_dev.ts",
+    "build-anno-web": "webpack --config webpack/webpack.annotator_dist.ts",
     "dist-webgl-web": "webpack --config webpack/webpack.webgl_dist.ts",
     "build-audio-web": "webpack --config webpack/webpack.audio_dev.ts",
     "dist-audio-web": "webpack --config webpack/webpack.audio_dist.ts",

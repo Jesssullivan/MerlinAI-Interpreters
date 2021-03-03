@@ -11,8 +11,6 @@
 - [**Web Annotators & Leaflet UI**](#leaflet)  <br/>
   - [**@ Annotator Feature Demos**](https://ai.columbari.us/annotator/audio)   <br/>
   - [**Annotator: Setup**](#annotator-setup) <br>
-    - [**...Dev Bundles**](#build-development-bundles) <br>
-    - [**...Production Bundles**](#build-production-bundles) <br>
     - [**Test: With Flask**](#test-with-flask) <br>
     - [**Test: Without Flask**](#test-without-flask) <br>
     - [**Production: POSIX Timestamps & Checksums**](#checksum) <br>
@@ -53,8 +51,9 @@ pip3 install -r requirements.txt
 
 # build specific things:
 npm run-script build-spec-web
+npm run-script build-audio-web
 npm run-script build-webgl-web
-npm run-script dist-annotator
+npm run-script build-anno-web
 
 # serve:
 npm run-script setup-app  # interactive config.cfg setup
@@ -124,10 +123,10 @@ npm run-script serve-app  # serve with default Flask WSGI
 
 *build some production binaries:*
 ```
-npm run-script dist-annotator
-npm run-script dist-webgl-web
 npm run-script dist-spec-web
-npm run-script dist-all
+npm run-script dist-audio-web
+npm run-script dist-webgl-web
+npm run-script dist-anno-web
 ```
 
 *serve more things:*
@@ -246,25 +245,6 @@ brew install gsed md5sha1sum
 ```
 
 
-<h4 id="build-development-bundles"> </h4>     
-
-
-#### *Build development bundles:*
-
-
-
-*includes source trees, dev tools*
-```
-# build tool:
-npm run-script build
-
-# build both on-the-fly browser spectrogram & remote spectrogram demos:
-npm run-script test
-
-# build all:
-npm run-script build-all
-```
-
 
 <h4 id="test-with-flask"> </h4>     
 
@@ -286,7 +266,7 @@ npm run-script setup-app
 npm run-script serve-app  
 
 # serve with waitress WSGI:
-npm run-script eval-app  
+python3 application.py
 ```
 
 
@@ -305,25 +285,6 @@ google-chrome ./demos/remote_index.html --allow-insecure-localhost --auto-open-d
 # open ./demos/remote_index.html # use mimetype on Mac
 ```
 
-
-<h4 id="build-production-bundles"> </h4>     
-
-
-#### *Build production bundles:*
-
-```
-# build production tool:
-npm run-script dist  
-
-# you can also build a stripped down version of the browser spectrogram demo:
-npm run-script dist-otf
-
-```
-
-```
-# cleanup:
-npm run-script clean
-```
 
 <h4 id="checksum"> </h4>     
 
@@ -589,13 +550,6 @@ cd ios && pod install && cd ..
 
 - **The entrypoint for react-native tests is `./index.js`, fiddle @ `./native/`.**
 
-
-#### *Build & deploy to Xcode Simulator:*
-
-```
-# link ios depends:
-npm run-script ios-native
-```
 
 
 - - -
