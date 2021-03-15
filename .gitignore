@@ -1,5 +1,9 @@
-
-.DS_Store
-.Rhistory
-.Rhistory
-/FrontEnd/Node_Jade_Express/source/templates/ebpp_form.html
+**/node_modules
+merlinai_venv
+**/.idea
+**/*.pyc
+**/__pycache__
+**/.DS_Store
+**/models.tar.gz
+**/tsne_*
+**/*.mp3

@@ -1,0 +1,107 @@
+<head>
+    <title>Merlin AI: Web Classification</title>
+    <!-- meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale = 1.0, maximum-scale=1.0, user-scalable=no" />
+
+
+    <!-- MUI -->
+    <script src="//cdn.muicss.com/mui-latest/js/mui.min.js"></script>
+    <link href="//cdn.muicss.com/mui-latest/css/mui.min.css" rel="stylesheet" type="text/css" />
+
+    <!-- Style CSS -->
+    <link href="style.css" rel="stylesheet" type="text/css" />
+
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- Fork CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.2.3/gh-fork-ribbon.min.css" />
+
+    <!-- icon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="manifest" href="site.webmanifest">
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+    <!-- Leaflet core CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ==" crossorigin=""/>
+
+    <!-- Leaflet Draw CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.3/leaflet.draw.css"/>
+
+    <script src="https://kit.fontawesome.com/73cd972fdf.js" crossorigin="anonymous"></script>
+
+</head>
+
+
+<header>
+    <a class="github-fork-ribbon" href="https://github.com/Jesssullivan/tmpui" data-ribbon="Contribute @ GitHub" title="Contribute @ GitHub...">Contribute</a>
+   <div class="topnav" >
+       <a href="/classify/server">Interpreter</a>
+       <a href="/classify/webgl">Precision</a>
+       <a class="active" href="/classify/select">Select Ops</a>
+       <a href="/classify/standard">Standard Ops</a>
+       <a href="/annotator/audio">Annotate: OTF</a>
+       <a href="/annotator/audio_ml">Annotate: ML</a>
+       <a href="https://jesssullivan.github.io/tmpUI/">Docs</a>
+       <a href="https://www.transscendsurvival.org/">α wιρ Σ ♥</a>
+   </div>
+</header>
+
+<canvas class="visualizer"  width="900" height="80px"> visualizer </canvas>
+
+<br/>
+
+<body>
+    <div class="row">
+    <div class="column">
+      <br/>
+        <div id="content-wrapper" class="mui--text-center">
+            <form action="" method="POST" enctype="multipart/form-data">
+              <h4>Server Side, "Select" TensorFlow Operations:</h4>
+              <br/>
+                <p><input type="file" name="file"></p>
+                <br/>
+                  <h6>This page classifies audio using the Tensorflow "Select Ops" Library.</h6>
+                  <h6>...Upload a <pre>.mp3</pre> or a <pre>.wav / .WAV</pre> to classify:</h6>
+                  <br/>
+                  <p><input type="submit" value="Classify!"></p>
+            </form>
+            </div>
+     </div>
+    <div class="column">
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <ul class=flashes>
+                    {% for message in messages %}
+                       <li ><h6>{{ message }}</h6></li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+    </div>
+  </div>
+</body>
+
+<div class="benigncenter">
+<br/>
+<br/>
+<pre>
+  <br/>
+  <h6>Example POST usage:</h6>
+$ curl -F "file=@YourWavFile.wav" https://ai.columbari.us/classify/api/select
+
+#> {
+    "amecro": "0.006793206",
+    "blksco2": "0.0011590665",
+    "blujay": "0.9603704",
+    "comrav": "0.0023919304",
+    "nswowl": "0.0014328683"
+   }
+</pre>
+</div>

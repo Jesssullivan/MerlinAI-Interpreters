@@ -1,0 +1,10 @@
+waitress
+flask
+flask-cors
+pydub
+python-jose
+tensorflow-cpu
+librosa
+pytz
+passlib
+bson
