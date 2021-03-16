@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": "true",
   "scripts": {
-    "build-spec-web": "webpack --config webpack/webpack.spec_web.ts",
+    "build-spec-web": "webpack --config webpack/webpack.spec_web_dev.ts",
     "watch-spec-web": "webpack --watch --config webpack/webpack.spec_web.ts",
     "dist-spec-web": "webpack --config webpack/webpack.spec_web_dist.ts",
     "build-webgl-web": "webpack --config webpack/webpack.webgl.ts",
