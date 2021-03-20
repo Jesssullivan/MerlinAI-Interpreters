@@ -4,13 +4,15 @@ from .tools.tools import JsonResp
 from .classify.trashd import Trash
 
 # Import Routes
-#from .userdb.routes import user_blueprint
+from .userdb.routes import user_blueprint
 from .annotator.routes import anno_blueprint
 from .tfmodels.routes import tfmodels_blueprint
 from .classify.routes import classify_blueprint
+from .static.routes import static_blueprint
 
 
 def create_app():
+
     # Flask Config
     app = Flask(__name__)
 
@@ -32,6 +34,7 @@ def create_app():
     app.register_blueprint(anno_blueprint, url_prefix="/annotator")
     app.register_blueprint(tfmodels_blueprint, url_prefix="/models")
     app.register_blueprint(classify_blueprint, url_prefix="/classify")
+    app.register_blueprint(static_blueprint, url_prefix="/annotator/static")
 
     # start garbage collection daemon:
     Trash.truck()

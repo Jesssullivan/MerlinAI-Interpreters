@@ -1,0 +1,76 @@
+{"t":{"$date":"2021-03-19T20:56:15.070-04:00"},"s":"I",  "c":"CONTROL",  "id":23285,   "ctx":"main","msg":"Automatically disabling TLS 1.0, to force-enable TLS 1.0 specify --sslDisabledProtocols 'none'"}
+{"t":{"$date":"2021-03-19T20:56:15.076-04:00"},"s":"W",  "c":"ASIO",     "id":22601,   "ctx":"main","msg":"No TransportLayer configured during NetworkInterface startup"}
+{"t":{"$date":"2021-03-19T20:56:15.076-04:00"},"s":"I",  "c":"NETWORK",  "id":4648601, "ctx":"main","msg":"Implicit TCP FastOpen unavailable. If TCP FastOpen is required, set tcpFastOpenServer, tcpFastOpenClient, and tcpFastOpenQueueSize."}
+{"t":{"$date":"2021-03-19T20:56:15.097-04:00"},"s":"I",  "c":"STORAGE",  "id":4615611, "ctx":"initandlisten","msg":"MongoDB starting","attr":{"pid":55972,"port":27017,"dbPath":"./db/mongodb/","architecture":"64-bit","host":"jessdev"}}
+{"t":{"$date":"2021-03-19T20:56:15.098-04:00"},"s":"I",  "c":"CONTROL",  "id":23403,   "ctx":"initandlisten","msg":"Build Info","attr":{"buildInfo":{"version":"4.4.4","gitVersion":"8db30a63db1a9d84bdcad0c83369623f708e0397","openSSLVersion":"OpenSSL 1.1.1f  31 Mar 2020","modules":[],"allocator":"tcmalloc","environment":{"distmod":"ubuntu2004","distarch":"x86_64","target_arch":"x86_64"}}}}
+{"t":{"$date":"2021-03-19T20:56:15.098-04:00"},"s":"I",  "c":"CONTROL",  "id":51765,   "ctx":"initandlisten","msg":"Operating System","attr":{"os":{"name":"Ubuntu","version":"20.04"}}}
+{"t":{"$date":"2021-03-19T20:56:15.098-04:00"},"s":"I",  "c":"CONTROL",  "id":21951,   "ctx":"initandlisten","msg":"Options set by command line","attr":{"options":{"net":{"port":27017},"storage":{"dbPath":"./db/mongodb/"}}}}
+{"t":{"$date":"2021-03-19T20:56:15.106-04:00"},"s":"I",  "c":"STORAGE",  "id":22270,   "ctx":"initandlisten","msg":"Storage engine to use detected by data files","attr":{"dbpath":"./db/mongodb/","storageEngine":"wiredTiger"}}
+{"t":{"$date":"2021-03-19T20:56:15.106-04:00"},"s":"I",  "c":"STORAGE",  "id":22297,   "ctx":"initandlisten","msg":"Using the XFS filesystem is strongly recommended with the WiredTiger storage engine. See http://dochub.mongodb.org/core/prodnotes-filesystem","tags":["startupWarnings"]}
+{"t":{"$date":"2021-03-19T20:56:15.106-04:00"},"s":"I",  "c":"STORAGE",  "id":22315,   "ctx":"initandlisten","msg":"Opening WiredTiger","attr":{"config":"create,cache_size=3420M,session_max=33000,eviction=(threads_min=4,threads_max=4),config_base=false,statistics=(fast),log=(enabled=true,archive=true,path=journal,compressor=snappy),file_manager=(close_idle_time=100000,close_scan_interval=10,close_handle_minimum=250),statistics_log=(wait=0),verbose=[recovery_progress,checkpoint_progress,compact_progress],"}}
+{"t":{"$date":"2021-03-19T20:56:15.921-04:00"},"s":"I",  "c":"STORAGE",  "id":22430,   "ctx":"initandlisten","msg":"WiredTiger message","attr":{"message":"[1616201775:921338][55972:0x7f262dbcbcc0], txn-recover: [WT_VERB_RECOVERY_PROGRESS] Recovering log 36 through 37"}}
+{"t":{"$date":"2021-03-19T20:56:16.163-04:00"},"s":"I",  "c":"STORAGE",  "id":22430,   "ctx":"initandlisten","msg":"WiredTiger message","attr":{"message":"[1616201776:163463][55972:0x7f262dbcbcc0], txn-recover: [WT_VERB_RECOVERY_PROGRESS] Recovering log 37 through 37"}}
+{"t":{"$date":"2021-03-19T20:56:16.275-04:00"},"s":"I",  "c":"STORAGE",  "id":22430,   "ctx":"initandlisten","msg":"WiredTiger message","attr":{"message":"[1616201776:275043][55972:0x7f262dbcbcc0], txn-recover: [WT_VERB_RECOVERY | WT_VERB_RECOVERY_PROGRESS] Main recovery loop: starting at 36/6784 to 37/256"}}
+{"t":{"$date":"2021-03-19T20:56:16.382-04:00"},"s":"I",  "c":"STORAGE",  "id":22430,   "ctx":"initandlisten","msg":"WiredTiger message","attr":{"message":"[1616201776:382968][55972:0x7f262dbcbcc0], txn-recover: [WT_VERB_RECOVERY_PROGRESS] Recovering log 36 through 37"}}
+{"t":{"$date":"2021-03-19T20:56:16.459-04:00"},"s":"I",  "c":"STORAGE",  "id":22430,   "ctx":"initandlisten","msg":"WiredTiger message","attr":{"message":"[1616201776:459178][55972:0x7f262dbcbcc0], txn-recover: [WT_VERB_RECOVERY_PROGRESS] Recovering log 37 through 37"}}
+{"t":{"$date":"2021-03-19T20:56:16.520-04:00"},"s":"I",  "c":"STORAGE",  "id":22430,   "ctx":"initandlisten","msg":"WiredTiger message","attr":{"message":"[1616201776:520548][55972:0x7f262dbcbcc0], txn-recover: [WT_VERB_RECOVERY | WT_VERB_RECOVERY_PROGRESS] Set global recovery timestamp: (0, 0)"}}
+{"t":{"$date":"2021-03-19T20:56:16.520-04:00"},"s":"I",  "c":"STORAGE",  "id":22430,   "ctx":"initandlisten","msg":"WiredTiger message","attr":{"message":"[1616201776:520625][55972:0x7f262dbcbcc0], txn-recover: [WT_VERB_RECOVERY | WT_VERB_RECOVERY_PROGRESS] Set global oldest timestamp: (0, 0)"}}
+{"t":{"$date":"2021-03-19T20:56:16.607-04:00"},"s":"I",  "c":"STORAGE",  "id":4795906, "ctx":"initandlisten","msg":"WiredTiger opened","attr":{"durationMillis":1501}}
+{"t":{"$date":"2021-03-19T20:56:16.607-04:00"},"s":"I",  "c":"RECOVERY", "id":23987,   "ctx":"initandlisten","msg":"WiredTiger recoveryTimestamp","attr":{"recoveryTimestamp":{"$timestamp":{"t":0,"i":0}}}}
+{"t":{"$date":"2021-03-19T20:56:16.616-04:00"},"s":"I",  "c":"STORAGE",  "id":4366408, "ctx":"initandlisten","msg":"No table logging settings modifications are required for existing WiredTiger tables","attr":{"loggingEnabled":true}}
+{"t":{"$date":"2021-03-19T20:56:16.623-04:00"},"s":"I",  "c":"STORAGE",  "id":22262,   "ctx":"initandlisten","msg":"Timestamp monitor starting"}
+{"t":{"$date":"2021-03-19T20:56:16.646-04:00"},"s":"W",  "c":"CONTROL",  "id":22120,   "ctx":"initandlisten","msg":"Access control is not enabled for the database. Read and write access to data and configuration is unrestricted","tags":["startupWarnings"]}
+{"t":{"$date":"2021-03-19T20:56:16.646-04:00"},"s":"W",  "c":"CONTROL",  "id":22140,   "ctx":"initandlisten","msg":"This server is bound to localhost. Remote systems will be unable to connect to this server. Start the server with --bind_ip <address> to specify which IP addresses it should serve responses from, or with --bind_ip_all to bind to all interfaces. If this behavior is desired, start the server with --bind_ip 127.0.0.1 to disable this warning","tags":["startupWarnings"]}
+{"t":{"$date":"2021-03-19T20:56:16.664-04:00"},"s":"I",  "c":"STORAGE",  "id":20536,   "ctx":"initandlisten","msg":"Flow Control is enabled on this deployment"}
+{"t":{"$date":"2021-03-19T20:56:16.668-04:00"},"s":"I",  "c":"FTDC",     "id":20625,   "ctx":"initandlisten","msg":"Initializing full-time diagnostic data capture","attr":{"dataDirectory":"./db/mongodb/diagnostic.data"}}
+{"t":{"$date":"2021-03-19T20:56:16.670-04:00"},"s":"I",  "c":"NETWORK",  "id":23015,   "ctx":"listener","msg":"Listening on","attr":{"address":"/tmp/mongodb-27017.sock"}}
+{"t":{"$date":"2021-03-19T20:56:16.670-04:00"},"s":"I",  "c":"NETWORK",  "id":23015,   "ctx":"listener","msg":"Listening on","attr":{"address":"127.0.0.1"}}
+{"t":{"$date":"2021-03-19T20:56:16.670-04:00"},"s":"I",  "c":"NETWORK",  "id":23016,   "ctx":"listener","msg":"Waiting for connections","attr":{"port":27017,"ssl":"off"}}
+{"t":{"$date":"2021-03-19T20:56:41.244-04:00"},"s":"I",  "c":"CONTROL",  "id":23377,   "ctx":"SignalHandler","msg":"Received signal","attr":{"signal":2,"error":"Interrupt"}}
+{"t":{"$date":"2021-03-19T20:56:41.245-04:00"},"s":"I",  "c":"CONTROL",  "id":23380,   "ctx":"SignalHandler","msg":"Signal was sent by the kernel"}
+{"t":{"$date":"2021-03-19T20:56:41.246-04:00"},"s":"I",  "c":"CONTROL",  "id":23381,   "ctx":"SignalHandler","msg":"will terminate after current cmd ends"}
+{"t":{"$date":"2021-03-19T20:56:41.246-04:00"},"s":"I",  "c":"REPL",     "id":4784900, "ctx":"SignalHandler","msg":"Stepping down the ReplicationCoordinator for shutdown","attr":{"waitTimeMillis":10000}}
+{"t":{"$date":"2021-03-19T20:56:41.260-04:00"},"s":"I",  "c":"COMMAND",  "id":4784901, "ctx":"SignalHandler","msg":"Shutting down the MirrorMaestro"}
+{"t":{"$date":"2021-03-19T20:56:41.260-04:00"},"s":"I",  "c":"SHARDING", "id":4784902, "ctx":"SignalHandler","msg":"Shutting down the WaitForMajorityService"}
+{"t":{"$date":"2021-03-19T20:56:41.261-04:00"},"s":"I",  "c":"CONTROL",  "id":4784903, "ctx":"SignalHandler","msg":"Shutting down the LogicalSessionCache"}
+{"t":{"$date":"2021-03-19T20:56:41.262-04:00"},"s":"I",  "c":"NETWORK",  "id":20562,   "ctx":"SignalHandler","msg":"Shutdown: going to close listening sockets"}
+{"t":{"$date":"2021-03-19T20:56:41.262-04:00"},"s":"I",  "c":"NETWORK",  "id":23017,   "ctx":"listener","msg":"removing socket file","attr":{"path":"/tmp/mongodb-27017.sock"}}
+{"t":{"$date":"2021-03-19T20:56:41.262-04:00"},"s":"I",  "c":"NETWORK",  "id":4784905, "ctx":"SignalHandler","msg":"Shutting down the global connection pool"}
+{"t":{"$date":"2021-03-19T20:56:41.262-04:00"},"s":"I",  "c":"STORAGE",  "id":4784906, "ctx":"SignalHandler","msg":"Shutting down the FlowControlTicketholder"}
+{"t":{"$date":"2021-03-19T20:56:41.262-04:00"},"s":"I",  "c":"-",        "id":20520,   "ctx":"SignalHandler","msg":"Stopping further Flow Control ticket acquisitions."}
+{"t":{"$date":"2021-03-19T20:56:41.262-04:00"},"s":"I",  "c":"STORAGE",  "id":4784908, "ctx":"SignalHandler","msg":"Shutting down the PeriodicThreadToAbortExpiredTransactions"}
+{"t":{"$date":"2021-03-19T20:56:41.262-04:00"},"s":"I",  "c":"STORAGE",  "id":4784934, "ctx":"SignalHandler","msg":"Shutting down the PeriodicThreadToDecreaseSnapshotHistoryCachePressure"}
+{"t":{"$date":"2021-03-19T20:56:41.262-04:00"},"s":"I",  "c":"REPL",     "id":4784909, "ctx":"SignalHandler","msg":"Shutting down the ReplicationCoordinator"}
+{"t":{"$date":"2021-03-19T20:56:41.262-04:00"},"s":"I",  "c":"SHARDING", "id":4784910, "ctx":"SignalHandler","msg":"Shutting down the ShardingInitializationMongoD"}
+{"t":{"$date":"2021-03-19T20:56:41.262-04:00"},"s":"I",  "c":"REPL",     "id":4784911, "ctx":"SignalHandler","msg":"Enqueuing the ReplicationStateTransitionLock for shutdown"}
+{"t":{"$date":"2021-03-19T20:56:41.262-04:00"},"s":"I",  "c":"-",        "id":4784912, "ctx":"SignalHandler","msg":"Killing all operations for shutdown"}
+{"t":{"$date":"2021-03-19T20:56:41.262-04:00"},"s":"I",  "c":"-",        "id":4695300, "ctx":"SignalHandler","msg":"Interrupted all currently running operations","attr":{"opsKilled":3}}
+{"t":{"$date":"2021-03-19T20:56:41.262-04:00"},"s":"I",  "c":"COMMAND",  "id":4784913, "ctx":"SignalHandler","msg":"Shutting down all open transactions"}
+{"t":{"$date":"2021-03-19T20:56:41.262-04:00"},"s":"I",  "c":"REPL",     "id":4784914, "ctx":"SignalHandler","msg":"Acquiring the ReplicationStateTransitionLock for shutdown"}
+{"t":{"$date":"2021-03-19T20:56:41.262-04:00"},"s":"I",  "c":"INDEX",    "id":4784915, "ctx":"SignalHandler","msg":"Shutting down the IndexBuildsCoordinator"}
+{"t":{"$date":"2021-03-19T20:56:41.262-04:00"},"s":"I",  "c":"REPL",     "id":4784916, "ctx":"SignalHandler","msg":"Reacquiring the ReplicationStateTransitionLock for shutdown"}
+{"t":{"$date":"2021-03-19T20:56:41.262-04:00"},"s":"I",  "c":"REPL",     "id":4784917, "ctx":"SignalHandler","msg":"Attempting to mark clean shutdown"}
+{"t":{"$date":"2021-03-19T20:56:41.262-04:00"},"s":"I",  "c":"NETWORK",  "id":4784918, "ctx":"SignalHandler","msg":"Shutting down the ReplicaSetMonitor"}
+{"t":{"$date":"2021-03-19T20:56:41.262-04:00"},"s":"I",  "c":"SHARDING", "id":4784921, "ctx":"SignalHandler","msg":"Shutting down the MigrationUtilExecutor"}
+{"t":{"$date":"2021-03-19T20:56:41.262-04:00"},"s":"I",  "c":"CONTROL",  "id":4784925, "ctx":"SignalHandler","msg":"Shutting down free monitoring"}
+{"t":{"$date":"2021-03-19T20:56:41.262-04:00"},"s":"I",  "c":"CONTROL",  "id":20609,   "ctx":"SignalHandler","msg":"Shutting down free monitoring"}
+{"t":{"$date":"2021-03-19T20:56:41.262-04:00"},"s":"I",  "c":"STORAGE",  "id":4784927, "ctx":"SignalHandler","msg":"Shutting down the HealthLog"}
+{"t":{"$date":"2021-03-19T20:56:41.262-04:00"},"s":"I",  "c":"STORAGE",  "id":4784929, "ctx":"SignalHandler","msg":"Acquiring the global lock for shutdown"}
+{"t":{"$date":"2021-03-19T20:56:41.262-04:00"},"s":"I",  "c":"STORAGE",  "id":4784930, "ctx":"SignalHandler","msg":"Shutting down the storage engine"}
+{"t":{"$date":"2021-03-19T20:56:41.262-04:00"},"s":"I",  "c":"STORAGE",  "id":20282,   "ctx":"SignalHandler","msg":"Deregistering all the collections"}
+{"t":{"$date":"2021-03-19T20:56:41.262-04:00"},"s":"I",  "c":"STORAGE",  "id":22261,   "ctx":"SignalHandler","msg":"Timestamp monitor shutting down"}
+{"t":{"$date":"2021-03-19T20:56:41.262-04:00"},"s":"I",  "c":"STORAGE",  "id":22317,   "ctx":"SignalHandler","msg":"WiredTigerKVEngine shutting down"}
+{"t":{"$date":"2021-03-19T20:56:41.266-04:00"},"s":"I",  "c":"STORAGE",  "id":22318,   "ctx":"SignalHandler","msg":"Shutting down session sweeper thread"}
+{"t":{"$date":"2021-03-19T20:56:41.266-04:00"},"s":"I",  "c":"STORAGE",  "id":22319,   "ctx":"SignalHandler","msg":"Finished shutting down session sweeper thread"}
+{"t":{"$date":"2021-03-19T20:56:41.267-04:00"},"s":"I",  "c":"STORAGE",  "id":22320,   "ctx":"SignalHandler","msg":"Shutting down journal flusher thread"}
+{"t":{"$date":"2021-03-19T20:56:41.267-04:00"},"s":"I",  "c":"STORAGE",  "id":22321,   "ctx":"SignalHandler","msg":"Finished shutting down journal flusher thread"}
+{"t":{"$date":"2021-03-19T20:56:41.267-04:00"},"s":"I",  "c":"STORAGE",  "id":22322,   "ctx":"SignalHandler","msg":"Shutting down checkpoint thread"}
+{"t":{"$date":"2021-03-19T20:56:41.267-04:00"},"s":"I",  "c":"STORAGE",  "id":22323,   "ctx":"SignalHandler","msg":"Finished shutting down checkpoint thread"}
+{"t":{"$date":"2021-03-19T20:56:41.267-04:00"},"s":"I",  "c":"STORAGE",  "id":4795902, "ctx":"SignalHandler","msg":"Closing WiredTiger","attr":{"closeConfig":"leak_memory=true,"}}
+{"t":{"$date":"2021-03-19T20:56:41.393-04:00"},"s":"I",  "c":"STORAGE",  "id":4795901, "ctx":"SignalHandler","msg":"WiredTiger closed","attr":{"durationMillis":126}}
+{"t":{"$date":"2021-03-19T20:56:41.393-04:00"},"s":"I",  "c":"STORAGE",  "id":22279,   "ctx":"SignalHandler","msg":"shutdown: removing fs lock..."}
+{"t":{"$date":"2021-03-19T20:56:41.393-04:00"},"s":"I",  "c":"-",        "id":4784931, "ctx":"SignalHandler","msg":"Dropping the scope cache for shutdown"}
+{"t":{"$date":"2021-03-19T20:56:41.393-04:00"},"s":"I",  "c":"FTDC",     "id":4784926, "ctx":"SignalHandler","msg":"Shutting down full-time data capture"}
+{"t":{"$date":"2021-03-19T20:56:41.393-04:00"},"s":"I",  "c":"FTDC",     "id":20626,   "ctx":"SignalHandler","msg":"Shutting down full-time diagnostic data capture"}
+{"t":{"$date":"2021-03-19T20:56:41.397-04:00"},"s":"I",  "c":"CONTROL",  "id":20565,   "ctx":"SignalHandler","msg":"Now exiting"}
+{"t":{"$date":"2021-03-19T20:56:41.397-04:00"},"s":"I",  "c":"CONTROL",  "id":23138,   "ctx":"SignalHandler","msg":"Shutting down","attr":{"exitCode":0}}
