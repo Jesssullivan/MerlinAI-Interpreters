@@ -22,8 +22,8 @@ export {Draw};
 
 /*
  * these imports are used for the in-annotator classify feature.
- * todo: ask merlin people if they'd like to use this feature
  */
+
 import * as audio_loader from "./audio_loading_utils";
 import * as audio_model from "./audio_model";
 
@@ -99,6 +99,7 @@ const defaultOptions = {
     // Callback for after Leaflet has been rendered
     didMountLeafletCallback : null,
     didFocusOnAnnotationCallback : null
+
 };
 
 export class LeafletAnnotation extends React.Component {
@@ -205,17 +206,17 @@ export class LeafletAnnotation extends React.Component {
     componentDidMount = () => {
         // Create the leaflet map
         this.leafletMap = L.map(this.leafletHolderEl, {
-            center : [0, 0],
-            zoom : 0,
+            center: [0, 0],
+            zoom: 0,
             crs: L.CRS.Simple,
-            maxBoundsViscosity : 0.5,
-            drawControlTooltips : false,
-            attributionControl : this.options.map.attributionControl,
-            zoomControl : this.options.map.zoomControl,
-            boxZoom : this.options.map.boxZoom,
-            doubleClickZoom : this.options.map.doubleClickZoom,
-            keyboard : this.options.map.keyboard,
-            scrollWheelZoom : this.options.map.scrollWheelZoom,
+            maxBoundsViscosity: 0.5,
+            drawControlTooltips: false,
+            attributionControl: this.options.map.attributionControl,
+            zoomControl: this.options.map.zoomControl,
+            boxZoom: this.options.map.boxZoom,
+            doubleClickZoom: this.options.map.doubleClickZoom,
+            keyboard: this.options.map.keyboard,
+            scrollWheelZoom: this.options.map.scrollWheelZoom,
             zoomSnap: 0
         });
 
@@ -229,7 +230,7 @@ export class LeafletAnnotation extends React.Component {
         const imageWidth = this.props.imageElement.width;
         const imageHeight = this.props.imageElement.height;
 
-        let ratio: number | number[] = [maxWidth / imageWidth, maxHeight / imageHeight ];
+        let ratio: number | number[] = [maxWidth / imageWidth, maxHeight / imageHeight];
         ratio = Math.min(ratio[0], ratio[1]);
 
         const height = ratio * imageHeight;
@@ -261,7 +262,7 @@ export class LeafletAnnotation extends React.Component {
         this.annotationFeatures = new L.FeatureGroup().addTo(leafletMap);
 
         // Initialize the editor
-        this.editor = new L.EditToolbar.Edit(leafletMap, {featureGroup : this.annotationFeatures});
+        this.editor = new L.EditToolbar.Edit(leafletMap, {featureGroup: this.annotationFeatures});
 
         // set up the event listeners
         // Drawing / Editing Events
@@ -278,24 +279,28 @@ export class LeafletAnnotation extends React.Component {
         this.annotation_layers = [];
 
         // Add the annotations
-        for(let i=0; i < this.state.annotations.length; i++){
+        for (let i = 0; i < this.state.annotations.length; i++) {
             this.annotation_layers.push(this.addAnnotation(this.state.annotations[i], i));
         }
 
-        if (this.options.enableEditingImmediately){
+        if (this.options.enableEditingImmediately) {
             this.enableEditing();
         }
-        if (this.options.enableHotKeysImmediately){
+        if (this.options.enableHotKeysImmediately) {
             this.enableHotKeys();
         }
 
         // Rerender
         this.setState(this.state);
 
-        if (this.props.options.didMountLeafletCallback !== null) {
-            this.props.options.didMountLeafletCallback(this);
+        try {
+            if (this.props.options.didMountLeafletCallback !== null) {
+                this.props.options.didMountLeafletCallback(this);
+            }
         }
-
+        catch {
+            // continue
+        }
     };
 
     /**
