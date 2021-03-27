@@ -43,36 +43,36 @@ const DEFAULT_LABELS_URL = 'models/audio/labels.json';
 const defaultOptions = {
 
     // Map Config
-    map : {
-        attributionControl : true,
-        zoomControl : true,
-        boxZoom : true,
-        doubleClickZoom : true,
-        keyboard : true,
-        scrollWheelZoom : true
+    map: {
+        attributionControl: true,
+        zoomControl: true,
+        boxZoom: true,
+        doubleClickZoom: true,
+        keyboard: true,
+        scrollWheelZoom: true
     },
 
     // Use Keymap Config?
-    enableEditingImmediately : true,
-    enableHotKeysImmediately : true,
+    enableEditingImmediately: true,
+    enableHotKeysImmediately: true,
 
     // Classify Config
     enableClassify: true,
-    MODEL_URL : DEFAULT_MODEL_URL,
-    LABELS_URL : DEFAULT_LABELS_URL,
+    MODEL_URL: DEFAULT_MODEL_URL,
+    LABELS_URL: DEFAULT_LABELS_URL,
 
     // Category Config
-    showCategory : true, // Show the category in the AnnotationSidebar
+    showCategory: true, // Show the category in the AnnotationSidebar
     showSupercategory: true, // Show the supercategory in the AnnotationSidebar
     showIsCrowdCheckbox: true, // Show the a check box to mark an annotation as a crowd
 
-    allowCategoryEdit : true, // Can the category label be edited?
-    allowCategoryRemoval : true, // Can the category label be removed? (Leaving on the supercategory)
+    allowCategoryEdit: true, // Can the category label be edited?
+    allowCategoryRemoval: true, // Can the category label be removed? (Leaving on the supercategory)
 
-    allowSupercategoryEdit : true, // Can the supercategory be edited? (This removes the category_id)
-    allowSupercategoryRemoval : false, // Can the supercategory be removed? (Leaving neither category_id nor supercategory)
+    allowSupercategoryEdit: true, // Can the supercategory be edited? (This removes the category_id)
+    allowSupercategoryRemoval: false, // Can the supercategory be removed? (Leaving neither category_id nor supercategory)
 
-    quickAccessCategoryIDs : [], // The category ids that should show up immediately when adding a new category. Note that this is not supercategories.
+    quickAccessCategoryIDs: [], // The category ids that should show up immediately when adding a new category. Note that this is not supercategories.
 
     // New Instance Config
     newInstance: {
@@ -82,23 +82,23 @@ const defaultOptions = {
     },
 
     // Box Config
-    enableBoxEdit : true,
-    renderBoxes : true,
-    boxColors : COLORS,
+    enableBoxEdit: true,
+    renderBoxes: true,
+    boxColors: COLORS,
     boxPathStyle: BOX_PATH_STYLE,
 
     // Instance Duplication on Right Click
-    duplicateInstance : {
-        enable : true,
-        duplicateY : true // should the y values be duplicated (for annotating a spectrogram)
+    duplicateInstance: {
+        enable: true,
+        duplicateY: true // should the y values be duplicated (for annotating a spectrogram)
     },
 
     // Image Information rendered under the Map
-    imageInfoComponent : ImageInfo,
+    imageInfoComponent: ImageInfo,
 
     // Callback for after Leaflet has been rendered
-    didMountLeafletCallback : null,
-    didFocusOnAnnotationCallback : null
+    didMountLeafletCallback: null,
+    didFocusOnAnnotationCallback: null
 
 };
 
