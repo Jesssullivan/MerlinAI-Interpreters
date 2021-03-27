@@ -3,7 +3,7 @@
 
 - [**Web Interpreters & UI Experiments:**](https://jesssullivan.github.io/MerlinAI-Interpreters/)
   - [**Interpreter Demo @ AWS**](https://ai.columbari.us/classify/server)   <br/>
-  - [**Interpreter Demo @ Heroku**](https://ffmpeg.columbari.us/classify/server)   <br/>
+  - [**FFmpeg-based Demo @ Heroku**](https://ffmpeg.columbari.us/classify/server)   <br/>
   - [**Web: Setup**](#web-experiments-setup) <br>
     - [**...With npm**](#npm) <br>
     - [**Flask Structure**](#interp-structure) <br>
@@ -51,10 +51,17 @@ pip3 install -r requirements.txt
 
 # build specific things:
 npm run-script build-spec-web
+<<<<<<< HEAD
 npm run-script build-webgl-web
 npm run-script build-anno-tool
 npm run-script build-anno-otf
 npm run-script build-anno-remote
+=======
+npm run-script build-anno-otf
+npm run-script build-anno-remote
+npm run-script build-anno-photo
+npm run-script build-webgl-web
+>>>>>>> master
 npm run-script build-anno-photo
 
 # serve:
@@ -126,10 +133,17 @@ npm run-script serve-app  # serve with default Flask WSGI
 *build some production binaries:*
 ```
 npm run-script dist-spec-web
+<<<<<<< HEAD
 npm run-script dist-webgl-web
 npm run-script dist-anno-tool
 npm run-script dist-anno-otf
 npm run-script dist-anno-remote
+=======
+npm run-script dist-anno-otf
+npm run-script dist-anno-remote
+npm run-script dist-anno-photo
+npm run-script dist-webgl-web
+>>>>>>> master
 npm run-script dist-anno-photo
 ```
 
@@ -213,7 +227,8 @@ npx ts-node etc/json_refs.ts
 - - -
 
 
-*To update the `leaflet.annotation.js` bundle from BitBucket:*
+***This is unlikely to be needed, as the BitBucket annotator tools have moved over to Vue JS and are no longer relevant to this repo***
+~~*To update the `leaflet.annotation.js` bundle from BitBucket:*~~
 
 - you must have access to the ml-mlearning-leaflet repo
 - follow the prompts; provide a git username / passphrase with access to *ml-mlearning-leaflet*
