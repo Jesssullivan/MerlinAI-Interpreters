@@ -57,7 +57,7 @@ npm run-script build-anno-photo
 npm run-script build-webgl-web
 npm run-script build-anno-photo
 
-# serve:
+# serve: 
 npm run-script setup-app  # interactive config.cfg setup
 npm run-script serve-app  # serve with default Flask WSGI
 ```
