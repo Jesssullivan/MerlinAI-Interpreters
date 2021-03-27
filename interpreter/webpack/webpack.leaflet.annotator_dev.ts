@@ -9,7 +9,7 @@ module.exports = {
   entry:'./src/annotator_tool.tsx',
   output: {
     filename: 'leaflet.annotation.js',
-    path: path.resolve(__dirname, '../demos'),
+    path: path.resolve(__dirname, '../dist'),
   },
   module: {
     rules: [{

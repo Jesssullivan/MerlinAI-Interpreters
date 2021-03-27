@@ -477,7 +477,7 @@ const startAnnotating =
                         renderBoxes : true,
 
                         // @ts-ignore
-                        didMountLeafletCallback : delayAudioPrepTillRender
+                        // didMountLeafletCallback : delayAudioPrepTillRender
 
                     }
                 }, null);

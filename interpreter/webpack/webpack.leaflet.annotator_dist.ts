@@ -11,7 +11,7 @@ module.exports = {
   },
   mode: 'production',
   output: {
-    path: path.resolve(__dirname, '../demos'),
+    path: path.resolve(__dirname, '../dist'),
     chunkFilename: '[id].[hash:16].js',
     filename: 'leaflet.annotation.js',
   },

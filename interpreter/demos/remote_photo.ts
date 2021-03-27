@@ -21,7 +21,6 @@ let currentImageIndex = 0; // keep track of which image we are working on.
 // Dimensions of the spectrogram
 let spectrogram_height = null;
 let spectrogram_width = null;
-let targetSpectrogramHeight = 211;
 
 
 function handleKeyDown(e) {

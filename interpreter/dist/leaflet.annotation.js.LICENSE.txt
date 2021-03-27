@@ -1,4 +1,4 @@
-/*
+/* Packed: Sat 27 Mar 2021 08:02:32 AM EDT ./dist/leaflet.annotation.js */ /* Matches: 405a98d6efa53a011e4060e7686fdebf  ./dist/leaflet.annotation.js */ /* @ (c) the super cool mlearning-leaflet team. */ /*
 object-assign
 (c) Sindre Sorhus
 @license MIT

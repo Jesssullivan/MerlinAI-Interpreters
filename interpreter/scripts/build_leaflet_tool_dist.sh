@@ -17,6 +17,10 @@ FDIST=${DIST}${NAME}
 FLICENSE=${DIST}${LICENSE}
 DATE=$(date)
 
+rm -rf dist demos/leaflet.annotation.*
+
+mkdir dist
+
 trap "kill 0" EXIT
 
 echo -e "Distribute: \n...(re)packing leaflet annotator tool..."
@@ -35,7 +39,7 @@ tsc src/defaults.ts
 
 echo -e "\n ...packing tool..."
 
-webpack --config webpack/webpack.annotator_dist.ts
+webpack --config webpack/webpack.leaflet.annotator_dist.ts
 
 echo -e "\n ...packing done, hashing & stamping output..."
 
