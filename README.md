@@ -51,9 +51,11 @@ pip3 install -r requirements.txt
 
 # build specific things:
 npm run-script build-spec-web
-npm run-script build-audio-web
 npm run-script build-webgl-web
-npm run-script build-anno-web
+npm run-script build-anno-tool
+npm run-script build-anno-otf
+npm run-script build-anno-remote
+npm run-script build-anno-photo
 
 # serve:
 npm run-script setup-app  # interactive config.cfg setup
@@ -124,9 +126,11 @@ npm run-script serve-app  # serve with default Flask WSGI
 *build some production binaries:*
 ```
 npm run-script dist-spec-web
-npm run-script dist-audio-web
 npm run-script dist-webgl-web
-npm run-script dist-anno-web
+npm run-script dist-anno-tool
+npm run-script dist-anno-otf
+npm run-script dist-anno-remote
+npm run-script dist-anno-photo
 ```
 
 *serve more things:*
@@ -136,7 +140,7 @@ npm run-script serve-app   # serve w/ flask
 npm run-script serve-node  # serve w/ local http-server + openssl
 ```
 
-*--watch:*
+*interpreter --watch:*
 ```
 # Webpack with --watch running:
 npm run-script watch-spec-web
@@ -156,6 +160,9 @@ npm run-script clean-all
 # Production WSGI sever is waitress;
 # check local config with:
 waitress-serve --call app:create_app
+
+# ...or, as called from systemd server:
+python3 application.py
 ```
 
 *local ssl:*
