@@ -7,7 +7,7 @@ files_blueprint = Blueprint("files", __name__)
 
 
 # fetch static:
-@files_blueprint.route("<file>")
+@files_blueprint.route("/<file>/")
 def fserve(file):
     resp = make_response("""
       <div>
