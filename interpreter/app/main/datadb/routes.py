@@ -19,5 +19,4 @@ def fserve(file):
           </div>
       </div>
       """ % (file, file))
-    resp.mimetype = 'text/plain'
     return resp
