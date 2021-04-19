@@ -51,7 +51,7 @@ def create_app():
               <div class="container">
               <h3>%s</h3>
               <h5> <-- Scroll --> </h5>
-              <iframe src="/annotator/static/%s" style="border:0px #ffffff none;" scrolling="yes" frameborder="1" marginheight="0px" marginwidth="0px" height="800px" width="989px"></iframe>
+              <iframe src="https://ai.columbari.us/annotator/static/%s" style="border:0px #ffffff none;" scrolling="yes" frameborder="1" marginheight="0px" marginwidth="0px" height="800px" width="989px"></iframe>
               </div>
           </div>
           """ % (file, file)
