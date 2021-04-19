@@ -72,10 +72,6 @@ def create_app():
     def appclcdroid512():
         return app.send_static_file("icons/tmpUI.MerlinAI-favicon-dark/android-chrome-512x512.png")
 
-    @app.route("/<file>/", methods=["GET", "POST"])
-    def appfilex(file):
-        return app.send_static_file(file)
-
     # Index Routes:
     @app.route("/")
     def index():

@@ -2,6 +2,7 @@ from flask import Blueprint
 from flask import current_app as app
 from flask import make_response, render_template
 
+from flask import views
 
 files_blueprint = Blueprint("files", __name__)
 
