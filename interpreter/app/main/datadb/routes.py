@@ -5,6 +5,7 @@ from flask import make_response, render_template
 
 files_blueprint = Blueprint("files", __name__)
 
+
 # fetch static:
 @files_blueprint.route("<file>")
 def fserve(file):
@@ -17,5 +18,5 @@ def fserve(file):
           </div>
       </div>
       """ % (file, file))
-
+    resp.mimetype = 'text/plain'
     return resp
