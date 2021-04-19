@@ -1,5 +1,6 @@
 from flask import Blueprint
 from flask import current_app as app
+from flask import make_response, render_template
 
 
 files_blueprint = Blueprint("files", __name__)
@@ -7,7 +8,7 @@ files_blueprint = Blueprint("files", __name__)
 # fetch static:
 @files_blueprint.route("<file>")
 def fserve(file):
-    return """
+    resp = make_response("""
       <div>
           <div class="container">
           <h3>%s</h3>
@@ -15,4 +16,6 @@ def fserve(file):
           <iframe src="https://ai.columbari.us/annotator/static/%s" style="border:0px #ffffff none;" scrolling="yes" frameborder="1" marginheight="0px" marginwidth="0px" height="800px" width="989px"></iframe>
           </div>
       </div>
-      """ % (file, file)
+      """ % (file, file))
+
+    return resp
