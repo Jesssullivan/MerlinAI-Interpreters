@@ -44,10 +44,10 @@ def create_app():
     Trash.truck()
 
     # fetch static:
-    @app.route("/files/<file>", methods=["GET"])
+    @app.route("/files/<file>/", methods=["GET", "POST"])
     def fserve(file):
         return """
-          <div class="benigncenter">
+          <div>
               <div class="container">
               <h3>%s</h3>
               <h5> <-- Scroll --> </h5>
