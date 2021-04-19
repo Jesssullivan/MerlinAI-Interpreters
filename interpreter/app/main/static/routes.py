@@ -9,3 +9,4 @@ static_blueprint = Blueprint("static", __name__)
 @static_blueprint.route("<file>")
 def filex(file):
     return app.send_static_file("static/" + file)
+

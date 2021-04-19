@@ -1,3 +1,5 @@
+import json
+
 from flask import Flask, redirect
 import os
 from .tools.tools import JsonResp
@@ -9,6 +11,7 @@ from .annotator.routes import anno_blueprint
 from .tfmodels.routes import tfmodels_blueprint
 from .classify.routes import classify_blueprint
 from .static.routes import static_blueprint
+from .datadb.routes import files_blueprint
 
 
 def create_app():
@@ -30,7 +33,8 @@ def create_app():
     os.environ["TZ"] = app.config["TIMEZONE"]
 
     # Register Blueprints
-    # app.register_blueprint(user_blueprint, url_prefix="/user")
+    app.register_blueprint(files_blueprint, url_prefix="/files")
+    app.register_blueprint(user_blueprint, url_prefix="/user")
     app.register_blueprint(anno_blueprint, url_prefix="/annotator")
     app.register_blueprint(tfmodels_blueprint, url_prefix="/models")
     app.register_blueprint(classify_blueprint, url_prefix="/classify")
@@ -40,7 +44,6 @@ def create_app():
     Trash.truck()
 
     # fetch static:
-
     @app.route("/favicon.ico", methods=["GET", "POST"])
     def appclcfavicon_ico():
         return app.send_static_file("icons/tmpUI.MerlinAI-favicon-dark/favicon.ico")
@@ -68,10 +71,6 @@ def create_app():
     @app.route("/android-chrome-512x512.png", methods=["GET", "POST"])
     def appclcdroid512():
         return app.send_static_file("icons/tmpUI.MerlinAI-favicon-dark/android-chrome-512x512.png")
-
-    @app.route("/<file>/", methods=["GET", "POST"])
-    def appfilex(file):
-        return app.send_static_file(file)
 
     # Index Routes:
     @app.route("/")

@@ -8,3 +8,4 @@ librosa
 pytz
 passlib
 bson
+pymongo

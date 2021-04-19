@@ -2,6 +2,15 @@
  * Body CSS
  */
 
+.container {
+    align-items: center;
+    justify-content: center;
+    width: 980px;
+    height: auto;
+    overflow: scroll;
+    -webkit-overflow-scrolling: touch;
+}
+
 html,
 body {
   height: 100%;
