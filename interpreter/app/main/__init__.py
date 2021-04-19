@@ -11,7 +11,7 @@ from .annotator.routes import anno_blueprint
 from .tfmodels.routes import tfmodels_blueprint
 from .classify.routes import classify_blueprint
 from .static.routes import static_blueprint
-from .datadb.routes import datadb_blueprint, DataAPI
+from .datadb.routes import files_blueprint
 
 
 def create_app():
@@ -33,7 +33,7 @@ def create_app():
     os.environ["TZ"] = app.config["TIMEZONE"]
 
     # Register Blueprints
-    app.register_blueprint(datadb_blueprint, url_prefix="/data")
+    app.register_blueprint(files_blueprint, url_prefix="/files")
     app.register_blueprint(user_blueprint, url_prefix="/user")
     app.register_blueprint(anno_blueprint, url_prefix="/annotator")
     app.register_blueprint(tfmodels_blueprint, url_prefix="/models")
