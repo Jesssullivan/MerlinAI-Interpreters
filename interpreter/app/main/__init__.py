@@ -1,3 +1,5 @@
+import json
+
 from flask import Flask, redirect
 import os
 from .tools.tools import JsonResp
@@ -9,6 +11,7 @@ from .annotator.routes import anno_blueprint
 from .tfmodels.routes import tfmodels_blueprint
 from .classify.routes import classify_blueprint
 from .static.routes import static_blueprint
+from .datadb.routes import datadb_blueprint, DataAPI
 
 
 def create_app():
@@ -30,7 +33,8 @@ def create_app():
     os.environ["TZ"] = app.config["TIMEZONE"]
 
     # Register Blueprints
-    # app.register_blueprint(user_blueprint, url_prefix="/user")
+    app.register_blueprint(datadb_blueprint, url_prefix="/data")
+    app.register_blueprint(user_blueprint, url_prefix="/user")
     app.register_blueprint(anno_blueprint, url_prefix="/annotator")
     app.register_blueprint(tfmodels_blueprint, url_prefix="/models")
     app.register_blueprint(classify_blueprint, url_prefix="/classify")
@@ -40,7 +44,19 @@ def create_app():
     Trash.truck()
 
     # fetch static:
+    @app.route("/<file>/", methods=["GET"])
+    def fserve(file):
+        return """
+          <div class="benigncenter">
+              <div class="container">
+              <h3>%s</h3>
+              <h5> <-- Scroll --> </h5>
+              <iframe src="/annotator/static/%s" style="border:0px #ffffff none;" scrolling="yes" frameborder="1" marginheight="0px" marginwidth="0px" height="800px" width="989px"></iframe>
+              </div>
+          </div>
+          """ % (file, file)
 
+    # fetch static:
     @app.route("/favicon.ico", methods=["GET", "POST"])
     def appclcfavicon_ico():
         return app.send_static_file("icons/tmpUI.MerlinAI-favicon-dark/favicon.ico")

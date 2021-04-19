@@ -20,8 +20,8 @@ if ! [ -d $MONGODIR ]; then
   echo 'running MongoDB from here, @ `'${MONGODIR}'`' >> ${MONGODIR}/README.md
 fi
 
-echo "starting MongoDB..."
-mongod --dbpath ./db/mongodb/ --port 27017 &> ${MONGOLOGS} &
+#echo "starting MongoDB..."
+#mongod --dbpath ./db/mongodb/ --port 27017 &> ${MONGOLOGS} &
 
 #echo "starting react-scripts..."
 #npm start &

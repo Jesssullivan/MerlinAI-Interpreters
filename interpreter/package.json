@@ -22,7 +22,8 @@
     "clean-bundles": "find '.' -name \"*_bundle.js\" -print -delete",
     "clean-renders": "find '.' -name \"*_render.html\" -print -delete",
     "clean-all": "chmod +x scripts/clean_all.sh && ./scripts/clean_all.sh",
-    "sslgen": "chmod +x scripts/sslgen.sh && ./scripts/sslgen.sh"
+    "sslgen": "chmod +x scripts/sslgen.sh && ./scripts/sslgen.sh",
+    "test-datadb":  "chmod +x scripts/rest_test_datadb.sh && ./scripts/rest_test_datadb.sh"
   },
   "devDependencies": {
     "@babel/core": "~7.12.10",
