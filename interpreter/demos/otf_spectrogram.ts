@@ -447,13 +447,13 @@ const startAnnotating =
                     annotations : existing_annotations,
                     categories,
                     options : {
-                        enableEditingImmediately : true,
+                        enableEditingImmediately : false,
                         map : {
                             attributionControl : false,
                             zoomControl : false,
                             boxZoom : false,
                             doubleClickZoom : false,
-                            keyboard : false,
+                            keyboard : true,
                             scrollWheelZoom : false
                         },
 

@@ -1,6 +1,4 @@
-import json
-
-from flask import Flask, redirect
+from flask import Flask, redirect, send_file
 import os
 from .tools.tools import JsonResp
 from .classify.trashd import Trash
@@ -12,6 +10,7 @@ from .tfmodels.routes import tfmodels_blueprint
 from .classify.routes import classify_blueprint
 from .static.routes import static_blueprint
 from .datadb.routes import files_blueprint
+from .report.routes import reports_blueprint
 
 
 def create_app():
@@ -26,7 +25,7 @@ def create_app():
     app.static_folder = "../../demos/"
 
     # upload --> classify config
-    app.config['UPLOAD_EXTENSIONS'] = ['mp3', '.wav', '.WAV', '.wave', '.WAVE']
+    app.config['UPLOAD_EXTENSIONS'] = ['.mp3', '.wav', '.WAV', '.wave', '.WAVE']
     app.config['UPLOAD_PATH'] = 'uploads'
 
     # misc Config
@@ -39,6 +38,7 @@ def create_app():
     app.register_blueprint(tfmodels_blueprint, url_prefix="/models")
     app.register_blueprint(classify_blueprint, url_prefix="/classify")
     app.register_blueprint(static_blueprint, url_prefix="/annotator/static")
+    app.register_blueprint(reports_blueprint, url_prefix="/reports")
 
     # start garbage collection daemon:
     Trash.truck()
@@ -71,6 +71,12 @@ def create_app():
     @app.route("/android-chrome-512x512.png", methods=["GET", "POST"])
     def appclcdroid512():
         return app.send_static_file("icons/tmpUI.MerlinAI-favicon-dark/android-chrome-512x512.png")
+
+    # fetch static:
+    @app.route("/<f>/", methods=["GET", "POST"])
+    def appclcfx(f):
+        print(f)
+        return app.send_static_file(f)
 
     # Index Routes:
     @app.route("/")
