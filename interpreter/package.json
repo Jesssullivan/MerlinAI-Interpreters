@@ -23,7 +23,7 @@
     "clean-renders": "find '.' -name \"*_render.html\" -print -delete",
     "clean-all": "chmod +x scripts/clean_all.sh && ./scripts/clean_all.sh",
     "sslgen": "chmod +x scripts/sslgen.sh && ./scripts/sslgen.sh",
-    "test-datadb":  "chmod +x scripts/rest_test_datadb.sh && ./scripts/rest_test_datadb.sh"
+    "test-datadb": "chmod +x scripts/rest_test_datadb.sh && ./scripts/rest_test_datadb.sh"
   },
   "devDependencies": {
     "@babel/core": "~7.12.10",
@@ -49,7 +49,7 @@
     "babel-loader": "~8.2.0",
     "buffer": "^6.0.3",
     "css-loader": "~5.0.1",
-    "css-minimizer-webpack-plugin": "~1.1.5",
+    "css-minimizer-webpack-plugin": "^3.0.1",
     "eslint": "~7.21.0",
     "eslint-config-prettier": "^7.1.0",
     "eslint-plugin-import": "^2.22.1",

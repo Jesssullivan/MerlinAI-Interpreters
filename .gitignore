@@ -1,9 +1,0 @@
-**/node_modules
-merlinai_venv
-**/.idea
-**/*.pyc
-**/__pycache__
-**/.DS_Store
-**/models.tar.gz
-**/tsne_*
-**/*.mp3
