@@ -5,7 +5,10 @@ echo -e "...Cleaning compiled..."
 rm -rf .built
 rm -rf .built_logs
 rm -rf __pycache__
+find . | grep -E "(__pycache__|\.pyc|\.pyo$)" | xargs rm -rf
+
 rm -rf db/mongo*
+rm -rf dist
 
 echo -e "\n...cleaning ./src/*.js tsc output..."
 rm ./src/*.js
@@ -22,6 +25,8 @@ find demos/ -name "*.csr" -print -delete
 
 find './demos/' -name "leaflet.annotation.j*" -print -delete
 
+find '.' -name "*_render.html" -print -delete
+find '.' -name ".DS_*" -print -delete
 
 echo -e "\ncleaning renders..."
 find '.' -name "*_render.html" -print -delete
