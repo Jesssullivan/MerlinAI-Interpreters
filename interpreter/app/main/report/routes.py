@@ -1,8 +1,7 @@
 from flask import Blueprint
 from flask import current_app as app
 from flask import redirect
-import os
-from os import path
+
 
 reports_blueprint = Blueprint("reports", __name__)
 reports_blueprint.static_folder = "../../demos/"
@@ -25,7 +24,4 @@ def rp_overview(sp):
 
 @reports_blueprint.route("/<sp>/<f>", methods=["GET", "POST"])
 def rp_file_route(sp, f):
-    if path.isfile("../../demos/assets/" + f.__str__() + '.png'):
-        return 'yes'
-    else:
-        return "../../demos/assets/" + f.__str__() + ".png"
+    return app.send_static_file(sp + '/' + f)
