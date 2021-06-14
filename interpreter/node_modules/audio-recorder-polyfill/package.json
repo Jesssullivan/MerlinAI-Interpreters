@@ -1,0 +1,42 @@
+{
+  "name": "audio-recorder-polyfill",
+  "version": "0.4.1",
+  "description": "MediaRecorder polyfill to record audio in Edge and Safari",
+  "keywords": [
+    "mediarecorder",
+    "polyfill",
+    "edge",
+    "safari",
+    "wave",
+    "wav",
+    "webrtc",
+    "audio",
+    "web audio api",
+    "recorder",
+    "mp3"
+  ],
+  "author": "Andrey Sitnik <andrey@sitnik.ru>",
+  "license": "MIT",
+  "repository": "ai/audio-recorder-polyfill",
+  "type": "module",
+  "main": "index.cjs",
+  "module": "index.js",
+  "react-native": "index.js",
+  "exports": {
+    ".": {
+      "require": "./index.cjs",
+      "import": "./index.js"
+    },
+    "./package.json": "./package.json",
+    "./mpeg-encoder/package.json": "./mpeg-encoder/package.json",
+    "./mpeg-encoder": {
+      "require": "./mpeg-encoder/index.cjs",
+      "import": "./mpeg-encoder/index.js"
+    },
+    "./wave-encoder/package.json": "./wave-encoder/package.json",
+    "./wave-encoder": {
+      "require": "./wave-encoder/index.cjs",
+      "import": "./wave-encoder/index.js"
+    }
+  }
+}
