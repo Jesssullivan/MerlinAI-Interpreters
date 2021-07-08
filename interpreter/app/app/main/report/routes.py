@@ -17,6 +17,16 @@ def rp_overview(sp):
     return reports_blueprint.send_static_file('html/' + sp + '.html')
 
 
+@reports_blueprint.route("/esc50/", methods=["GET", "POST"])
+def esc_rd():
+    return redirect("chirping_birds", code=302)
+
+
+@reports_blueprint.route("/esc50/chirping_birds", methods=["GET", "POST"])
+def esc_rd():
+    return reports_blueprint.send_static_file('chirping_birds.html')
+
+
 @reports_blueprint.route("/<sp>/<f>", methods=["GET", "POST"])
 def rp_file_route(sp, f):
     return app.send_static_file(sp + '/' + f)
