@@ -49,16 +49,10 @@ python3 -m venv merlinai_venv
 source merlinai_venv/bin/activate
 pip3 install -r requirements.txt
 
-# build specific things:
-npm run-script build-spec-web
-npm run-script build-anno-otf
-npm run-script build-anno-remote
-npm run-script build-anno-photo
-npm run-script build-webgl-web
-npm run-script build-anno-photo
+# follow the setup friendly prompts:
+npm run-script setup-app  # interactive setup, build, config.cfg 
 
 # serve: 
-npm run-script setup-app  # interactive config.cfg setup
 npm run-script serve-app  # serve with default Flask WSGI
 ```
 
@@ -132,7 +126,18 @@ npm run-script dist-anno-photo
 npm run-script dist-webgl-web
 npm run-script dist-anno-photo
 ```
+        
 
+*build specific dev bundles:*
+```
+npm run-script build-spec-web
+npm run-script build-anno-otf
+npm run-script build-anno-remote
+npm run-script build-anno-photo
+npm run-script build-webgl-web
+npm run-script build-anno-photo
+```
+        
 *serve more things:*
 ```
 npm run-script setup-app   # interactive Flask setup
