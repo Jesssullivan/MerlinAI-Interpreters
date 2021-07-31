@@ -35,7 +35,7 @@ def bindex():
 
 @classify_blueprint.route('/server', methods=['GET'])
 def sbcrop():
-    return app.send_static_file('spec_crop_interpreter.html')
+    return render_template('spec_crop_interpreter.html')
 
 
 @classify_blueprint.route("/webgl", methods=["GET"])
@@ -62,11 +62,7 @@ def pupload_files():
 
     res = Classifier.classify_proc_select(usr_dir)
 
-    for x in res:
-        print(x + ": " + res[x])
-        flash(x + ": " + res[x])
-
-    return render_template("uploaderSelectOps.html")
+    return res
 
 
 @classify_blueprint.route('/select', methods=['GET'])
@@ -89,7 +85,8 @@ def api_pupload_files():
         uploaded_file.save(os.path.join(usr_dir, filename))
 
     res = Classifier.classify_proc_select(usr_dir)
-    return jsonify(res)
+
+    return res
 
 
 @classify_blueprint.route('/standard', methods=['GET'])
@@ -182,9 +179,3 @@ def clcdroid512():
 @classify_blueprint.route("<file>", methods=["GET", "POST"])
 def clfilex(file):
     return app.send_static_file(file)
-
-
-@classify_blueprint.route("/select/classify", methods=["GET"])
-def toastReq():
-    return app.send_static_file('uploaderSelectOps.html')
-  

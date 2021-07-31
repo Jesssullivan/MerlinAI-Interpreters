@@ -176,38 +176,34 @@ const handleClassifyWaveform = async() => {
 
         // make the POST:
         fetch(webClassifyURL, {
-        method: 'POST',
-        body: formData
+            method: 'POST',
+            body: formData
         })
         .then(response => {
             response.json().then(data => {
 
-               log('received scores!');
-
-                // zing the received json Object into a sortable Array:
-                let i;
-                let results = [];
-                for (i in data) {
-                    results.push([i, data[i]]);
-                }
-
-                // sort the Array by descending value:
-                results = results.sort((a, b) =>  b[1] - a[1]);
-
-                // send resulting scores to user as an alert:
+                // initialize an alert message for the scores:
                 let resultStr = classifyTextHeader + "\n" + "Scores:" + "\n";
 
-                // generate a html list to show the user scores too:
-                for (i in results) {
-                    const scoreEl = document.createElement('li');
-                    scoreEl.textContent = ' ' + results[i].join(" ");
-                    resultStr += "\n" + results[i].join(" ");
-                    resultEl.appendChild(scoreEl);
-                    sampleHolderEl.prepend(resultEl);
-                    log(results[i].join(" "));
+                // its 4:15 am, i sorry but we parsing json with split()
+                // forgive me
+                let data_str = data.toString();
+                data_str = data_str.split('{')[1].split('}')[0].split(',');
+
+                // we'll populate these arrays:
+                let data_keys = [];
+                let data_values = [];
+
+                for (let x in data_str) {
+                    const xkey: string = data_str[x].split(':')[0].split("'")[1];
+                    const xvalue: number = eval(data_str[x].split(':')[1].split(' ')[1]);
+                    data_keys.push(xkey);
+                    data_values.push(xvalue);
+                    resultStr += xkey + ": " + xvalue + " \n";
+
                 }
                 alert(resultStr);
-            });
+            })
         })
         .catch(error => {
             console.error(error);
@@ -347,7 +343,6 @@ const renderSpectrogram = (imageURI : string, spectrogramLength: number) => {
 
     // wait for a click:
     analyzeBtn.onclick = async () => {
-
         //@ts-ignore
         currentWaveformSample = updateVis();
         // YMMV, but YOLO:

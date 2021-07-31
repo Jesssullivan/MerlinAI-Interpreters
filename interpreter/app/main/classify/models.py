@@ -11,6 +11,26 @@ import os
 MODEL_INPUT_SAMPLE_COUNT = 22050 * 3
 WINDOW_STEP_SAMPLE_COUNT = 44100
 
+# Specify the input size to the model
+SAMPLERATE = 22050
+WINDOW_SIZE_SAMPLES = int(SAMPLERATE * 3)
+WINDOW_STEP_SIZE_SAMPLES = int(SAMPLERATE * 1.5)
+
+# Specify duration covered per plot:
+SEG_LENGTH_SEC = 30
+
+# Specify prediction threshold:
+THRESH = .4
+
+# Load in the saved model
+savedmodel_dir = os.path.join("demos/models", "savedmodel_with_preprocessing")
+
+# Restore the model
+model = tf.saved_model.load(savedmodel_dir)
+
+# Load in the species codes that correspond to the model's outputs
+model_text_labels = np.loadtxt(os.path.join(savedmodel_dir, "labels.txt"), dtype=object).tolist()
+
 
 """ serverside classification """
 
@@ -18,7 +38,87 @@ WINDOW_STEP_SAMPLE_COUNT = 44100
 class Classifier(object):
 
     @staticmethod
-    def classify_proc_select(dir=''):
+    def classify_proc_select(usr_dir):
+
+        audio_fp = glob.glob(usr_dir + '/*.wav')[0]
+
+        # load in audio:
+        samples, samplerate = librosa.load(audio_fp,
+                                           sr=22050,
+                                           mono=True)
+
+        # padding out clip extra heavy handedly, please forgive me:
+        while samples.shape[0] / samplerate < 3:
+            samples = np.pad(samples, 100, mode='constant')
+
+        # put labels and predictions in these lists:
+        target_labels = []
+
+        # classify in windowed chunks
+        # Compute the number of valid patches
+        w = samples.shape[0]
+        f = WINDOW_SIZE_SAMPLES
+        s = WINDOW_STEP_SIZE_SAMPLES
+        p = 0
+
+        num_valid_patches = (w - f + 2 * p) // s + 1
+        patch_predictions = []
+
+        for window_index in range(num_valid_patches):
+            start_index = window_index * WINDOW_STEP_SIZE_SAMPLES
+            end_index = start_index + WINDOW_SIZE_SAMPLES
+
+            window_samples = samples[start_index:end_index]
+
+            # Returns [1, Number of Classes]
+            predictions = model(window_samples).numpy()[0]
+
+            patch_predictions.append({
+                "start_index": start_index,
+                "end_index": end_index,
+                "predictions": predictions
+            })
+
+        # What is the average prediction across the whole audio?
+        all_preds = np.array([p['predictions'] for p in patch_predictions])
+
+        preds = np.mean(all_preds, axis=0)
+
+        # it may be the case with really short, low quality audio
+        # we do not get any predictions whatsoever
+        if preds.ndim == 0:
+            print('ndim is 0, returning false')
+            return False
+
+        # perhaps something has gone all pearshaped with the audio file:
+        if np.isnan(preds.all()):
+            print('isnan, returning false')
+            return False
+
+        # skim off the top 5 scores and labels:
+        K = 5
+        top_preds = np.argsort(preds)[::-1][:K]
+        top_scores = [preds[i] for i in top_preds]
+
+        for i in range(5):
+            if top_scores[i] > 0:
+                label = top_preds[i]
+                if model_text_labels[label] not in target_labels:
+                    target_labels.append(model_text_labels[label])
+
+        valid_target_labels = []
+        for target_label in target_labels:
+            if target_label not in model_text_labels:
+                print("%s not in model" % target_label)
+            else:
+                valid_target_labels.append(target_label)
+
+        # return only our top guess:
+        res = jsonify(str(dict(zip(valid_target_labels, top_scores))))
+        return res
+
+    @staticmethod
+    def classify_proc_select_v1(dir=''):
 
         # Load in the map from integer id to species code
         with open(labels_fp_select) as f:
