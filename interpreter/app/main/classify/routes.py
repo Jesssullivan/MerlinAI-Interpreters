@@ -60,7 +60,7 @@ def pupload_files():
         # all seems well, save the file:
         uploaded_file.save(os.path.join(usr_dir, filename))
 
-    res = Classifier.classify_proc_select(usr_dir)
+    res = Classifier.classify_proc_select_v2(usr_dir)
 
     return res
 
@@ -84,7 +84,7 @@ def api_pupload_files():
         # all seems well, save the file:
         uploaded_file.save(os.path.join(usr_dir, filename))
 
-    res = Classifier.classify_proc_select(usr_dir)
+    res = Classifier.classify_proc_select_v2(usr_dir)
 
     return res
 
@@ -108,7 +108,7 @@ def pupload_filesstandard():
         # all seems well, save the file:
         uploaded_file.save(os.path.join(usr_dir, filename))
 
-    res = Classifier.classify_proc_select(usr_dir)
+    res = Classifier.classify_proc_select_v2(usr_dir)
 
     for x in res:
         print(x + ": " + res[x])
@@ -133,44 +133,6 @@ def api_pupload_filesstandard():
 
     res = Classifier.classify_proc_std(usr_dir)
     return jsonify(res)
-
-
-""" route static """
-
-
-@classify_blueprint.route("favicon.ico", methods=["GET", "POST"])
-def clcfavicon_ico():
-    return app.send_static_file("icons/tmpUI.MerlinAI-favicon-dark/favicon.ico")
-
-
-@classify_blueprint.route("site.webmanifest", methods=["GET", "POST"])
-def clcwebmanifest():
-    return app.send_static_file("icons/tmpUI.MerlinAI-favicon-dark/site.webmanifest")
-
-
-@classify_blueprint.route("favicon-16x16.png", methods=["GET", "POST"])
-def clcfavicon_ico16():
-    return app.send_static_file("icons/tmpUI.MerlinAI-favicon-dark/favicon-16x16.png")
-
-
-@classify_blueprint.route("favicon-32x32.png", methods=["GET", "POST"])
-def clcfavicon_ico32():
-    return app.send_static_file("icons/tmpUI.MerlinAI-favicon-dark/favicon-32x32.png")
-
-
-@classify_blueprint.route("apple-touch-icon.png", methods=["GET", "POST"])
-def clcapple_touch():
-    return app.send_static_file("icons/tmpUI.MerlinAI-favicon-dark/apple-touch-icon.png")
-
-
-@classify_blueprint.route("android-chrome-192x192.png", methods=["GET", "POST"])
-def clcdroid192():
-    return app.send_static_file("icons/tmpUI.MerlinAI-favicon-dark/android-chrome-192x192.png")
-
-
-@classify_blueprint.route("android-chrome-512x512.png", methods=["GET", "POST"])
-def clcdroid512():
-    return app.send_static_file("icons/tmpUI.MerlinAI-favicon-dark/android-chrome-512x512.png")
 
 
 """ fetch static """

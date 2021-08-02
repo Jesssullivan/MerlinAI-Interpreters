@@ -38,7 +38,7 @@ model_text_labels = np.loadtxt(os.path.join(savedmodel_dir, "labels.txt"), dtype
 class Classifier(object):
 
     @staticmethod
-    def classify_proc_select(usr_dir):
+    def classify_proc_select_v2(usr_dir):
 
         audio_fp = glob.glob(usr_dir + '/*.wav')[0]
 
