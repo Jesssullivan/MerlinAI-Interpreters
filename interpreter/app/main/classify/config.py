@@ -41,8 +41,8 @@ MODEL_SAMPLE_RATE = 22050
 
 
 # how often should the garbage collector remove old directories?
-collection_int = 60  # secs
-collection_trash = 30  # secs
+collection_int = 480  # secs
+collection_trash = 240  # secs
 
 # recyclable serverside directories-
 
