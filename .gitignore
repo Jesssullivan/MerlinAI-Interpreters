@@ -1,1 +1,9 @@
 ./interpreter/demos/models
+./interpreter/demos/models
+./interpreter/demos/html
+./interpreter/demos/*.pdf
+./interpreter/demos/*.png
+**/.DS_*
+**/*.pyc
+**/__pycache*
+
