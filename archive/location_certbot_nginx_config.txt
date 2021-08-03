@@ -1,0 +1,38 @@
+
+server {
+server_name www.ai.columbari.us ai.columbari.us;
+location / {
+        proxy_pass http://127.0.0.1:5000;
+        proxy_read_timeout 999999;
+        proxy_connect_timeout 999999;
+        proxy_send_timeout 999999;
+        send_timeout 999999;
+}
+
+    listen 443 ssl; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/ai.columbari.us/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/ai.columbari.us/privkey.pem; # managed by Certbot
+    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
+
+
+}
+server {
+    if ($host = www.ai.columbari.us) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+
+
+    if ($host = ai.columbari.us) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+
+
+listen 80;
+server_name www.ai.columbari.us ai.columbari.us;
+    return 404; # managed by Certbot
+
+
+}
+
