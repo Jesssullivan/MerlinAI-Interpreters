@@ -113,9 +113,10 @@ class Classifier(object):
             else:
                 valid_target_labels.append(target_label)
 
-        # return only our top guess:
-        res = jsonify(str(dict(zip(valid_target_labels, top_scores))))
-        return res
+        print(valid_target_labels[0])
+        # return only our top guess
+        res = str(dict(zip(valid_target_labels, top_scores)))
+        return jsonify(res)
 
     @staticmethod
     def classify_proc_select_v1(dir=''):

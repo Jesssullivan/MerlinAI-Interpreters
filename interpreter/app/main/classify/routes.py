@@ -61,7 +61,7 @@ def pupload_files():
         uploaded_file.save(os.path.join(usr_dir, filename))
 
     res = Classifier.classify_proc_select_v2(usr_dir)
-
+    print(res)
     return res
 
 

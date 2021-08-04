@@ -93,7 +93,7 @@ echo
 
 if [ $DIST_NOW  == 'YES' ]; then
 
-  npm install
+  npm run-script dist-nouislider
   wait
 
   npm run-script dist-spec-web
@@ -113,6 +113,11 @@ if [ $DIST_NOW  == 'YES' ]; then
 
   npm run-script dist-anno-photo
   wait
+
+  npm run-script dist-anno-tool
+  wait
+
+  cp dist/* demos/
 
 fi
 
