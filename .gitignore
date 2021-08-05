@@ -6,4 +6,7 @@
 **/.DS_*
 **/*.pyc
 **/__pycache*
-
+**/uploads/
+interpreter/uploads
+**/*_venv/
+**/node_modules/
