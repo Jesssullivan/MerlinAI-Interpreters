@@ -6,28 +6,47 @@
  *  directly from the audio source "on the fly" in the browser.
  *
  *  to compile this demo:
- *  ` npm run-script build-audio-web `
+ *  ` npm run-script build-anno-otf `
  *
  *  ...or:
- * ` npm run-script dist-audio-web `
+ * ` npm run-script dist-anno-otf `
  */
+
+/* eslint-disable */
+
+import * as React from "react";
+
+let annotatorRendered = null; // allows us to export annotations
+let currentImageIndex = 0; // keep track of which image we are working on.
+
+// Dimensions of the spectrogram
+let spectrogram_height = null;
+let spectrogram_width = null;
+
+// This value helps dictate the "window size" for the spectrogram. Assuming the Leaflet Map is 1200px wide:
+// A 220 original height spectrogram, scaled up to 300 results in ~3.5 seconds
+// A 220 original height spectrogram, scaled down to 211 results in ~5 seconds
+let targetSpectrogramHeight = 300; //300; // the height that the spectrogram should be rendered at.
+
+// Audio Controls
+// space bar is play and pause
+let pixels_per_second = null;
+let pixels_per_ms = null;
+let pan_interval_ms = 100; // the interval that we should pan the spectrogram at.
+
+let audioElement = null;
+let playing_audio = false;
+let playing_audio_timing_id = null;
+let current_offset = 0; // our current pixel offset in the image
+
+let arrow_key_distance = 250. / 4; // quarter of a second movement (assuming 250 pixels per second...)
 
 import * as audio_loader from "../src/audio_loading_utils";
 import * as audio_utils from "../src/audio_utils";
 import * as spectrogram_utils from "../src/spectrogram_utils";
-import {log} from "../src";
-
-// react:
-const React = require('react');
 
 // selector:
 const $ = require('jquery');
-
-// variables to keep of things while we annotate:
-let annotatorRendered = null;
-let spectrogram_width: number = null;
-let spectrogram_height: number = null;
-let currentImageIndex = 0;
 
 //  mongo endpoint to add annotations:
 // const POST_URL = "http://127.0.0.1:5000/events/add";
@@ -274,72 +293,212 @@ class SpectrogramPlayer extends AudioPlayer implements SpectrogramInterface {
     };
 }
 
-/**
- * function startAnnotating initializes & loads up an annotator.
- *
- * @param images_data
- * @param categories
- * @param annotations
- * @param config
- */
-const startAnnotating =
-    (images_data: any[], categories: any, annotations: Array<{ [x: string]: any }>,
-     config: {
-        quickAccessCategoryIDs: any[];
-        annotationFilePrefix: string;
-    }) => {
+function panSpectrogram() {
 
-    // Audio & Spectrogram functions:
-    const spectrogram = new SpectrogramPlayer();
+    let currentTime = audioElement.currentTime;
+
+    // Where is the audio in milliseconds
+    //let audio_time_ms = currentTime * 1000;
+
+    // Convert milliseconds to pixel translation
+    //let offset = pixels_per_ms * audio_time_ms;
+
+    let offset = pixels_per_second * currentTime;
+
+    annotatorRendered.panTo(offset);
+
+    current_offset = offset;
+
+}
+
+function audioEnded() {
+    clearInterval(playing_audio_timing_id);
+    playing_audio = false;
+}
+
+function startPlaying() {
+
+    if (audioElement != null) {
+
+        audioElement.currentTime = current_offset / pixels_per_second;
+
+        // If the user "focused" on an annotation, then our offset position that is rendered is off.
+        // So make sure to "re-pan" the map to the current offset.
+        annotatorRendered.panTo(current_offset);
+
+        audioElement.onended = audioEnded;
+        audioElement.play();
+        playing_audio_timing_id = setInterval(panSpectrogram, pan_interval_ms);
+        playing_audio = true;
+
+    }
+
+}
+
+function stopPlaying() {
+
+    if (audioElement != null && !audioElement.paused) {
+
+        audioElement.pause();
+        clearInterval(playing_audio_timing_id);
+
+    }
+    playing_audio = false;
+
+}
+
+function goForward() {
+
+    if (current_offset >= spectrogram_width) {
+        return;
+    }
+
+    if (playing_audio) {
+        stopPlaying();
+    }
+
+    current_offset = Math.min(spectrogram_width, current_offset + arrow_key_distance);
+    annotatorRendered.panTo(current_offset);
+
+}
+
+function goBackward() {
+
+    if (current_offset === 0) {
+        return;
+    }
+
+    if (playing_audio) {
+        stopPlaying();
+    }
+
+    current_offset = Math.max(0, current_offset - arrow_key_distance);
+    annotatorRendered.panTo(current_offset);
+
+}
+
+/* Handle the situation when the map pans to an annotation.
+In this case we need to change our audio playback position.
+*/
+function mapPannedTo(x_loc) {
+
+    if (playing_audio) {
+        stopPlaying();
+    }
+
+    // Convert the pixel location to time
+    // Set the playback position in the audio
+    audioElement.currentTime = x_loc / pixels_per_second;
+    // Set our current offset
+    current_offset = x_loc;
+
+}
+
+function handleKeyDown(e) {
+
+    let PLAY_PAUSE_KEY = 32;
+    let RIGHT_ARROW_KEY = 39; // Forward
+    let LEFT_ARROW_KEY = 37; // Backward
+    let T_KEY = 84; // new instance of duplicate props
+
+    switch (e.keyCode) {
+        case PLAY_PAUSE_KEY:
+            if (e.target === document.body) {
+                if (playing_audio) {
+                    stopPlaying();
+                } else {
+                    startPlaying();
+                }
+                e.preventDefault(); // prevent the space button from scrolling
+            }
+            break;
+        case RIGHT_ARROW_KEY:
+            goForward()
+            break;
+        case LEFT_ARROW_KEY:
+            goBackward()
+            break;
+        case T_KEY:
+            break;
+    }
+
+}
+
+function enableAudioKeys() {
+    // Register keypresses
+    document.addEventListener("keydown", handleKeyDown);
+}
+
+function disableAudioKeys() {
+    // Unregister keypresses
+    document.removeEventListener("keydown", handleKeyDown);
+}
+
+function getQuickAccessCategoryIDs() {
+
+    // @ts-ignore
+    let rawCatIDs = $.trim(document.getElementById("easyAccessCategories").value);
+    var cat_ids = []
+
+    if (rawCatIDs !== "") {
+
+        var str_cat_ids = rawCatIDs.split(/\r?\n/);
+
+        // @ts-ignore
+        let usestrIDs = document.getElementById("categoryIDTypeRadioStr").checked;
+        if (usestrIDs) {
+            cat_ids = str_cat_ids;
+        } else {
+            cat_ids = str_cat_ids.map(cat_id => {
+                return parseInt(cat_id)
+            });
+        }
+
+    }
+
+    return cat_ids;
+
+}
+
+function startAnnotating(images_data, categories, annotations, config) {
 
     if (images_data.length === 0) {
         alert("Error: No images?");
         return;
     }
+ // Parse the config dict
+    let quickAccessCatIDs = config.quickAccessCategoryIDs || [];
+    let annotation_file_prefix = config.annotationFilePrefix || "";
 
-    const quickAccessCatIDs = config.quickAccessCategoryIDs || [];
-    const annotation_file_prefix = config.annotationFilePrefix || "";
-
-    const image_id_to_annotations:any = {};
-
-    images_data.forEach((image_info: any) => {
+    // Group the annotations by image_id so that we can easily overwrite them with the new annotations
+    var image_id_to_annotations = {};
+    images_data.forEach(image_info => {
         image_id_to_annotations[image_info['id']] = [];
-    });
-
-    annotations.forEach((anno: { [x: string]: any }) => {
-        const image_id = anno['image_id'];
+    })
+    annotations.forEach(anno => {
+        let image_id = anno['image_id'];
         image_id_to_annotations[image_id].push(anno);
     });
 
-    /**
-     * annotateImage:
-     *
-     * select which item to annotate by imageIndex.
-     *
-     * @param imageIndex
-     */
-    const annotateImage = async(imageIndex: number) => {
 
-        const image_info = images_data[imageIndex];
+    function annotateImage(imageIndex) {
 
-        const existing_annotations = image_id_to_annotations[image_info.id];
+        let image_info = images_data[imageIndex];
+        let existing_annotations = image_id_to_annotations[image_info.id];
 
         if (annotatorRendered != null) {
 
-            // There was a previous image, make sure to unmount it (and stop audio):
-            spectrogram.stopPlaying();
-            spectrogram.disableAudioKeys();
+            // There was a previous image, make sure to unmount it (and stop audio)
+            stopPlaying();
+            disableAudioKeys();
 
             // @ts-ignore
             ReactDOM.unmountComponentAtNode(document.getElementById("annotationHolder"));
             annotatorRendered = null;
 
         }
-
         $("#currentImageProgress").text('Image ' + (imageIndex + 1) + ' / ' + images_data.length);
-
         $("#currentAudioDuration").text('Dur: ? sec');
-
         if (imageIndex === 0) {
             $("#previousImageButton").prop("disabled", true);
         } else {
@@ -356,108 +515,88 @@ const startAnnotating =
         document.getElementById("waitLoader").style.visibility = "visible";
 
         // generate & display a spectrogram:
-        spectrogram.generate(image_info)
-            .then((imageEl) => {
+        const spectrogram = new SpectrogramPlayer();
+        spectrogram.generate(image_info).then((imageEl) => {
 
-                // Get the dimensions of the spectrogram:
+            // We need to have access to the pixels before initializing Leaflet
+            imageEl.onload = function () {
+
+                // Get the dimensions of the spectrogram
                 spectrogram_height = imageEl.height;
                 spectrogram_width = imageEl.width;
 
-                // remove loader:
-                document.getElementById("waitLoader").style.visibility = "hidden";
-
-                const addAudioFunctions =(annotatorRendered: {
-                    renderForSpectrogram: (arg0: any) => void;
-                    turnOffZoom: () => void;
-                    turnOffDrag: () => void; }) => {
+                function addAudioFunctions(annotatorRendered) {
 
                     // Setup the view for the audio
-                    annotatorRendered.renderForSpectrogram(spectrogram.targetSpectrogramHeight);
+                    annotatorRendered.renderForSpectrogram(targetSpectrogramHeight);
                     annotatorRendered.turnOffZoom();
                     annotatorRendered.turnOffDrag();
 
                     // Audio Controls
                     // space bar is play and pause
-                    spectrogram.pixels_per_second = null;
-                    spectrogram.pixels_per_ms = null;
+                    pixels_per_second = null;
+                    pixels_per_ms = null;
 
-                    spectrogram.audioElement = new Audio();
-                    spectrogram.playing_audio = false;
-                    spectrogram.playing_audio_timing_id = null;
-                    spectrogram.current_offset = 0;
+                    audioElement = new Audio();
+                    playing_audio = false;
+                    playing_audio_timing_id = null;
+                    current_offset = 0;
 
-                    // Load in the audio for the spectrogram:
-                    spectrogram.audioElement.addEventListener('canplaythrough', () => {
-
+                    // Load in the audio for the spectrogram
+                    audioElement.addEventListener('canplaythrough', () => {
+                        let duration = audioElement.duration;
                         // The duration variable now holds the duration (in seconds) of the audio clip
-                        const duration = spectrogram.audioElement.duration;
 
                         // This should be ~250 (because of the SoX command)
-                        spectrogram.pixels_per_second = spectrogram_width / duration;
+                        pixels_per_second = 250.0; //spectrogram_width / duration;
 
-                        spectrogram.pixels_per_ms = spectrogram.pixels_per_second / 1000.0;
+                        pixels_per_ms = pixels_per_second / 1000.0;
 
-                        const Spectrogram_Props = {
-                            "Spectrogram Height": spectrogram_height,
-                            "Spectrogram Width": spectrogram_width,
-                            "Duration": duration.toString(),
-                            "Pixels / second": spectrogram.pixels_per_second,
-                            "Current Time": spectrogram.audioElement.currentTime
-                        };
-
-                        spectrogram.enableAudioKeys();
+                        enableAudioKeys();
 
                         $("#currentAudioDuration").text('Dur: ' + duration.toFixed(2) + ' sec');
 
                     });
-
-                    spectrogram.audioElement.src = image_info.audio;
-
-                    spectrogram.audioElement.addEventListener('error', () => {
-                        alert("Error loading the audio for image " + image_info.id + ". Perhaps the resource has been deleted? Maybe skip?");
+                    audioElement.src = image_info.audio;
+                    audioElement.addEventListener('error', () => {
+                        alert("Error loading the audio for image " + image_info.id + ". Perhaps the resouce has been deleted? Maybe skip or try to come back to this asset?");
                     });
+                    audioElement.load();
 
-                    spectrogram.audioElement.load();
+                }
 
-                };
-
-                const delayAudioPrepTillRender = (annotatorRendered: {
-                    renderForSpectrogram: (arg0: any) => void;
-                    turnOffZoom: () => void;
-                    turnOffDrag: () => void; }) => {
+                function delayAudioPrepTillRender(annotatorRendered) {
 
                     if (!('audio' in image_info)) {
-                        log("No audio url in image info", "annotator_audio.ts");
+                        console.log("No audio url in image info");
                         return;
                     }
 
                     // Annoying, but we need leaflet to render the image before we start
                     // doing transformations
-                    setTimeout(() => addAudioFunctions(annotatorRendered), 80);
+                    setTimeout(() => addAudioFunctions(annotatorRendered), 100);
+                }
 
-                };
-
-                /**
-                 * Create the Leaflet.annotation element:
-                 */
+                // Create the Leaflet.annotation element
                 // @ts-ignore
-                const annotator = React.createElement(document.LeafletAnnotation, {
-                    imageElement : imageEl,
-                    image : image_info,
-                    annotations : existing_annotations,
-                    categories,
-                    options : {
-                        enableEditingImmediately : false,
-                        map : {
-                            attributionControl : false,
-                            zoomControl : false,
-                            boxZoom : false,
-                            doubleClickZoom : false,
-                            keyboard : true,
-                            scrollWheelZoom : false
+                let annotator = React.createElement(document.LeafletAnnotation, {
+                    imageElement: imageEl,
+                    image: image_info,
+                    annotations: existing_annotations,
+                    categories: categories,
+                    options: {
+                        enableEditingImmediately: true,
+                        enableClassify: true,
+                        map: {
+                            attributionControl: false,
+                            zoomControl: false,
+                            boxZoom: false,
+                            doubleClickZoom: false,
+                            keyboard: false,
+                            scrollWheelZoom: false
                         },
 
-                        quickAccessCategoryIDs : quickAccessCatIDs,
+                    quickAccessCategoryIDs: quickAccessCatIDs,
 
                         newInstance: {
                             annotateCategory: true,
@@ -465,59 +604,83 @@ const startAnnotating =
                             annotationType: 'box'
                         },
 
-                        duplicateInstance : {
-                            enable : true,
-                            duplicateY : true  // duplicate the frequency components of the box
+                        duplicateInstance: {
+                            enable: true,
+                            duplicateY: true  // duplicate the frequency components of the box
                         },
 
-                        showCategory : true,
+                        showCategory: true,
                         showSupercategory: true,
-                        showIsCrowdCheckbox: true,
+                        showIsCrowdCheckbox: false,
 
-                        renderBoxes : true,
+                        enableBoxEdit: true,
+                        renderBoxes: true,
+
+                        enableSegmentationEdit: false,
+                        renderSegmentations: false,
 
                         // @ts-ignore
-                        // didMountLeafletCallback : delayAudioPrepTillRender
+                        imageInfoComponent: document.MLAudioInfo,
 
+                        didMountLeafletCallback: delayAudioPrepTillRender,
+                        didFocusOnAnnotationCallback: mapPannedTo
                     }
                 }, null);
 
-                /*
-                 *  Render the annotator:
-                 */
-
+                // Render the annotator
                 // @ts-ignore
                 annotatorRendered = ReactDOM.render(annotator, document.getElementById('annotationHolder'));
 
-                imageEl.addEventListener('error', () => {
-                    alert("Error loading the pixels for image " + image_info.id + ". Perhaps the resource has been deleted? Maybe skip?");
 
-                });
+                // Create the one second intervals lines that will appear over the spectrogram.
+                // These are 1px wide lines.
+                // NOTE: these values are hard coded for a window width of 1200px with one second being 240px.
+                let interval_offset = 120;
+                let one_second_interval = 240;
+                for (let i = 0; i < 5; i++) {
+                    $(".leaflet-image-holder").append(
+                        $("<span></span>").css({
+                            "content": "",
+                            "width": "1px",
+                            "height": "100%",
+                            "display": "block",
+                            "z-index": 999,
+                            "left": "" + (interval_offset + (i * one_second_interval)) + "px",
+                            "position": "absolute",
+                            "background-image": "linear-gradient(#495057bf, #495057bf)",
+                            "background-size": "1px 100%",
+                            "background-repeat": "no-repeat",
+                            "background-position": "center center"
+                        })
+                    );
+                }
+            }
+        imageEl.addEventListener('error', () => {
+            alert("Error loading the pixels for image " + image_info.id + ". Perhaps the resouce has been deleted? Maybe skip?");
+        });
+        imageEl.src = image_info.url;
+        });
+    }
 
-            });
-
-    };
-
-    const saveCurrentAnnotations = () => {
+    function saveCurrentAnnotations() {
 
         // It could be the case that the image or audio failed to load, in which case we wouldn't have a `annotatorRendered`
         if (annotatorRendered != null) {
-            const annos = annotatorRendered.getAnnotations({
-                modifiedOnly : false,
-                excludeDeleted : true
+            let annos = annotatorRendered.getAnnotations({
+                modifiedOnly: false,
+                excludeDeleted: true
             });
 
-            const image_id = images_data[currentImageIndex].id;
+            let image_id = images_data[currentImageIndex].id;
             image_id_to_annotations[image_id] = annos;
         }
+    }
 
-    };
-
-    $("#nextImageButton").on('click', () => {
+    $("#nextImageButton").click(function () {
 
         saveCurrentAnnotations();
 
-        if(currentImageIndex < images_data.length - 1){
+        if (currentImageIndex < images_data.length - 1) {
             currentImageIndex += 1;
             annotateImage(currentImageIndex);
         }
@@ -526,31 +689,29 @@ const startAnnotating =
 
     });
 
-    $("#previousImageButton").on('click', () =>{
+    $("#previousImageButton").click(function () {
 
         saveCurrentAnnotations();
 
-        if(currentImageIndex > 0) {
+        if (currentImageIndex > 0) {
             currentImageIndex -= 1;
             annotateImage(currentImageIndex);
         }
 
         document.getElementById("previousImageButton").blur();
 
+
     });
 
-    const goToImage = () => {
-
+    function goToImage() {
         saveCurrentAnnotations();
 
         let index = -1;
 
         try {
-            // tslint:disable-next-line:radix
-            index = parseInt($("#goToImageInput").val());
-            index = index - 1; // account for 0 indexing
-        }
-        catch(err) {
+            index = parseInt(<string>$("#goToImageInput").val());
+            index = index - 1; // acount for 0 indexing
+        } catch (err) {
             return;
         }
 
@@ -558,40 +719,38 @@ const startAnnotating =
             currentImageIndex = index;
             annotateImage(currentImageIndex);
         }
-    };
+    }
 
-    $("#goToImageButton").click(() => {
+    $("#goToImageButton").click(function () {
+
         document.getElementById("goToImageButton").blur();
+
         goToImage();
 
     });
-
     document.getElementById("goToImageInput").addEventListener('keyup', ({key}) => {
-        if (key === "Enter"){
+        if (key === "Enter") {
+
             document.getElementById("goToImageInput").blur();
             goToImage();
         }
     });
 
     // Allow the annotations to be downloaded
-    $("#exportAnnos").click(() => {
+    $("#exportAnnos").click(function () {
 
         saveCurrentAnnotations();
 
-        let annos: any[] = [];
-
-        images_data.forEach((image_info: { id: string | number }) => {
+        let annos = [];
+        images_data.forEach(image_info => {
             annos = annos.concat(image_id_to_annotations[image_info.id]);
         });
 
-        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(annos));
-        const downloadAnchorNode = document.createElement('a');
-
-        downloadAnchorNode.setAttribute("href",     dataStr);
+        var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(annos));
+        var downloadAnchorNode = document.createElement('a');
+        downloadAnchorNode.setAttribute("href", dataStr);
         downloadAnchorNode.setAttribute("download", annotation_file_prefix + "annotations.json");
-
         document.body.appendChild(downloadAnchorNode); // required for firefox
-
         downloadAnchorNode.click();
         downloadAnchorNode.remove();
 
@@ -601,82 +760,31 @@ const startAnnotating =
 
     });
 
-    /*
-    // Allow the annotations to be sent as post request
-    $("#postAnnos").click(async () => {
-
-        saveCurrentAnnotations();
-
-        // let entries = {};
-        const dtime = new Date();
-        let allAnnos = [];
-
-        images_data.forEach((image_info: { id: string | number}) => {
-            allAnnos = allAnnos.concat(image_id_to_annotations[image_info.id]);
-        });
-
-        for (const entry in allAnnos) {
-            allAnnos[entry].ML_id = allAnnos[entry].image_id;
-            allAnnos[entry].username ="AdminYukiTheRoundestSeal";
-            for (const image in images_data) {
-                if (images_data[image].image_id === allAnnos[entry].image_id) {
-                    allAnnos[entry].media_source = images_data[image].audio;
-                }
-            }
-            allAnnos[entry].last_modified =  dtime.toISOString();
-            log(allAnnos[entry]);
-        }
-
-        const rawResponse = await fetch(POST_URL, {
-
-            method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-            body: JSON.stringify(allAnnos)
-        });
-
-        await rawResponse.json();
-
-        alert("Uploaded a total of " + allAnnos.length + " annotations to " + POST_URL);
-
-        document.getElementById("exportAnnos").blur();
-
-    });
-    */
-
     // HACK: trying to make the spacebar play the audio after modifying an annotation
     // this seems to be working....
     document.addEventListener("mouseup", (e) => {
-        try {
-            if (document.activeElement) {
+        if (document.activeElement) {
+            // @ts-ignore
+            if (!(e.target.tagName.toUpperCase() === 'INPUT')) {
                 // @ts-ignore
-                if (!(e.target.tagName.toUpperCase() === 'INPUT')) {
-                    // @ts-ignore
-                    document.activeElement.blur();
-                }
+                document.activeElement.blur();
             }
-        }
-        catch (e) {
-            log('error @ ' + e + '\n ...with spacebar event listener, continuing...');
         }
     });
 
     // Kick everything off.
     annotateImage(currentImageIndex);
 
-};
+}
 
-
-/**
+/*
  * Allows the user to choose a directory.
  */
-document.querySelector('#customFile').addEventListener('change', (ev)=> {
+document.querySelector('#customFile').addEventListener('change', (ev) => {
 
-    ev.preventDefault();
+    ev.preventDefault()
 
-    const local_image_data: Array<{ id: number; url: string; attribution: string }> = [];
+    const local_image_data = [];
 
     let image_json_promise = null;
     let category_json_promise = null;
@@ -684,67 +792,64 @@ document.querySelector('#customFile').addEventListener('change', (ev)=> {
     let config_json_promise = null;
 
     // @ts-ignore
-    for(let i = 0; i < ev.target.files.length; i++){
+    for (let i = 0; i < ev.target.files.length; i++) {
+
         // @ts-ignore
-        const item = ev.target.files[i];
+        let item = ev.target.files[i];
 
         // Is this an image?
-        if (item.type === "image/jpeg" || item.type === "image/png"){
+        if (item.type === "image/jpeg" || item.type === "image/png") {
 
-            const image_id = item.name.split('.')[0];
+            let image_id = item.name.split('.')[0];
 
             local_image_data.push({
-                id : image_id,
+                id: image_id,
                 url: item.webkitRelativePath,
-                attribution : "N/A"
+                attribution: "N/A"
             });
 
         }
 
-        // Processing input files / annotation task directory:
         // Is this a json file?
         else if (item.type === "application/json") {
 
+
             if (item.name === 'images.json') {
-                image_json_promise = item.text().then((text: string) => JSON.parse(text));
+                image_json_promise = item.text().then(text => {
+                    return JSON.parse(text)
+                });
+            } else if (item.name === 'categories.json') {
+
+                category_json_promise = item.text().then(text => {
+                    return JSON.parse(text)
+                });
+
+            } else if (item.name.includes('annotations.json')) {
+
+                annotation_json_promise = item.text().then(text => {
+                    return JSON.parse(text)
+                });
+
+            } else if (item.name == 'config.json') {
+
+                config_json_promise = item.text().then(text => {
+                    return JSON.parse(text)
+                });
+
+            } else {
+                console.log("Ignoring " + item.name + " (not sure what to do with it).")
             }
 
-            else if (item.name === 'categories.json') {
-
-                category_json_promise = item.text().then((text: string) => JSON.parse(text));
-
-            }
-
-            else if (item.name.includes('annotations.json')) {
-
-                annotation_json_promise = item.text().then((text: string) => JSON.parse(text));
-
-            }
-
-            else if (item.name === 'config.json') {
-
-                config_json_promise = item.text().then((text: string) =>JSON.parse(text) );
-
-            }
-
-            else {
-                log("Ignoring " + item.name + " (not sure what to do with it).", 'annotator_audio.ts');
-            }
-
+        } else {
+            console.log("Ignoring " + item.name + " (not sure what to do with it).")
         }
-
-        else {
-            log("Ignoring " + item.name + " (not sure what to do with it).", 'annotator_audio.ts');
-        }
-
-        // log.log(annotation_json_promise, 'annotator_audio.ts', Level.DEBUG);
 
     }
 
     // Wait for all the file loading to finish
     Promise.all([image_json_promise, category_json_promise, annotation_json_promise, config_json_promise]).then(
-
         ([image_data, category_data, annotation_data, config_data]) => {
+
 
             if (local_image_data.length > 0 && image_data != null) {
                 alert("ERROR: Found image files (jpgs/ pngs) and an images.json file. Not sure which to use! Please remove one or the other.");
@@ -752,20 +857,15 @@ document.querySelector('#customFile').addEventListener('change', (ev)=> {
             }
 
             if (local_image_data.length > 0) {
-
                 image_data = local_image_data;
 
                 // If we loaded in images from the file system, then assume we should sort by filename
-
-                image_data.sort((a: { url: string }, b: { url: string }) => {
-
-                    const nameA = a.url.toUpperCase(); // ignore upper and lowercase
-                    const nameB = b.url.toUpperCase(); // ignore upper and lowercase
-
+                image_data.sort(function (a, b) {
+                    var nameA = a.url.toUpperCase(); // ignore upper and lowercase
+                    var nameB = b.url.toUpperCase(); // ignore upper and lowercase
                     if (nameA < nameB) {
                         return -1;
                     }
-
                     if (nameA > nameB) {
                         return 1;
                     }
@@ -787,48 +887,35 @@ document.querySelector('#customFile').addEventListener('change', (ev)=> {
             }
 
             // Did the user specify any quick access category ids?
-            // const quickAccessCatIDs = getQuickAccessCategoryIDs();
-            const quickAccessCatIDs: string | number = null;
+            let quickAccessCatIDs = getQuickAccessCategoryIDs();
 
             // Did we get a config file?
             const default_config = {
-                "annotationFilePrefix" : "",
-                "quickAccessCategoryIDs" : quickAccessCatIDs,
-            };
+                "annotationFilePrefix": "",
+                "quickAccessCategoryIDs": quickAccessCatIDs,
+            }
+             if (config_data != null) {
 
-            if (config_data != null) {
-
-                /*
                 // Try to merge the quick access category ids
                 let mergedCategoryIds = null;
                 if ("quickAccessCategoryIDs" in config_data && config_data.quickAccessCategoryIDs.length > 0) {
                     if (default_config.quickAccessCategoryIDs.length > 0) {
-                        const a = default_config.quickAccessCategoryIDs;
-                        const b = config_data.quickAccessCategoryIDs;
-                        mergedCategoryIds = a.concat(b.filter((item: any) => a.indexOf(item) < 0));
+
+                        let a = default_config.quickAccessCategoryIDs;
+                        let b = config_data.quickAccessCategoryIDs;
+                        mergedCategoryIds = a.concat(b.filter((item) => a.indexOf(item) < 0));
+
                     }
                 }
-                */
-
-                /*
-                if generateSpectrogram is true, we will not load the remote jpeg version from Macaulay- instead:
-                  - for each audio url, generate a spectrogram in browser
-                  - write out a new images.json with local spectrogram files loaded adjacent in task directory
-                  - archive original images.json as images.json.Macaulay
-                 */
-
-                // finish up with config.json:
                 config_data = Object.assign({}, default_config, config_data);
 
-                /*
                 if (mergedCategoryIds != null) {
                     config_data.quickAccessCategoryIDs = mergedCategoryIds;
                 }
-                */
-
             } else {
                 config_data = default_config;
             }
+
 
             // Hide the directory chooser form, and show the annotation task
             document.getElementById("dirChooser").hidden = true;
@@ -839,42 +926,3 @@ document.querySelector('#customFile').addEventListener('change', (ev)=> {
         });
 
 });
-
-// Try to make sure the user is in Chrome
-// See here: https://stackoverflow.com/a/13348618/11337608
-
-// please note,
-// that IE11 now returns undefined again for window.chrome
-// and new Opera 30 outputs true for window.chrome
-// but needs to check if window.opr is not undefined
-// and new IE Edge outputs to true now for window.chrome
-// and if not iOS Chrome check
-// so use the below updated condition
-
-// @ts-ignore
-const isChromium = window.chrome;
-const winNav = window.navigator;
-const vendorName = winNav.vendor;
-// @ts-ignore
-const isOpera = typeof window.opr !== "undefined";
-const isIEedge = winNav.userAgent.indexOf("Edge") > -1;
-const isIOSChrome = winNav.userAgent.match("CriOS");
-
-if (isIOSChrome) {
-// is Google Chrome on IOS
-    alert("This tool is not tested for iOS environments");
-
-} else if (
-isChromium !== null &&
-typeof isChromium !== "undefined" &&
-vendorName === "Google Inc." &&
-isOpera === false &&
-isIEedge === false
-) {
-// is Google Chrome
-} else {
-// not Google Chrome
-    alert("This tool needs to be opened with Google Chrome.");
-}
-
-export {SpectrogramPlayer};

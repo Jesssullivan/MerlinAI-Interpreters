@@ -10,11 +10,6 @@
  *
  *  view this demo by opening `remote_spectrogram.html` in a browser.
  *
- *  to (re)build this file as a development bundle:
- *  ` npm run-script build-anno-remote `
- *
- *  to (re)build this file as a distributable bundle:
- *  ` npm run-script dist-anno-remote `
  */
 
 /* eslint-disable */
@@ -536,16 +531,16 @@ function getQuickAccessCategoryIDs() {
 /*  Allows the user to choose a directory.
  *
  */
-let i = document.querySelector('#customFile').addEventListener('change', (ev) => {
+document.querySelector('#customFile').addEventListener('change', (ev) => {
 
     ev.preventDefault()
 
-    var local_image_data = [];
+    const local_image_data = [];
 
-    var image_json_promise = null;
-    var category_json_promise = null;
-    var annotation_json_promise = null;
-    var config_json_promise = null;
+    let image_json_promise = null;
+    let category_json_promise = null;
+    let annotation_json_promise = null;
+    let config_json_promise = null;
 
     // @ts-ignore
     for (let i = 0; i < ev.target.files.length; i++) {
@@ -617,8 +612,8 @@ let i = document.querySelector('#customFile').addEventListener('change', (ev) =>
 
                 // If we loaded in images from the file system, then assume we should sort by filename
                 image_data.sort(function (a, b) {
-                    var nameA = a.url.toUpperCase(); // ignore upper and lowercase
-                    var nameB = b.url.toUpperCase(); // ignore upper and lowercase
+                    const nameA = a.url.toUpperCase(); // ignore upper and lowercase
+                    const nameB = b.url.toUpperCase(); // ignore upper and lowercase
                     if (nameA < nameB) {
                         return -1;
                     }
@@ -682,4 +677,4 @@ let i = document.querySelector('#customFile').addEventListener('change', (ev) =>
 
 });
 
-/*eslint-enable */
+

@@ -669,7 +669,7 @@ export class LeafletAnnotation extends React.Component {
     };
 
     /**
-     * Classifies a particular.
+     * Classifies ain browser.
      *
      * @param waveform : Float32Array
      */
@@ -685,7 +685,7 @@ export class LeafletAnnotation extends React.Component {
 
     };
     
-
+/*
     /**
      * Classify on a particular instance.
      *
