@@ -1,24 +1,10 @@
 from flask import current_app as app
-from flask import request, jsonify
 from ..tools import tools
-import json
 from datetime import datetime
 
 from flask import Flask, request, json, Response
 from pymongo import MongoClient
-
-import os
-import csv
 import json
-import random
-import subprocess
-import tarfile
-import glob
-from math import floor
-from shutil import copyfile
-
-# load common names:
-from .preprocess.common import *
 
 
 class DataAPI:
@@ -26,8 +12,8 @@ class DataAPI:
     def __init__(self, data):
         self.client = MongoClient("mongodb://127.0.0.1:27017/")
 
-        database = data['IshmeetDB']
-        collection = data['people']
+        database = data['***']
+        collection = data['**']
         cursor = self.client[database]
         self.collection = cursor[collection]
         self.data = data

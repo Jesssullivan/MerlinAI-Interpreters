@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{{ asset_id }}: Merlin Prediction Report</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <style type="text/css">
+      .container {
+        max-width: 1000px;
+        padding-top: 34px;
+      }
+    </style>
+  </head>
+  <body>
+  <title>{{ asset_id }}: Merlin Prediction Report </title>
+    <div class="container">
+      <p>Asset ID: <a href="https://macaulaylibrary.org/asset/{{ asset_id }}"><b>{{asset_id}}</b></a></p>
+      <p>Latitude, Longitude: <a href="https://www.google.com/maps/search/?api=1&query={{ asset_lat }},{{asset_lng }}"><b>{{ asset_lat }}, {{ asset_lng }}</b></a></p>
+      <p>Day/Month of Recording: <b>{{ asset_day }}/{{ asset_month }}</b></p>
+        <h4><a href="{{ fp_pdf }}">Filtered Prediction Plot:</a></h4>
+        <br>
+    </div>
+    <img src="{{fp}}" alt="" type="image/png" width="1200">
+    <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+  </body>
+</html>

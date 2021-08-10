@@ -23,7 +23,7 @@ SEG_LENGTH_SEC = 30
 THRESH = .4
 
 # Load in the saved model
-savedmodel_dir = os.path.join("demos/models", "savedmodel_with_preprocessing")
+savedmodel_dir = os.path.join("etc/models", "savedmodel_with_preprocessing")
 
 # Restore the model
 model = tf.saved_model.load(savedmodel_dir)
@@ -245,7 +245,6 @@ class Classifier(object):
         samplerate = 44100
 
         # Need to convert the audio waveform to a spectrogram
-
         window_length_samples = 1102
         hop_length_samples = 441
         fft_length = 2048

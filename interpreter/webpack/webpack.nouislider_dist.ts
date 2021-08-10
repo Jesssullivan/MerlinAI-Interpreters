@@ -11,9 +11,9 @@ module.exports = {
   },
   mode: 'production',
   output: {
-    path: path.resolve(__dirname, '../demos'),
+    path: path.resolve(__dirname, '../uploads'),
     chunkFilename: '[id].[hash:16].js',
-    filename: 'nouislider.js'
+    filename: 'nouislider_bundle.js'
   },
   module: {
     rules: [{

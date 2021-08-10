@@ -8,7 +8,7 @@ import * as audio_model from "../src/audio_model";
 import {log} from "../src";
 import * as tf from '@tensorflow/tfjs';
 
-const noUiSlider = require('./nouislider');
+const noUiSlider = require('./nouislider_bundle');
 
 window.MediaRecorder = require('audio-recorder-polyfill');
 

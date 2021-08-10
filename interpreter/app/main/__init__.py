@@ -22,7 +22,7 @@ def create_app():
 
     # set template & static paths:
     app.template_folder = "../../demos/"
-    app.static_folder = "../../demos/"
+    app.static_folder = "../../uploads/"
 
     # upload --> classify config
     app.config['UPLOAD_EXTENSIONS'] = ['.mp3', '.wav', '.WAV', '.wave', '.WAVE']

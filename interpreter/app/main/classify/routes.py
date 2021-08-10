@@ -67,7 +67,7 @@ def pupload_files():
 
 @classify_blueprint.route('/select', methods=['GET'])
 def gupload_files():
-    return render_template("uploaderSelectOps.html")
+    return render_template("uploaderSelectOps.j2")
 
 
 @classify_blueprint.route('/api/select', methods=['POST'])
@@ -91,7 +91,7 @@ def api_pupload_files():
 
 @classify_blueprint.route('/standard', methods=['GET'])
 def gupload_filesstandard():
-    return render_template("uploaderStandardOps.html")
+    return render_template("uploaderStandardOps.j2")
 
 
 @classify_blueprint.route('/standard', methods=['POST'])
@@ -114,7 +114,7 @@ def pupload_filesstandard():
         print(x + ": " + res[x])
         flash(x + ": " + res[x])
 
-    return render_template("uploaderStandardOps.html")
+    return render_template("uploaderStandardOps.j2")
 
 
 @classify_blueprint.route('/api/standard', methods=['POST'])

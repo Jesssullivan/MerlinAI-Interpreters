@@ -2,9 +2,8 @@
 # we extract predictions for rolling windows
 import glob
 import os
-from subprocess import call
-
 import librosa
+from ..tools.ebird_filter import MLeBirdFreqInfo
 from librosa.display import specshow as specshow
 import numpy as np
 import requests
@@ -26,7 +25,7 @@ SEG_LENGTH_SEC = 30
 THRESH = .4
 
 # Restore the model
-savedmodel_dir = os.path.join("demos/models", "savedmodel_with_preprocessing")
+savedmodel_dir = os.path.join("etc/models", "savedmodel_with_preprocessing")
 model = tf.saved_model.load(savedmodel_dir)
 
 # Load in the species codes that correspond to the model's outputs
@@ -60,16 +59,22 @@ class Report(object):
                 return False
 
         except:
-            # somthing didn't work-
+            # something didn't work-
             return False
 
     # plot_predictions function generates and returns a prediction graph of merlin's top 5 detections
     @staticmethod
     def plot_predictions(usr_dir,
+                         asset_id=None,
                          thresh=THRESH,
                          plot=True):
+
         audio_fp = glob.glob(usr_dir + '/*.wav')[0]
         plot_fp = os.path.join(usr_dir, 'prediction_plot.png')
+        plot_fp_pdf = os.path.join(usr_dir, 'prediction_plot.pdf')
+
+        key = 'stmdsp5klv21'
+        asset_id_ebird_mx = MLeBirdFreqInfo(asset_id=asset_id, model_labels=model_text_labels, api_key=key)
 
         # load in audio:
         samples, samplerate = librosa.load(audio_fp,
@@ -89,7 +94,6 @@ class Report(object):
         f = WINDOW_SIZE_SAMPLES
         s = WINDOW_STEP_SIZE_SAMPLES
         p = 0
-
         num_valid_patches = (w - f + 2 * p) // s + 1
         patch_predictions = []
 
@@ -101,6 +105,7 @@ class Report(object):
 
             # Returns [1, Number of Classes]
             predictions = model(window_samples).numpy()[0]
+            predictions *= asset_id_ebird_mx.mx
 
             patch_predictions.append({
                 "start_index": start_index,
@@ -203,7 +208,6 @@ class Report(object):
                                      cmap='Greys')
 
             max_time = samples.shape[0] / samplerate
-
             ax = plt.subplot(2, 1, 2)
 
             for target_label in target_labels:
@@ -235,6 +239,9 @@ class Report(object):
             ax.set_xlim([0, max_time])
             ax.legend()
             plt.savefig(plot_fp)
+            plt.savefig(plot_fp_pdf)
 
         # return plot path:
-        return plot_fp
+        return '/' + usr_dir + '/prediction_plot.pdf', asset_id_ebird_mx
+
+

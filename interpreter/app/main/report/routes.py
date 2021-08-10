@@ -1,9 +1,8 @@
 import os
 
-from flask import Blueprint, request, send_file
+from flask import Blueprint, render_template, url_for, request
 from flask import current_app as app
 from flask import redirect
-from werkzeug.utils import secure_filename
 
 from app.main.classify.config import new_client_dir, new_client
 from .models import Report
@@ -34,11 +33,19 @@ def rp_file_route(sp, f):
 
 @reports_blueprint.route("/asset/<asset_id>", methods=["GET", "POST"])
 def plot_gen(asset_id):
+
     # create a temporary directory for this user:
     usr_id = new_client()
     usr_dir = new_client_dir(usr_id)
 
     _ = Report.download_ml_asset(usr_dir, asset_id)
-    fp = Report.plot_predictions(usr_dir)
 
-    return send_file(fp, mimetype='image/gif')
+    fp, obj = Report.plot_predictions(usr_dir, asset_id)
+    return render_template('assetPredictionReport.j2',
+                           fp='http://localhost:5000' + '/static/' + usr_id + '/' + 'prediction_plot.png',
+                           fp_pdf='http://localhost:5000' + '/static/' + usr_id + '/' + 'prediction_plot.pdf',
+                           asset_id=asset_id,
+                           asset_day=obj.day,
+                           asset_month=obj.month,
+                           asset_lat=obj.lat,
+                           asset_lng=obj.lng)
