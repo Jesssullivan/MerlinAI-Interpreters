@@ -42,8 +42,13 @@ def plot_gen(asset_id):
 
     fp, obj = Report.plot_predictions(usr_dir, asset_id)
     return render_template('assetPredictionReport.j2',
+<<<<<<< HEAD
                            fp='http://localhost:5000' + '/static/uploads/' + usr_id + '/' + 'prediction_plot.png',
                            fp_pdf='http://localhost:5000' + '/static/uploads/' + usr_id + '/' + 'prediction_plot.pdf',
+=======
+                           fp='https://ai.columbari.us' + '/static/' + usr_id + '/' + 'prediction_plot.png',
+                           fp_pdf='https://ai.columbari.us' + '/static/' + usr_id + '/' + 'prediction_plot.pdf',
+>>>>>>> d0373be93fdae6b1ea022d0b8492aed0e2b23895
                            asset_id=asset_id,
                            asset_day=obj.day,
                            asset_month=obj.month,
