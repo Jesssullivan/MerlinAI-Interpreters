@@ -37,14 +37,13 @@ class Trash(object):
                         vprint('removing expired usr directories...')
                         cls._force_dir_rm(os.path.join(inpath, usr))
                         live_app_list.pop(usr)
-
                     except:
                         print(str('Error while removing expired usr directory:  \n' + usr))
 
     @classmethod
     def truck(cls):
-        if not os.path.exists('uploads'):
-            subprocess.Popen(str('mkdir uploads'),
+        if not os.path.exists('demos/uploads'):
+            subprocess.Popen(str('mkdir demos/uploads'),
                              shell=True,
                              executable='/bin/bash',
                              encoding='utf8')

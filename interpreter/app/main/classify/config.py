@@ -41,7 +41,7 @@ MODEL_SAMPLE_RATE = 22050
 
 
 # how often should the garbage collector remove old directories?
-collection_int = 480  # secs
+collection_int = 240  # secs
 collection_trash = 240  # secs
 
 # recyclable serverside directories-
@@ -50,7 +50,7 @@ collection_trash = 240  # secs
 rootpath = os.path.abspath(os.curdir)
 
 # temporary user directories go in here:
-inpath = os.path.join(rootpath, 'uploads')
+inpath = os.path.join(rootpath, 'demos/uploads')
 outpath = os.path.join(rootpath, 'downloads')
 
 # file uploads:

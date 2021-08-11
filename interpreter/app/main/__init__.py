@@ -22,11 +22,11 @@ def create_app():
 
     # set template & static paths:
     app.template_folder = "../../demos/"
-    app.static_folder = "../../uploads/"
+    app.static_folder = "../../demos/"
 
     # upload --> classify config
     app.config['UPLOAD_EXTENSIONS'] = ['.mp3', '.wav', '.WAV', '.wave', '.WAVE']
-    app.config['UPLOAD_PATH'] = 'uploads'
+    app.config['UPLOAD_PATH'] = 'demos'
 
     # misc Config
     os.environ["TZ"] = app.config["TIMEZONE"]
@@ -48,6 +48,7 @@ def create_app():
     def appclcfx(f):
         print(f)
         return app.send_static_file(f)
+        # fetch static:
 
     # Index Routes:
     @app.route("/")
