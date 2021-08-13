@@ -3,7 +3,7 @@ import numpy as np
 import requests
 
 # query eBird? NEED AN API KEY !!!!
-key = 'stmdsp5klv21'
+key = None
 
 # Load in the saved model
 savedmodel_dir = os.path.join("etc/models", "savedmodel_with_preprocessing")
