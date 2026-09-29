@@ -1,3 +1,52 @@
+## Revival 2026
+
+> **2021 interface, repaired in 2026. Model: a 2026 reconstruction trained on
+> public audio for three species; not Merlin's model.**
+
+This branch (`revival-2026`, cut from `940f10c2`, 2021-07-08) runs the 2021
+Flask interpreter's two server-side upload routes again, as a loopback exhibit
+for the XO Ruby Montréal talk (October 17, 2026). Ticket TIN-5115 in
+[xoruby-2026](https://github.com/Jesssullivan/xoruby-2026); operator rulings in
+its `talk/decisions.md`, items 39 and 40 (2026-09-29).
+
+**Scope (Option A only).** The two server-side routes and their JSON variants:
+
+| Route | What runs |
+| --- | --- |
+| `GET/POST /classify/select`, `POST /classify/api/select` | the 2021 upload form and JSON API, repaired |
+| `GET/POST /classify/standard`, `POST /classify/api/standard` | the same, "standard ops" variant, repaired |
+
+Out of scope: the TensorFlow.js page at `/classify/server` (its browser model
+was never committed; it is served unchanged with the banner and a notice that
+it cannot classify), the annotators, and the `userdb`, `datadb`, `eventdb` and
+`reports` blueprints (disabled; no Mongo).
+
+**Labels.**
+
+- **Interface: repaired original.** The 2021 Flask code, templates and static
+  files, unchanged except for the 2026 changes listed in `NOTICE` (model
+  adapter, TensorFlow and librosa imports removed, hardening: no
+  `shell=True`, an upload size cap, per-request upload removal, loopback
+  bind).
+- **Model: reconstruction.** The 2021 TFLite and TF.js models were never
+  committed and are not recoverable. The routes call a 2026 reconstruction
+  of the 2021 training recipe (ONNX, three classes: `blue_jay`,
+  `northern_cardinal`, `black_capped_chickadee`) from xoruby-2026's
+  `ml/recipe2021`, trained on public Wikimedia Commons audio. It is not
+  Merlin's model, weights, data or species coverage, and its scores say
+  nothing about Merlin's accuracy.
+
+**Hosting.** `127.0.0.1` only, on the presenting laptop, plus a tailnet preview
+in front of that loopback port. There is no `ai.columbari.us` DNS and no public
+path; the `ai.columbari.us` and Heroku links further down are 2021 history and
+are not live.
+
+**Licence.** `LICENSE` (Apache-2.0) covers only the 2026 revival glue. The
+archived 2021 files stay unlicensed and unclaimed; `NOTICE` says which is which
+and credits Magenta.js and Google's web-audio-recognition code (Apache-2.0).
+
+- - -
+
 *Experiments, interpreter implementations, demos, data ingress tangents and lots of notes for birdsong ID*
 
 

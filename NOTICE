@@ -1,0 +1,79 @@
+MerlinAI-Interpreters, branch revival-2026
+Cut from 940f10c275af83d9fe3c76b772086314b6825721 (2021-07-08) in 2026-09.
+Revival ticket: TIN-5115 (xoruby-2026). Operator rulings: xoruby-2026
+talk/decisions.md items 39 and 40 (operator interview, 2026-09-29).
+
+1. What the licence in LICENSE covers
+-------------------------------------
+
+LICENSE (Apache License 2.0) applies ONLY to the 2026 revival glue:
+
+  - LICENSE, NOTICE, and the "Revival 2026" section at the top of README.md;
+  - everything under revival/ ;
+  - interpreter/app/main/classify/recipe_onnx.py (new in 2026);
+  - the 2026 changes, i.e. the diff against 940f10c2, to these 2021 files:
+      interpreter/app/main/__init__.py
+      interpreter/app/main/classify/config.py
+      interpreter/app/main/classify/models.py
+      interpreter/app/main/classify/routes.py
+      interpreter/app/main/classify/trashd.py
+      interpreter/app/main/tfmodels/models.py
+      interpreter/.gitignore
+
+`git diff 940f10c2 revival-2026` shows exactly what is 2026 glue.
+
+2. What it does NOT cover: the archived 2021 files stay unclaimed
+-----------------------------------------------------------------
+
+Every other file on this branch is the archived 2021 work, unchanged. The
+repository was published without a licence (no LICENSE file at any commit
+before this branch; GitHub reported "license": null). interpreter/package.json
+lists its contributors as Grant Van Horn, Jess Sullivan, Benjamin Hoffman and
+"Visipedia et al."; per-line authorship is not established.
+
+Nothing on this branch licenses, relicenses or claims those files. They stay
+exactly as they were: unlicensed, with any rights held by their authors. For
+the 2021 files changed in 2026 (listed above), only the 2026 changes are
+Apache-2.0; the 2021 text in them stays unlicensed as described here.
+
+3. Magenta.js and Google's web-audio-recognition code (Apache-2.0)
+------------------------------------------------------------------
+
+Parts of the 2021 browser spectrogram code on this branch are adapted from
+Apache-2.0 code by Google:
+
+  - interpreter/src/spectrogram_utils.ts: stft, magSpectrogram, hannWindow,
+    padConstant, padReflect, padCenterToLength, frame, applyWindow, fft, mag,
+    pow and the inner _powerToDb follow Magenta.js
+    music/src/core/audio_utils.ts (https://github.com/magenta/magenta-js)
+    in names, structure and comments.
+    Magenta.js: Copyright 2018 Google Inc. All Rights Reserved.
+    Licensed under the Apache License, Version 2.0.
+  - interpreter/src/audio_utils.ts and interpreter/src/audio_loading_utils.ts
+    carry their own notice, kept verbatim in those files: "based on
+    https://github.com/google/web-audio-recognition/blob/librosa-compat ...
+    Copyright 2018 Google Inc. All Rights Reserved. Licensed under the Apache
+    License, Version 2.0".
+
+This NOTICE credits that work; the copyright and licence of the adapted code
+remain Google's. The 2026 revival does not run or modify this browser code
+(the TensorFlow.js page at /classify/server is out of the revival's scope).
+
+4. The model is not here and is not Merlin's
+--------------------------------------------
+
+No model file is in this repository, at 940f10c2 or on this branch: the 2021
+TFLite and TensorFlow.js files were never committed. The revival serves a
+2026 reconstruction instead: the xoruby-2026 ml/recipe2021 model (ONNX; three
+classes: blue_jay, northern_cardinal, black_capped_chickadee), trained in 2026
+on public Wikimedia Commons audio. It is not Merlin's model, weights, data or
+code. It is loaded at run time from an xoruby-2026 checkout (MIT licence) and
+is not redistributed here.
+
+5. Run-time dependencies (not redistributed here)
+-------------------------------------------------
+
+revival/flake.nix pulls these from nixpkgs at run time: Python, Flask
+(BSD-3-Clause), Werkzeug (BSD-3-Clause), waitress (ZPL-2.1), flask-cors (MIT),
+pydub (MIT), pytz (MIT), NumPy (BSD-3-Clause), ONNX Runtime (MIT), FFmpeg
+(LGPL-2.1+/GPL).
