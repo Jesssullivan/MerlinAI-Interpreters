@@ -26,8 +26,8 @@ it cannot classify), the annotators, and the `userdb`, `datadb`, `eventdb` and
 - **Interface: repaired original.** The 2021 Flask code, templates and static
   files, unchanged except for the 2026 changes listed in `NOTICE` (model
   adapter, TensorFlow and librosa imports removed, hardening: no
-  `shell=True`, an upload size cap, per-request upload removal, loopback
-  bind).
+  shell-interpolated `rm -rf`, an upload size cap, per-request upload
+  removal, loopback bind).
 - **Model: reconstruction.** The 2021 TFLite and TF.js models were never
   committed and are not recoverable. The routes call a 2026 reconstruction
   of the 2021 training recipe (ONNX, three classes: `blue_jay`,
@@ -40,6 +40,37 @@ it cannot classify), the annotators, and the `userdb`, `datadb`, `eventdb` and
 in front of that loopback port. There is no `ai.columbari.us` DNS and no public
 path; the `ai.columbari.us` and Heroku links further down are 2021 history and
 are not live.
+
+**Run it (loopback).** Needs Nix with flakes and an
+[xoruby-2026](https://github.com/Jesssullivan/xoruby-2026) checkout that holds the
+model at `.local/recipe2021/recipe.onnx` with its `recipe.json` (git-ignored
+there: made by `just recipe-export`, or copied from the machine that trained it).
+Python 3.13, Flask, waitress, NumPy, ONNX Runtime and FFmpeg come from
+`revival/flake.nix` (nixpkgs pinned to xoruby's); there is no TensorFlow,
+librosa or Mongo.
+
+```sh
+# A light clone: the 2021 tree is ~800 MB, the served part a few MB.
+git clone --depth 1 --filter=blob:none --sparse -b revival-2026 \
+  https://github.com/Jesssullivan/MerlinAI-Interpreters.git merlin-interpreters-revival
+cd merlin-interpreters-revival
+git sparse-checkout set --no-cone '/*' '!/*/' '/revival/' '/interpreter/*' '!/interpreter/*/' \
+  '/interpreter/app/' '/interpreter/demos/*' '!/interpreter/demos/*/' '/interpreter/demos/icons/'
+
+export XORUBY_ROOT=~/git/xoruby-2026
+nix run path:./revival -- --port 5000          # http://127.0.0.1:5000/classify/select
+curl -F "file=@clip.wav" http://127.0.0.1:5000/classify/api/select
+nix run path:./revival#check                   # in-process checks (Flask test client)
+nix run path:./revival#parity -- clip.wav recipe-infer.json receipt.json   # curl -F vs just recipe-infer
+```
+
+`path:./revival` makes Nix copy only that directory, not the whole tree. Uploads
+are WAV or MP3 as in 2021; the first 3 s are scored, as the 2021 select path did;
+audio that is not 22050 Hz mono 16-bit is resampled by FFmpeg first. The server
+binds `127.0.0.1` only; `--max-seconds N` makes it exit on its own. For the tailnet
+preview, put `tailscale serve` in front of the loopback port (an operator act;
+never Funnel, never a public path). xoruby-2026 wraps all of this as
+`just exhibit-interpreter-serve`.
 
 **Licence.** `LICENSE` (Apache-2.0) covers only the 2026 revival glue. The
 archived 2021 files stay unlicensed and unclaimed; `NOTICE` says which is which

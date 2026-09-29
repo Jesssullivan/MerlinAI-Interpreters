@@ -1,4 +1,5 @@
 from .config import *
+import shutil  # 2026: replaces `rm -rf` / `mkdir` through a shell
 
 
 # garbage collector for uploaded files to be classified.
@@ -11,9 +12,14 @@ class Trash(object):
         # checking and removing user dirs from OS-
         # assuming child threads may occasionally misbehave,
         # best to avoid guessing the state of child threads here in Python
-        subprocess.Popen(str('rm -rf ' + path),
-                         shell=True,
-                         executable='/bin/bash')
+        # 2026: shutil.rmtree, never a shell-interpolated path
+        shutil.rmtree(path, ignore_errors=True)
+
+    @classmethod
+    def discard(cls, path):
+        # 2026: remove a request's upload directory as soon as its response is built;
+        # the garbage loop below stays as a backstop
+        cls._force_dir_rm(path)
 
     @classmethod
     def _garbage_loop(cls):
@@ -44,10 +50,7 @@ class Trash(object):
     @classmethod
     def truck(cls):
         if not os.path.exists('uploads'):
-            subprocess.Popen(str('mkdir uploads'),
-                             shell=True,
-                             executable='/bin/bash',
-                             encoding='utf8')
+            os.makedirs(inpath, exist_ok=True)  # 2026: was `mkdir uploads` through a shell
 
         # start garbage loop as daemon- operating as a child to Flask server:
         init_loop = threading.Thread(target=cls._garbage_loop, daemon=True)

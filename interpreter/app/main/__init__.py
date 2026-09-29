@@ -2,15 +2,17 @@ from flask import Flask, redirect, send_file
 import os
 from .tools.tools import JsonResp
 from .classify.trashd import Trash
+from . import revival  # 2026: banner, upload cap, per-process secret (revival-2026 glue)
 
 # Import Routes
-from .userdb.routes import user_blueprint
-from .annotator.routes import anno_blueprint
-from .tfmodels.routes import tfmodels_blueprint
 from .classify.routes import classify_blueprint
-from .static.routes import static_blueprint
-from .datadb.routes import files_blueprint
-from .report.routes import reports_blueprint
+if revival.EXTRAS:  # 2026: blueprints outside the revival's scope stay off unless asked for
+    from .userdb.routes import user_blueprint
+    from .annotator.routes import anno_blueprint
+    from .tfmodels.routes import tfmodels_blueprint
+    from .static.routes import static_blueprint
+    from .datadb.routes import files_blueprint
+    from .report.routes import reports_blueprint
 
 
 def create_app():
@@ -32,13 +34,17 @@ def create_app():
     os.environ["TZ"] = app.config["TIMEZONE"]
 
     # Register Blueprints
-    app.register_blueprint(files_blueprint, url_prefix="/files")
-    app.register_blueprint(user_blueprint, url_prefix="/user")
-    app.register_blueprint(anno_blueprint, url_prefix="/annotator")
-    app.register_blueprint(tfmodels_blueprint, url_prefix="/models")
+    if revival.EXTRAS:
+        app.register_blueprint(files_blueprint, url_prefix="/files")
+        app.register_blueprint(user_blueprint, url_prefix="/user")
+        app.register_blueprint(anno_blueprint, url_prefix="/annotator")
+        app.register_blueprint(tfmodels_blueprint, url_prefix="/models")
     app.register_blueprint(classify_blueprint, url_prefix="/classify")
-    app.register_blueprint(static_blueprint, url_prefix="/annotator/static")
-    app.register_blueprint(reports_blueprint, url_prefix="/reports")
+    if revival.EXTRAS:
+        app.register_blueprint(static_blueprint, url_prefix="/annotator/static")
+        app.register_blueprint(reports_blueprint, url_prefix="/reports")
+
+    revival.install(app)  # 2026
 
     # start garbage collection daemon:
     Trash.truck()

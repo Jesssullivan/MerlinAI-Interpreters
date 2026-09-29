@@ -1,0 +1,4 @@
+# 2026 (revival-2026): per-request upload directories and 2026 bytecode
+uploads/
+downloads/
+**/__pycache__/*.cpython-31?.pyc

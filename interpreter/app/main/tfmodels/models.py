@@ -1,6 +1,5 @@
 from ..tools import tools
-import tensorflow as tf
-import librosa
+# 2026: unused tensorflow and librosa imports removed (TFModel only describes files)
 from ..config import *
 
 

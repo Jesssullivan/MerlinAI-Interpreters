@@ -9,16 +9,17 @@ talk/decisions.md items 39 and 40 (operator interview, 2026-09-29).
 LICENSE (Apache License 2.0) applies ONLY to the 2026 revival glue:
 
   - LICENSE, NOTICE, and the "Revival 2026" section at the top of README.md;
-  - everything under revival/ ;
-  - interpreter/app/main/classify/recipe_onnx.py (new in 2026);
-  - the 2026 changes, i.e. the diff against 940f10c2, to these 2021 files:
+  - everything under revival/ (flake, serve/check/parity scripts, tests);
+  - files new in 2026: interpreter/app/main/classify/recipe_onnx.py,
+    interpreter/app/main/revival.py, interpreter/.gitignore;
+  - the 2026 changes, i.e. the diff against 940f10c2, to these 2021 files
+    (each change is marked with a "2026:" comment):
       interpreter/app/main/__init__.py
       interpreter/app/main/classify/config.py
       interpreter/app/main/classify/models.py
       interpreter/app/main/classify/routes.py
       interpreter/app/main/classify/trashd.py
       interpreter/app/main/tfmodels/models.py
-      interpreter/.gitignore
 
 `git diff 940f10c2 revival-2026` shows exactly what is 2026 glue.
 

@@ -1,7 +1,5 @@
-import tensorflow as tf
-import librosa
 from .config import *
-from scipy.signal import decimate
+from . import recipe_onnx  # 2026: stands in for TensorFlow Lite, librosa and scipy's decimate
 import json
 import numpy as np
 import pydub
@@ -21,16 +19,9 @@ class Classifier(object):
     def classify_proc_select(dir=''):
 
         # Load in the map from integer id to species code
-        with open(labels_fp_select) as f:
-            label_map = json.load(f)
-
-        # Load TFLite model and allocate tensors.
-        interpreter = tf.lite.Interpreter(model_path=tflite_model_fp_select)
-        interpreter.allocate_tensors()
-
-        # Get input and output tensors.
-        input_details = interpreter.get_input_details()
-        output_details = interpreter.get_output_details()
+        # 2026: labels.json and model.tflite were never committed; the reconstruction's
+        # class names and ONNX session (recipe_onnx) stand in for both.
+        label_map = recipe_onnx.labels()
 
         # convert mp3 if needed
         try:
@@ -61,9 +52,9 @@ class Classifier(object):
 
         # Load in an audio file
         audio_fp = glob.glob(dir + '/*.wav')[0]
-        samples_raw, sr = librosa.load(audio_fp, sr=44100, mono=True)
-
-        samples = decimate(samples_raw, q=2)
+        # 2026: decoded straight to 22050 Hz (recipe_onnx.load_22050) instead of
+        # librosa.load(sr=44100) followed by decimate(q=2)
+        samples = recipe_onnx.load_22050(audio_fp)
 
         # Do we need to pad with zeros?
         if samples.shape[0] < MODEL_INPUT_SAMPLE_COUNT:
@@ -90,10 +81,8 @@ class Classifier(object):
             end_idx = start_idx + MODEL_INPUT_SAMPLE_COUNT
             window_samples = samples[start_idx:end_idx]
 
-            interpreter.set_tensor(input_details[0]['index'], window_samples)
-
-            interpreter.invoke()
-            output_data = interpreter.get_tensor(output_details[0]['index'])[0]
+            # 2026: was the TFLite set_tensor / invoke / get_tensor
+            output_data = recipe_onnx.predict(window_samples)
 
             # Save off the classification scores
             window_outputs.append(output_data)
@@ -104,7 +93,7 @@ class Classifier(object):
         # Print the predictions
         label_predictions = np.argsort(average_scores)[::-1]
         res = dict()
-        for i in range(10):
+        for i in range(min(10, len(label_predictions))):  # 2026: three classes, not ten
             label = label_predictions[i]
             try:
                 if float(average_scores[label]) <= .001:
@@ -123,94 +112,17 @@ class Classifier(object):
     def classify_proc_std(usr_dir):  # thanks to Grant!!!  xD
 
         # Load in the map from integer id to species code
-        with open(labels_fp_std) as f:
-            label_map = json.load(f)
-
-        # Load TFLite model and allocate tensors.
-        interpreter = tf.lite.Interpreter(model_path=tflite_model_fp_std)
-        interpreter.allocate_tensors()
-
-        # Get input and output tensors.
-        input_details = interpreter.get_input_details()
-        output_details = interpreter.get_output_details()
-        vprint("Spectrogram Input Shape: %s" % input_details[0]['shape'])
-        vprint("Output shape: %s" % output_details[0]['shape'])
+        # 2026: labels.json and model.tflite were never committed (see classify_proc_select)
+        label_map = recipe_onnx.labels()
 
         # Load in an audio file
         audio_fp = glob.glob(usr_dir + '/*.wav')[0]
-        samples, sr = librosa.load(audio_fp, sr=44100, mono=True)
-
-        waveform = samples
-        samplerate = 44100
-
-        # Need to convert the audio waveform to a spectrogram
-
-        window_length_samples = 1102
-        hop_length_samples = 441
-        fft_length = 2048
-        num_spectrogram_bins = 1025
-
-        # Create the spectrogram
-        magnitude_spectrogram = tf.abs(
-            tf.signal.stft(
-                signals=waveform,
-                frame_length=window_length_samples,
-                frame_step=hop_length_samples,
-                fft_length=fft_length
-            )
-        )
-
-        # Convert spectrogram into log mel spectrogram.
-        linear_to_mel_weight_matrix = tf.signal.linear_to_mel_weight_matrix(
-            num_mel_bins=96,
-            num_spectrogram_bins=num_spectrogram_bins,
-            sample_rate=samplerate,
-            lower_edge_hertz=50,
-            upper_edge_hertz=11025
-        )
-
-        mel_spectrogram = tf.matmul(magnitude_spectrogram, linear_to_mel_weight_matrix)
-
-        # Nonlinear transformation of the magnitude values
-        non_linear_alpha = -1.7
-        spectrogram = tf.math.pow(mel_spectrogram, (1. / (1. + tf.math.exp(-non_linear_alpha))))
-
-        # Normalize the spectrogram to [0, 1]
-        spectrogram = spectrogram - tf.math.reduce_min(spectrogram)
-        max_val = tf.math.reduce_max(spectrogram)
-        spectrogram = tf.math.divide(spectrogram, max_val)
-
-        # Tensorflow Lite expects a fixed input size
-        # So if the spectrogram is not long enough, or is too long, then we need to adjust it
-        DESIRED_TIME_ROWS = 298
-        if spectrogram.shape[0] < DESIRED_TIME_ROWS:
-            # We need to add rows with 0s
-            num_rows_to_add = DESIRED_TIME_ROWS - spectrogram.shape[0]
-            spectrogram = tf.concat([spectrogram, tf.zeros([num_rows_to_add, spectrogram.shape[1]], dtype=tf.float32)],
-                                    axis=0)
-
-        elif spectrogram.shape[0] > DESIRED_TIME_ROWS:
-            # We need to clip the spectrogram What we actually want to do is probably window the spectrogram,
-            # classify each window, and the average the results.
-            spectrogram = spectrogram[:DESIRED_TIME_ROWS]
-
-        else:
-            # The spectrogram is the "correct" size
-            pass
-
-        # [PATCH_FRAMES, PATCH_BANDS] -> [PATCH_FRAMES, PATCH_BANDS, 1]
-        spectrogram = tf.expand_dims(spectrogram, axis=2)
-
-        # Duplicate the spectrogram to create an "RGB" image
-        spectrogram = tf.tile(spectrogram, [1, 1, 3])
-
-        # [PATCH_FRAMES, PATCH_BANDS, 1] -> [1, PATCH_FRAMES, PATCH_BANDS, 1]
-        spectrogram_batch = tf.expand_dims(spectrogram, 0)
-
-        # Classify the spectrogram
-        interpreter.set_tensor(input_details[0]['index'], spectrogram_batch)
-        interpreter.invoke()
-        output_data = interpreter.get_tensor(output_details[0]['index'])[0]
+        # 2026: the 2021 tf.signal front end (96-bin mel, 44.1 kHz, fixed 298 frames) fed a TFLite
+        # model that was never committed, so it goes with that model. The reconstruction's own
+        # front end (xoruby ml/recipe2021/frontend.py; PCEN inside the ONNX graph) runs in
+        # recipe_onnx.predict on the first 3 s, as the select path does.
+        samples = recipe_onnx.load_22050(audio_fp)
+        output_data = recipe_onnx.predict(samples)
 
         # Print the predictions
         scores = output_data
@@ -219,7 +131,7 @@ class Classifier(object):
         res = {}
 
         vprint("Class Predictions:")
-        for i in range(10):
+        for i in range(min(10, len(label_predictions))):  # 2026: three classes, not ten
             label = label_predictions[i]
             score = scores[label]
             species_code = label_map[label]

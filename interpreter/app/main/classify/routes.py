@@ -1,5 +1,6 @@
 from .models import Classifier
 from .config import *
+from .trashd import Trash  # 2026: per-request upload removal
 from flask import Blueprint, url_for
 from flask import current_app as app
 from ..tfmodels.models import TFModel
@@ -60,7 +61,10 @@ def pupload_files():
         # all seems well, save the file:
         uploaded_file.save(os.path.join(usr_dir, filename))
 
-    res = Classifier.classify_proc_select(usr_dir)
+    try:
+        res = Classifier.classify_proc_select(usr_dir)
+    finally:
+        Trash.discard(usr_dir)  # 2026: the upload is removed once scored
 
     for x in res:
         print(x + ": " + res[x])
@@ -88,7 +92,10 @@ def api_pupload_files():
         # all seems well, save the file:
         uploaded_file.save(os.path.join(usr_dir, filename))
 
-    res = Classifier.classify_proc_select(usr_dir)
+    try:
+        res = Classifier.classify_proc_select(usr_dir)
+    finally:
+        Trash.discard(usr_dir)  # 2026: the upload is removed once scored
     return jsonify(res)
 
 
@@ -111,7 +118,10 @@ def pupload_filesstandard():
         # all seems well, save the file:
         uploaded_file.save(os.path.join(usr_dir, filename))
 
-    res = Classifier.classify_proc_select(usr_dir)
+    try:
+        res = Classifier.classify_proc_select(usr_dir)
+    finally:
+        Trash.discard(usr_dir)  # 2026: the upload is removed once scored
 
     for x in res:
         print(x + ": " + res[x])
@@ -134,7 +144,10 @@ def api_pupload_filesstandard():
         # all seems well, save the file:
         uploaded_file.save(os.path.join(usr_dir, filename))
 
-    res = Classifier.classify_proc_std(usr_dir)
+    try:
+        res = Classifier.classify_proc_std(usr_dir)
+    finally:
+        Trash.discard(usr_dir)  # 2026: the upload is removed once scored
     return jsonify(res)
 
 

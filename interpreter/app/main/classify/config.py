@@ -8,8 +8,7 @@ import json
 import glob
 from flask import Flask, request, flash, redirect, jsonify
 from flask_cors import CORS, cross_origin
-import tensorflow as tf
-import librosa
+# 2026: tensorflow and librosa imports removed; the model runs through recipe_onnx
 
 # set `devel = False` for deployment
 devel = False
