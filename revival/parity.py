@@ -33,6 +33,27 @@ def git_head(path):
         return None
 
 
+def shown(path):
+    """A path as $XORUBY_ROOT/... when it lives in the xoruby checkout, so receipts carry no host paths."""
+    root = os.environ.get("XORUBY_ROOT")
+    path = Path(path).resolve()
+    if root and path.is_relative_to(Path(root).resolve()):
+        return "$XORUBY_ROOT/" + str(path.relative_to(Path(root).resolve()))
+    return path.name
+
+
+def manifest_entry(clip):
+    """The clip's row in xoruby's pinned manifest (public Wikimedia Commons audio), if it is one."""
+    try:
+        manifest = json.loads(Path(os.environ["XORUBY_ROOT"], "ml/recipe2021/data/manifest.json").read_text())
+    except (KeyError, OSError):
+        return None
+    for row in manifest["clips"]:
+        if row["id"] == Path(clip).stem:
+            return {k: row[k] for k in ("id", "label", "role", "licence", "author_html", "source_page", "sha256")}
+    return None
+
+
 def versions():
     out = {"python": platform.python_version()}
     for name in ("flask", "werkzeug", "waitress", "numpy", "onnxruntime"):
@@ -92,8 +113,10 @@ def main(argv=None):
         "checks": checks,
         "served": {"bind": f"127.0.0.1:{args.port}", "server": "waitress-serve --call app:create_app",
                    "revival_commit": git_head(root), "xoruby_commit": git_head(os.environ.get("XORUBY_ROOT", "."))},
-        "clip": {"path": args.clip, "sha256": sha256(args.clip), "upload": "curl -F file=@<clip>"},
-        "model": {"path": model_path, "sha256": sha256(model_path), "checkpoint": model_meta.get("checkpoint"),
+        "clip": {"path": shown(args.clip), "sha256_decoded_wav": sha256(args.clip), "upload": "curl -F file=@<clip>",
+                 "decode": "ffmpeg -i <raw> -ac 1 -ar 22050 -c:a pcm_s16le (xoruby ml/recipe2021/data/dataset.py)",
+                 "manifest": manifest_entry(args.clip)},
+        "model": {"path": shown(model_path), "sha256": sha256(model_path), "checkpoint": model_meta.get("checkpoint"),
                   "classes": model_meta.get("classes")},
         "routes": routes,
         "recipe_infer": {"probabilities": expected, "runtime": reference.get("runtime")},

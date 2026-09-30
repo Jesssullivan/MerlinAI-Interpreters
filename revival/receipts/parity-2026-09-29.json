@@ -1,0 +1,92 @@
+{
+ "title": "Repaired 2021 interpreter routes vs just recipe-infer, one clip (revival-2026)",
+ "note": "2021 interface, repaired in 2026; model: a 2026 reconstruction (xoruby-2026 ml/recipe2021), not Merlin's model. One clip; a numerical parity check between two front ends of the same ONNX graph, not an accuracy claim.",
+ "date_utc": "2026-09-30T00:01:36+00:00",
+ "tolerance": 0.0001,
+ "pass": true,
+ "checks": {
+  "select_within_tolerance": true,
+  "standard_within_tolerance": true,
+  "json_banner": true,
+  "three_classes": true,
+  "banner_header": true,
+  "server_page_200_with_banner": true,
+  "select_page_200_with_banner": true,
+  "oversized_upload_413": true,
+  "uploads_removed": true
+ },
+ "served": {
+  "bind": "127.0.0.1:5071",
+  "server": "waitress-serve --call app:create_app",
+  "revival_commit": "be04374c84b700ea0820bd1a444a2b90fdd5af5a",
+  "xoruby_commit": "b9a40d236fe62ee46f42ccc560765509dcfc1bc8"
+ },
+ "clip": {
+  "path": "$XORUBY_ROOT/.local/recipe2021/wav/blue-jay.wav",
+  "sha256_decoded_wav": "7b38938be0fd9ff31c9ea1779d6df9d0e3075e5fea78ce238c25a09062a2040f",
+  "upload": "curl -F file=@<clip>",
+  "decode": "ffmpeg -i <raw> -ac 1 -ar 22050 -c:a pcm_s16le (xoruby ml/recipe2021/data/dataset.py)",
+  "manifest": {
+   "id": "blue-jay",
+   "label": "blue_jay",
+   "role": "test",
+   "licence": "Public domain",
+   "author_html": "G. McGrane",
+   "source_page": "https://commons.wikimedia.org/wiki/File:Blue_Jay.ogg",
+   "sha256": "2a7d0253281299d3bc20881b8f0036d016c45dc5a010c1878a37ac98bdfe6b02"
+  }
+ },
+ "model": {
+  "path": "$XORUBY_ROOT/.local/recipe2021/recipe.onnx",
+  "sha256": "f439296641751c7a87616765ee45ddb1b301659d70fee3bef05c0ecc69b52090",
+  "checkpoint": "negatives_background_mixup-seed17-lr0.005-e36",
+  "classes": [
+   "blue_jay",
+   "northern_cardinal",
+   "black_capped_chickadee"
+  ]
+ },
+ "routes": {
+  "/classify/api/select": {
+   "raw": {
+    "banner": "2021 interface, repaired in 2026. Model: a 2026 reconstruction trained on public audio for three species; not Merlin's model.",
+    "black_capped_chickadee": "0.13286269",
+    "blue_jay": "0.99624217",
+    "northern_cardinal": "0.016744941"
+   },
+   "banner_ok": true,
+   "classes_match": true,
+   "max_abs_vs_recipe_infer": 4.434509315309754e-09
+  },
+  "/classify/api/standard": {
+   "raw": {
+    "banner": "2021 interface, repaired in 2026. Model: a 2026 reconstruction trained on public audio for three species; not Merlin's model.",
+    "black_capped_chickadee": "0.13286269",
+    "blue_jay": "0.99624217",
+    "northern_cardinal": "0.016744941"
+   },
+   "banner_ok": true,
+   "classes_match": true,
+   "max_abs_vs_recipe_infer": 4.434509315309754e-09
+  }
+ },
+ "recipe_infer": {
+  "probabilities": {
+   "blue_jay": 0.9962421655654907,
+   "northern_cardinal": 0.016744941473007202,
+   "black_capped_chickadee": 0.13286268711090088
+  },
+  "runtime": {
+   "ruby": "3.4.9",
+   "onnxruntime_gem": "0.11.7"
+  }
+ },
+ "runtime": {
+  "python": "3.13.12",
+  "flask": "3.1.2",
+  "werkzeug": "3.1.6",
+  "waitress": "3.0.2",
+  "numpy": "2.4.4",
+  "onnxruntime": "1.24.4"
+ }
+}

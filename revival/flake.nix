@@ -27,10 +27,10 @@
         default = serve;
       });
       apps = forAll (pkgs: {
-        default = { type = "app"; program = "${self.packages.${pkgs.system}.serve}/bin/interpreter-revival-serve"; };
-        serve = { type = "app"; program = "${self.packages.${pkgs.system}.serve}/bin/interpreter-revival-serve"; };
-        check = { type = "app"; program = "${self.packages.${pkgs.system}.check}/bin/interpreter-revival-check"; };
-        parity = { type = "app"; program = "${self.packages.${pkgs.system}.parity}/bin/interpreter-revival-parity"; };
+        default = { type = "app"; program = "${self.packages.${pkgs.stdenv.hostPlatform.system}.serve}/bin/interpreter-revival-serve"; };
+        serve = { type = "app"; program = "${self.packages.${pkgs.stdenv.hostPlatform.system}.serve}/bin/interpreter-revival-serve"; };
+        check = { type = "app"; program = "${self.packages.${pkgs.stdenv.hostPlatform.system}.check}/bin/interpreter-revival-check"; };
+        parity = { type = "app"; program = "${self.packages.${pkgs.stdenv.hostPlatform.system}.parity}/bin/interpreter-revival-parity"; };
       });
       devShells = forAll (pkgs: {
         default = pkgs.mkShell { packages = runtime pkgs; PYTHONDONTWRITEBYTECODE = "1"; };
