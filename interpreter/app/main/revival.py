@@ -29,6 +29,10 @@ from .classify.recipe_onnx import BANNER
 
 EXTRAS = os.environ.get("INTERPRETER_2021_EXTRAS") == "1"
 
+SAMPLE_NOTE = ("The page's 2021 text is unchanged: no TensorFlow runs here, and the \"Example POST "
+               "usage\" block is the 2021 page's own sample text (2021 species codes, the 2021 host), "
+               "not a result from this model.")
+
 SERVER_PAGE_NOTE = ("This 2021 page ran a TensorFlow.js model in the browser; that model was never "
                     "committed, so this page cannot classify here. The repaired routes are the "
                     "server-side ones: ")
@@ -39,6 +43,8 @@ _STYLE = ("position:relative;z-index:100000;margin:0;padding:10px 16px;backgroun
 
 def banner_html(path):
     extra = ""
+    if path.rstrip("/") in ("/classify/select", "/classify/standard"):
+        extra = '<br><span style="font-weight:400">' + html.escape(SAMPLE_NOTE) + '</span>'
     if path.rstrip("/") == "/classify/server":
         extra = ('<br><span style="font-weight:400">' + html.escape(SERVER_PAGE_NOTE) +
                  '<a href="/classify/select">Select Ops</a> and <a href="/classify/standard">Standard Ops</a>.</span>')

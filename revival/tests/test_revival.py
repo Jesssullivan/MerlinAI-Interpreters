@@ -64,6 +64,11 @@ class RevivalApp(unittest.TestCase):
                 self.assertIn('data-provenance-model="reconstruction"', page)
                 self.assertEqual(response.headers["X-Revival-Banner"], self.revival.BANNER)
 
+    def test_upload_pages_label_the_2021_sample_output(self):
+        for path in ("/classify/select", "/classify/standard"):
+            with self.subTest(path=path), self.client.get(path) as response:
+                self.assertIn("2021 page&#x27;s own sample text", response.get_data(as_text=True))
+
     def test_headline_page_says_it_cannot_classify(self):
         with self.client.get("/classify/server") as response:
             page = response.get_data(as_text=True)
