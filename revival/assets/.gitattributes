@@ -1,0 +1,3 @@
+# Preserve registry file bytes for the pinned integrity manifest.
+bootstrap-4.5.0.min.css -text
+bootstrap-LICENSE -text
