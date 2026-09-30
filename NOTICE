@@ -9,7 +9,7 @@ talk/decisions.md items 39 and 40 (operator interview, 2026-09-29).
 LICENSE (Apache License 2.0) applies ONLY to the 2026 revival glue:
 
   - LICENSE, NOTICE, and the "Revival 2026" section at the top of README.md;
-  - everything under revival/ (flake, serve/check/parity scripts, tests);
+  - revival/ flake, scripts, tests and manifest; third-party assets retain their own licence (section 6);
   - files new in 2026: interpreter/app/main/classify/recipe_onnx.py,
     interpreter/app/main/revival.py, interpreter/.gitignore;
   - the 2026 changes, i.e. the diff against 940f10c2, to these 2021 files
@@ -78,3 +78,16 @@ revival/flake.nix pulls these from nixpkgs at run time: Python, Flask
 (BSD-3-Clause), Werkzeug (BSD-3-Clause), waitress (ZPL-2.1), flask-cors (MIT),
 pydub (MIT), pytz (MIT), NumPy (BSD-3-Clause), ONNX Runtime (MIT), FFmpeg
 (LGPL-2.1+/GPL).
+
+6. Offline page stylesheet (Bootstrap 4.5.0, MIT)
+-------------------------------------------------
+
+revival/assets/bootstrap-4.5.0.min.css is Bootstrap 4.5.0, Copyright
+2011-2020 The Bootstrap Authors; Copyright 2011-2020 Twitter, Inc.
+It is redistributed under its original MIT licence, included verbatim in
+revival/assets/bootstrap-LICENSE. The CSS copyright header is unchanged.
+revival/assets/manifest.json records the source registry package, its sha512
+integrity and the SHA-256 of the redistributed files. No third-party script
+is redistributed. MUI, jQuery, Leaflet/draw, Font Awesome and the ribbon
+resources are unused by the repaired server upload forms and removed from
+served responses. Archived HTML and CSS remain unchanged and unclaimed.

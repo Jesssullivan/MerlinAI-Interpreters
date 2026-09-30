@@ -22,8 +22,10 @@ import html
 import json
 import os
 import secrets
+import re
+from pathlib import Path
 
-from flask import abort, request
+from flask import abort, request, send_file
 
 from .classify.recipe_onnx import BANNER
 
@@ -63,9 +65,57 @@ def _inject(page, banner):
     return page[:at] + "\n" + banner + "\n" + page[at:]
 
 
+# These pages need ordinary HTML forms, not browser-side Javascript. Keep the archived
+# templates untouched; localize resources only when producing the 2026 served response.
+_OFFLINE_PAGES = {"/classify/select", "/classify/standard", "/classify/server"}
+_BOOTSTRAP_URL = "https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+_ASSETS = Path(__file__).resolve().parents[3] / "revival" / "assets"
+_CSP = ("default-src 'self'; script-src 'none'; style-src 'self' 'unsafe-inline'; "
+        "img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'none'; "
+        "form-action 'self'; frame-ancestors 'none'")
+
+
+def offline_page(page):
+    """Remove obsolete JS and unused CDN styles; serve Bootstrap and local assets offline."""
+    page = re.sub(r"<script\b[^>]*>.*?</script\s*>", "", page, flags=re.I | re.S)
+
+    def resource(match):
+        tag = match.group(0)
+        attr = re.search(r"\bhref\s*=\s*([\"'])(.*?)\1", tag, re.I | re.S)
+        if not attr:
+            return tag
+        url = attr.group(2)
+        if url == _BOOTSTRAP_URL:
+            local = "/revival-assets/bootstrap-4.5.0.min.css"
+        elif url.lower().startswith(("https:", "http:", "//")):
+            return ""  # MUI, ribbon, Leaflet/draw and Font Awesome are unused on upload forms.
+        elif url in ("style.css", "nouislider.css"):
+            local = "/revival-assets/" + url
+        elif url in ("favicon-16x16.png", "favicon-32x32.png", "apple-touch-icon.png", "site.webmanifest"):
+            local = "/revival-assets/" + url
+        else:
+            return tag
+        return tag[:attr.start(2)] + local + tag[attr.end(2):]
+
+    # Comments may contain sample markup; leave this historic text untouched.
+    parts = re.split(r"(<!--.*?-->)", page, flags=re.S)
+    return "".join(part if part.startswith("<!--") else re.sub(r"<link\b[^>]*>", resource, part, flags=re.I | re.S)
+                   for part in parts)
+
+
 def install(app):
     app.config["SECRET_KEY"] = os.environ.get("INTERPRETER_SECRET_KEY") or secrets.token_hex(32)
     app.config["MAX_CONTENT_LENGTH"] = int(float(os.environ.get("INTERPRETER_MAX_UPLOAD_MB", "16")) * 1024 * 1024)
+
+    @app.get("/revival-assets/<filename>")
+    def offline_asset(filename):
+        if filename == "bootstrap-4.5.0.min.css":
+            return send_file(_ASSETS / filename, mimetype="text/css")
+        if filename in ("style.css", "nouislider.css", "favicon-16x16.png", "favicon-32x32.png",
+                        "apple-touch-icon.png", "site.webmanifest", "android-chrome-192x192.png",
+                        "android-chrome-512x512.png"):
+            return send_file(Path(app.static_folder).resolve() / filename)
+        abort(404)
 
     @app.before_request
     def refuse_oversized_upload():
@@ -82,6 +132,9 @@ def install(app):
         if response.mimetype == "text/html":
             response.direct_passthrough = False
             page = response.get_data(as_text=True)
+            if request.path.rstrip("/") in _OFFLINE_PAGES:
+                page = offline_page(page)
+                response.headers["Content-Security-Policy"] = _CSP
             response.set_data(_inject(page, banner_html(request.path)))
         elif response.mimetype == "application/json" and request.path.startswith("/classify/api/"):
             data = json.loads(response.get_data(as_text=True))

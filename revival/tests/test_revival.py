@@ -9,6 +9,10 @@ Model-dependent tests need XORUBY_ROOT with .local/recipe2021/recipe.onnx (+ .js
 REVIVAL_REFERENCE_JSON (the output of `just recipe-infer` on that clip) adds the parity check.
 """
 import io
+import hashlib
+import base64
+from html.parser import HTMLParser
+from urllib.parse import urljoin, urlsplit
 import json
 import os
 import re
@@ -63,6 +67,56 @@ class RevivalApp(unittest.TestCase):
                 self.assertIn(self.revival.BANNER.replace("'", "&#x27;"), page)
                 self.assertIn('data-provenance-model="reconstruction"', page)
                 self.assertEqual(response.headers["X-Revival-Banner"], self.revival.BANNER)
+
+    def test_offline_pages_request_only_available_local_resources(self):
+        class Resources(HTMLParser):
+            def __init__(self):
+                super().__init__()
+                self.refs = []
+                self.scripts = 0
+
+            def handle_starttag(self, tag, attrs):
+                attrs = dict(attrs)
+                if tag == "script":
+                    self.scripts += 1
+                if tag in ("link", "script", "img", "source", "video", "audio", "iframe"):
+                    ref = attrs.get("src") or attrs.get("href")
+                    if ref:
+                        self.refs.append((tag, ref))
+
+        for route in ("/classify/select", "/classify/standard", "/classify/server"):
+            with self.subTest(route=route), self.client.get(route) as response:
+                parser = Resources()
+                parser.feed(response.get_data(as_text=True))
+                self.assertEqual(parser.scripts, 0)
+                self.assertIn("script-src 'none'", response.headers["Content-Security-Policy"])
+                self.assertIn(("link", "/revival-assets/bootstrap-4.5.0.min.css"), parser.refs)
+                for tag, ref in parser.refs:
+                    full = urljoin("http://localhost" + route, ref)
+                    parsed = urlsplit(full)
+                    self.assertEqual(parsed.netloc, "localhost", full)
+                    with self.client.get(parsed.path) as asset:
+                        self.assertEqual(asset.status_code, 200, full)
+                        if parsed.path.endswith(".css"):
+                            self.assertEqual(asset.mimetype, "text/css")
+                            self.assertNotRegex(asset.get_data(as_text=True), r"url\(\s*[\"']?(?:https?:)?//|@import")
+
+    def test_offline_asset_route_refuses_unlisted_paths(self):
+        for name in ("manifest.json", "bootstrap-LICENSE", "../../config/config.cfg", "missing.css"):
+            self.assertEqual(self.client.get("/revival-assets/" + name).status_code, 404)
+
+    def test_bootstrap_integrity_and_original_templates(self):
+        assets = REPO / "revival" / "assets"
+        manifest = json.loads((assets / "manifest.json").read_text())
+        for name, digest in manifest["files"].items():
+            self.assertEqual(hashlib.sha256((assets / name).read_bytes()).hexdigest(), digest)
+        css = (assets / "bootstrap-4.5.0.min.css").read_bytes()
+        sri = base64.b64encode(hashlib.sha384(css).digest()).decode()
+        for name in ("uploaderSelectOps.html", "uploaderStandardOps.html", "spec_crop_interpreter.html"):
+            template = (INTERPRETER / "demos" / name).read_text()
+            self.assertIn('integrity="sha384-' + sri + '"', template)
+            self.assertIn("https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/", template)
+        self.assertIn("Permission is hereby granted", (assets / "bootstrap-LICENSE").read_text())
 
     def test_upload_pages_label_the_2021_sample_output(self):
         for path in ("/classify/select", "/classify/standard"):
