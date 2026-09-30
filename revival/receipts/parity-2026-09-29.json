@@ -1,7 +1,7 @@
 {
  "title": "Repaired 2021 interpreter routes vs just recipe-infer, one clip (revival-2026)",
  "note": "2021 interface, repaired in 2026; model: a 2026 reconstruction (xoruby-2026 ml/recipe2021), not Merlin's model. One clip; a numerical parity check between two front ends of the same ONNX graph, not an accuracy claim.",
- "date_utc": "2026-09-30T00:01:36+00:00",
+ "date_utc": "2026-09-30T00:05:58+00:00",
  "tolerance": 0.0001,
  "pass": true,
  "checks": {
@@ -18,7 +18,7 @@
  "served": {
   "bind": "127.0.0.1:5071",
   "server": "waitress-serve --call app:create_app",
-  "revival_commit": "be04374c84b700ea0820bd1a444a2b90fdd5af5a",
+  "revival_commit": "510beafa4c790ecaee1e1be1d2ab25052db31c7d",
   "xoruby_commit": "b9a40d236fe62ee46f42ccc560765509dcfc1bc8"
  },
  "clip": {
