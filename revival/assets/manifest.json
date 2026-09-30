@@ -1,0 +1,9 @@
+{
+  "package": "bootstrap@4.5.0",
+  "source": "https://registry.npmjs.org/bootstrap/-/bootstrap-4.5.0.tgz",
+  "integrity": "sha512-Z93QoXvodoVslA+PWNdk23Hze4RBYIkpb5h8I2HY2Tu2h7A0LpAgLcyrhrSUyo2/Oxm2l1fRZPs1e5hnxnliXA==",
+  "files": {
+    "bootstrap-4.5.0.min.css": "680af6669abc319f9803f0fa26d443df1b6bc29133d88a8e4bea560ffed7288c",
+    "bootstrap-LICENSE": "bae9c9b58e4fa857418202fbb782485cfb13504c5d59fe1ebb48bcf36b30989e"
+  }
+}

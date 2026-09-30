@@ -1,5 +1,16 @@
 ## Revival 2026
 
+Offline page repair (2026-09-30): `/classify/select`, `/classify/standard` and
+`/classify/server` render with local Bootstrap 4.5.0 CSS and original local
+styles. Served responses remove unused CDN resources and obsolete scripts;
+the archived templates are untouched. No browser script runs on these pages.
+The browser-side TensorFlow page remains an unavailable historical interface,
+and links point to the actual server upload forms. Build/cache the Nix runtime
+and copy the private model pair before disconnecting from the network. The
+model is never redistributed. `nix run path:./revival#check` verifies every
+load-time resource is local and returns 200 with the expected content type.
+
+
 > **2021 interface, repaired in 2026. Model: a 2026 reconstruction trained on
 > public audio for three species; not Merlin's model.**
 
